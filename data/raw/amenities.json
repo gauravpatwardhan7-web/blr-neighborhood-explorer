@@ -1,33 +1,5 @@
 [
   {
-    "name": "Indiranagar",
-    "lat": 12.9784,
-    "lon": 77.6408,
-    "hospitals": 25,
-    "pharmacies": 49,
-    "supermarkets": 16,
-    "parks": 0,
-    "schools": 21,
-    "restaurants": 223,
-    "gyms": 15,
-    "atms": 47,
-    "metro_stations": 2
-  },
-  {
-    "name": "Koramangala",
-    "lat": 12.9352,
-    "lon": 77.6245,
-    "hospitals": 25,
-    "pharmacies": 35,
-    "supermarkets": 15,
-    "parks": 3,
-    "schools": 25,
-    "restaurants": 199,
-    "gyms": 7,
-    "atms": 43,
-    "metro_stations": 0
-  },
-  {
     "name": "Whitefield",
     "lat": 12.9698,
     "lon": 77.75,
@@ -56,34 +28,6 @@
     "metro_stations": 3
   },
   {
-    "name": "Banashankari",
-    "lat": 12.9255,
-    "lon": 77.5468,
-    "hospitals": 17,
-    "pharmacies": 8,
-    "supermarkets": 8,
-    "parks": 1,
-    "schools": 7,
-    "restaurants": 23,
-    "gyms": 1,
-    "atms": 7,
-    "metro_stations": 0
-  },
-  {
-    "name": "Malleshwaram",
-    "lat": 13.0035,
-    "lon": 77.571,
-    "hospitals": 29,
-    "pharmacies": 35,
-    "supermarkets": 19,
-    "parks": 2,
-    "schools": 11,
-    "restaurants": 85,
-    "gyms": 8,
-    "atms": 35,
-    "metro_stations": 3
-  },
-  {
     "name": "Hebbal",
     "lat": 13.035,
     "lon": 77.597,
@@ -96,20 +40,6 @@
     "gyms": 1,
     "atms": 18,
     "metro_stations": 1
-  },
-  {
-    "name": "Rajajinagar",
-    "lat": 12.9922,
-    "lon": 77.5555,
-    "hospitals": 43,
-    "pharmacies": 38,
-    "supermarkets": 11,
-    "parks": 0,
-    "schools": 10,
-    "restaurants": 63,
-    "gyms": 3,
-    "atms": 33,
-    "metro_stations": 4
   },
   {
     "name": "Basavanagudi",
@@ -126,48 +56,6 @@
     "metro_stations": 4
   },
   {
-    "name": "Marathahalli",
-    "lat": 12.9591,
-    "lon": 77.6974,
-    "hospitals": 5,
-    "pharmacies": 30,
-    "supermarkets": 19,
-    "parks": 0,
-    "schools": 3,
-    "restaurants": 84,
-    "gyms": 4,
-    "atms": 25,
-    "metro_stations": 0
-  },
-  {
-    "name": "Yelahanka",
-    "lat": 13.1005,
-    "lon": 77.5963,
-    "hospitals": 12,
-    "pharmacies": 8,
-    "supermarkets": 5,
-    "parks": 0,
-    "schools": 1,
-    "restaurants": 21,
-    "gyms": 3,
-    "atms": 15,
-    "metro_stations": 1
-  },
-  {
-    "name": "Electronic City",
-    "lat": 12.8399,
-    "lon": 77.677,
-    "hospitals": 1,
-    "pharmacies": 4,
-    "supermarkets": 3,
-    "parks": 0,
-    "schools": 1,
-    "restaurants": 23,
-    "gyms": 0,
-    "atms": 18,
-    "metro_stations": 3
-  },
-  {
     "name": "Bellandur",
     "lat": 12.9257,
     "lon": 77.6762,
@@ -180,34 +68,6 @@
     "gyms": 6,
     "atms": 13,
     "metro_stations": 0
-  },
-  {
-    "name": "Bannerghatta Road",
-    "lat": 12.8933,
-    "lon": 77.5975,
-    "hospitals": 9,
-    "pharmacies": 13,
-    "supermarkets": 19,
-    "parks": 0,
-    "schools": 24,
-    "restaurants": 46,
-    "gyms": 4,
-    "atms": 18,
-    "metro_stations": 0
-  },
-  {
-    "name": "Vijayanagar",
-    "lat": 12.9718,
-    "lon": 77.5348,
-    "hospitals": 60,
-    "pharmacies": 31,
-    "supermarkets": 12,
-    "parks": 1,
-    "schools": 12,
-    "restaurants": 43,
-    "gyms": 2,
-    "atms": 49,
-    "metro_stations": 3
   },
   {
     "name": "RT Nagar",
@@ -232,24 +92,10 @@
     "supermarkets": 6,
     "parks": 0,
     "schools": 9,
-    "restaurants": 87,
+    "restaurants": 88,
     "gyms": 4,
     "atms": 38,
     "metro_stations": 3
-  },
-  {
-    "name": "Sadashivanagar",
-    "lat": 13.005,
-    "lon": 77.58,
-    "hospitals": 21,
-    "pharmacies": 24,
-    "supermarkets": 13,
-    "parks": 2,
-    "schools": 7,
-    "restaurants": 70,
-    "gyms": 8,
-    "atms": 22,
-    "metro_stations": 0
   },
   {
     "name": "Dollars Colony",
@@ -264,5 +110,19 @@
     "gyms": 0,
     "atms": 8,
     "metro_stations": 1
+  },
+  {
+    "name": "Cunningham Road",
+    "lat": 12.9833,
+    "lon": 77.5933,
+    "hospitals": 7,
+    "pharmacies": 13,
+    "supermarkets": 6,
+    "parks": 1,
+    "schools": 3,
+    "restaurants": 120,
+    "gyms": 4,
+    "atms": 22,
+    "metro_stations": 4
   }
 ]
