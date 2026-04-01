@@ -1,1 +1,13 @@
 .DS_Store
+
+# Python virtualenv - never commit
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Secrets - never commit
+.env
+.env.*
+*.pem
+*.key
