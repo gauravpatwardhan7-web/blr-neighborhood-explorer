@@ -88,7 +88,6 @@ const SLIDER_LABELS: Record<keyof Weights, string> = {
 };
 
 function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: Weights) => void }) {
-  const total = Object.values(weights).reduce((a, b) => a + b, 0);
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
@@ -108,18 +107,34 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
             type="range" min={0} max={100} step={5}
             value={Math.round(weights[k] * 100)}
             onChange={(e) => {
-              const next = { ...weights, [k]: Number(e.target.value) / 100 };
+              const newVal = Number(e.target.value) / 100;
+              const delta = newVal - weights[k];
+              const others = (Object.keys(weights) as (keyof Weights)[]).filter((key) => key !== k);
+              const othersSum = others.reduce((s, key) => s + weights[key], 0);
+              const next = { ...weights, [k]: newVal };
+              if (othersSum > 0) {
+                // Scale others down proportionally so total stays at 1
+                others.forEach((key) => {
+                  next[key] = Math.max(0, weights[key] - delta * (weights[key] / othersSum));
+                });
+              } else {
+                // All others are 0 — distribute remaining equally
+                others.forEach((key) => { next[key] = Math.max(0, (1 - newVal) / others.length); });
+              }
+              // Normalise to exactly 1.0 to absorb floating-point drift
+              const sum = Object.values(next).reduce((a, b) => a + b, 0);
+              if (sum > 0) others.forEach((key) => { next[key] = next[key] / sum * (1 - next[k]); }); // re-anchor
+              const total = Object.values(next).reduce((a, b) => a + b, 0);
+              if (total > 0) (Object.keys(next) as (keyof Weights)[]).forEach((key) => { next[key] = next[key] / total; });
               onChange(next);
             }}
             style={{ width: "100%", accentColor: "#4ade80" }}
           />
         </div>
       ))}
-      {Math.abs(total - 1) > 0.01 && (
-        <p style={{ fontSize: 11, color: "#f87171", margin: "4px 0 0" }}>
-          Weights sum to {Math.round(total * 100)}% — scores scaled accordingly.
-        </p>
-      )}
+      <p style={{ fontSize: 11, color: "#9ca3af", margin: "4px 0 0" }}>
+        Total: 100% — sliders auto-balance
+      </p>
     </div>
   );
 }
