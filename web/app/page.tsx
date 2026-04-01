@@ -673,14 +673,14 @@ export default function Home() {
         </div>
       ) : (
         /* ── Mobile layout: full-screen map + bottom sheet ── */
-        <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif" }}>
+        <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif", paddingTop: "max(0px, env(safe-area-inset-top, 0px))" }}>
           {searchBar}
           {/* Filter chips row — sits just below search bar */}
           <div style={{ position: "fixed", top: 68, left: 16, right: 16, zIndex: 10, display: "flex", gap: 6, overflowX: "auto", paddingBottom: 2 }}>
             <FilterChips value={scoreFilter} onChange={setScoreFilter} />
           </div>
           {/* Map — fixed to viewport so it is never inside overflow:hidden, preventing iOS WebGL blank */}
-          <div ref={mapRef} style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5" }} />
+          <div ref={mapRef} style={{ position: "fixed", inset: 0, top: "max(0px, env(safe-area-inset-top, 0px))", zIndex: 0, background: "#e8e0d5" }} />
 
           {!sheetOpen && (
             <div style={{
