@@ -67,8 +67,22 @@ function Legend() {
 
 export default function Home() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<maplibregl.Map | null>(null);
+  const highlightedRef = useRef<string | null>(null);
   const [selected, setSelected] = useState<Locality | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Clear polygon highlight and deselect
+  const dismiss = () => {
+    if (mapInstanceRef.current && highlightedRef.current) {
+      mapInstanceRef.current.setFeatureState(
+        { source: "localities", id: highlightedRef.current },
+        { hover: false }
+      );
+      highlightedRef.current = null;
+    }
+    setSelected(null);
+  };
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)");
@@ -86,14 +100,40 @@ export default function Home() {
       center: [77.6, 12.97],
       zoom: 11,
     });
+    mapInstanceRef.current = map;
 
     map.on("load", async () => {
-      const res = await fetch("/localities_scored.geojson");
+      const [res, smallRes] = await Promise.all([
+        fetch("/localities_scored.geojson"),
+        fetch("/localities_small.geojson"),
+      ]);
       const data = await res.json();
+      const smallData = await smallRes.json();
+
+      // Small 500m circles — always faintly visible as default
+      map.addSource("localities-small", { type: "geojson", data: smallData });
+      map.addLayer({
+        id: "localities-small-fill",
+        type: "fill",
+        source: "localities-small",
+        paint: {
+          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "fill-opacity": 0.08,
+        },
+      });
+      map.addLayer({
+        id: "localities-small-outline",
+        type: "line",
+        source: "localities-small",
+        paint: {
+          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "line-width": 0.8,
+        },
+      });
 
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
-      // Fill — only visible on hover (or selected on mobile via feature-state)
+      // Fill — only visible on hover/click (amenity-based radius)
       map.addLayer({
         id: "localities-fill",
         type: "fill",
@@ -137,7 +177,7 @@ export default function Home() {
       // Hover state management
       let hoveredName: string | null = null;
 
-      map.on("mousemove", "localities-fill", (e) => {
+      map.on("mousemove", "localities-small-fill", (e) => {
         if (!e.features?.length) return;
         const name = e.features[0].properties?.name;
         if (name === hoveredName) return;
@@ -147,7 +187,7 @@ export default function Home() {
         map.getCanvas().style.cursor = "pointer";
       });
 
-      map.on("mouseleave", "localities-fill", () => {
+      map.on("mouseleave", "localities-small-fill", () => {
         if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
         hoveredName = null;
         map.getCanvas().style.cursor = "";
@@ -168,11 +208,22 @@ export default function Home() {
           map.setFeatureState({ source: "localities", id: name }, { hover: true });
         });
         el.addEventListener("mouseleave", () => {
-          map.setFeatureState({ source: "localities", id: name }, { hover: false });
+          // Only clear hover if this feature isn't the tapped/selected one
+          if (highlightedRef.current !== name) {
+            map.setFeatureState({ source: "localities", id: name }, { hover: false });
+          }
           hoveredName = null;
         });
 
-        el.onclick = () => setSelected({ name, overall_score, factors, raw });
+        el.onclick = () => {
+          // On tap (mobile) or click: show polygon for selected locality
+          if (highlightedRef.current && highlightedRef.current !== name) {
+            map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
+          }
+          highlightedRef.current = name;
+          map.setFeatureState({ source: "localities", id: name }, { hover: true });
+          setSelected({ name, overall_score, factors, raw });
+        };
 
         new maplibregl.Marker({ element: el })
           .setLngLat([f.properties.lon, f.properties.lat])
@@ -197,7 +248,7 @@ export default function Home() {
             </div>
           ) : (
             <div>
-              <button onClick={() => setSelected(null)} style={{ fontSize: 12, color: "#6b7280", marginBottom: 12, background: "none", border: "none", cursor: "pointer" }}>← Back</button>
+              <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", marginBottom: 12, background: "none", border: "none", cursor: "pointer" }}>← Back</button>
               <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
               <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(selected.overall_score), marginBottom: 16 }}>
                 {selected.overall_score}<span style={{ fontSize: 14, color: "#9ca3af" }}>/10</span>
@@ -246,7 +297,7 @@ export default function Home() {
           color: "#111827",
         }}>
           <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
-          <button onClick={() => setSelected(null)} style={{ fontSize: 12, color: "#6b7280", marginBottom: 8, background: "none", border: "none", cursor: "pointer", padding: 0 }}>← Back</button>
+          <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", marginBottom: 8, background: "none", border: "none", cursor: "pointer", padding: 0 }}>← Back</button>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
             <h2 style={{ fontSize: 20, fontWeight: 700 }}>{selected!.name}</h2>
             <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(selected!.overall_score) }}>

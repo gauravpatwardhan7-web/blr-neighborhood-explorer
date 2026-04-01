@@ -2,9 +2,10 @@ import json
 import math
 from pathlib import Path
 
-RADIUS_M = 1000  # metres — fixed radius for all localities
+RADIUS_MIN = 600   # metres — sparsest locality
+RADIUS_MAX = 2500  # metres — densest locality
 
-def circle_polygon(lat, lon, radius_m=RADIUS_M, num_points=64):
+def circle_polygon(lat, lon, radius_m=1500, num_points=64):
     """Return a GeoJSON Polygon approximating a circle."""
     lat_r = math.radians(lat)
     d_lat = radius_m / 111_000
@@ -118,11 +119,19 @@ for i, s in enumerate(scored):
     print(f"{i+1:<5} {s['name']:<22} {s['overall_score']:<8} {f['air_quality']:<8} {f['amenities']:<12} {f['metro_access']:<8} {f['restaurants']}")
 
 geojson_features = []
+amen_min = min(amen_values)
+amen_max = max(amen_values)
 for s in scored:
+    total_amenities = amen_values[all_names.index(s["name"])]
+    if amen_max > amen_min:
+        t = (total_amenities - amen_min) / (amen_max - amen_min)
+    else:
+        t = 0.5
+    radius = round(RADIUS_MIN + t * (RADIUS_MAX - RADIUS_MIN))
     geojson_features.append({
         "type": "Feature",
         "properties": {**s},
-        "geometry": circle_polygon(s["lat"], s["lon"])
+        "geometry": circle_polygon(s["lat"], s["lon"], radius_m=radius)
     })
 
 output = {"type": "FeatureCollection", "features": geojson_features}
@@ -131,3 +140,17 @@ with open("data/raw/localities_scored.geojson", "w") as f:
     json.dump(output, f, indent=2)
 
 print(f"\nSaved scored GeoJSON to data/raw/localities_scored.geojson")
+
+# Also output fixed 500m circles for the default always-visible layer
+small_features = [
+    {
+        "type": "Feature",
+        "properties": {"name": s["name"], "overall_score": s["overall_score"]},
+        "geometry": circle_polygon(s["lat"], s["lon"], radius_m=500),
+    }
+    for s in scored
+]
+small_output = {"type": "FeatureCollection", "features": small_features}
+with open("data/raw/localities_small.geojson", "w") as f:
+    json.dump(small_output, f, indent=2)
+print("Saved small GeoJSON to data/raw/localities_small.geojson")
