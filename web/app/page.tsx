@@ -26,6 +26,7 @@ const MAJOR_AREAS = [
   "Rajajinagar",
   "Yelahanka",
   "Marathahalli",
+  "Malleshwaram",
 ];
 const DETAIL_ZOOM = 12;
 
