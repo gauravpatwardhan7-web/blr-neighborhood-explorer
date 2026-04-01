@@ -12,6 +12,19 @@ type Locality = {
 
 type LocalityFull = Locality & { lat: number; lon: number };
 
+type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
+
+const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
+
+function recomputeScore(factors: Locality["factors"], weights: Weights): number {
+  const raw =
+    factors.air_quality  * weights.air_quality +
+    factors.amenities    * weights.amenities +
+    factors.metro_access * weights.metro_access +
+    factors.restaurants  * weights.restaurants;
+  return Math.round(raw * 10) / 10;
+}
+
 function scoreColor(score: number) {
   if (score >= 6) return "#4ade80";  // soft green
   if (score >= 4) return "#fbbf24";  // soft amber
@@ -67,6 +80,50 @@ function Legend() {
   );
 }
 
+const SLIDER_LABELS: Record<keyof Weights, string> = {
+  air_quality:  "Air Quality",
+  amenities:    "Amenities",
+  metro_access: "Metro Access",
+  restaurants:  "Restaurants",
+};
+
+function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: Weights) => void }) {
+  const total = Object.values(weights).reduce((a, b) => a + b, 0);
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#374151", margin: 0 }}>Personalise weights</h3>
+        <button
+          onClick={() => onChange(DEFAULT_WEIGHTS)}
+          style={{ fontSize: 11, color: "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 5, padding: "2px 7px", cursor: "pointer" }}
+        >Reset</button>
+      </div>
+      {(Object.keys(weights) as (keyof Weights)[]).map((k) => (
+        <div key={k} style={{ marginBottom: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
+            <span style={{ color: "#6b7280" }}>{SLIDER_LABELS[k]}</span>
+            <span style={{ fontWeight: 600 }}>{Math.round(weights[k] * 100)}%</span>
+          </div>
+          <input
+            type="range" min={0} max={100} step={5}
+            value={Math.round(weights[k] * 100)}
+            onChange={(e) => {
+              const next = { ...weights, [k]: Number(e.target.value) / 100 };
+              onChange(next);
+            }}
+            style={{ width: "100%", accentColor: "#4ade80" }}
+          />
+        </div>
+      ))}
+      {Math.abs(total - 1) > 0.01 && (
+        <p style={{ fontSize: 11, color: "#f87171", margin: "4px 0 0" }}>
+          Weights sum to {Math.round(total * 100)}% — scores scaled accordingly.
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
@@ -81,6 +138,8 @@ export default function Home() {
   const [gateEmail, setGateEmail] = useState("");
   const [gateSubmitting, setGateSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [weights, setWeights] = useState<Weights>(DEFAULT_WEIGHTS);
+  const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"] }[]>([]);
 
   // Clear polygon highlight and deselect
   const dismiss = () => {
@@ -147,6 +206,15 @@ export default function Home() {
       setGateSubmitting(false);
     }
   };
+
+  // Re-colour all marker bubbles whenever weights change
+  useEffect(() => {
+    markersRef.current.forEach(({ el, factors }) => {
+      const score = recomputeScore(factors, weights);
+      el.style.background = scoreColor(score);
+      el.innerText = String(score);
+    });
+  }, [weights]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -256,6 +324,7 @@ export default function Home() {
         const el = document.createElement("div");
         el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
+        markersRef.current.push({ el, factors });
 
         // Bubble hover also triggers polygon highlight
         el.addEventListener("mouseenter", () => {
@@ -401,19 +470,21 @@ export default function Home() {
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
                 <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 16 }}>Click any dot on the map to see details.</p>
                 <Legend />
+                <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
+                <WeightSliders weights={weights} onChange={setWeights} />
               </div>
             ) : (
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                  <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", background: "none", border: "none", cursor: "pointer" }}>← Back</button>
+                  <button onClick={dismiss} style={{ fontSize: 13, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 500 }}>← Back</button>
                   <button
                     onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                     style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
                   >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
                 </div>
                 <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
-                <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(selected.overall_score), marginBottom: 16 }}>
-                  {selected.overall_score}<span style={{ fontSize: 14, color: "#9ca3af" }}>/10</span>
+                <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(recomputeScore(selected.factors, weights)), marginBottom: 16 }}>
+                  {recomputeScore(selected.factors, weights)}<span style={{ fontSize: 14, color: "#9ca3af" }}>/10</span>
                 </div>
                 <FactorBars factors={selected.factors} />
                 <RawData raw={selected.raw} />
@@ -434,11 +505,14 @@ export default function Home() {
               boxShadow: "0 -2px 12px rgba(0,0,0,0.12)",
               padding: "12px 20px 20px",
               color: "#111827",
+              maxHeight: "50dvh", overflowY: "auto",
             }}>
               <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
               <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Bengaluru Neighborhoods</h2>
               <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 12 }}>Tap any circle on the map.</p>
               <Legend />
+              <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
+              <WeightSliders weights={weights} onChange={setWeights} />
             </div>
           )}
 
@@ -454,7 +528,7 @@ export default function Home() {
             }}>
               <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", background: "none", border: "none", cursor: "pointer", padding: 0 }}>← Back</button>
+                <button onClick={dismiss} style={{ fontSize: 13, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 500 }}>← Back</button>
                 <button
                   onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                   style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
@@ -462,8 +536,8 @@ export default function Home() {
               </div>
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
                 <h2 style={{ fontSize: 20, fontWeight: 700 }}>{selected!.name}</h2>
-                <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(selected!.overall_score) }}>
-                  {selected!.overall_score}<span style={{ fontSize: 12, color: "#9ca3af" }}>/10</span>
+                <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(recomputeScore(selected!.factors, weights)) }}>
+                  {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 12, color: "#9ca3af" }}>/10</span>
                 </div>
               </div>
               <FactorBars factors={selected!.factors} />
