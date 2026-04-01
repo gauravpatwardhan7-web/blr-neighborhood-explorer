@@ -6,18 +6,29 @@ import { NextRequest, NextResponse } from "next/server";
 //     email text unique not null,
 //     created_at timestamptz default now()
 //   );
-// Then add SUPABASE_URL and SUPABASE_SERVICE_KEY to Vercel env vars.
+//   -- Allow anonymous inserts only (no reads/updates/deletes from the outside)
+//   alter table signups enable row level security;
+//   create policy "allow anon insert" on signups for insert to anon with check (true);
+//
+// Uses the ANON key (not service_role) — anon key is safe to use server-side
+// because RLS above restricts it to insert-only on this one table.
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const { email } = body as { email?: string };
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  // Validate: must be a plausible email, max 254 chars (RFC 5321)
+  if (
+    !email ||
+    typeof email !== "string" ||
+    email.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   }
 
   const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY; // anon key + RLS, not service_role
 
   if (!supabaseUrl || !supabaseKey) {
     // Supabase not configured yet — silently succeed so the gate still works
