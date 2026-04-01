@@ -15,6 +15,19 @@ type LocalityFull = Locality & { lat: number; lon: number };
 type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
+const MAJOR_AREAS = [
+  "Indiranagar",
+  "Koramangala",
+  "Whitefield",
+  "Electronic City",
+  "Jayanagar",
+  "HSR Layout",
+  "Hebbal",
+  "Rajajinagar",
+  "Yelahanka",
+  "Marathahalli",
+];
+const DETAIL_ZOOM = 12;
 
 function recomputeScore(factors: Locality["factors"], weights: Weights): number {
   const raw =
@@ -188,6 +201,22 @@ export default function Home() {
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
   const [scoreFilter, setScoreFilter] = useState<"all" | "great" | "good" | "low">("all");
+  const weightsRef = useRef(weights);
+  const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
+
+  const updateMarkerVisibility = () => {
+    const zoom = mapInstanceRef.current?.getZoom() ?? 0;
+    const showDetailedMarkers = zoom >= DETAIL_ZOOM;
+    markersRef.current.forEach(({ el, factors }) => {
+      const score = recomputeScore(factors, weightsRef.current);
+      const visibleByFilter =
+        scoreFilterRef.current === "all" ||
+        (scoreFilterRef.current === "great" && score >= 6) ||
+        (scoreFilterRef.current === "good"  && score >= 4 && score < 6) ||
+        (scoreFilterRef.current === "low"   && score < 4);
+      el.style.display = showDetailedMarkers && visibleByFilter ? "flex" : "none";
+    });
+  };
 
   // Haversine distance in km between two lat/lon points
   function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -290,24 +319,19 @@ export default function Home() {
 
   // Re-colour all marker bubbles whenever weights change
   useEffect(() => {
+    weightsRef.current = weights;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weights);
       el.style.background = scoreColor(score);
       el.innerText = String(score);
     });
+    updateMarkerVisibility();
   }, [weights]);
 
   // Show/hide markers based on the active score filter
   useEffect(() => {
-    markersRef.current.forEach(({ el, factors }) => {
-      const score = recomputeScore(factors, weights);
-      const visible =
-        scoreFilter === "all" ||
-        (scoreFilter === "great" && score >= 6) ||
-        (scoreFilter === "good"  && score >= 4 && score < 6) ||
-        (scoreFilter === "low"   && score < 4);
-      el.style.display = visible ? "flex" : "none";
-    });
+    scoreFilterRef.current = scoreFilter;
+    updateMarkerVisibility();
   }, [scoreFilter, weights]);
 
   useEffect(() => {
@@ -371,13 +395,58 @@ export default function Home() {
       ]);
       const data = await res.json();
       const smallData = await smallRes.json();
+      const majorAreaFilter: any = ["in", ["get", "name"], ["literal", MAJOR_AREAS]];
 
-      // Small 500m circles — always faintly visible as default
+      // Zoomed-out view: only show major Bengaluru areas
       map.addSource("localities-small", { type: "geojson", data: smallData });
+      map.addLayer({
+        id: "localities-major-fill",
+        type: "fill",
+        source: "localities-small",
+        filter: majorAreaFilter,
+        maxzoom: DETAIL_ZOOM,
+        paint: {
+          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "fill-opacity": 0.14,
+        },
+      });
+      map.addLayer({
+        id: "localities-major-outline",
+        type: "line",
+        source: "localities-small",
+        filter: majorAreaFilter,
+        maxzoom: DETAIL_ZOOM,
+        paint: {
+          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "line-width": 1.1,
+        },
+      });
+      map.addLayer({
+        id: "localities-major-labels",
+        type: "symbol",
+        source: "localities-small",
+        filter: majorAreaFilter,
+        maxzoom: DETAIL_ZOOM,
+        layout: {
+          "text-field": ["get", "name"],
+          "text-size": 12,
+          "text-font": ["Noto Sans Regular"],
+          "text-anchor": "center",
+          "text-max-width": 8,
+        },
+        paint: {
+          "text-color": "#1f2937",
+          "text-halo-color": "#ffffff",
+          "text-halo-width": 1.5,
+        },
+      });
+
+      // Zoomed-in view: reveal all locality circles/details
       map.addLayer({
         id: "localities-small-fill",
         type: "fill",
         source: "localities-small",
+        minzoom: DETAIL_ZOOM,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
           "fill-opacity": 0.08,
@@ -387,6 +456,7 @@ export default function Home() {
         id: "localities-small-outline",
         type: "line",
         source: "localities-small",
+        minzoom: DETAIL_ZOOM,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
           "line-width": 0.8,
@@ -400,6 +470,7 @@ export default function Home() {
         id: "localities-fill",
         type: "fill",
         source: "localities",
+        minzoom: DETAIL_ZOOM,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
           "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0],
@@ -411,6 +482,7 @@ export default function Home() {
         id: "localities-outline",
         type: "line",
         source: "localities",
+        minzoom: DETAIL_ZOOM,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
           "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
@@ -421,6 +493,7 @@ export default function Home() {
         id: "localities-labels",
         type: "symbol",
         source: "localities",
+        minzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
           "text-size": 11,
@@ -493,6 +566,9 @@ export default function Home() {
           .setLngLat([f.properties.lon, f.properties.lat])
           .addTo(map);
       });
+
+      updateMarkerVisibility();
+      map.on("zoom", updateMarkerVisibility);
 
       // Populate locality list for search and URL deep-links
       const allLocs: LocalityFull[] = data.features.map((f: any) => ({
