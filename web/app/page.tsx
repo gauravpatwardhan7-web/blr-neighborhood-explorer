@@ -94,7 +94,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
         <h3 style={{ fontSize: 13, fontWeight: 600, color: "#111827", margin: 0 }}>Personalise weights</h3>
         <button
           onClick={() => onChange(DEFAULT_WEIGHTS)}
-          style={{ fontSize: 11, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 5, padding: "2px 7px", cursor: "pointer", fontWeight: 500 }}
+          style={{ fontSize: 11, color: "#111827", background: "white", border: "1.5px solid #374151", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 600 }}
         >Reset</button>
       </div>
       {(Object.keys(weights) as (keyof Weights)[]).map((k) => (
@@ -421,7 +421,7 @@ export default function Home() {
         autoCapitalize="off"
         autoCorrect="off"
         spellCheck={false}
-        style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "1.5px solid rgba(0,0,0,0.15)", boxShadow: "0 2px 12px rgba(0,0,0,0.22)", fontSize: 13, outline: "none", boxSizing: "border-box", background: "white" }}
+        style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "1.5px solid rgba(0,0,0,0.15)", boxShadow: "0 2px 12px rgba(0,0,0,0.22)", fontSize: 16, outline: "none", boxSizing: "border-box", background: "white", color: "#111827" }}
       />
       {showDropdown && searchResults.length > 0 && (
         <div style={{ background: "white", borderRadius: 8, marginTop: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.12)", overflow: "hidden" }}>
@@ -429,7 +429,7 @@ export default function Home() {
             <div
               key={loc.name}
               onMouseDown={() => flyToLocality(loc)}
-              style={{ padding: "9px 14px", fontSize: 13, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6" }}
+              style={{ padding: "9px 14px", fontSize: 14, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6", color: "#111827", background: "white" }}
             >
               <span>{loc.name}</span>
               <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor(loc.overall_score) }}>{loc.overall_score}/10</span>
@@ -493,10 +493,10 @@ export default function Home() {
             ) : (
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                  <button onClick={dismiss} style={{ fontSize: 13, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 500 }}>← Back</button>
+                  <button onClick={dismiss} style={{ fontSize: 13, color: "#111827", background: "white", border: "1.5px solid #374151", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>← Back</button>
                   <button
                     onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                    style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
+                    style={{ fontSize: 11, color: copied ? "#059669" : "#374151", background: "white", border: "1.5px solid #9ca3af", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 500 }}
                   >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
                 </div>
                 <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
@@ -517,13 +517,14 @@ export default function Home() {
 
           {!sheetOpen && (
             <div style={{
-              position: "absolute", bottom: 0, left: 0, right: 0,
+              position: "fixed", bottom: 0, left: 0, right: 0,
               background: "white", borderRadius: "16px 16px 0 0",
               boxShadow: "0 -2px 12px rgba(0,0,0,0.12)",
               color: "#111827",
               maxHeight: sheetExpanded ? "55dvh" : "52px",
               overflow: "hidden",
               transition: "max-height 0.3s ease",
+              zIndex: 10,
             }}>
               {/* Drag handle — always visible, tap to toggle */}
               <div
@@ -550,13 +551,14 @@ export default function Home() {
 
           {sheetOpen && (
             <div style={{
-              position: "absolute", bottom: 0, left: 0, right: 0,
+              position: "fixed", bottom: 0, left: 0, right: 0,
               background: "white", borderRadius: "16px 16px 0 0",
               boxShadow: "0 -2px 12px rgba(0,0,0,0.15)",
               maxHeight: sheetExpanded ? "60dvh" : "52px",
               overflow: "hidden",
               transition: "max-height 0.3s ease",
               color: "#111827",
+              zIndex: 10,
             }}>
               {/* Header — tap to toggle, always visible */}
               <div
@@ -579,10 +581,10 @@ export default function Home() {
               {/* Scrollable body */}
               <div style={{ padding: "4px 20px 32px", overflowY: "auto", maxHeight: "calc(60dvh - 52px)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <button onClick={(e) => { e.stopPropagation(); dismiss(); }} style={{ fontSize: 13, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 500 }}>← Back</button>
+                  <button onClick={(e) => { e.stopPropagation(); dismiss(); }} style={{ fontSize: 13, color: "#111827", background: "white", border: "1.5px solid #374151", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>← Back</button>
                   <button
                     onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                    style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
+                    style={{ fontSize: 11, color: copied ? "#059669" : "#374151", background: "white", border: "1.5px solid #9ca3af", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 500 }}
                   >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
