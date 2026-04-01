@@ -22,7 +22,7 @@ function recomputeScore(factors: Locality["factors"], weights: Weights): number 
     factors.amenities    * weights.amenities +
     factors.metro_access * weights.metro_access +
     factors.restaurants  * weights.restaurants;
-  return Math.round(raw * 10) / 10;
+  return Math.min(10, Math.round(raw * 10) / 10);
 }
 
 function scoreColor(score: number) {
@@ -99,10 +99,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
       </div>
       {(Object.keys(weights) as (keyof Weights)[]).map((k) => (
         <div key={k} style={{ marginBottom: 12 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
-            <span style={{ color: "#6b7280" }}>{SLIDER_LABELS[k]}</span>
-            <span style={{ fontWeight: 600 }}>{Math.round(weights[k] * 100)}%</span>
-          </div>
+          <div style={{ fontSize: 12, marginBottom: 4, color: "#6b7280" }}>{SLIDER_LABELS[k]}</div>
           <input
             type="range" min={0} max={100} step={5}
             value={Math.round(weights[k] * 100)}
@@ -133,7 +130,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
         </div>
       ))}
       <p style={{ fontSize: 11, color: "#9ca3af", margin: "4px 0 0" }}>
-        Total: 100% — sliders auto-balance
+        Drag to prioritise what matters to you
       </p>
     </div>
   );
