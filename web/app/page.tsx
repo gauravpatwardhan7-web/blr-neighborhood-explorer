@@ -152,6 +152,7 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const [weights, setWeights] = useState<Weights>(DEFAULT_WEIGHTS);
   const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"] }[]>([]);
+  const [sheetExpanded, setSheetExpanded] = useState(false);
 
   // Clear polygon highlight and deselect
   const dismiss = () => {
@@ -164,6 +165,7 @@ export default function Home() {
     }
     history.replaceState(null, "", window.location.pathname);
     setSelected(null);
+    setSheetExpanded(false);
   };
 
   useEffect(() => {
@@ -515,16 +517,29 @@ export default function Home() {
               position: "absolute", bottom: 0, left: 0, right: 0,
               background: "white", borderRadius: "16px 16px 0 0",
               boxShadow: "0 -2px 12px rgba(0,0,0,0.12)",
-              padding: "12px 20px 20px",
               color: "#111827",
-              maxHeight: "50dvh", overflowY: "auto",
+              maxHeight: sheetExpanded ? "55dvh" : "52px",
+              overflow: "hidden",
+              transition: "max-height 0.3s ease",
             }}>
-              <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
-              <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Bengaluru Neighborhoods</h2>
-              <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 12 }}>Tap any circle on the map.</p>
-              <Legend />
-              <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
-              <WeightSliders weights={weights} onChange={setWeights} />
+              {/* Drag handle — always visible, tap to toggle */}
+              <div
+                onClick={() => setSheetExpanded((v) => !v)}
+                style={{ padding: "12px 20px 8px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
+                  <span style={{ fontSize: 14, fontWeight: 700 }}>Bengaluru Neighborhoods</span>
+                </div>
+                <span style={{ fontSize: 16, color: "#9ca3af", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", lineHeight: 1 }}>⌃</span>
+              </div>
+              {/* Expanded content */}
+              <div style={{ padding: "4px 20px 20px", overflowY: "auto", maxHeight: "calc(55dvh - 52px)" }}>
+                <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 12 }}>Tap any circle on the map.</p>
+                <Legend />
+                <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
+                <WeightSliders weights={weights} onChange={setWeights} />
+              </div>
             </div>
           )}
 
