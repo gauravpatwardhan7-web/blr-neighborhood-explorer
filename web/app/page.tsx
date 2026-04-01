@@ -64,6 +64,39 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
   );
 }
 
+type ScoreFilter = "all" | "great" | "good" | "low";
+
+const FILTER_OPTIONS: { value: ScoreFilter; label: string; color: string; bg: string; activeBg: string }[] = [
+  { value: "all",   label: "All",   color: "#111827", bg: "white",   activeBg: "#111827" },
+  { value: "great", label: "Great", color: "#065f46", bg: "#ecfdf5", activeBg: "#4ade80" },
+  { value: "good",  label: "Good",  color: "#78350f", bg: "#fffbeb", activeBg: "#fbbf24" },
+  { value: "low",   label: "Low",   color: "#7f1d1d", bg: "#fef2f2", activeBg: "#f87171" },
+];
+
+function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: ScoreFilter) => void }) {
+  return (
+    <div style={{ display: "flex", gap: 6 }}>
+      {FILTER_OPTIONS.map((opt) => {
+        const active = value === opt.value;
+        return (
+          <button
+            key={opt.value}
+            onClick={() => onChange(opt.value)}
+            style={{
+              padding: "5px 12px", borderRadius: 20, fontSize: 12, fontWeight: active ? 700 : 500,
+              background: active ? opt.activeBg : opt.bg,
+              color: active ? (opt.value === "all" ? "white" : opt.color) : opt.color,
+              border: active ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+              cursor: "pointer", boxShadow: active ? "0 1px 4px rgba(0,0,0,0.12)" : "none",
+              transition: "all 0.15s",
+            }}
+          >{opt.label}</button>
+        );
+      })}
+    </div>
+  );
+}
+
 function Legend() {
   return (
     <div style={{ fontSize: 13, color: "#374151" }}>
@@ -151,9 +184,10 @@ export default function Home() {
   const [gateSubmitting, setGateSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
   const [weights, setWeights] = useState<Weights>(DEFAULT_WEIGHTS);
-  const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"] }[]>([]);
+  const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"]; score: number }[]>([]);
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
+  const [scoreFilter, setScoreFilter] = useState<"all" | "great" | "good" | "low">("all");
 
   // Haversine distance in km between two lat/lon points
   function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -262,6 +296,19 @@ export default function Home() {
       el.innerText = String(score);
     });
   }, [weights]);
+
+  // Show/hide markers based on the active score filter
+  useEffect(() => {
+    markersRef.current.forEach(({ el, factors }) => {
+      const score = recomputeScore(factors, weights);
+      const visible =
+        scoreFilter === "all" ||
+        (scoreFilter === "great" && score >= 6) ||
+        (scoreFilter === "good"  && score >= 4 && score < 6) ||
+        (scoreFilter === "low"   && score < 4);
+      el.style.display = visible ? "flex" : "none";
+    });
+  }, [scoreFilter, weights]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -379,7 +426,7 @@ export default function Home() {
         const el = document.createElement("div");
         el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
-        markersRef.current.push({ el, factors });
+        markersRef.current.push({ el, factors, score: overall_score });
 
         // Bubble hover also triggers polygon highlight
         el.addEventListener("mouseenter", () => {
@@ -557,7 +604,9 @@ export default function Home() {
             {!selected ? (
               <div>
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
-                <p style={{ fontSize: 13, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
+                <p style={{ fontSize: 13, color: "#374151", marginBottom: 12 }}>Click any dot on the map to see details.</p>
+                <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+                <div style={{ margin: "16px 0", borderTop: "1px solid #e5e7eb" }} />
                 <Legend />
                 <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
@@ -585,6 +634,10 @@ export default function Home() {
         /* ── Mobile layout: full-screen map + bottom sheet ── */
         <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif", overflow: "hidden" }}>
           {searchBar}
+          {/* Filter chips row — sits just below search bar */}
+          <div style={{ position: "fixed", top: 68, left: 16, right: 16, zIndex: 10, display: "flex", gap: 6, overflowX: "auto", paddingBottom: 2 }}>
+            <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+          </div>
           <div ref={mapRef} style={{ position: "absolute", inset: 0 }} />
 
           {!sheetOpen && (
