@@ -317,7 +317,9 @@ export default function Home() {
       style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
       center: [77.6, 12.97],
       zoom: 11,
-    });
+      preserveDrawingBuffer: true,  // keeps WebGL buffer alive on iOS (must be set at context creation)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
     mapInstanceRef.current = map;
 
     // ── iOS black-map fix ──────────────────────────────────────────────────
@@ -636,14 +638,16 @@ export default function Home() {
         /* ── Desktop layout ── */
         <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif", position: "relative" }}>
           {searchBar}
+          {/* Filter chips — float on the map below the search bar */}
+          <div style={{ position: "absolute", top: 68, left: 16, zIndex: 10, display: "flex", gap: 6 }}>
+            <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+          </div>
           <div ref={mapRef} style={{ flex: 1 }} />
           <div style={{ width: 300, padding: 20, overflowY: "auto", borderLeft: "1px solid #e5e7eb", background: "#f9fafb" }}>
             {!selected ? (
               <div>
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
-                <p style={{ fontSize: 13, color: "#374151", marginBottom: 12 }}>Click any dot on the map to see details.</p>
-                <FilterChips value={scoreFilter} onChange={setScoreFilter} />
-                <div style={{ margin: "16px 0", borderTop: "1px solid #e5e7eb" }} />
+                <p style={{ fontSize: 13, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
                 <Legend />
                 <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
@@ -669,13 +673,14 @@ export default function Home() {
         </div>
       ) : (
         /* ── Mobile layout: full-screen map + bottom sheet ── */
-        <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif", overflow: "hidden" }}>
+        <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif" }}>
           {searchBar}
           {/* Filter chips row — sits just below search bar */}
           <div style={{ position: "fixed", top: 68, left: 16, right: 16, zIndex: 10, display: "flex", gap: 6, overflowX: "auto", paddingBottom: 2 }}>
             <FilterChips value={scoreFilter} onChange={setScoreFilter} />
           </div>
-          <div ref={mapRef} style={{ position: "absolute", inset: 0, background: "#e8e0d5" }} />
+          {/* Map — fixed to viewport so it is never inside overflow:hidden, preventing iOS WebGL blank */}
+          <div ref={mapRef} style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5" }} />
 
           {!sheetOpen && (
             <div style={{
