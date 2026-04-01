@@ -34,12 +34,12 @@ function scoreColor(score: number) {
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
   return (
     <>
-      <h3 style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, color: "#374151" }}>Factor scores</h3>
+      <h3 style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, color: "#111827" }}>Factor scores</h3>
       {Object.entries(factors).map(([k, v]) => (
         <div key={k} style={{ marginBottom: 10 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
-            <span style={{ color: "#6b7280", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
-            <span style={{ fontWeight: 600 }}>{v}/10</span>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 3 }}>
+            <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
+            <span style={{ fontWeight: 600, color: "#111827" }}>{v}/10</span>
           </div>
           <div style={{ height: 6, background: "#e5e7eb", borderRadius: 3 }}>
             <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3 }} />
@@ -53,11 +53,11 @@ function FactorBars({ factors }: { factors: Locality["factors"] }) {
 function RawData({ raw }: { raw: Locality["raw"] }) {
   return (
     <>
-      <h3 style={{ fontSize: 13, fontWeight: 600, margin: "16px 0 8px", color: "#374151" }}>Raw data</h3>
+      <h3 style={{ fontSize: 13, fontWeight: 600, margin: "16px 0 8px", color: "#111827" }}>Raw data</h3>
       {Object.entries(raw).map(([k, v]) => (
-        <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "4px 0", borderBottom: "1px solid #f3f4f6" }}>
-          <span style={{ color: "#6b7280", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
-          <span style={{ fontWeight: 500 }}>{v ?? "—"}</span>
+        <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "5px 0", borderBottom: "1px solid #e5e7eb" }}>
+          <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
+          <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
         </div>
       ))}
     </>
@@ -66,15 +66,15 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
 
 function Legend() {
   return (
-    <div style={{ fontSize: 12 }}>
+    <div style={{ fontSize: 13, color: "#374151" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#4ade80", display: "inline-block" }} /> Score 6–10 (Great)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#4ade80", display: "inline-block", flexShrink: 0 }} /> Score 6–10 (Great)
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#fbbf24", display: "inline-block" }} /> Score 4–6 (Good)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#fbbf24", display: "inline-block", flexShrink: 0 }} /> Score 4–6 (Good)
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f87171", display: "inline-block" }} /> Score 0–4 (Low)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f87171", display: "inline-block", flexShrink: 0 }} /> Score 0–4 (Low)
       </div>
     </div>
   );
@@ -91,15 +91,15 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#374151", margin: 0 }}>Personalise weights</h3>
+        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#111827", margin: 0 }}>Personalise weights</h3>
         <button
           onClick={() => onChange(DEFAULT_WEIGHTS)}
-          style={{ fontSize: 11, color: "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 5, padding: "2px 7px", cursor: "pointer" }}
+          style={{ fontSize: 11, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 5, padding: "2px 7px", cursor: "pointer", fontWeight: 500 }}
         >Reset</button>
       </div>
       {(Object.keys(weights) as (keyof Weights)[]).map((k) => (
         <div key={k} style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 12, marginBottom: 4, color: "#6b7280" }}>{SLIDER_LABELS[k]}</div>
+          <div style={{ fontSize: 13, marginBottom: 4, color: "#374151", fontWeight: 500 }}>{SLIDER_LABELS[k]}</div>
           <input
             type="range" min={0} max={100} step={5}
             value={Math.round(weights[k] * 100)}
@@ -129,7 +129,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
           />
         </div>
       ))}
-      <p style={{ fontSize: 11, color: "#9ca3af", margin: "4px 0 0" }}>
+      <p style={{ fontSize: 12, color: "#374151", margin: "4px 0 0" }}>
         Drag to prioritise what matters to you
       </p>
     </div>
@@ -465,7 +465,7 @@ export default function Home() {
             </button>
             <button
               onClick={() => handleGateSubmit("")}
-              style={{ background: "none", border: "none", fontSize: 12, color: "#9ca3af", cursor: "pointer" }}
+              style={{ background: "none", border: "none", fontSize: 13, color: "#374151", cursor: "pointer" }}
             >
               Skip for now →
             </button>
@@ -482,7 +482,7 @@ export default function Home() {
             {!selected ? (
               <div>
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
-                <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 16 }}>Click any dot on the map to see details.</p>
+                <p style={{ fontSize: 13, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
                 <Legend />
                 <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
@@ -498,7 +498,7 @@ export default function Home() {
                 </div>
                 <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
                 <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(recomputeScore(selected.factors, weights)), marginBottom: 16 }}>
-                  {recomputeScore(selected.factors, weights)}<span style={{ fontSize: 14, color: "#9ca3af" }}>/10</span>
+                  {recomputeScore(selected.factors, weights)}<span style={{ fontSize: 14, color: "#6b7280" }}>/10</span>
                 </div>
                 <FactorBars factors={selected.factors} />
                 <RawData raw={selected.raw} />
@@ -531,11 +531,11 @@ export default function Home() {
                   <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
                   <span style={{ fontSize: 14, fontWeight: 700 }}>Bengaluru Neighborhoods</span>
                 </div>
-                <span style={{ fontSize: 16, color: "#9ca3af", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", lineHeight: 1 }}>⌃</span>
+                <span style={{ fontSize: 16, color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", lineHeight: 1 }}>⌃</span>
               </div>
               {/* Expanded content */}
               <div style={{ padding: "4px 20px 20px", overflowY: "auto", maxHeight: "calc(55dvh - 52px)" }}>
-                <p style={{ fontSize: 12, color: "#6b7280", marginBottom: 12 }}>Tap any circle on the map.</p>
+                <p style={{ fontSize: 12, color: "#374151", marginBottom: 12 }}>Tap any circle on the map.</p>
                 <Legend />
                 <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
@@ -564,7 +564,7 @@ export default function Home() {
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
                 <h2 style={{ fontSize: 20, fontWeight: 700 }}>{selected!.name}</h2>
                 <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(recomputeScore(selected!.factors, weights)) }}>
-                  {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 12, color: "#9ca3af" }}>/10</span>
+                  {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 12, color: "#6b7280" }}>/10</span>
                 </div>
               </div>
               <FactorBars factors={selected!.factors} />
