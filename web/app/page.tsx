@@ -153,6 +153,38 @@ export default function Home() {
   const [weights, setWeights] = useState<Weights>(DEFAULT_WEIGHTS);
   const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"] }[]>([]);
   const [sheetExpanded, setSheetExpanded] = useState(false);
+  const [geoLoading, setGeoLoading] = useState(false);
+
+  // Haversine distance in km between two lat/lon points
+  function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  // Request browser geolocation and fly to nearest locality
+  const locateUser = () => {
+    if (!navigator.geolocation) return;
+    setGeoLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setGeoLoading(false);
+        const locs = localitiesRef.current;
+        if (!locs.length) return;
+        const nearest = locs.reduce((best, loc) => {
+          const d = haversineKm(pos.coords.latitude, pos.coords.longitude, loc.lat, loc.lon);
+          return d < haversineKm(pos.coords.latitude, pos.coords.longitude, best.lat, best.lon) ? loc : best;
+        });
+        flyToLocality(nearest);
+      },
+      () => setGeoLoading(false),
+      { timeout: 8000, maximumAge: 60000 }
+    );
+  };
 
   // Clear polygon highlight and deselect
   const dismiss = () => {
@@ -240,6 +272,14 @@ export default function Home() {
       zoom: 11,
     });
     mapInstanceRef.current = map;
+
+    // Fix black-map on iOS Safari when page is refreshed or restored from cache
+    const resizeMap = () => mapInstanceRef.current?.resize();
+    requestAnimationFrame(resizeMap);
+    window.addEventListener("pageshow", resizeMap);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") resizeMap();
+    });
 
     map.on("load", async () => {
       const [res, smallRes] = await Promise.all([
@@ -397,7 +437,10 @@ export default function Home() {
       }
     });
 
-    return () => map.remove();
+    return () => {
+      window.removeEventListener("pageshow", () => mapInstanceRef.current?.resize());
+      map.remove();
+    };
   }, []);
 
   const sheetOpen = selected !== null;
@@ -410,33 +453,62 @@ export default function Home() {
       : [];
 
   const searchBar = (
-    <div style={{ position: "absolute", top: 16, left: 16, zIndex: 10, width: isMobile ? "calc(100% - 32px)" : 260 }}>
-      <input
-        type="text"
-        placeholder="Search neighbourhood…"
-        value={searchQuery}
-        onChange={(e) => { setSearchQuery(e.target.value); setShowDropdown(true); }}
-        onFocus={() => setShowDropdown(true)}
-        onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-        autoCapitalize="off"
-        autoCorrect="off"
-        spellCheck={false}
-        style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "1.5px solid rgba(0,0,0,0.15)", boxShadow: "0 2px 12px rgba(0,0,0,0.22)", fontSize: 16, outline: "none", boxSizing: "border-box", background: "white", color: "#111827" }}
-      />
-      {showDropdown && searchResults.length > 0 && (
-        <div style={{ background: "white", borderRadius: 8, marginTop: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.12)", overflow: "hidden" }}>
-          {searchResults.map((loc) => (
-            <div
-              key={loc.name}
-              onMouseDown={() => flyToLocality(loc)}
-              style={{ padding: "9px 14px", fontSize: 14, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6", color: "#111827", background: "white" }}
-            >
-              <span>{loc.name}</span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor(loc.overall_score) }}>{loc.overall_score}/10</span>
-            </div>
-          ))}
-        </div>
-      )}
+    <div style={{ position: "absolute", top: 16, left: 16, zIndex: 10, width: isMobile ? "calc(100% - 32px)" : 260, display: "flex", gap: 8, alignItems: "flex-start" }}>
+      <div style={{ flex: 1 }}>
+        <input
+          type="text"
+          placeholder="Search neighbourhood…"
+          value={searchQuery}
+          onChange={(e) => { setSearchQuery(e.target.value); setShowDropdown(true); }}
+          onFocus={() => setShowDropdown(true)}
+          onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+          style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "1.5px solid rgba(0,0,0,0.15)", boxShadow: "0 2px 12px rgba(0,0,0,0.22)", fontSize: 16, outline: "none", boxSizing: "border-box", background: "white", color: "#111827" }}
+        />
+        {showDropdown && searchResults.length > 0 && (
+          <div style={{ background: "white", borderRadius: 8, marginTop: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.12)", overflow: "hidden" }}>
+            {searchResults.map((loc) => (
+              <div
+                key={loc.name}
+                onMouseDown={() => flyToLocality(loc)}
+                style={{ padding: "9px 14px", fontSize: 14, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6", color: "#111827", background: "white" }}
+              >
+                <span>{loc.name}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor(loc.overall_score) }}>{loc.overall_score}/10</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <button
+        onClick={locateUser}
+        disabled={geoLoading}
+        title="Find nearest neighbourhood"
+        style={{
+          flexShrink: 0, width: 40, height: 40, borderRadius: 8,
+          background: "white", border: "1.5px solid rgba(0,0,0,0.15)",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.22)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: geoLoading ? "default" : "pointer", padding: 0,
+        }}
+      >
+        {geoLoading ? (
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ animation: "spin 1s linear infinite" }}>
+            <circle cx="9" cy="9" r="7" stroke="#9ca3af" strokeWidth="2" strokeDasharray="22 12" />
+          </svg>
+        ) : (
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="6.5" stroke="#374151" strokeWidth="1.8" />
+            <circle cx="9" cy="9" r="2" fill="#111827" />
+            <line x1="9" y1="1" x2="9" y2="3.5" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="9" y1="14.5" x2="9" y2="17" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="1" y1="9" x2="3.5" y2="9" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+            <line x1="14.5" y1="9" x2="17" y2="9" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 
