@@ -80,6 +80,7 @@ export default function Home() {
   const [showGate, setShowGate] = useState(false);
   const [gateEmail, setGateEmail] = useState("");
   const [gateSubmitting, setGateSubmitting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Clear polygon highlight and deselect
   const dismiss = () => {
@@ -331,7 +332,10 @@ export default function Home() {
         onChange={(e) => { setSearchQuery(e.target.value); setShowDropdown(true); }}
         onFocus={() => setShowDropdown(true)}
         onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-        style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "none", boxShadow: "0 2px 10px rgba(0,0,0,0.18)", fontSize: 13, outline: "none", boxSizing: "border-box" }}
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
+        style={{ width: "100%", padding: "9px 14px", borderRadius: 8, border: "1.5px solid rgba(0,0,0,0.15)", boxShadow: "0 2px 12px rgba(0,0,0,0.22)", fontSize: 13, outline: "none", boxSizing: "border-box", background: "white" }}
       />
       {showDropdown && searchResults.length > 0 && (
         <div style={{ background: "white", borderRadius: 8, marginTop: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.12)", overflow: "hidden" }}>
@@ -400,7 +404,13 @@ export default function Home() {
               </div>
             ) : (
               <div>
-                <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", marginBottom: 12, background: "none", border: "none", cursor: "pointer" }}>← Back</button>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", background: "none", border: "none", cursor: "pointer" }}>← Back</button>
+                  <button
+                    onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                    style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
+                  >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
+                </div>
                 <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
                 <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(selected.overall_score), marginBottom: 16 }}>
                   {selected.overall_score}<span style={{ fontSize: 14, color: "#9ca3af" }}>/10</span>
@@ -443,7 +453,13 @@ export default function Home() {
               color: "#111827",
             }}>
               <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
-              <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", marginBottom: 8, background: "none", border: "none", cursor: "pointer", padding: 0 }}>← Back</button>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <button onClick={dismiss} style={{ fontSize: 12, color: "#6b7280", background: "none", border: "none", cursor: "pointer", padding: 0 }}>← Back</button>
+                <button
+                  onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                  style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
+                >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
+              </div>
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
                 <h2 style={{ fontSize: 20, fontWeight: 700 }}>{selected!.name}</h2>
                 <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(selected!.overall_score) }}>
