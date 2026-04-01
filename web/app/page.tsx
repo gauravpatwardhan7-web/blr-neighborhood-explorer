@@ -73,9 +73,9 @@ const FILTER_OPTIONS: { value: ScoreFilter; label: string; color: string; bg: st
   { value: "low",   label: "Low",   color: "#7f1d1d", bg: "#fef2f2", activeBg: "#f87171" },
 ];
 
-function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: ScoreFilter) => void }) {
+function FilterChips({ value, onChange, vertical }: { value: ScoreFilter; onChange: (v: ScoreFilter) => void; vertical?: boolean }) {
   return (
-    <div style={{ display: "flex", gap: 6 }}>
+    <div style={{ display: "flex", flexDirection: vertical ? "column" : "row", gap: 6 }}>
       {FILTER_OPTIONS.map((opt) => {
         const active = value === opt.value;
         return (
@@ -675,9 +675,9 @@ export default function Home() {
         /* ── Mobile layout: full-screen map + bottom sheet ── */
         <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif", paddingTop: "max(0px, env(safe-area-inset-top, 0px))" }}>
           {searchBar}
-          {/* Filter chips row — sits just below search bar */}
-          <div style={{ position: "fixed", top: 68, left: 16, right: 16, zIndex: 10, display: "flex", gap: 6, overflowX: "auto", paddingBottom: 2 }}>
-            <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+          {/* Filter chips — vertical stack on right side */}
+          <div style={{ position: "fixed", top: 16, right: 16, zIndex: 10, display: "flex", flexDirection: "column", gap: 6, paddingBottom: 2, pointerEvents: "auto" }}>
+            <FilterChips value={scoreFilter} onChange={setScoreFilter} vertical={true} />
           </div>
           {/* Map — fixed to viewport so it is never inside overflow:hidden, preventing iOS WebGL blank */}
           <div ref={mapRef} style={{ position: "fixed", inset: 0, top: "max(0px, env(safe-area-inset-top, 0px))", zIndex: 0, background: "#e8e0d5" }} />
