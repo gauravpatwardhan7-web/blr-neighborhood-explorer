@@ -29,9 +29,9 @@ with open("data/raw/amenities.json") as f:
     amenity_data = {d["name"]: d for d in json.load(f)}
 
 WEIGHTS = {
-    "air_quality":   0.25,
-    "amenities":     0.40,
-    "metro":         0.20,
+    "air_quality":   0.15,  # reduced — amenities/metro matter more for livability
+    "amenities":     0.45,
+    "metro":         0.25,
     "restaurants":   0.15,
 }
 
@@ -40,6 +40,17 @@ def normalise(value, min_val, max_val, invert=False):
         return 5.0
     score = (value - min_val) / (max_val - min_val) * 10
     return round(10 - score if invert else score, 2)
+
+def aqi_to_score(aqi):
+    """Absolute US AQI → 0-10. Non-hazardous levels (<=150) always score >= 5.
+    AQI 0-100 (Good/Moderate) stays >= 7 as long as its below hazardous."""
+    if not aqi:          return 5.0   # missing data → neutral
+    if aqi <= 50:        return 10.0  # Good
+    if aqi <= 100:       return round(10.0 - (aqi - 50)  / 50  * 3, 1)  # 10→7
+    if aqi <= 150:       return round(7.0  - (aqi - 100) / 50  * 2, 1)  # 7→5
+    if aqi <= 200:       return round(5.0  - (aqi - 150) / 50  * 2, 1)  # 5→3  Unhealthy
+    if aqi <= 300:       return round(3.0  - (aqi - 200) / 100 * 2, 1)  # 3→1  Very Unhealthy
+    return 0.0                                                            # Hazardous
 
 all_names = [f["properties"]["name"] for f in localities]
 
@@ -62,7 +73,7 @@ for i, feature in enumerate(localities):
     w    = weather_data.get(name, {})
     a    = amenity_data.get(name, {})
 
-    air_score   = normalise(aqi_values[i],  min(aqi_values),  max(aqi_values),  invert=True)
+    air_score   = aqi_to_score(aqi_values[i])
     amen_score  = normalise(amen_values[i], min(amen_values),  max(amen_values))
     metro_score = normalise(metro_values[i],min(metro_values), max(metro_values))
     rest_score  = normalise(rest_values[i], min(rest_values),  max(rest_values))
