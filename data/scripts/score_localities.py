@@ -146,7 +146,7 @@ small_features = [
     {
         "type": "Feature",
         "properties": {"name": s["name"], "overall_score": s["overall_score"]},
-        "geometry": circle_polygon(s["lat"], s["lon"], radius_m=500),
+        "geometry": circle_polygon(s["lat"], s["lon"], radius_m=800),
     }
     for s in scored
 ]
