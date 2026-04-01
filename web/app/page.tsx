@@ -11,9 +11,9 @@ type Locality = {
 };
 
 function scoreColor(score: number) {
-  if (score >= 6) return "#22c55e";
-  if (score >= 4) return "#f59e0b";
-  return "#ef4444";
+  if (score >= 6) return "#4ade80";  // soft green
+  if (score >= 4) return "#fbbf24";  // soft amber
+  return "#f87171";                   // soft red
 }
 
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
@@ -53,13 +53,13 @@ function Legend() {
   return (
     <div style={{ fontSize: 12 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#22c55e", display: "inline-block" }} /> Score 6–10 (Great)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#4ade80", display: "inline-block" }} /> Score 6–10 (Great)
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f59e0b", display: "inline-block" }} /> Score 4–6 (Good)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#fbbf24", display: "inline-block" }} /> Score 4–6 (Good)
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ef4444", display: "inline-block" }} /> Score 0–4 (Low)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f87171", display: "inline-block" }} /> Score 0–4 (Low)
       </div>
     </div>
   );
@@ -98,8 +98,8 @@ export default function Home() {
         type: "fill",
         source: "localities",
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#ef4444", 4, "#f59e0b", 6, "#22c55e"],
-          "fill-opacity": 0.25,
+          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "fill-opacity": 0.12,
         },
       });
 
@@ -108,8 +108,8 @@ export default function Home() {
         type: "line",
         source: "localities",
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#ef4444", 4, "#f59e0b", 6, "#22c55e"],
-          "line-width": 2,
+          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "line-width": 1.5,
         },
       });
 
@@ -137,7 +137,7 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:32px;height:32px;border-radius:50%;background:${color};opacity:0.8;border:2px solid white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:white;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.25)`;
+        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
         el.onclick = () => setSelected({ name, overall_score, factors, raw });
 
