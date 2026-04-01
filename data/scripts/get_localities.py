@@ -84,6 +84,32 @@ LOCALITIES = [
     {"name": "Raghuvanahalli",    "lat": 12.8790, "lon": 77.5485},
     {"name": "Singasandra",       "lat": 12.8938, "lon": 77.6299},
     {"name": "Chandapura",        "lat": 12.8278, "lon": 77.6531},
+    # --- 10 Central Bangalore localities ---
+    {"name": "MG Road",           "lat": 12.9753, "lon": 77.6076},
+    {"name": "Richmond Town",     "lat": 12.9600, "lon": 77.5990},
+    {"name": "Langford Town",     "lat": 12.9545, "lon": 77.5968},
+    {"name": "Ulsoor",            "lat": 12.9839, "lon": 77.6280},
+    {"name": "Vasanth Nagar",     "lat": 12.9972, "lon": 77.5932},
+    {"name": "Victoria Layout",   "lat": 12.9677, "lon": 77.6176},
+    {"name": "CV Raman Nagar",    "lat": 12.9913, "lon": 77.6595},
+    {"name": "Horamavu",          "lat": 13.0055, "lon": 77.6648},
+    {"name": "HAL",               "lat": 12.9553, "lon": 77.6698},
+    {"name": "Kodigehalli",       "lat": 13.0491, "lon": 77.6131},
+    # --- 14 East Bangalore localities ---
+    {"name": "Kaggadasapura",     "lat": 12.9974, "lon": 77.6735},
+    {"name": "Hoodi",             "lat": 13.0002, "lon": 77.7224},
+    {"name": "Kundalahalli",      "lat": 12.9718, "lon": 77.7157},
+    {"name": "Kadugodi",          "lat": 13.0016, "lon": 77.7580},
+    {"name": "Panathur",          "lat": 12.9319, "lon": 77.6865},
+    {"name": "Munnekolala",       "lat": 12.9484, "lon": 77.7100},
+    {"name": "Nallurhalli",       "lat": 12.9540, "lon": 77.7310},
+    {"name": "Vibhutipura",       "lat": 12.9655, "lon": 77.6640},
+    {"name": "Carmelaram",        "lat": 12.8904, "lon": 77.7098},
+    {"name": "Dommasandra",       "lat": 12.8616, "lon": 77.7433},
+    {"name": "Devarabeesanahalli","lat": 12.9705, "lon": 77.7070},
+    {"name": "Garudacharpalya",   "lat": 12.9848, "lon": 77.6836},
+    {"name": "Hagadur",           "lat": 12.9757, "lon": 77.7600},
+    {"name": "Thubarahalli",      "lat": 12.9626, "lon": 77.7198},
 ]
 
 def make_box(lat, lon, size=0.018):
