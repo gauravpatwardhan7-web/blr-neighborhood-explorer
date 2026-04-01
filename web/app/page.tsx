@@ -320,13 +320,47 @@ export default function Home() {
     });
     mapInstanceRef.current = map;
 
-    // Fix black-map on iOS Safari when page is refreshed or restored from cache
-    const resizeMap = () => mapInstanceRef.current?.resize();
+    // ── iOS black-map fix ──────────────────────────────────────────────────
+    // WebGL canvases go blank on iOS when: the page is restored from bfcache,
+    // the screen wakes, the tab becomes visible again, or the viewport resizes.
+    // We need map.resize() to run in all those cases.
+    const resizeMap = () => { mapInstanceRef.current?.resize(); };
+
+    // 1. Immediate + staggered resize on first paint
     requestAnimationFrame(resizeMap);
-    window.addEventListener("pageshow", resizeMap);
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") resizeMap();
-    });
+    setTimeout(resizeMap, 100);
+    setTimeout(resizeMap, 500);
+
+    // 2. bfcache restore (iOS back/forward swipe, pull-to-refresh)
+    const onPageShow = (e: PageTransitionEvent) => {
+      resizeMap();
+      if (e.persisted) {
+        // Page came from bfcache — force a few more resizes
+        setTimeout(resizeMap, 50);
+        setTimeout(resizeMap, 300);
+      }
+    };
+    window.addEventListener("pageshow", onPageShow);
+
+    // 3. Tab becomes visible after switching apps or locking screen
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") {
+        resizeMap();
+        setTimeout(resizeMap, 200);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // 4. Device rotation
+    const onOrient = () => setTimeout(resizeMap, 300);
+    window.addEventListener("orientationchange", onOrient);
+
+    // 5. ResizeObserver on the container — catches any CSS-driven size change
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && mapRef.current) {
+      ro = new ResizeObserver(() => resizeMap());
+      ro.observe(mapRef.current);
+    }
 
     map.on("load", async () => {
       const [res, smallRes] = await Promise.all([
@@ -485,7 +519,10 @@ export default function Home() {
     });
 
     return () => {
-      window.removeEventListener("pageshow", () => mapInstanceRef.current?.resize());
+      ro?.disconnect();
+      window.removeEventListener("pageshow", onPageShow);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("orientationchange", onOrient);
       map.remove();
     };
   }, []);
@@ -638,7 +675,7 @@ export default function Home() {
           <div style={{ position: "fixed", top: 68, left: 16, right: 16, zIndex: 10, display: "flex", gap: 6, overflowX: "auto", paddingBottom: 2 }}>
             <FilterChips value={scoreFilter} onChange={setScoreFilter} />
           </div>
-          <div ref={mapRef} style={{ position: "absolute", inset: 0 }} />
+          <div ref={mapRef} style={{ position: "absolute", inset: 0, background: "#e8e0d5" }} />
 
           {!sheetOpen && (
             <div style={{
