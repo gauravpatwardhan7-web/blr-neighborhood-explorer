@@ -676,7 +676,7 @@ export default function Home() {
         <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif", paddingTop: "max(0px, env(safe-area-inset-top, 0px))" }}>
           {searchBar}
           {/* Filter chips — vertical stack on right side */}
-          <div style={{ position: "fixed", top: 16, right: 16, zIndex: 10, display: "flex", flexDirection: "column", gap: 6, paddingBottom: 2, pointerEvents: "auto" }}>
+          <div style={{ position: "fixed", top: 80, right: 16, zIndex: 10, display: "flex", flexDirection: "column", gap: 6, paddingBottom: 2, pointerEvents: "auto" }}>
             <FilterChips value={scoreFilter} onChange={setScoreFilter} vertical={true} />
           </div>
           {/* Map — fixed to viewport so it is never inside overflow:hidden, preventing iOS WebGL blank */}
