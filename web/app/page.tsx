@@ -199,6 +199,7 @@ export default function Home() {
     map.setFeatureState({ source: "localities", id: loc.name }, { hover: true });
     map.flyTo({ center: [loc.lon, loc.lat], zoom: 13, duration: 1000 });
     setSelected(loc);
+    setSheetExpanded(true);
     setSearchQuery("");
     setShowDropdown(false);
   };
@@ -362,6 +363,7 @@ export default function Home() {
           highlightedRef.current = name;
           map.setFeatureState({ source: "localities", id: name }, { hover: true });
           setSelected({ name, overall_score, factors, raw });
+          setSheetExpanded(true);
         };
 
         new maplibregl.Marker({ element: el })
@@ -390,6 +392,7 @@ export default function Home() {
           map.setFeatureState({ source: "localities", id: match.name }, { hover: true });
           map.flyTo({ center: [match.lon, match.lat], zoom: 13 });
           setSelected(match);
+          setSheetExpanded(true);
         }
       }
     });
@@ -531,7 +534,9 @@ export default function Home() {
                   <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
                   <span style={{ fontSize: 14, fontWeight: 700 }}>Bengaluru Neighborhoods</span>
                 </div>
-                <span style={{ fontSize: 16, color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", lineHeight: 1 }}>⌃</span>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0, display: "block" }}>
+                  <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
               {/* Expanded content */}
               <div style={{ padding: "4px 20px 20px", overflowY: "auto", maxHeight: "calc(55dvh - 52px)" }}>
@@ -548,27 +553,47 @@ export default function Home() {
               position: "absolute", bottom: 0, left: 0, right: 0,
               background: "white", borderRadius: "16px 16px 0 0",
               boxShadow: "0 -2px 12px rgba(0,0,0,0.15)",
-              maxHeight: "60dvh", overflowY: "auto",
-              padding: "12px 20px 32px",
-              transition: "transform 0.3s ease",
+              maxHeight: sheetExpanded ? "60dvh" : "52px",
+              overflow: "hidden",
+              transition: "max-height 0.3s ease",
               color: "#111827",
             }}>
-              <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <button onClick={dismiss} style={{ fontSize: 13, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 500 }}>← Back</button>
-                <button
-                  onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                  style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
-                >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
-              </div>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700 }}>{selected!.name}</h2>
-                <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(recomputeScore(selected!.factors, weights)) }}>
-                  {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 12, color: "#6b7280" }}>/10</span>
+              {/* Header — tap to toggle, always visible */}
+              <div
+                onClick={() => setSheetExpanded((v) => !v)}
+                style={{ padding: "12px 20px 8px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
+                  <span style={{ fontSize: 14, fontWeight: 700 }}>{selected!.name}</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: scoreColor(recomputeScore(selected!.factors, weights)) }}>
+                    {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 11, fontWeight: 400, color: "#6b7280" }}>/10</span>
+                  </span>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0, display: "block" }}>
+                    <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </div>
               </div>
-              <FactorBars factors={selected!.factors} />
-              <RawData raw={selected!.raw} />
+              {/* Scrollable body */}
+              <div style={{ padding: "4px 20px 32px", overflowY: "auto", maxHeight: "calc(60dvh - 52px)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <button onClick={(e) => { e.stopPropagation(); dismiss(); }} style={{ fontSize: 13, color: "#374151", background: "none", border: "1px solid #d1d5db", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 500 }}>← Back</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                    style={{ fontSize: 11, color: copied ? "#4ade80" : "#6b7280", background: "none", border: "1px solid #e5e7eb", borderRadius: 6, padding: "3px 8px", cursor: "pointer" }}
+                  >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
+                </div>
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
+                  <h2 style={{ fontSize: 20, fontWeight: 700 }}>{selected!.name}</h2>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: scoreColor(recomputeScore(selected!.factors, weights)) }}>
+                    {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 12, color: "#6b7280" }}>/10</span>
+                  </div>
+                </div>
+                <FactorBars factors={selected!.factors} />
+                <RawData raw={selected!.raw} />
+              </div>
             </div>
           )}
         </div>
