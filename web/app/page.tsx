@@ -66,13 +66,33 @@ export default function Home() {
         },
       });
 
+      // --- name labels below each score bubble ---
+      map.addLayer({
+        id: "localities-labels",
+        type: "symbol",
+        source: "localities",
+        layout: {
+          "text-field": ["get", "name"],
+          "text-size": 11,
+          "text-font": ["Noto Sans Regular"],
+          "text-anchor": "top",
+          "text-offset": [0, 1.8],
+          "text-max-width": 8,
+        },
+        paint: {
+          "text-color": "#1f2937",
+          "text-halo-color": "#ffffff",
+          "text-halo-width": 1.5,
+        },
+      });
+
       // --- score markers at centroid ---
       data.features.forEach((f: any) => {
         const { name, overall_score, factors, raw } = f.properties;
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:44px;height:44px;border-radius:50%;background:${color};border:3px solid white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.3)`;
+        el.style.cssText = `width:32px;height:32px;border-radius:50%;background:${color};opacity:0.8;border:2px solid white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:white;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.25)`;
         el.innerText = String(overall_score);
         el.onclick = () => setSelected({ name, overall_score, factors, raw });
 

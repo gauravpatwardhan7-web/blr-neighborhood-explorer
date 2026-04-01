@@ -1,5 +1,23 @@
 import json
+import math
 from pathlib import Path
+
+RADIUS_M = 1500  # metres — matches amenity fetch radius
+
+def circle_polygon(lat, lon, radius_m=RADIUS_M, num_points=64):
+    """Return a GeoJSON Polygon approximating a circle."""
+    lat_r = math.radians(lat)
+    d_lat = radius_m / 111_000
+    d_lon = radius_m / (111_000 * math.cos(lat_r))
+    ring = [
+        [
+            round(lon + d_lon * math.cos(2 * math.pi * i / num_points), 6),
+            round(lat + d_lat * math.sin(2 * math.pi * i / num_points), 6),
+        ]
+        for i in range(num_points)
+    ]
+    ring.append(ring[0])  # close the ring
+    return {"type": "Polygon", "coordinates": [ring]}
 
 with open("data/raw/localities.geojson") as f:
     localities = json.load(f)["features"]
@@ -88,21 +106,12 @@ for i, s in enumerate(scored):
     f = s["factors"]
     print(f"{i+1:<5} {s['name']:<22} {s['overall_score']:<8} {f['air_quality']:<8} {f['amenities']:<12} {f['metro_access']:<8} {f['restaurants']}")
 
-# Build a lookup from name -> original polygon geometry
-polygon_geom = {
-    f["properties"]["name"]: f["geometry"]
-    for f in localities
-}
-
 geojson_features = []
 for s in scored:
     geojson_features.append({
         "type": "Feature",
         "properties": {**s},
-        "geometry": polygon_geom.get(s["name"], {
-            "type": "Point",
-            "coordinates": [s["lon"], s["lat"]]
-        })
+        "geometry": circle_polygon(s["lat"], s["lon"])
     })
 
 output = {"type": "FeatureCollection", "features": geojson_features}
