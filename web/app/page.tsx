@@ -33,9 +33,42 @@ export default function Home() {
       const res = await fetch("/localities_scored.geojson");
       const data = await res.json();
 
+      // --- polygon fill layer ---
+      map.addSource("localities", { type: "geojson", data });
+
+      map.addLayer({
+        id: "localities-fill",
+        type: "fill",
+        source: "localities",
+        paint: {
+          "fill-color": [
+            "step", ["get", "overall_score"],
+            "#ef4444",   // < 4  red
+            4, "#f59e0b", // 4–6 amber
+            6, "#22c55e", // 6+  green
+          ],
+          "fill-opacity": 0.25,
+        },
+      });
+
+      map.addLayer({
+        id: "localities-outline",
+        type: "line",
+        source: "localities",
+        paint: {
+          "line-color": [
+            "step", ["get", "overall_score"],
+            "#ef4444",
+            4, "#f59e0b",
+            6, "#22c55e",
+          ],
+          "line-width": 2,
+        },
+      });
+
+      // --- score markers at centroid ---
       data.features.forEach((f: any) => {
         const { name, overall_score, factors, raw } = f.properties;
-        const [lng, lat] = f.geometry.coordinates;
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
@@ -43,7 +76,9 @@ export default function Home() {
         el.innerText = String(overall_score);
         el.onclick = () => setSelected({ name, overall_score, factors, raw });
 
-        new maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
+        new maplibregl.Marker({ element: el })
+          .setLngLat([f.properties.lon, f.properties.lat])
+          .addTo(map);
       });
     });
 

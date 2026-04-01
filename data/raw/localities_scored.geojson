@@ -4,19 +4,274 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Indiranagar",
+        "lat": 12.9784,
+        "lon": 77.6408,
+        "overall_score": 7.5,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 10.0,
+          "metro_access": 4.0,
+          "restaurants": 10.0
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.3,
+          "hospitals": 25,
+          "schools": 21,
+          "supermarkets": 16,
+          "restaurants": 223,
+          "metro_stations": 2
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6228,
+              12.9604
+            ],
+            [
+              77.6588,
+              12.9604
+            ],
+            [
+              77.6588,
+              12.996400000000001
+            ],
+            [
+              77.6228,
+              12.996400000000001
+            ],
+            [
+              77.6228,
+              12.9604
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "BTM Layout",
+        "lat": 12.9166,
+        "lon": 77.6101,
+        "overall_score": 7.4,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 9.24,
+          "metro_access": 10.0,
+          "restaurants": 2.77
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.4,
+          "hospitals": 25,
+          "schools": 41,
+          "supermarkets": 14,
+          "restaurants": 64,
+          "metro_stations": 5
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5921,
+              12.8986
+            ],
+            [
+              77.6281,
+              12.8986
+            ],
+            [
+              77.6281,
+              12.934600000000001
+            ],
+            [
+              77.5921,
+              12.934600000000001
+            ],
+            [
+              77.5921,
+              12.8986
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rajajinagar",
+        "lat": 12.9922,
+        "lon": 77.5555,
+        "overall_score": 6.6,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 8.24,
+          "metro_access": 8.0,
+          "restaurants": 2.73
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.4,
+          "hospitals": 43,
+          "schools": 10,
+          "supermarkets": 11,
+          "restaurants": 63,
+          "metro_stations": 4
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5375,
+              12.9742
+            ],
+            [
+              77.5735,
+              12.9742
+            ],
+            [
+              77.5735,
+              13.010200000000001
+            ],
+            [
+              77.5375,
+              13.010200000000001
+            ],
+            [
+              77.5375,
+              12.9742
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vijayanagar",
+        "lat": 12.9718,
+        "lon": 77.5348,
+        "overall_score": 6.4,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 9.24,
+          "metro_access": 6.0,
+          "restaurants": 1.82
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.6,
+          "hospitals": 60,
+          "schools": 12,
+          "supermarkets": 12,
+          "restaurants": 43,
+          "metro_stations": 3
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5168,
+              12.9538
+            ],
+            [
+              77.5528,
+              12.9538
+            ],
+            [
+              77.5528,
+              12.9898
+            ],
+            [
+              77.5168,
+              12.9898
+            ],
+            [
+              77.5168,
+              12.9538
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Malleshwaram",
+        "lat": 13.0035,
+        "lon": 77.571,
+        "overall_score": 6.2,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 7.98,
+          "metro_access": 6.0,
+          "restaurants": 3.73
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.2,
+          "hospitals": 29,
+          "schools": 11,
+          "supermarkets": 19,
+          "restaurants": 85,
+          "metro_stations": 3
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.553,
+              12.9855
+            ],
+            [
+              77.589,
+              12.9855
+            ],
+            [
+              77.589,
+              13.021500000000001
+            ],
+            [
+              77.553,
+              13.021500000000001
+            ],
+            [
+              77.553,
+              12.9855
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Jayanagar",
         "lat": 12.9308,
         "lon": 77.5838,
-        "overall_score": 9.0,
+        "overall_score": 6.1,
         "factors": {
-          "air_quality": 10.0,
-          "amenities": 10.0,
-          "metro_access": 7.5,
-          "restaurants": 6.58
+          "air_quality": 5.0,
+          "amenities": 7.82,
+          "metro_access": 6.0,
+          "restaurants": 3.45
         },
         "raw": {
-          "aqi": 131,
-          "temperature_c": 28.5,
+          "aqi": 82,
+          "temperature_c": 27.2,
           "hospitals": 35,
           "schools": 26,
           "supermarkets": 13,
@@ -25,227 +280,30 @@
         }
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          77.5838,
-          12.9308
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Basavanagudi",
-        "lat": 12.9416,
-        "lon": 77.5752,
-        "overall_score": 8.8,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 7.9,
-          "metro_access": 10.0,
-          "restaurants": 7.67
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.8,
-          "hospitals": 36,
-          "schools": 15,
-          "supermarkets": 9,
-          "restaurants": 92,
-          "metro_stations": 4
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5752,
-          12.9416
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Cunningham Road",
-        "lat": 12.9833,
-        "lon": 77.5933,
-        "overall_score": 7.3,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 3.3,
-          "metro_access": 10.0,
-          "restaurants": 10.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.8,
-          "hospitals": 7,
-          "schools": 3,
-          "supermarkets": 6,
-          "restaurants": 120,
-          "metro_stations": 4
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5933,
-          12.9833
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Frazer Town",
-        "lat": 12.9833,
-        "lon": 77.6167,
-        "overall_score": 6.8,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 4.3,
-          "metro_access": 7.5,
-          "restaurants": 7.33
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 29.0,
-          "hospitals": 10,
-          "schools": 9,
-          "supermarkets": 6,
-          "restaurants": 88,
-          "metro_stations": 3
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.6167,
-          12.9833
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Bellandur",
-        "lat": 12.9257,
-        "lon": 77.6762,
-        "overall_score": 5.1,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 4.2,
-          "metro_access": 0.0,
-          "restaurants": 6.42
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.8,
-          "hospitals": 8,
-          "schools": 3,
-          "supermarkets": 14,
-          "restaurants": 77,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.6762,
-          12.9257
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Whitefield",
-        "lat": 12.9698,
-        "lon": 77.75,
-        "overall_score": 4.0,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 2.8,
-          "metro_access": 0.0,
-          "restaurants": 2.58
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.6,
-          "hospitals": 2,
-          "schools": 6,
-          "supermarkets": 5,
-          "restaurants": 31,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.75,
-          12.9698
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hebbal",
-        "lat": 13.035,
-        "lon": 77.597,
-        "overall_score": 2.7,
-        "factors": {
-          "air_quality": 0.0,
-          "amenities": 4.9,
-          "metro_access": 2.5,
-          "restaurants": 1.5
-        },
-        "raw": {
-          "aqi": 135,
-          "temperature_c": 29.0,
-          "hospitals": 12,
-          "schools": 6,
-          "supermarkets": 10,
-          "restaurants": 18,
-          "metro_stations": 1
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.597,
-          13.035
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Indiranagar",
-        "lat": 12.9784,
-        "lon": 77.6408,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 29.0,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.6408,
-          12.9784
+          [
+            [
+              77.5658,
+              12.912799999999999
+            ],
+            [
+              77.6018,
+              12.912799999999999
+            ],
+            [
+              77.6018,
+              12.9488
+            ],
+            [
+              77.5658,
+              12.9488
+            ],
+            [
+              77.5658,
+              12.912799999999999
+            ]
+          ]
         ]
       }
     },
@@ -255,28 +313,762 @@
         "name": "Koramangala",
         "lat": 12.9352,
         "lon": 77.6245,
-        "overall_score": 2.5,
+        "overall_score": 6.0,
         "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
+          "air_quality": 5.0,
+          "amenities": 8.4,
           "metro_access": 0.0,
-          "restaurants": 0.0
+          "restaurants": 9.0
         },
         "raw": {
-          "aqi": 131,
-          "temperature_c": 28.7,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
+          "aqi": 82,
+          "temperature_c": 27.5,
+          "hospitals": 25,
+          "schools": 25,
+          "supermarkets": 15,
+          "restaurants": 201,
           "metro_stations": 0
         }
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          77.6245,
-          12.9352
+          [
+            [
+              77.6065,
+              12.9172
+            ],
+            [
+              77.6425,
+              12.9172
+            ],
+            [
+              77.6425,
+              12.9532
+            ],
+            [
+              77.6065,
+              12.9532
+            ],
+            [
+              77.6065,
+              12.9172
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Basavanagudi",
+        "lat": 12.9416,
+        "lon": 77.5752,
+        "overall_score": 5.9,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 6.05,
+          "metro_access": 8.0,
+          "restaurants": 4.05
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.1,
+          "hospitals": 36,
+          "schools": 15,
+          "supermarkets": 9,
+          "restaurants": 92,
+          "metro_stations": 4
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5572,
+              12.923599999999999
+            ],
+            [
+              77.5932,
+              12.923599999999999
+            ],
+            [
+              77.5932,
+              12.9596
+            ],
+            [
+              77.5572,
+              12.9596
+            ],
+            [
+              77.5572,
+              12.923599999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "JP Nagar",
+        "lat": 12.9063,
+        "lon": 77.5857,
+        "overall_score": 5.2,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 6.39,
+          "metro_access": 4.0,
+          "restaurants": 4.05
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.4,
+          "hospitals": 16,
+          "schools": 21,
+          "supermarkets": 19,
+          "restaurants": 92,
+          "metro_stations": 2
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5677,
+              12.8883
+            ],
+            [
+              77.6037,
+              12.8883
+            ],
+            [
+              77.6037,
+              12.9243
+            ],
+            [
+              77.5677,
+              12.9243
+            ],
+            [
+              77.5677,
+              12.8883
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cunningham Road",
+        "lat": 12.9833,
+        "lon": 77.5933,
+        "overall_score": 4.5,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 2.18,
+          "metro_access": 8.0,
+          "restaurants": 5.32
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.1,
+          "hospitals": 7,
+          "schools": 3,
+          "supermarkets": 6,
+          "restaurants": 120,
+          "metro_stations": 4
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5753,
+              12.9653
+            ],
+            [
+              77.6113,
+              12.9653
+            ],
+            [
+              77.6113,
+              13.0013
+            ],
+            [
+              77.5753,
+              13.0013
+            ],
+            [
+              77.5753,
+              12.9653
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "HSR Layout",
+        "lat": 12.9116,
+        "lon": 77.6473,
+        "overall_score": 4.3,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 5.8,
+          "metro_access": 0.0,
+          "restaurants": 4.77
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.4,
+          "hospitals": 12,
+          "schools": 14,
+          "supermarkets": 19,
+          "restaurants": 108,
+          "metro_stations": 0
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6293,
+              12.8936
+            ],
+            [
+              77.6653,
+              12.8936
+            ],
+            [
+              77.6653,
+              12.9296
+            ],
+            [
+              77.6293,
+              12.9296
+            ],
+            [
+              77.6293,
+              12.8936
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Frazer Town",
+        "lat": 12.9833,
+        "lon": 77.6167,
+        "overall_score": 4.2,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 3.03,
+          "metro_access": 6.0,
+          "restaurants": 3.86
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.3,
+          "hospitals": 10,
+          "schools": 9,
+          "supermarkets": 6,
+          "restaurants": 88,
+          "metro_stations": 3
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5987,
+              12.9653
+            ],
+            [
+              77.6347,
+              12.9653
+            ],
+            [
+              77.6347,
+              13.0013
+            ],
+            [
+              77.5987,
+              13.0013
+            ],
+            [
+              77.5987,
+              12.9653
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cox Town",
+        "lat": 12.993,
+        "lon": 77.619,
+        "overall_score": 4.0,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 5.04,
+          "metro_access": 2.0,
+          "restaurants": 2.23
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.3,
+          "hospitals": 13,
+          "schools": 9,
+          "supermarkets": 16,
+          "restaurants": 52,
+          "metro_stations": 1
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.601,
+              12.975
+            ],
+            [
+              77.637,
+              12.975
+            ],
+            [
+              77.637,
+              13.011000000000001
+            ],
+            [
+              77.601,
+              13.011000000000001
+            ],
+            [
+              77.601,
+              12.975
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sadashivanagar",
+        "lat": 13.005,
+        "lon": 77.58,
+        "overall_score": 3.9,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 5.55,
+          "metro_access": 0.0,
+          "restaurants": 3.05
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.1,
+          "hospitals": 21,
+          "schools": 7,
+          "supermarkets": 13,
+          "restaurants": 70,
+          "metro_stations": 0
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.562,
+              12.987
+            ],
+            [
+              77.598,
+              12.987
+            ],
+            [
+              77.598,
+              13.023000000000001
+            ],
+            [
+              77.562,
+              13.023000000000001
+            ],
+            [
+              77.562,
+              12.987
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Whitefield",
+        "lat": 12.9742,
+        "lon": 77.7424,
+        "overall_score": 3.7,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 4.37,
+          "metro_access": 2.0,
+          "restaurants": 1.91
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 26.9,
+          "hospitals": 6,
+          "schools": 20,
+          "supermarkets": 11,
+          "restaurants": 45,
+          "metro_stations": 1
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.7244,
+              12.9562
+            ],
+            [
+              77.7604,
+              12.9562
+            ],
+            [
+              77.7604,
+              12.9922
+            ],
+            [
+              77.7244,
+              12.9922
+            ],
+            [
+              77.7244,
+              12.9562
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Marathahalli",
+        "lat": 12.9591,
+        "lon": 77.6974,
+        "overall_score": 3.6,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 4.54,
+          "metro_access": 0.0,
+          "restaurants": 3.68
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.0,
+          "hospitals": 5,
+          "schools": 3,
+          "supermarkets": 19,
+          "restaurants": 84,
+          "metro_stations": 0
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6794,
+              12.941099999999999
+            ],
+            [
+              77.7154,
+              12.941099999999999
+            ],
+            [
+              77.7154,
+              12.9771
+            ],
+            [
+              77.6794,
+              12.9771
+            ],
+            [
+              77.6794,
+              12.941099999999999
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bannerghatta Road",
+        "lat": 12.8933,
+        "lon": 77.5975,
+        "overall_score": 3.6,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 5.21,
+          "metro_access": 0.0,
+          "restaurants": 1.95
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.4,
+          "hospitals": 9,
+          "schools": 24,
+          "supermarkets": 19,
+          "restaurants": 46,
+          "metro_stations": 0
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.5795,
+              12.8753
+            ],
+            [
+              77.6155,
+              12.8753
+            ],
+            [
+              77.6155,
+              12.9113
+            ],
+            [
+              77.5795,
+              12.9113
+            ],
+            [
+              77.5795,
+              12.8753
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Electronic City",
+        "lat": 12.8468,
+        "lon": 77.668,
+        "overall_score": 3.4,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 1.85,
+          "metro_access": 6.0,
+          "restaurants": 1.73
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.4,
+          "hospitals": 13,
+          "schools": 8,
+          "supermarkets": 4,
+          "restaurants": 41,
+          "metro_stations": 3
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.65,
+              12.8288
+            ],
+            [
+              77.686,
+              12.8288
+            ],
+            [
+              77.686,
+              12.8648
+            ],
+            [
+              77.65,
+              12.8648
+            ],
+            [
+              77.65,
+              12.8288
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hebbal",
+        "lat": 13.035,
+        "lon": 77.597,
+        "overall_score": 3.2,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 3.53,
+          "metro_access": 2.0,
+          "restaurants": 0.68
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.3,
+          "hospitals": 12,
+          "schools": 6,
+          "supermarkets": 10,
+          "restaurants": 18,
+          "metro_stations": 1
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.579,
+              13.017
+            ],
+            [
+              77.615,
+              13.017
+            ],
+            [
+              77.615,
+              13.053
+            ],
+            [
+              77.579,
+              13.053
+            ],
+            [
+              77.579,
+              13.017
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bellandur",
+        "lat": 12.9257,
+        "lon": 77.6762,
+        "overall_score": 2.9,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 2.94,
+          "metro_access": 0.0,
+          "restaurants": 3.36
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.5,
+          "hospitals": 8,
+          "schools": 3,
+          "supermarkets": 14,
+          "restaurants": 77,
+          "metro_stations": 0
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.6582,
+              12.9077
+            ],
+            [
+              77.6942,
+              12.9077
+            ],
+            [
+              77.6942,
+              12.943700000000002
+            ],
+            [
+              77.6582,
+              12.943700000000002
+            ],
+            [
+              77.6582,
+              12.9077
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "RT Nagar",
+        "lat": 13.02,
+        "lon": 77.596,
+        "overall_score": 2.7,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 3.19,
+          "metro_access": 0.0,
+          "restaurants": 0.91
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.2,
+          "hospitals": 14,
+          "schools": 4,
+          "supermarkets": 7,
+          "restaurants": 23,
+          "metro_stations": 0
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.578,
+              13.001999999999999
+            ],
+            [
+              77.614,
+              13.001999999999999
+            ],
+            [
+              77.614,
+              13.038
+            ],
+            [
+              77.578,
+              13.038
+            ],
+            [
+              77.578,
+              13.001999999999999
+            ]
+          ]
         ]
       }
     },
@@ -288,429 +1080,46 @@
         "lon": 77.5468,
         "overall_score": 2.5,
         "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
+          "air_quality": 5.0,
+          "amenities": 2.86,
           "metro_access": 0.0,
-          "restaurants": 0.0
+          "restaurants": 0.91
         },
         "raw": {
-          "aqi": 131,
-          "temperature_c": 28.4,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5468,
-          12.9255
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "HSR Layout",
-        "lat": 12.9116,
-        "lon": 77.6473,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.7,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.6473,
-          12.9116
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Rajajinagar",
-        "lat": 12.9922,
-        "lon": 77.5555,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.5,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5555,
-          12.9922
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "JP Nagar",
-        "lat": 12.9063,
-        "lon": 77.5857,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.6,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5857,
-          12.9063
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Marathahalli",
-        "lat": 12.9591,
-        "lon": 77.6974,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.6,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.6974,
-          12.9591
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "BTM Layout",
-        "lat": 12.9166,
-        "lon": 77.6101,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.6,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.6101,
-          12.9166
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Electronic City",
-        "lat": 12.8399,
-        "lon": 77.677,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.6,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.677,
-          12.8399
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Sarjapur",
-        "lat": 12.8604,
-        "lon": 77.786,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.0,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.786,
-          12.8604
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Bannerghatta Road",
-        "lat": 12.8933,
-        "lon": 77.5975,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.6,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5975,
-          12.8933
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Vijayanagar",
-        "lat": 12.9718,
-        "lon": 77.5348,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 28.7,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.5348,
-          12.9718
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Cox Town",
-        "lat": 12.993,
-        "lon": 77.619,
-        "overall_score": 2.5,
-        "factors": {
-          "air_quality": 10.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 131,
-          "temperature_c": 29.0,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.619,
-          12.993
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "RT Nagar",
-        "lat": 13.02,
-        "lon": 77.596,
-        "overall_score": 2.1,
-        "factors": {
-          "air_quality": 0.0,
-          "amenities": 4.5,
-          "metro_access": 0.0,
-          "restaurants": 1.92
-        },
-        "raw": {
-          "aqi": 135,
-          "temperature_c": 28.9,
-          "hospitals": 14,
-          "schools": 4,
-          "supermarkets": 7,
+          "aqi": 82,
+          "temperature_c": 27.3,
+          "hospitals": 17,
+          "schools": 7,
+          "supermarkets": 8,
           "restaurants": 23,
           "metro_stations": 0
         }
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          77.596,
-          13.02
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Dollars Colony",
-        "lat": 13.042,
-        "lon": 77.591,
-        "overall_score": 0.9,
-        "factors": {
-          "air_quality": 0.0,
-          "amenities": 0.7,
-          "metro_access": 2.5,
-          "restaurants": 0.75
-        },
-        "raw": {
-          "aqi": 135,
-          "temperature_c": 29.0,
-          "hospitals": 0,
-          "schools": 1,
-          "supermarkets": 4,
-          "restaurants": 9,
-          "metro_stations": 1
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.591,
-          13.042
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Malleshwaram",
-        "lat": 13.0035,
-        "lon": 77.571,
-        "overall_score": 0.0,
-        "factors": {
-          "air_quality": 0.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 135,
-          "temperature_c": 28.9,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
-        }
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.571,
-          13.0035
+          [
+            [
+              77.5288,
+              12.907499999999999
+            ],
+            [
+              77.5648,
+              12.907499999999999
+            ],
+            [
+              77.5648,
+              12.9435
+            ],
+            [
+              77.5288,
+              12.9435
+            ],
+            [
+              77.5288,
+              12.907499999999999
+            ]
+          ]
         ]
       }
     },
@@ -720,59 +1129,150 @@
         "name": "Yelahanka",
         "lat": 13.1005,
         "lon": 77.5963,
-        "overall_score": 0.0,
+        "overall_score": 2.5,
         "factors": {
-          "air_quality": 0.0,
-          "amenities": 0.0,
-          "metro_access": 0.0,
-          "restaurants": 0.0
+          "air_quality": 5.0,
+          "amenities": 1.85,
+          "metro_access": 2.0,
+          "restaurants": 0.86
         },
         "raw": {
-          "aqi": 135,
-          "temperature_c": 28.7,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
-          "metro_stations": 0
+          "aqi": 82,
+          "temperature_c": 28.0,
+          "hospitals": 12,
+          "schools": 1,
+          "supermarkets": 5,
+          "restaurants": 22,
+          "metro_stations": 1
         }
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          77.5963,
-          13.1005
+          [
+            [
+              77.5783,
+              13.0825
+            ],
+            [
+              77.6143,
+              13.0825
+            ],
+            [
+              77.6143,
+              13.118500000000001
+            ],
+            [
+              77.5783,
+              13.118500000000001
+            ],
+            [
+              77.5783,
+              13.0825
+            ]
+          ]
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Sadashivanagar",
-        "lat": 13.005,
-        "lon": 77.58,
-        "overall_score": 0.0,
+        "name": "Dollars Colony",
+        "lat": 13.042,
+        "lon": 77.591,
+        "overall_score": 1.7,
         "factors": {
-          "air_quality": 0.0,
+          "air_quality": 5.0,
           "amenities": 0.0,
+          "metro_access": 2.0,
+          "restaurants": 0.27
+        },
+        "raw": {
+          "aqi": 82,
+          "temperature_c": 27.3,
+          "hospitals": 0,
+          "schools": 1,
+          "supermarkets": 4,
+          "restaurants": 9,
+          "metro_stations": 1
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.573,
+              13.024
+            ],
+            [
+              77.609,
+              13.024
+            ],
+            [
+              77.609,
+              13.06
+            ],
+            [
+              77.573,
+              13.06
+            ],
+            [
+              77.573,
+              13.024
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sarjapur",
+        "lat": 12.8855,
+        "lon": 77.742,
+        "overall_score": 1.4,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 0.25,
           "metro_access": 0.0,
           "restaurants": 0.0
         },
         "raw": {
-          "aqi": 135,
-          "temperature_c": 28.8,
-          "hospitals": 0,
-          "schools": 0,
-          "supermarkets": 0,
-          "restaurants": 0,
+          "aqi": 82,
+          "temperature_c": 26.7,
+          "hospitals": 1,
+          "schools": 8,
+          "supermarkets": 1,
+          "restaurants": 3,
           "metro_stations": 0
         }
       },
       "geometry": {
-        "type": "Point",
+        "type": "Polygon",
         "coordinates": [
-          77.58,
-          13.005
+          [
+            [
+              77.724,
+              12.8675
+            ],
+            [
+              77.76,
+              12.8675
+            ],
+            [
+              77.76,
+              12.9035
+            ],
+            [
+              77.724,
+              12.9035
+            ],
+            [
+              77.724,
+              12.8675
+            ]
+          ]
         ]
       }
     }

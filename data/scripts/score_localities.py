@@ -88,15 +88,21 @@ for i, s in enumerate(scored):
     f = s["factors"]
     print(f"{i+1:<5} {s['name']:<22} {s['overall_score']:<8} {f['air_quality']:<8} {f['amenities']:<12} {f['metro_access']:<8} {f['restaurants']}")
 
+# Build a lookup from name -> original polygon geometry
+polygon_geom = {
+    f["properties"]["name"]: f["geometry"]
+    for f in localities
+}
+
 geojson_features = []
 for s in scored:
     geojson_features.append({
         "type": "Feature",
         "properties": {**s},
-        "geometry": {
+        "geometry": polygon_geom.get(s["name"], {
             "type": "Point",
             "coordinates": [s["lon"], s["lat"]]
-        }
+        })
     })
 
 output = {"type": "FeatureCollection", "features": geojson_features}
