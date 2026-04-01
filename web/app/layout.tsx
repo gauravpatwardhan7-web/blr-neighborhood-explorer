@@ -13,8 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bengaluru Neighborhood Explorer",
-  description: "Explore and compare Bengaluru neighborhoods by livability score",
+  title: "Bengaluru Neighbourhood Explorer",
+  description: "Explore and compare Bengaluru neighbourhoods by livability score — air quality, amenities, metro access and more.",
+  openGraph: {
+    title: "Bengaluru Neighbourhood Explorer",
+    description: "Explore and compare Bengaluru neighbourhoods by livability score — air quality, amenities, metro access and more.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Bengaluru Neighbourhood Explorer",
+    description: "Explore and compare Bengaluru neighbourhoods by livability score — air quality, amenities, metro access and more.",
+  },
 };
 
 export const viewport: Viewport = {
