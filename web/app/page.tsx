@@ -215,6 +215,7 @@ export default function Home() {
         (scoreFilterRef.current === "good"  && score >= 4 && score < 6) ||
         (scoreFilterRef.current === "low"   && score < 4);
       el.style.display = showDetailedMarkers && visibleByFilter ? "flex" : "none";
+      if (showDetailedMarkers && visibleByFilter) el.style.alignItems = "center";
     });
   };
 
@@ -398,38 +399,42 @@ export default function Home() {
       const majorAreaFilter: any = ["in", ["get", "name"], ["literal", MAJOR_AREAS]];
 
       // Zoomed-out view: only show major Bengaluru areas
+      // Add both sources upfront
+      map.addSource("localities", { type: "geojson", data, promoteId: "name" });
       map.addSource("localities-small", { type: "geojson", data: smallData });
+
+      // Zoomed-out view: 10 major areas using actual OSM polygon boundaries (naturally large)
       map.addLayer({
         id: "localities-major-fill",
         type: "fill",
-        source: "localities-small",
+        source: "localities",
         filter: majorAreaFilter,
         maxzoom: DETAIL_ZOOM,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "fill-opacity": 0.14,
+          "fill-opacity": 0.22,
         },
       });
       map.addLayer({
         id: "localities-major-outline",
         type: "line",
-        source: "localities-small",
+        source: "localities",
         filter: majorAreaFilter,
         maxzoom: DETAIL_ZOOM,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "line-width": 1.1,
+          "line-width": 1.8,
         },
       });
       map.addLayer({
         id: "localities-major-labels",
         type: "symbol",
-        source: "localities-small",
+        source: "localities",
         filter: majorAreaFilter,
         maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
-          "text-size": 12,
+          "text-size": 13,
           "text-font": ["Noto Sans Regular"],
           "text-anchor": "center",
           "text-max-width": 8,
@@ -462,8 +467,6 @@ export default function Home() {
           "line-width": 0.8,
         },
       });
-
-      map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
       // Fill — only visible on hover/click (amenity-based radius)
       map.addLayer({
@@ -533,7 +536,7 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
+        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:none;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
         markersRef.current.push({ el, factors, score: overall_score });
 
@@ -569,6 +572,7 @@ export default function Home() {
 
       updateMarkerVisibility();
       map.on("zoom", updateMarkerVisibility);
+      map.on("zoomend", updateMarkerVisibility);
 
       // Populate locality list for search and URL deep-links
       const allLocs: LocalityFull[] = data.features.map((f: any) => ({
