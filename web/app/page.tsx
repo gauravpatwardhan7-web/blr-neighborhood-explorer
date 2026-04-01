@@ -192,6 +192,7 @@ export default function Home() {
           background: "white", borderRadius: "16px 16px 0 0",
           boxShadow: "0 -2px 12px rgba(0,0,0,0.12)",
           padding: "12px 20px 20px",
+          color: "#111827",
         }}>
           <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
           <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Bengaluru Neighborhoods</h2>
@@ -209,6 +210,7 @@ export default function Home() {
           maxHeight: "60dvh", overflowY: "auto",
           padding: "12px 20px 32px",
           transition: "transform 0.3s ease",
+          color: "#111827",
         }}>
           <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, margin: "0 auto 12px" }} />
           <button onClick={() => setSelected(null)} style={{ fontSize: 12, color: "#6b7280", marginBottom: 8, background: "none", border: "none", cursor: "pointer", padding: 0 }}>← Back</button>
