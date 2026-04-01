@@ -91,25 +91,27 @@ export default function Home() {
       const res = await fetch("/localities_scored.geojson");
       const data = await res.json();
 
-      map.addSource("localities", { type: "geojson", data });
+      map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
+      // Fill — only visible on hover (or selected on mobile via feature-state)
       map.addLayer({
         id: "localities-fill",
         type: "fill",
         source: "localities",
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "fill-opacity": 0.12,
+          "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0],
         },
       });
 
+      // Outline — thin always, thicker on hover
       map.addLayer({
         id: "localities-outline",
         type: "line",
         source: "localities",
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "line-width": 1.5,
+          "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
         },
       });
 
@@ -132,6 +134,25 @@ export default function Home() {
         },
       });
 
+      // Hover state management
+      let hoveredName: string | null = null;
+
+      map.on("mousemove", "localities-fill", (e) => {
+        if (!e.features?.length) return;
+        const name = e.features[0].properties?.name;
+        if (name === hoveredName) return;
+        if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+        hoveredName = name;
+        map.setFeatureState({ source: "localities", id: name }, { hover: true });
+        map.getCanvas().style.cursor = "pointer";
+      });
+
+      map.on("mouseleave", "localities-fill", () => {
+        if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+        hoveredName = null;
+        map.getCanvas().style.cursor = "";
+      });
+
       data.features.forEach((f: any) => {
         const { name, overall_score, factors, raw } = f.properties;
         const color = scoreColor(overall_score);
@@ -139,6 +160,18 @@ export default function Home() {
         const el = document.createElement("div");
         el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
+
+        // Bubble hover also triggers polygon highlight
+        el.addEventListener("mouseenter", () => {
+          if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+          hoveredName = name;
+          map.setFeatureState({ source: "localities", id: name }, { hover: true });
+        });
+        el.addEventListener("mouseleave", () => {
+          map.setFeatureState({ source: "localities", id: name }, { hover: false });
+          hoveredName = null;
+        });
+
         el.onclick = () => setSelected({ name, overall_score, factors, raw });
 
         new maplibregl.Marker({ element: el })
