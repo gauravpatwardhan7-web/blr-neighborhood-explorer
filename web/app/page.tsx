@@ -335,6 +335,26 @@ export default function Home() {
     });
   };
 
+  const updateMajorCircleFilter = () => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    const f = scoreFilterRef.current;
+    const layerFilter: maplibregl.FilterSpecification =
+      f === "great" ? [">",  ["get", "overall_score"], 5.9] as unknown as maplibregl.FilterSpecification :
+      f === "good"  ? ["all", [">=", ["get", "overall_score"], 4], ["<",  ["get", "overall_score"], 6]] as unknown as maplibregl.FilterSpecification :
+      f === "low"   ? ["<",  ["get", "overall_score"], 4] as unknown as maplibregl.FilterSpecification :
+      null as unknown as maplibregl.FilterSpecification; // "all" — remove filter
+    const MAJOR_LAYERS = ["localities-major-circle", "localities-major-score", "localities-major-labels"];
+    MAJOR_LAYERS.forEach((id) => {
+      if (!map.getLayer(id)) return;
+      if (layerFilter) {
+        map.setFilter(id, layerFilter);
+      } else {
+        map.setFilter(id, null);
+      }
+    });
+  };
+
   // Request browser geolocation and fly to nearest locality
   const locateUser = () => {
     if (!navigator.geolocation) return;
@@ -434,10 +454,11 @@ export default function Home() {
     updateMarkerVisibility();
   }, [weights]);
 
-  // Show/hide markers based on the active score filter
+  // Show/hide markers and major circles based on the active score filter
   useEffect(() => {
     scoreFilterRef.current = scoreFilter;
     updateMarkerVisibility();
+    updateMajorCircleFilter();
   }, [scoreFilter, weights]);
 
   useEffect(() => {
