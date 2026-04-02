@@ -500,22 +500,37 @@ export default function Home() {
         raw: f.properties.raw,
       }));
       const majorAreaNames = getZoomedOutRepresentatives(mapLocalities);
-      const majorAreaFilter = ["in", ["get", "name"], ["literal", majorAreaNames]] as maplibregl.FilterSpecification;
 
       // Zoomed-out view: only show major Bengaluru areas
       // Add both sources upfront
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
       map.addSource("localities-small", { type: "geojson", data: smallData });
 
+      // Build a Point source for major locality circles (circle layers require Point geometry)
+      const majorPointFeatures = majorAreaNames
+        .map((name) => {
+          const loc = mapLocalities.find((l) => l.name === name);
+          if (!loc) return null;
+          return {
+            type: "Feature" as const,
+            geometry: { type: "Point" as const, coordinates: [loc.lon, loc.lat] },
+            properties: { name: loc.name, overall_score: loc.overall_score },
+          };
+        })
+        .filter((f): f is NonNullable<typeof f> => f !== null);
+      map.addSource("localities-major-points", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: majorPointFeatures },
+      });
+
       // Zoomed-out view: major localities as large coloured circles (dissolve at DETAIL_ZOOM)
       map.addLayer({
         id: "localities-major-circle",
         type: "circle",
-        source: "localities",
-        filter: majorAreaFilter,
+        source: "localities-major-points",
         maxzoom: DETAIL_ZOOM,
         paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 18, 11, 30] as maplibregl.DataDrivenPropertyValueSpecification<number>,
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 20, 11, 32] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
           "circle-opacity": 0.82,
           "circle-stroke-color": "rgba(255,255,255,0.9)",
@@ -526,19 +541,18 @@ export default function Home() {
       map.addLayer({
         id: "localities-major-score",
         type: "symbol",
-        source: "localities",
-        filter: majorAreaFilter,
+        source: "localities-major-points",
         maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["to-string", ["get", "overall_score"]],
           "text-size": 12,
-          "text-font": ["Noto Sans Bold"],
+          "text-font": ["Noto Sans Regular"],
           "text-anchor": "center",
           "text-offset": [0, 0],
         },
         paint: {
           "text-color": "#ffffff",
-          "text-halo-color": "rgba(0,0,0,0.15)",
+          "text-halo-color": "rgba(0,0,0,0.2)",
           "text-halo-width": 0.5,
         },
       });
@@ -546,15 +560,14 @@ export default function Home() {
       map.addLayer({
         id: "localities-major-labels",
         type: "symbol",
-        source: "localities",
-        filter: majorAreaFilter,
+        source: "localities-major-points",
         maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
           "text-size": 12,
           "text-font": ["Noto Sans Regular"],
           "text-anchor": "top",
-          "text-offset": [0, 2.4],
+          "text-offset": [0, 2.6],
           "text-max-width": 8,
         },
         paint: {
@@ -847,7 +860,6 @@ export default function Home() {
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
                 <p style={{ fontSize: 13, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
                 <Legend />
-                <RegionRatings ratings={regionRatings} />
                 <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
               </div>
@@ -909,7 +921,6 @@ export default function Home() {
               <div style={{ padding: "4px 20px 20px", overflowY: "auto", maxHeight: "calc(55dvh - 52px)" }}>
                 <p style={{ fontSize: 12, color: "#374151", marginBottom: 12 }}>Tap any circle on the map.</p>
                 <Legend />
-                <RegionRatings ratings={regionRatings} />
                 <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
               </div>
