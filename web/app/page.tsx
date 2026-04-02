@@ -549,11 +549,11 @@ export default function Home() {
         source: "localities-major-points",
         maxzoom: DETAIL_ZOOM,
         paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 20, 11, 32] as maplibregl.DataDrivenPropertyValueSpecification<number>,
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 60, 10, 90, 11, 130] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
-          "circle-opacity": 0.82,
-          "circle-stroke-color": "rgba(255,255,255,0.9)",
-          "circle-stroke-width": 2.5,
+          "circle-opacity": 0.45,
+          "circle-stroke-color": "rgba(255,255,255,0.7)",
+          "circle-stroke-width": 1.5,
         },
       });
       // Score number rendered inside the circle
