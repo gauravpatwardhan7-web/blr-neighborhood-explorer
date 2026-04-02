@@ -50,9 +50,9 @@ function recomputeScore(factors: Locality["factors"], weights: Weights): number 
 }
 
 function scoreColor(score: number) {
-  if (score >= 6) return "#4ade80";  // soft green
-  if (score >= 4) return "#fbbf24";  // soft amber
-  return "#f87171";                   // soft red
+  if (score >= 5) return "#4ade80";  // soft green  (Great: ≥5)
+  if (score >= 3) return "#fbbf24";  // soft amber  (Good:  3–5)
+  return "#f87171";                   // soft red    (Low:   <3)
 }
 
 function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -210,13 +210,13 @@ function Legend() {
   return (
     <div style={{ fontSize: 13, color: "#374151" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#4ade80", display: "inline-block", flexShrink: 0 }} /> Score 6–10 (Great)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#4ade80", display: "inline-block", flexShrink: 0 }} /> Score 5–10 (Great)
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#fbbf24", display: "inline-block", flexShrink: 0 }} /> Score 4–6 (Good)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#fbbf24", display: "inline-block", flexShrink: 0 }} /> Score 3–5 (Good)
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f87171", display: "inline-block", flexShrink: 0 }} /> Score 0–4 (Low)
+        <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#f87171", display: "inline-block", flexShrink: 0 }} /> Score 0–3 (Low)
       </div>
     </div>
   );
@@ -329,9 +329,9 @@ export default function Home() {
       const score = recomputeScore(factors, weightsRef.current);
       const visibleByFilter =
         scoreFilterRef.current === "all" ||
-        (scoreFilterRef.current === "great" && score >= 6) ||
-        (scoreFilterRef.current === "good"  && score >= 4 && score < 6) ||
-        (scoreFilterRef.current === "low"   && score < 4);
+        (scoreFilterRef.current === "great" && score >= 5) ||
+        (scoreFilterRef.current === "good"  && score >= 3 && score < 5) ||
+        (scoreFilterRef.current === "low"   && score < 3);
       if (showMarkers && visibleByFilter) {
         el.style.display = "flex";
         el.style.alignItems = "center";
@@ -347,9 +347,9 @@ export default function Home() {
     if (!map) return;
     const f = scoreFilterRef.current;
     const layerFilter: maplibregl.FilterSpecification =
-      f === "great" ? [">",  ["get", "overall_score"], 5.9] as unknown as maplibregl.FilterSpecification :
-      f === "good"  ? ["all", [">=", ["get", "overall_score"], 4], ["<",  ["get", "overall_score"], 6]] as unknown as maplibregl.FilterSpecification :
-      f === "low"   ? ["<",  ["get", "overall_score"], 4] as unknown as maplibregl.FilterSpecification :
+      f === "great" ? [">=", ["get", "overall_score"], 5] as unknown as maplibregl.FilterSpecification :
+      f === "good"  ? ["all", [">=", ["get", "overall_score"], 3], ["<",  ["get", "overall_score"], 5]] as unknown as maplibregl.FilterSpecification :
+      f === "low"   ? ["<",  ["get", "overall_score"], 3] as unknown as maplibregl.FilterSpecification :
       null as unknown as maplibregl.FilterSpecification; // "all" — remove filter
     const MAJOR_LAYERS = ["localities-major-circle", "localities-major-score", "localities-major-labels"];
     MAJOR_LAYERS.forEach((id) => {
@@ -557,7 +557,7 @@ export default function Home() {
         maxzoom: 13,
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 60, 10, 90, 11, 130] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-          "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
+          "circle-color": ["step", ["get", "overall_score"], "#f87171", 3, "#fbbf24", 5, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
           "circle-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0.45, 12, 0.15, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "circle-stroke-color": "rgba(255,255,255,0.7)",
           "circle-stroke-width": 1.5,
@@ -613,7 +613,7 @@ export default function Home() {
         source: "localities-small",
         minzoom: 11,
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "fill-color": ["step", ["get", "overall_score"], "#f87171", 3, "#fbbf24", 5, "#4ade80"],
           "fill-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 0.08],
         },
       });
@@ -623,7 +623,7 @@ export default function Home() {
         source: "localities-small",
         minzoom: 11,
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "line-color": ["step", ["get", "overall_score"], "#f87171", 3, "#fbbf24", 5, "#4ade80"],
           "line-width": 0.8,
           "line-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 1],
         },
@@ -636,7 +636,7 @@ export default function Home() {
         source: "localities",
         minzoom: DETAIL_ZOOM,
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "fill-color": ["step", ["get", "overall_score"], "#f87171", 3, "#fbbf24", 5, "#4ade80"],
           "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0],
         },
       });
@@ -648,7 +648,7 @@ export default function Home() {
         source: "localities",
         minzoom: DETAIL_ZOOM,
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
+          "line-color": ["step", ["get", "overall_score"], "#f87171", 3, "#fbbf24", 5, "#4ade80"],
           "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
         },
       });
