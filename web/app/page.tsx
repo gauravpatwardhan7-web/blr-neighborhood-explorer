@@ -335,7 +335,7 @@ export default function Home() {
       f === "good"  ? ["all", [">=", ["get", "overall_score"], 4], ["<",  ["get", "overall_score"], 7]] as unknown as maplibregl.FilterSpecification :
       f === "low"   ? ["<",  ["get", "overall_score"], 4] as unknown as maplibregl.FilterSpecification :
       null as unknown as maplibregl.FilterSpecification; // "all" — remove filter
-    const MAJOR_LAYERS = ["localities-major-circle", "localities-major-score", "localities-major-labels"];
+    const MAJOR_LAYERS = ["localities-major-labels"];
     MAJOR_LAYERS.forEach((id) => {
       if (!map.getLayer(id)) return;
       if (layerFilter) {
@@ -533,38 +533,7 @@ export default function Home() {
         data: { type: "FeatureCollection", features: majorPointFeatures },
       });
 
-      // Zoomed-out view: region circles — hard cut at DETAIL_ZOOM
-      map.addLayer({
-        id: "localities-major-circle",
-        type: "circle",
-        source: "localities-major-points",
-        maxzoom: DETAIL_ZOOM,
-        paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 60, 10, 90, 11, 130] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-          "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
-          "circle-opacity": 0.35,
-          "circle-stroke-color": "rgba(255,255,255,0.8)",
-          "circle-stroke-width": 1.5,
-        },
-      });
-      map.addLayer({
-        id: "localities-major-score",
-        type: "symbol",
-        source: "localities-major-points",
-        maxzoom: DETAIL_ZOOM,
-        layout: {
-          "text-field": ["to-string", ["get", "overall_score"]],
-          "text-size": 13,
-          "text-font": ["Noto Sans Regular"],
-          "text-anchor": "center",
-          "text-offset": [0, 0],
-        },
-        paint: {
-          "text-color": "#ffffff",
-          "text-halo-color": "rgba(0,0,0,0.25)",
-          "text-halo-width": 0.5,
-        },
-      });
+      // Zoomed-out view: region name labels only — no circles
       map.addLayer({
         id: "localities-major-labels",
         type: "symbol",
@@ -572,38 +541,38 @@ export default function Home() {
         maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
-          "text-size": 12,
-          "text-font": ["Noto Sans Regular"],
-          "text-anchor": "top",
-          "text-offset": [0, 2.6],
+          "text-size": 13,
+          "text-font": ["Noto Sans Bold"],
+          "text-anchor": "center",
+          "text-offset": [0, 0],
           "text-max-width": 8,
         },
         paint: {
           "text-color": "#1f2937",
-          "text-halo-color": "#ffffff",
-          "text-halo-width": 1.5,
+          "text-halo-color": "rgba(255,255,255,0.9)",
+          "text-halo-width": 2,
         },
       });
 
       // Zoomed-in view: locality polygons — hard cut at DETAIL_ZOOM
+      // Locality circles — visible at all zoom levels so users can see the full density
       map.addLayer({
         id: "localities-small-fill",
         type: "fill",
         source: "localities-small",
-        minzoom: DETAIL_ZOOM,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          "fill-opacity": 0.08,
+          // More opaque at low zoom (dots need to be visible), fade at detail zoom
+          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 9, 0.5, 12, 0.1] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
       map.addLayer({
         id: "localities-small-outline",
         type: "line",
         source: "localities-small",
-        minzoom: DETAIL_ZOOM,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          "line-width": 0.8,
+          "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.3, 12, 0.8] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
 
