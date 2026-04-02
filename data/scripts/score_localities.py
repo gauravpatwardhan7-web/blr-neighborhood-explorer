@@ -109,6 +109,22 @@ for i, feature in enumerate(localities):
         }
     })
 
+# ── Normalise composite scores to a 1.0–9.5 spread ──────────────────────────
+# Without this, Bangalore's uniformly poor air quality drags all scores to
+# the 1.3–7.4 range, making the best neighbourhoods look mediocre.
+_raw_scores = [s["overall_score"] for s in scored]
+_raw_min = min(_raw_scores)
+_raw_max = max(_raw_scores)
+NORM_OUT_MIN = 1.0
+NORM_OUT_MAX = 9.5
+print(f"\nRaw composite range: {_raw_min} – {_raw_max}  →  normalised to {NORM_OUT_MIN}–{NORM_OUT_MAX}")
+
+for s in scored:
+    s["overall_score"] = round(
+        NORM_OUT_MIN + (s["overall_score"] - _raw_min) / (_raw_max - _raw_min) * (NORM_OUT_MAX - NORM_OUT_MIN),
+        1
+    )
+
 scored.sort(key=lambda x: x["overall_score"], reverse=True)
 
 print("\n🏆 Bengaluru Neighborhood Rankings\n")

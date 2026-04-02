@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "name": "Chord Road",
-        "overall_score": 7.4
+        "overall_score": 9.5
       },
       "geometry": {
         "type": "Polygon",
@@ -279,7 +279,7 @@
       "type": "Feature",
       "properties": {
         "name": "Indiranagar",
-        "overall_score": 7.1
+        "overall_score": 9.1
       },
       "geometry": {
         "type": "Polygon",
@@ -553,7 +553,7 @@
       "type": "Feature",
       "properties": {
         "name": "BTM Layout",
-        "overall_score": 7.0
+        "overall_score": 8.9
       },
       "geometry": {
         "type": "Polygon",
@@ -827,7 +827,7 @@
       "type": "Feature",
       "properties": {
         "name": "MG Road",
-        "overall_score": 6.9
+        "overall_score": 8.8
       },
       "geometry": {
         "type": "Polygon",
@@ -1101,7 +1101,7 @@
       "type": "Feature",
       "properties": {
         "name": "Rajajinagar",
-        "overall_score": 6.3
+        "overall_score": 8.0
       },
       "geometry": {
         "type": "Polygon",
@@ -1375,7 +1375,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vijayanagar",
-        "overall_score": 6.0
+        "overall_score": 7.5
       },
       "geometry": {
         "type": "Polygon",
@@ -1649,7 +1649,7 @@
       "type": "Feature",
       "properties": {
         "name": "Victoria Layout",
-        "overall_score": 6.0
+        "overall_score": 7.5
       },
       "geometry": {
         "type": "Polygon",
@@ -1923,7 +1923,7 @@
       "type": "Feature",
       "properties": {
         "name": "Malleshwaram",
-        "overall_score": 5.9
+        "overall_score": 7.4
       },
       "geometry": {
         "type": "Polygon",
@@ -2197,7 +2197,7 @@
       "type": "Feature",
       "properties": {
         "name": "Jayanagar",
-        "overall_score": 5.8
+        "overall_score": 7.3
       },
       "geometry": {
         "type": "Polygon",
@@ -2471,7 +2471,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kamakshipalya",
-        "overall_score": 5.8
+        "overall_score": 7.3
       },
       "geometry": {
         "type": "Polygon",
@@ -2745,7 +2745,7 @@
       "type": "Feature",
       "properties": {
         "name": "Basavanagudi",
-        "overall_score": 5.7
+        "overall_score": 7.1
       },
       "geometry": {
         "type": "Polygon",
@@ -3019,7 +3019,7 @@
       "type": "Feature",
       "properties": {
         "name": "Koramangala",
-        "overall_score": 5.6
+        "overall_score": 7.0
       },
       "geometry": {
         "type": "Polygon",
@@ -3293,7 +3293,7 @@
       "type": "Feature",
       "properties": {
         "name": "Domlur",
-        "overall_score": 5.6
+        "overall_score": 7.0
       },
       "geometry": {
         "type": "Polygon",
@@ -3567,7 +3567,7 @@
       "type": "Feature",
       "properties": {
         "name": "Mahalakshmi Layout",
-        "overall_score": 5.5
+        "overall_score": 6.9
       },
       "geometry": {
         "type": "Polygon",
@@ -3841,7 +3841,7 @@
       "type": "Feature",
       "properties": {
         "name": "Richmond Town",
-        "overall_score": 5.5
+        "overall_score": 6.9
       },
       "geometry": {
         "type": "Polygon",
@@ -4115,7 +4115,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kundalahalli",
-        "overall_score": 5.5
+        "overall_score": 6.9
       },
       "geometry": {
         "type": "Polygon",
@@ -4389,7 +4389,7 @@
       "type": "Feature",
       "properties": {
         "name": "Old Madras Road",
-        "overall_score": 5.4
+        "overall_score": 6.7
       },
       "geometry": {
         "type": "Polygon",
@@ -4663,7 +4663,7 @@
       "type": "Feature",
       "properties": {
         "name": "Devarabeesanahalli",
-        "overall_score": 5.4
+        "overall_score": 6.7
       },
       "geometry": {
         "type": "Polygon",
@@ -4937,7 +4937,7 @@
       "type": "Feature",
       "properties": {
         "name": "Thubarahalli",
-        "overall_score": 5.4
+        "overall_score": 6.7
       },
       "geometry": {
         "type": "Polygon",
@@ -5211,7 +5211,7 @@
       "type": "Feature",
       "properties": {
         "name": "Shivajinagar",
-        "overall_score": 5.1
+        "overall_score": 6.3
       },
       "geometry": {
         "type": "Polygon",
@@ -5485,7 +5485,7 @@
       "type": "Feature",
       "properties": {
         "name": "Ulsoor",
-        "overall_score": 5.1
+        "overall_score": 6.3
       },
       "geometry": {
         "type": "Polygon",
@@ -5759,7 +5759,7 @@
       "type": "Feature",
       "properties": {
         "name": "JP Nagar",
-        "overall_score": 5.0
+        "overall_score": 6.2
       },
       "geometry": {
         "type": "Polygon",
@@ -6033,7 +6033,7 @@
       "type": "Feature",
       "properties": {
         "name": "Horamavu",
-        "overall_score": 5.0
+        "overall_score": 6.2
       },
       "geometry": {
         "type": "Polygon",
@@ -6307,7 +6307,7 @@
       "type": "Feature",
       "properties": {
         "name": "Munnekolala",
-        "overall_score": 4.8
+        "overall_score": 5.9
       },
       "geometry": {
         "type": "Polygon",
@@ -6581,7 +6581,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kaggadasapura",
-        "overall_score": 4.6
+        "overall_score": 5.6
       },
       "geometry": {
         "type": "Polygon",
@@ -6855,7 +6855,7 @@
       "type": "Feature",
       "properties": {
         "name": "Cunningham Road",
-        "overall_score": 4.5
+        "overall_score": 5.5
       },
       "geometry": {
         "type": "Polygon",
@@ -7129,7 +7129,7 @@
       "type": "Feature",
       "properties": {
         "name": "Puttenahalli",
-        "overall_score": 4.5
+        "overall_score": 5.5
       },
       "geometry": {
         "type": "Polygon",
@@ -7403,7 +7403,7 @@
       "type": "Feature",
       "properties": {
         "name": "Langford Town",
-        "overall_score": 4.5
+        "overall_score": 5.5
       },
       "geometry": {
         "type": "Polygon",
@@ -7677,7 +7677,7 @@
       "type": "Feature",
       "properties": {
         "name": "Yeshwantpur",
-        "overall_score": 4.4
+        "overall_score": 5.3
       },
       "geometry": {
         "type": "Polygon",
@@ -7951,7 +7951,7 @@
       "type": "Feature",
       "properties": {
         "name": "Sarakki",
-        "overall_score": 4.3
+        "overall_score": 5.2
       },
       "geometry": {
         "type": "Polygon",
@@ -8225,7 +8225,7 @@
       "type": "Feature",
       "properties": {
         "name": "CV Raman Nagar",
-        "overall_score": 4.3
+        "overall_score": 5.2
       },
       "geometry": {
         "type": "Polygon",
@@ -8499,7 +8499,7 @@
       "type": "Feature",
       "properties": {
         "name": "Frazer Town",
-        "overall_score": 4.2
+        "overall_score": 5.0
       },
       "geometry": {
         "type": "Polygon",
@@ -8773,7 +8773,7 @@
       "type": "Feature",
       "properties": {
         "name": "Chandra Layout",
-        "overall_score": 4.2
+        "overall_score": 5.0
       },
       "geometry": {
         "type": "Polygon",
@@ -9047,7 +9047,7 @@
       "type": "Feature",
       "properties": {
         "name": "HSR Layout",
-        "overall_score": 4.0
+        "overall_score": 4.8
       },
       "geometry": {
         "type": "Polygon",
@@ -9321,7 +9321,7 @@
       "type": "Feature",
       "properties": {
         "name": "Ramamurthy Nagar",
-        "overall_score": 4.0
+        "overall_score": 4.8
       },
       "geometry": {
         "type": "Polygon",
@@ -9595,7 +9595,7 @@
       "type": "Feature",
       "properties": {
         "name": "Cox Town",
-        "overall_score": 3.8
+        "overall_score": 4.5
       },
       "geometry": {
         "type": "Polygon",
@@ -9869,7 +9869,7 @@
       "type": "Feature",
       "properties": {
         "name": "Girinagar",
-        "overall_score": 3.8
+        "overall_score": 4.5
       },
       "geometry": {
         "type": "Polygon",
@@ -10143,7 +10143,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hongasandra",
-        "overall_score": 3.8
+        "overall_score": 4.5
       },
       "geometry": {
         "type": "Polygon",
@@ -10417,7 +10417,7 @@
       "type": "Feature",
       "properties": {
         "name": "Singasandra",
-        "overall_score": 3.8
+        "overall_score": 4.5
       },
       "geometry": {
         "type": "Polygon",
@@ -10691,7 +10691,7 @@
       "type": "Feature",
       "properties": {
         "name": "Sadashivanagar",
-        "overall_score": 3.7
+        "overall_score": 4.3
       },
       "geometry": {
         "type": "Polygon",
@@ -10965,7 +10965,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kengeri",
-        "overall_score": 3.7
+        "overall_score": 4.3
       },
       "geometry": {
         "type": "Polygon",
@@ -11239,7 +11239,7 @@
       "type": "Feature",
       "properties": {
         "name": "Mathikere",
-        "overall_score": 3.6
+        "overall_score": 4.2
       },
       "geometry": {
         "type": "Polygon",
@@ -11513,7 +11513,7 @@
       "type": "Feature",
       "properties": {
         "name": "Whitefield",
-        "overall_score": 3.5
+        "overall_score": 4.1
       },
       "geometry": {
         "type": "Polygon",
@@ -11787,7 +11787,7 @@
       "type": "Feature",
       "properties": {
         "name": "Marathahalli",
-        "overall_score": 3.5
+        "overall_score": 4.1
       },
       "geometry": {
         "type": "Polygon",
@@ -12061,7 +12061,7 @@
       "type": "Feature",
       "properties": {
         "name": "Electronic City",
-        "overall_score": 3.5
+        "overall_score": 4.1
       },
       "geometry": {
         "type": "Polygon",
@@ -12335,7 +12335,7 @@
       "type": "Feature",
       "properties": {
         "name": "Banaswadi",
-        "overall_score": 3.5
+        "overall_score": 4.1
       },
       "geometry": {
         "type": "Polygon",
@@ -12609,7 +12609,7 @@
       "type": "Feature",
       "properties": {
         "name": "Brookefield",
-        "overall_score": 3.5
+        "overall_score": 4.1
       },
       "geometry": {
         "type": "Polygon",
@@ -12883,7 +12883,7 @@
       "type": "Feature",
       "properties": {
         "name": "Bannerghatta Road",
-        "overall_score": 3.4
+        "overall_score": 3.9
       },
       "geometry": {
         "type": "Polygon",
@@ -13157,7 +13157,7 @@
       "type": "Feature",
       "properties": {
         "name": "BEL Layout",
-        "overall_score": 3.4
+        "overall_score": 3.9
       },
       "geometry": {
         "type": "Polygon",
@@ -13431,7 +13431,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vasanth Nagar",
-        "overall_score": 3.4
+        "overall_score": 3.9
       },
       "geometry": {
         "type": "Polygon",
@@ -13705,7 +13705,7 @@
       "type": "Feature",
       "properties": {
         "name": "Raghuvanahalli",
-        "overall_score": 3.2
+        "overall_score": 3.6
       },
       "geometry": {
         "type": "Polygon",
@@ -13979,7 +13979,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hebbal",
-        "overall_score": 3.1
+        "overall_score": 3.5
       },
       "geometry": {
         "type": "Polygon",
@@ -14253,7 +14253,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vibhutipura",
-        "overall_score": 3.1
+        "overall_score": 3.5
       },
       "geometry": {
         "type": "Polygon",
@@ -14527,7 +14527,7 @@
       "type": "Feature",
       "properties": {
         "name": "Mahadevapura",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -14801,7 +14801,7 @@
       "type": "Feature",
       "properties": {
         "name": "Bommanahalli",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -15075,7 +15075,7 @@
       "type": "Feature",
       "properties": {
         "name": "Basaveshwara Nagar",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -15349,7 +15349,7 @@
       "type": "Feature",
       "properties": {
         "name": "Arekere",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -15623,7 +15623,7 @@
       "type": "Feature",
       "properties": {
         "name": "Konanakunte",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -15897,7 +15897,7 @@
       "type": "Feature",
       "properties": {
         "name": "Chikkalasandra",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -16171,7 +16171,7 @@
       "type": "Feature",
       "properties": {
         "name": "Garudacharpalya",
-        "overall_score": 3.0
+        "overall_score": 3.4
       },
       "geometry": {
         "type": "Polygon",
@@ -16445,7 +16445,7 @@
       "type": "Feature",
       "properties": {
         "name": "KR Puram",
-        "overall_score": 2.9
+        "overall_score": 3.2
       },
       "geometry": {
         "type": "Polygon",
@@ -16719,7 +16719,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hennur",
-        "overall_score": 2.9
+        "overall_score": 3.2
       },
       "geometry": {
         "type": "Polygon",
@@ -16993,7 +16993,7 @@
       "type": "Feature",
       "properties": {
         "name": "Uttarahalli",
-        "overall_score": 2.9
+        "overall_score": 3.2
       },
       "geometry": {
         "type": "Polygon",
@@ -17267,7 +17267,7 @@
       "type": "Feature",
       "properties": {
         "name": "Padmanabhanagar",
-        "overall_score": 2.9
+        "overall_score": 3.2
       },
       "geometry": {
         "type": "Polygon",
@@ -17541,7 +17541,7 @@
       "type": "Feature",
       "properties": {
         "name": "Bellandur",
-        "overall_score": 2.8
+        "overall_score": 3.1
       },
       "geometry": {
         "type": "Polygon",
@@ -17815,7 +17815,7 @@
       "type": "Feature",
       "properties": {
         "name": "Nallurhalli",
-        "overall_score": 2.8
+        "overall_score": 3.1
       },
       "geometry": {
         "type": "Polygon",
@@ -18089,7 +18089,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hagadur",
-        "overall_score": 2.8
+        "overall_score": 3.1
       },
       "geometry": {
         "type": "Polygon",
@@ -18363,7 +18363,7 @@
       "type": "Feature",
       "properties": {
         "name": "RT Nagar",
-        "overall_score": 2.6
+        "overall_score": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -18637,7 +18637,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kodigehalli",
-        "overall_score": 2.6
+        "overall_score": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -18911,7 +18911,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kadugodi",
-        "overall_score": 2.6
+        "overall_score": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -19185,7 +19185,7 @@
       "type": "Feature",
       "properties": {
         "name": "Banashankari",
-        "overall_score": 2.5
+        "overall_score": 2.7
       },
       "geometry": {
         "type": "Polygon",
@@ -19459,7 +19459,7 @@
       "type": "Feature",
       "properties": {
         "name": "Yelahanka",
-        "overall_score": 2.5
+        "overall_score": 2.7
       },
       "geometry": {
         "type": "Polygon",
@@ -19733,7 +19733,7 @@
       "type": "Feature",
       "properties": {
         "name": "Dasarahalli",
-        "overall_score": 2.5
+        "overall_score": 2.7
       },
       "geometry": {
         "type": "Polygon",
@@ -20007,7 +20007,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hulimavu",
-        "overall_score": 2.5
+        "overall_score": 2.7
       },
       "geometry": {
         "type": "Polygon",
@@ -20281,7 +20281,7 @@
       "type": "Feature",
       "properties": {
         "name": "Nagavara",
-        "overall_score": 2.4
+        "overall_score": 2.5
       },
       "geometry": {
         "type": "Polygon",
@@ -20555,7 +20555,7 @@
       "type": "Feature",
       "properties": {
         "name": "Kasavanahalli",
-        "overall_score": 2.4
+        "overall_score": 2.5
       },
       "geometry": {
         "type": "Polygon",
@@ -20829,7 +20829,7 @@
       "type": "Feature",
       "properties": {
         "name": "Peenya",
-        "overall_score": 2.3
+        "overall_score": 2.4
       },
       "geometry": {
         "type": "Polygon",
@@ -21103,7 +21103,7 @@
       "type": "Feature",
       "properties": {
         "name": "Panathur",
-        "overall_score": 2.3
+        "overall_score": 2.4
       },
       "geometry": {
         "type": "Polygon",
@@ -21377,7 +21377,7 @@
       "type": "Feature",
       "properties": {
         "name": "Varthur",
-        "overall_score": 2.2
+        "overall_score": 2.3
       },
       "geometry": {
         "type": "Polygon",
@@ -21651,7 +21651,7 @@
       "type": "Feature",
       "properties": {
         "name": "Nagarbhavi",
-        "overall_score": 2.2
+        "overall_score": 2.3
       },
       "geometry": {
         "type": "Polygon",
@@ -21925,7 +21925,7 @@
       "type": "Feature",
       "properties": {
         "name": "RR Nagar",
-        "overall_score": 2.2
+        "overall_score": 2.3
       },
       "geometry": {
         "type": "Polygon",
@@ -22199,7 +22199,7 @@
       "type": "Feature",
       "properties": {
         "name": "Nandini Layout",
-        "overall_score": 2.2
+        "overall_score": 2.3
       },
       "geometry": {
         "type": "Polygon",
@@ -23569,7 +23569,7 @@
       "type": "Feature",
       "properties": {
         "name": "Subramanyapura",
-        "overall_score": 1.9
+        "overall_score": 1.8
       },
       "geometry": {
         "type": "Polygon",
@@ -23843,7 +23843,7 @@
       "type": "Feature",
       "properties": {
         "name": "Dollars Colony",
-        "overall_score": 1.8
+        "overall_score": 1.7
       },
       "geometry": {
         "type": "Polygon",
@@ -24117,7 +24117,7 @@
       "type": "Feature",
       "properties": {
         "name": "Jalahalli",
-        "overall_score": 1.7
+        "overall_score": 1.6
       },
       "geometry": {
         "type": "Polygon",
@@ -24391,7 +24391,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hoodi",
-        "overall_score": 1.7
+        "overall_score": 1.6
       },
       "geometry": {
         "type": "Polygon",
@@ -24665,7 +24665,7 @@
       "type": "Feature",
       "properties": {
         "name": "Hegganahalli",
-        "overall_score": 1.6
+        "overall_score": 1.4
       },
       "geometry": {
         "type": "Polygon",
@@ -24939,7 +24939,7 @@
       "type": "Feature",
       "properties": {
         "name": "Vasanthapura",
-        "overall_score": 1.6
+        "overall_score": 1.4
       },
       "geometry": {
         "type": "Polygon",
@@ -25213,7 +25213,7 @@
       "type": "Feature",
       "properties": {
         "name": "Begur",
-        "overall_score": 1.5
+        "overall_score": 1.3
       },
       "geometry": {
         "type": "Polygon",
@@ -25487,7 +25487,7 @@
       "type": "Feature",
       "properties": {
         "name": "Akshayanagar",
-        "overall_score": 1.5
+        "overall_score": 1.3
       },
       "geometry": {
         "type": "Polygon",
@@ -25761,7 +25761,7 @@
       "type": "Feature",
       "properties": {
         "name": "Chandapura",
-        "overall_score": 1.5
+        "overall_score": 1.3
       },
       "geometry": {
         "type": "Polygon",
@@ -26035,7 +26035,7 @@
       "type": "Feature",
       "properties": {
         "name": "Sarjapur",
-        "overall_score": 1.4
+        "overall_score": 1.1
       },
       "geometry": {
         "type": "Polygon",
@@ -26309,7 +26309,7 @@
       "type": "Feature",
       "properties": {
         "name": "Carmelaram",
-        "overall_score": 1.4
+        "overall_score": 1.1
       },
       "geometry": {
         "type": "Polygon",
@@ -26583,7 +26583,7 @@
       "type": "Feature",
       "properties": {
         "name": "Herohalli",
-        "overall_score": 1.3
+        "overall_score": 1.0
       },
       "geometry": {
         "type": "Polygon",
@@ -26857,7 +26857,7 @@
       "type": "Feature",
       "properties": {
         "name": "Bhattarahalli",
-        "overall_score": 1.3
+        "overall_score": 1.0
       },
       "geometry": {
         "type": "Polygon",
@@ -27131,7 +27131,7 @@
       "type": "Feature",
       "properties": {
         "name": "Dommasandra",
-        "overall_score": 1.3
+        "overall_score": 1.0
       },
       "geometry": {
         "type": "Polygon",
