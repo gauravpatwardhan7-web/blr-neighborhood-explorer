@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -11,22 +11,32 @@ type Locality = {
 };
 
 type LocalityFull = Locality & { lat: number; lon: number };
+type LocalityFeature = { properties: LocalityFull };
 
 type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
+type RegionRating = { region: string; score: number; count: number; representative: string | null };
+type RegionName =
+  | "Central Bangalore"
+  | "North Bangalore"
+  | "North-East Bangalore"
+  | "East Bangalore"
+  | "South-East Bangalore"
+  | "South Bangalore"
+  | "South-West Bangalore"
+  | "West Bangalore"
+  | "North-West Bangalore";
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
-const MAJOR_AREAS = [
-  "Indiranagar",
-  "Koramangala",
-  "Whitefield",
-  "Electronic City",
-  "Jayanagar",
-  "HSR Layout",
-  "Hebbal",
-  "Rajajinagar",
-  "Yelahanka",
-  "Marathahalli",
-  "Malleshwaram",
+const REGION_ORDER: RegionName[] = [
+  "Central Bangalore",
+  "North Bangalore",
+  "North-East Bangalore",
+  "East Bangalore",
+  "South-East Bangalore",
+  "South Bangalore",
+  "South-West Bangalore",
+  "West Bangalore",
+  "North-West Bangalore",
 ];
 const DETAIL_ZOOM = 12;
 
@@ -43,6 +53,81 @@ function scoreColor(score: number) {
   if (score >= 6) return "#4ade80";  // soft green
   if (score >= 4) return "#fbbf24";  // soft amber
   return "#f87171";                   // soft red
+}
+
+function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function getRegionName(lat: number, lon: number, centerLat: number, centerLon: number, centralRadiusKm: number): RegionName {
+  const distanceKm = haversineKm(lat, lon, centerLat, centerLon);
+  if (distanceKm <= centralRadiusKm) return "Central Bangalore";
+
+  const dy = lat - centerLat;
+  const dx = (lon - centerLon) * Math.cos((centerLat * Math.PI) / 180);
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  if (angle >= -22.5 && angle < 22.5) return "East Bangalore";
+  if (angle >= 22.5 && angle < 67.5) return "North-East Bangalore";
+  if (angle >= 67.5 && angle < 112.5) return "North Bangalore";
+  if (angle >= 112.5 && angle < 157.5) return "North-West Bangalore";
+  if (angle >= 157.5 || angle < -157.5) return "West Bangalore";
+  if (angle >= -157.5 && angle < -112.5) return "South-West Bangalore";
+  if (angle >= -112.5 && angle < -67.5) return "South Bangalore";
+  return "South-East Bangalore";
+}
+
+function getCentralRadiusKm(localities: Pick<LocalityFull, "lat" | "lon">[], centerLat: number, centerLon: number): number {
+  const dists = localities
+    .map((l) => haversineKm(l.lat, l.lon, centerLat, centerLon))
+    .sort((a, b) => a - b);
+  if (!dists.length) return 0;
+  const p20 = dists[Math.floor(dists.length * 0.2)];
+  return Math.max(2, Math.min(6, p20));
+}
+
+function computeRegionRatings(localities: LocalityFull[], weights: Weights): RegionRating[] {
+  if (!localities.length) return [];
+
+  const centerLat = localities.reduce((sum, l) => sum + l.lat, 0) / localities.length;
+  const centerLon = localities.reduce((sum, l) => sum + l.lon, 0) / localities.length;
+  const centralRadiusKm = getCentralRadiusKm(localities, centerLat, centerLon);
+
+  const grouped = new Map<RegionName, LocalityFull[]>();
+  REGION_ORDER.forEach((r) => grouped.set(r, []));
+
+  localities.forEach((loc) => {
+    const region = getRegionName(loc.lat, loc.lon, centerLat, centerLon, centralRadiusKm);
+    grouped.get(region)?.push(loc);
+  });
+
+  return REGION_ORDER.map((region) => {
+    const group = grouped.get(region) ?? [];
+    if (!group.length) return { region, score: 0, count: 0, representative: null };
+
+    const scored = group.map((l) => ({ ...l, liveScore: recomputeScore(l.factors, weights) }));
+    const avg = scored.reduce((sum, l) => sum + l.liveScore, 0) / scored.length;
+    const representative = scored.reduce((best, l) => (l.liveScore > best.liveScore ? l : best), scored[0]);
+
+    return {
+      region,
+      score: Math.round(avg * 10) / 10,
+      count: group.length,
+      representative: representative.name,
+    };
+  }).filter((r) => r.count > 0);
+}
+
+function getZoomedOutRepresentatives(localities: LocalityFull[]): string[] {
+  if (!localities.length) return [];
+  const ratings = computeRegionRatings(localities, DEFAULT_WEIGHTS);
+  return ratings.map((r) => r.representative).filter((name): name is string => Boolean(name));
 }
 
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
@@ -127,6 +212,25 @@ function Legend() {
   );
 }
 
+function RegionRatings({ ratings }: { ratings: RegionRating[] }) {
+  return (
+    <div style={{ marginTop: 16 }}>
+      <h3 style={{ fontSize: 13, fontWeight: 700, color: "#111827", margin: "0 0 8px" }}>Regional ratings</h3>
+      {ratings.map((r) => (
+        <div key={r.region} style={{ border: "1px solid #e5e7eb", borderRadius: 8, padding: "8px 10px", marginBottom: 8, background: "white" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 12.5, color: "#111827", fontWeight: 600 }}>{r.region}</span>
+            <span style={{ fontSize: 12.5, fontWeight: 800, color: scoreColor(r.score) }}>{r.score}/10</span>
+          </div>
+          <div style={{ fontSize: 11.5, color: "#6b7280", marginTop: 3 }}>
+            Based on {r.count} locality{r.count === 1 ? "" : "ies"}{r.representative ? ` • representative: ${r.representative}` : ""}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const SLIDER_LABELS: Record<keyof Weights, string> = {
   air_quality:  "Air Quality",
   amenities:    "Amenities",
@@ -204,6 +308,7 @@ export default function Home() {
   const [scoreFilter, setScoreFilter] = useState<"all" | "great" | "good" | "low">("all");
   const weightsRef = useRef(weights);
   const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
+  const regionRatings = useMemo(() => computeRegionRatings(allLocalities, weights), [allLocalities, weights]);
 
   const updateMarkerVisibility = () => {
     const zoom = mapInstanceRef.current?.getZoom() ?? 0;
@@ -219,17 +324,6 @@ export default function Home() {
       if (showDetailedMarkers && visibleByFilter) el.style.alignItems = "center";
     });
   };
-
-  // Haversine distance in km between two lat/lon points
-  function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371;
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
 
   // Request browser geolocation and fly to nearest locality
   const locateUser = () => {
@@ -397,7 +491,16 @@ export default function Home() {
       ]);
       const data = await res.json();
       const smallData = await smallRes.json();
-      const majorAreaFilter: any = ["in", ["get", "name"], ["literal", MAJOR_AREAS]];
+      const mapLocalities: LocalityFull[] = (data.features as LocalityFeature[]).map((f) => ({
+        name: f.properties.name,
+        lat: f.properties.lat,
+        lon: f.properties.lon,
+        overall_score: f.properties.overall_score,
+        factors: f.properties.factors,
+        raw: f.properties.raw,
+      }));
+      const majorAreaNames = getZoomedOutRepresentatives(mapLocalities);
+      const majorAreaFilter = ["in", ["get", "name"], ["literal", majorAreaNames]];
 
       // Zoomed-out view: only show major Bengaluru areas
       // Add both sources upfront
@@ -532,7 +635,7 @@ export default function Home() {
         map.getCanvas().style.cursor = "";
       });
 
-      data.features.forEach((f: any) => {
+      (data.features as LocalityFeature[]).forEach((f) => {
         const { name, overall_score, factors, raw } = f.properties;
         const color = scoreColor(overall_score);
 
@@ -576,7 +679,7 @@ export default function Home() {
       map.on("zoomend", updateMarkerVisibility);
 
       // Populate locality list for search and URL deep-links
-      const allLocs: LocalityFull[] = data.features.map((f: any) => ({
+      const allLocs: LocalityFull[] = (data.features as LocalityFeature[]).map((f) => ({
         name: f.properties.name,
         lat: f.properties.lat,
         lon: f.properties.lon,
@@ -730,6 +833,7 @@ export default function Home() {
                 <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
                 <p style={{ fontSize: 13, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
                 <Legend />
+                <RegionRatings ratings={regionRatings} />
                 <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
               </div>
@@ -791,6 +895,7 @@ export default function Home() {
               <div style={{ padding: "4px 20px 20px", overflowY: "auto", maxHeight: "calc(55dvh - 52px)" }}>
                 <p style={{ fontSize: 12, color: "#374151", marginBottom: 12 }}>Tap any circle on the map.</p>
                 <Legend />
+                <RegionRatings ratings={regionRatings} />
                 <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
               </div>
