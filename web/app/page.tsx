@@ -322,7 +322,9 @@ export default function Home() {
 
   const updateMarkerVisibility = () => {
     const zoom = mapInstanceRef.current?.getZoom() ?? 0;
-    const showDetailedMarkers = zoom >= DETAIL_ZOOM;
+    // Fade markers in over zoom 11→12.5 (0 → 0.55 opacity)
+    const markerOpacity = Math.max(0, Math.min(0.55, ((zoom - 11) / 1.5) * 0.55));
+    const showMarkers = zoom >= 11;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weightsRef.current);
       const visibleByFilter =
@@ -330,8 +332,13 @@ export default function Home() {
         (scoreFilterRef.current === "great" && score >= 6) ||
         (scoreFilterRef.current === "good"  && score >= 4 && score < 6) ||
         (scoreFilterRef.current === "low"   && score < 4);
-      el.style.display = showDetailedMarkers && visibleByFilter ? "flex" : "none";
-      if (showDetailedMarkers && visibleByFilter) el.style.alignItems = "center";
+      if (showMarkers && visibleByFilter) {
+        el.style.display = "flex";
+        el.style.alignItems = "center";
+        el.style.opacity = String(markerOpacity);
+      } else {
+        el.style.display = "none";
+      }
     });
   };
 
@@ -542,18 +549,19 @@ export default function Home() {
         data: { type: "FeatureCollection", features: majorPointFeatures },
       });
 
-      // Zoomed-out view: major localities as large coloured circles (dissolve at DETAIL_ZOOM)
+      // Zoomed-out view: major localities as large coloured circles — fade out toward DETAIL_ZOOM
       map.addLayer({
         id: "localities-major-circle",
         type: "circle",
         source: "localities-major-points",
-        maxzoom: DETAIL_ZOOM,
+        maxzoom: 13,
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 60, 10, 90, 11, 130] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
-          "circle-opacity": 0.45,
+          "circle-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0.45, 12, 0.15, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "circle-stroke-color": "rgba(255,255,255,0.7)",
           "circle-stroke-width": 1.5,
+          "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 11, 1, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
       // Score number rendered inside the circle
@@ -561,7 +569,7 @@ export default function Home() {
         id: "localities-major-score",
         type: "symbol",
         source: "localities-major-points",
-        maxzoom: DETAIL_ZOOM,
+        maxzoom: 13,
         layout: {
           "text-field": ["to-string", ["get", "overall_score"]],
           "text-size": 12,
@@ -573,6 +581,7 @@ export default function Home() {
           "text-color": "#ffffff",
           "text-halo-color": "rgba(0,0,0,0.2)",
           "text-halo-width": 0.5,
+          "text-opacity": ["interpolate", ["linear"], ["zoom"], 11, 1, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
       // Locality name label below each circle
@@ -580,7 +589,7 @@ export default function Home() {
         id: "localities-major-labels",
         type: "symbol",
         source: "localities-major-points",
-        maxzoom: DETAIL_ZOOM,
+        maxzoom: 13,
         layout: {
           "text-field": ["get", "name"],
           "text-size": 12,
@@ -593,28 +602,30 @@ export default function Home() {
           "text-color": "#1f2937",
           "text-halo-color": "#ffffff",
           "text-halo-width": 1.5,
+          "text-opacity": ["interpolate", ["linear"], ["zoom"], 11, 1, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
 
-      // Zoomed-in view: reveal all locality circles/details
+      // Zoomed-in view: reveal all locality circles/details — fade in from zoom 11
       map.addLayer({
         id: "localities-small-fill",
         type: "fill",
         source: "localities-small",
-        minzoom: DETAIL_ZOOM,
+        minzoom: 11,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "fill-opacity": 0.08,
+          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 0.08],
         },
       });
       map.addLayer({
         id: "localities-small-outline",
         type: "line",
         source: "localities-small",
-        minzoom: DETAIL_ZOOM,
+        minzoom: 11,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
           "line-width": 0.8,
+          "line-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 1],
         },
       });
 
@@ -646,7 +657,7 @@ export default function Home() {
         id: "localities-labels",
         type: "symbol",
         source: "localities",
-        minzoom: DETAIL_ZOOM,
+        minzoom: 11,
         layout: {
           "text-field": ["get", "name"],
           "text-size": 11,
@@ -659,6 +670,7 @@ export default function Home() {
           "text-color": "#1f2937",
           "text-halo-color": "#ffffff",
           "text-halo-width": 1.5,
+          "text-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 1],
         },
       });
 
@@ -686,7 +698,7 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.55;border:1.5px solid rgba(255,255,255,0.8);display:none;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
+        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0;border:1.5px solid rgba(255,255,255,0.8);display:none;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
         markersRef.current.push({ el, factors, score: overall_score });
 
