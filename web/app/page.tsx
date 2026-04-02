@@ -307,8 +307,7 @@ export default function Home() {
   const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
 
   const updateMarkerVisibility = () => {
-    const zoom = mapInstanceRef.current?.getZoom() ?? 0;
-    const showMarkers = zoom >= DETAIL_ZOOM;
+    const showMarkers = true;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weightsRef.current);
       const visibleByFilter =
@@ -604,10 +603,9 @@ export default function Home() {
         id: "localities-labels",
         type: "symbol",
         source: "localities",
-        minzoom: DETAIL_ZOOM,
         layout: {
-          "text-field": ["get", "name"],
-          "text-size": 11,
+          "text-field": ["concat", ["get", "name"], "\n", ["to-string", ["get", "overall_score"]]],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 9, 8, 12, 11] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "text-font": ["Noto Sans Regular"],
           "text-anchor": "top",
           "text-offset": [0, 1.8],
