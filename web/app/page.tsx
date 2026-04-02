@@ -330,9 +330,7 @@ export default function Home() {
 
   const updateMarkerVisibility = () => {
     const zoom = mapInstanceRef.current?.getZoom() ?? 0;
-    // Fade markers in over zoom 11→12.5 (0 → 0.55 opacity)
-    const markerOpacity = Math.max(0, Math.min(0.55, ((zoom - 11) / 1.5) * 0.55));
-    const showMarkers = zoom >= 11;
+    const showMarkers = zoom >= DETAIL_ZOOM;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weightsRef.current);
       const visibleByFilter =
@@ -343,7 +341,7 @@ export default function Home() {
       if (showMarkers && visibleByFilter) {
         el.style.display = "flex";
         el.style.alignItems = "center";
-        el.style.opacity = String(markerOpacity);
+        el.style.opacity = "0.85";
       } else {
         el.style.display = "none";
       }
@@ -557,47 +555,43 @@ export default function Home() {
         data: { type: "FeatureCollection", features: majorPointFeatures },
       });
 
-      // Zoomed-out view: major localities as large coloured circles — fade out toward DETAIL_ZOOM
+      // Zoomed-out view: region circles — hard cut at DETAIL_ZOOM
       map.addLayer({
         id: "localities-major-circle",
         type: "circle",
         source: "localities-major-points",
-        maxzoom: 13,
+        maxzoom: DETAIL_ZOOM,
         paint: {
           "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 60, 10, 90, 11, 130] as maplibregl.DataDrivenPropertyValueSpecification<number>,
           "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
-          "circle-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0.45, 12, 0.15, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-          "circle-stroke-color": "rgba(255,255,255,0.7)",
+          "circle-opacity": 0.35,
+          "circle-stroke-color": "rgba(255,255,255,0.8)",
           "circle-stroke-width": 1.5,
-          "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 11, 1, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
-      // Score number rendered inside the circle
       map.addLayer({
         id: "localities-major-score",
         type: "symbol",
         source: "localities-major-points",
-        maxzoom: 13,
+        maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["to-string", ["get", "overall_score"]],
-          "text-size": 12,
+          "text-size": 13,
           "text-font": ["Noto Sans Regular"],
           "text-anchor": "center",
           "text-offset": [0, 0],
         },
         paint: {
           "text-color": "#ffffff",
-          "text-halo-color": "rgba(0,0,0,0.2)",
+          "text-halo-color": "rgba(0,0,0,0.25)",
           "text-halo-width": 0.5,
-          "text-opacity": ["interpolate", ["linear"], ["zoom"], 11, 1, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
-      // Locality name label below each circle
       map.addLayer({
         id: "localities-major-labels",
         type: "symbol",
         source: "localities-major-points",
-        maxzoom: 13,
+        maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
           "text-size": 12,
@@ -610,30 +604,28 @@ export default function Home() {
           "text-color": "#1f2937",
           "text-halo-color": "#ffffff",
           "text-halo-width": 1.5,
-          "text-opacity": ["interpolate", ["linear"], ["zoom"], 11, 1, 12.5, 0] as maplibregl.DataDrivenPropertyValueSpecification<number>,
         },
       });
 
-      // Zoomed-in view: reveal all locality circles/details — fade in from zoom 11
+      // Zoomed-in view: locality polygons — hard cut at DETAIL_ZOOM
       map.addLayer({
         id: "localities-small-fill",
         type: "fill",
         source: "localities-small",
-        minzoom: 11,
+        minzoom: DETAIL_ZOOM,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 0.08],
+          "fill-opacity": 0.08,
         },
       });
       map.addLayer({
         id: "localities-small-outline",
         type: "line",
         source: "localities-small",
-        minzoom: 11,
+        minzoom: DETAIL_ZOOM,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
           "line-width": 0.8,
-          "line-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 1],
         },
       });
 
@@ -665,7 +657,7 @@ export default function Home() {
         id: "localities-labels",
         type: "symbol",
         source: "localities",
-        minzoom: 11,
+        minzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
           "text-size": 11,
@@ -678,7 +670,6 @@ export default function Home() {
           "text-color": "#1f2937",
           "text-halo-color": "#ffffff",
           "text-halo-width": 1.5,
-          "text-opacity": ["interpolate", ["linear"], ["zoom"], 11, 0, 12.5, 1],
         },
       });
 
