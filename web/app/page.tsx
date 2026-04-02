@@ -14,7 +14,7 @@ type LocalityFull = Locality & { lat: number; lon: number };
 type LocalityFeature = { properties: LocalityFull };
 
 type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
-type RegionRating = { region: string; score: number; count: number; representative: string | null };
+type RegionRating = { region: string; score: number; count: number; representative: string | null; centerLat: number; centerLon: number };
 type RegionName =
   | "Central Bangalore"
   | "North Bangalore"
@@ -109,25 +109,35 @@ function computeRegionRatings(localities: LocalityFull[], weights: Weights): Reg
 
   return REGION_ORDER.map((region) => {
     const group = grouped.get(region) ?? [];
-    if (!group.length) return { region, score: 0, count: 0, representative: null };
+    if (!group.length) return { region, score: 0, count: 0, representative: null, centerLat: 0, centerLon: 0 };
 
     const scored = group.map((l) => ({ ...l, liveScore: recomputeScore(l.factors, weights) }));
     const avg = scored.reduce((sum, l) => sum + l.liveScore, 0) / scored.length;
     const representative = scored.reduce((best, l) => (l.liveScore > best.liveScore ? l : best), scored[0]);
+    const rCenterLat = group.reduce((sum, l) => sum + l.lat, 0) / group.length;
+    const rCenterLon = group.reduce((sum, l) => sum + l.lon, 0) / group.length;
 
     return {
       region,
       score: Math.round(avg * 10) / 10,
       count: group.length,
       representative: representative.name,
+      centerLat: rCenterLat,
+      centerLon: rCenterLon,
     };
   }).filter((r) => r.count > 0);
 }
 
-function getZoomedOutRepresentatives(localities: LocalityFull[]): string[] {
+function getRegionCircleFeatures(localities: LocalityFull[]) {
   if (!localities.length) return [];
   const ratings = computeRegionRatings(localities, DEFAULT_WEIGHTS);
-  return ratings.map((r) => r.representative).filter((name): name is string => Boolean(name));
+  return ratings
+    .filter((r) => r.count > 0)
+    .map((r) => ({
+      type: "Feature" as const,
+      geometry: { type: "Point" as const, coordinates: [r.centerLon, r.centerLat] },
+      properties: { name: r.region, overall_score: r.score },
+    }));
 }
 
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
@@ -499,25 +509,13 @@ export default function Home() {
         factors: f.properties.factors,
         raw: f.properties.raw,
       }));
-      const majorAreaNames = getZoomedOutRepresentatives(mapLocalities);
-
       // Zoomed-out view: only show major Bengaluru areas
       // Add both sources upfront
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
       map.addSource("localities-small", { type: "geojson", data: smallData });
 
-      // Build a Point source for major locality circles (circle layers require Point geometry)
-      const majorPointFeatures = majorAreaNames
-        .map((name) => {
-          const loc = mapLocalities.find((l) => l.name === name);
-          if (!loc) return null;
-          return {
-            type: "Feature" as const,
-            geometry: { type: "Point" as const, coordinates: [loc.lon, loc.lat] },
-            properties: { name: loc.name, overall_score: loc.overall_score },
-          };
-        })
-        .filter((f): f is NonNullable<typeof f> => f !== null);
+      // Build a Point source for region circles positioned at each region's centroid
+      const majorPointFeatures = getRegionCircleFeatures(mapLocalities);
       map.addSource("localities-major-points", {
         type: "geojson",
         data: { type: "FeatureCollection", features: majorPointFeatures },
