@@ -14,7 +14,7 @@ type LocalityFull = Locality & { lat: number; lon: number };
 type LocalityFeature = { properties: LocalityFull };
 
 type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
-type RegionRating = { region: string; score: number; count: number; representative: string | null; centerLat: number; centerLon: number };
+type RegionRating = { region: string; score: number; count: number; centerLat: number; centerLon: number };
 type RegionName =
   | "Central Bangalore"
   | "North Bangalore"
@@ -117,11 +117,10 @@ function computeRegionRatings(localities: LocalityFull[], weights: Weights): Reg
 
   return REGION_ORDER.map((region) => {
     const group = grouped.get(region) ?? [];
-    if (!group.length) return { region, score: 0, count: 0, representative: null, centerLat: 0, centerLon: 0 };
+    if (!group.length) return { region, score: 0, count: 0, centerLat: 0, centerLon: 0 };
 
     const scored = group.map((l) => ({ ...l, liveScore: recomputeScore(l.factors, weights) }));
     const avg = scored.reduce((sum, l) => sum + l.liveScore, 0) / scored.length;
-    const representative = scored.reduce((best, l) => (l.liveScore > best.liveScore ? l : best), scored[0]);
     const rCenterLat = group.reduce((sum, l) => sum + l.lat, 0) / group.length;
     const rCenterLon = group.reduce((sum, l) => sum + l.lon, 0) / group.length;
 
@@ -129,7 +128,6 @@ function computeRegionRatings(localities: LocalityFull[], weights: Weights): Reg
       region,
       score: Math.round(avg * 10) / 10,
       count: group.length,
-      representative: representative.name,
       centerLat: rCenterLat,
       centerLon: rCenterLon,
     };
@@ -230,25 +228,6 @@ function Legend() {
   );
 }
 
-function RegionRatings({ ratings }: { ratings: RegionRating[] }) {
-  return (
-    <div style={{ marginTop: 16 }}>
-      <h3 style={{ fontSize: 13, fontWeight: 700, color: "#111827", margin: "0 0 8px" }}>Regional ratings</h3>
-      {ratings.map((r) => (
-        <div key={r.region} style={{ border: "1px solid #e5e7eb", borderRadius: 8, padding: "8px 10px", marginBottom: 8, background: "white" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 12.5, color: "#111827", fontWeight: 600 }}>{r.region}</span>
-            <span style={{ fontSize: 12.5, fontWeight: 800, color: scoreColor(r.score) }}>{r.score}/10</span>
-          </div>
-          <div style={{ fontSize: 11.5, color: "#6b7280", marginTop: 3 }}>
-            Based on {r.count} locality{r.count === 1 ? "" : "ies"}{r.representative ? ` • representative: ${r.representative}` : ""}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const SLIDER_LABELS: Record<keyof Weights, string> = {
   air_quality:  "Air Quality",
   amenities:    "Amenities",
@@ -320,13 +299,12 @@ export default function Home() {
   const [gateSubmitting, setGateSubmitting] = useState(false);
   const [copied, setCopied] = useState(false);
   const [weights, setWeights] = useState<Weights>(DEFAULT_WEIGHTS);
-  const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"]; score: number }[]>([]);
+  const markersRef = useRef<{ el: HTMLDivElement; factors: Locality["factors"] }[]>([]);
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
   const [scoreFilter, setScoreFilter] = useState<"all" | "great" | "good" | "low">("all");
   const weightsRef = useRef(weights);
   const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
-  const regionRatings = useMemo(() => computeRegionRatings(allLocalities, weights), [allLocalities, weights]);
 
   const updateMarkerVisibility = () => {
     const zoom = mapInstanceRef.current?.getZoom() ?? 0;
@@ -697,9 +675,9 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0;border:1.5px solid rgba(255,255,255,0.8);display:none;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
+        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.85;border:1.5px solid rgba(255,255,255,0.8);display:none;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
         el.innerText = String(overall_score);
-        markersRef.current.push({ el, factors, score: overall_score });
+        markersRef.current.push({ el, factors });
 
         // Bubble hover also triggers polygon highlight
         el.addEventListener("mouseenter", () => {
