@@ -500,7 +500,7 @@ export default function Home() {
         raw: f.properties.raw,
       }));
       const majorAreaNames = getZoomedOutRepresentatives(mapLocalities);
-      const majorAreaFilter = ["in", ["get", "name"], ["literal", majorAreaNames]];
+      const majorAreaFilter = ["in", ["get", "name"], ["literal", majorAreaNames]] as maplibregl.FilterSpecification;
 
       // Zoomed-out view: only show major Bengaluru areas
       // Add both sources upfront
