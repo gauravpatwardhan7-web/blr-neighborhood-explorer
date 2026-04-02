@@ -507,29 +507,42 @@ export default function Home() {
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
       map.addSource("localities-small", { type: "geojson", data: smallData });
 
-      // Zoomed-out view: 10 major areas using actual OSM polygon boundaries (naturally large)
+      // Zoomed-out view: major localities as large coloured circles (dissolve at DETAIL_ZOOM)
       map.addLayer({
-        id: "localities-major-fill",
-        type: "fill",
+        id: "localities-major-circle",
+        type: "circle",
         source: "localities",
         filter: majorAreaFilter,
         maxzoom: DETAIL_ZOOM,
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "fill-opacity": 0.22,
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 18, 11, 30] as maplibregl.DataDrivenPropertyValueSpecification<number>,
+          "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
+          "circle-opacity": 0.82,
+          "circle-stroke-color": "rgba(255,255,255,0.9)",
+          "circle-stroke-width": 2.5,
         },
       });
+      // Score number rendered inside the circle
       map.addLayer({
-        id: "localities-major-outline",
-        type: "line",
+        id: "localities-major-score",
+        type: "symbol",
         source: "localities",
         filter: majorAreaFilter,
         maxzoom: DETAIL_ZOOM,
+        layout: {
+          "text-field": ["to-string", ["get", "overall_score"]],
+          "text-size": 12,
+          "text-font": ["Noto Sans Bold"],
+          "text-anchor": "center",
+          "text-offset": [0, 0],
+        },
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 6, "#4ade80"],
-          "line-width": 1.8,
+          "text-color": "#ffffff",
+          "text-halo-color": "rgba(0,0,0,0.15)",
+          "text-halo-width": 0.5,
         },
       });
+      // Locality name label below each circle
       map.addLayer({
         id: "localities-major-labels",
         type: "symbol",
@@ -538,9 +551,10 @@ export default function Home() {
         maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["get", "name"],
-          "text-size": 13,
+          "text-size": 12,
           "text-font": ["Noto Sans Regular"],
-          "text-anchor": "center",
+          "text-anchor": "top",
+          "text-offset": [0, 2.4],
           "text-max-width": 8,
         },
         paint: {
