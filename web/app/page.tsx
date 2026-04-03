@@ -627,14 +627,20 @@ export default function Home() {
         if (!e.features?.length) return;
         const name = e.features[0].properties?.name;
         if (name === hoveredName) return;
-        if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+        // Don't clear the selected (clicked) locality's fill when hovering over a different one
+        if (hoveredName && hoveredName !== highlightedRef.current) {
+          map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+        }
         hoveredName = name;
         map.setFeatureState({ source: "localities", id: name }, { hover: true });
         map.getCanvas().style.cursor = "pointer";
       });
 
       map.on("mouseleave", "localities-fill", () => {
-        if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+        // Keep the selected locality's fill visible when the cursor leaves it
+        if (hoveredName && hoveredName !== highlightedRef.current) {
+          map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+        }
         hoveredName = null;
         map.getCanvas().style.cursor = "";
       });
