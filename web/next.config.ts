@@ -18,17 +18,17 @@ const nextConfig: NextConfig = {
           // Permissions policy — disable unused browser features
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
           // Content Security Policy
-          // Allows the map tile CDN (cartocdn.com) and MapLibre GL assets
+          // Allows the map tile CDN (maptiler.com) and MapLibre GL assets
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'",   // Next.js needs unsafe-inline for hydration
-              "style-src 'self' 'unsafe-inline'",    // MapLibre injects inline styles
-              "img-src 'self' data: blob: https://*.cartocdn.com https://*.openstreetmap.org",
-              "connect-src 'self' https://*.cartocdn.com https://*.basemaps.cartocdn.com",
-              "font-src 'self' data:",
-              "worker-src blob:",                    // MapLibre web worker
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https://*.maptiler.com https://*.openstreetmap.org",
+              "connect-src 'self' https://*.maptiler.com https://api.maptiler.com",
+              "font-src 'self' data: https://api.maptiler.com",
+              "worker-src blob:",
               "frame-ancestors 'none'",
             ].join("; "),
           },

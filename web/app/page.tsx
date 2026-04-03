@@ -456,7 +456,7 @@ export default function Home() {
     if (!mapRef.current) return;
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
       center: [77.6, 12.97],
       zoom: 11,
       pitch: 45,
@@ -524,22 +524,6 @@ export default function Home() {
       // Zoomed-out view: only show major Bengaluru areas
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
-      // ── 3D buildings ─────────────────────────────────────────────────────
-      // Carto Voyager tiles include OpenMapTiles building layer with height data
-      map.addLayer({
-        id: "3d-buildings",
-        source: "carto",
-        "source-layer": "building",
-        type: "fill-extrusion",
-        minzoom: 14,
-        paint: {
-          "fill-extrusion-color": "#d6cfc4",
-          "fill-extrusion-height": ["coalesce", ["get", "render_height"], ["get", "height"], 5],
-          "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], ["get", "min_height"], 0],
-          "fill-extrusion-opacity": 0.72,
-        },
-      } as maplibregl.AddLayerObject);
-
       // Point source: one point per locality centroid for the dot layer
       const localityPoints = (data.features as LocalityFeature[]).map((f: LocalityFeature) => ({
         type: "Feature" as const,
@@ -567,7 +551,7 @@ export default function Home() {
         layout: {
           "text-field": ["get", "name"],
           "text-size": 13,
-          "text-font": ["Noto Sans Bold"],
+          "text-font": ["Open Sans Bold", "Arial Unicode MS Regular"],
           "text-anchor": "center",
           "text-offset": [0, 0],
           "text-max-width": 8,
@@ -625,7 +609,7 @@ export default function Home() {
         layout: {
           "text-field": ["concat", ["get", "name"], "\n", ["to-string", ["get", "overall_score"]]],
           "text-size": ["interpolate", ["linear"], ["zoom"], 9, 8, 12, 11] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-          "text-font": ["Noto Sans Regular"],
+          "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],
           "text-anchor": "top",
           "text-offset": [0, 1.8],
           "text-max-width": 8,
@@ -685,7 +669,8 @@ export default function Home() {
         });
 
         el.onclick = () => {
-          // On tap (mobile) or click: show polygon for selected locality
+          // Fly to clicked locality so the marker stays centred and stable
+          map.flyTo({ center: [f.properties.lon, f.properties.lat], zoom: Math.max(map.getZoom(), DETAIL_ZOOM), duration: 600 });
           if (highlightedRef.current && highlightedRef.current !== name) {
             map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
           }
