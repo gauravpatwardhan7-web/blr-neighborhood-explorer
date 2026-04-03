@@ -439,11 +439,8 @@ export default function Home() {
     weightsRef.current = weights;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weights);
-      const newColor = scoreColor(score);
-      const dotEl = el.querySelector(".pin-dot") as HTMLElement | null;
-      const scoreEl = el.querySelector(".pin-score") as HTMLElement | null;
-      if (dotEl) dotEl.style.background = newColor;
-      if (scoreEl) scoreEl.textContent = String(score);
+      el.style.background = scoreColor(score);
+      el.textContent = String(score);
     });
     updateMarkerVisibility();
   }, [weights]);
@@ -510,12 +507,10 @@ export default function Home() {
     }
 
     map.on("load", async () => {
-      const [res, smallRes] = await Promise.all([
+      const [res] = await Promise.all([
         fetch("/localities_scored.geojson"),
-        fetch("/localities_small.geojson"),
       ]);
       const data = await res.json();
-      const smallData = await smallRes.json();
       const mapLocalities: LocalityFull[] = (data.features as LocalityFeature[]).map((f) => ({
         name: f.properties.name,
         lat: f.properties.lat,
@@ -525,9 +520,18 @@ export default function Home() {
         raw: f.properties.raw,
       }));
       // Zoomed-out view: only show major Bengaluru areas
-      // Add both sources upfront
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
-      map.addSource("localities-small", { type: "geojson", data: smallData });
+
+      // Point source: one point per locality centroid for the dot layer
+      const localityPoints = (data.features as LocalityFeature[]).map((f: LocalityFeature) => ({
+        type: "Feature" as const,
+        geometry: { type: "Point" as const, coordinates: [f.properties.lon, f.properties.lat] },
+        properties: { name: f.properties.name, overall_score: f.properties.overall_score },
+      }));
+      map.addSource("localities-points", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: localityPoints },
+      });
 
       // Build a Point source for region circles positioned at each region's centroid
       const majorPointFeatures = getRegionCircleFeatures(mapLocalities);
@@ -557,25 +561,18 @@ export default function Home() {
         },
       });
 
-      // Zoomed-in view: locality polygons — hard cut at DETAIL_ZOOM
-      // Locality circles — visible at all zoom levels so users can see the full density
+      // Zoomed-out dots — small colored circles, one per locality, disappear when pills take over
       map.addLayer({
-        id: "localities-small-fill",
-        type: "fill",
-        source: "localities-small",
+        id: "localities-dots",
+        type: "circle",
+        source: "localities-points",
+        maxzoom: DETAIL_ZOOM,
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          // More opaque at low zoom (dots need to be visible), fade at detail zoom
-          "fill-opacity": ["interpolate", ["linear"], ["zoom"], 9, 0.5, 12, 0.1] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-        },
-      });
-      map.addLayer({
-        id: "localities-small-outline",
-        type: "line",
-        source: "localities-small",
-        paint: {
-          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.3, 12, 0.8] as maplibregl.DataDrivenPropertyValueSpecification<number>,
+          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 4, 11, 7] as maplibregl.DataDrivenPropertyValueSpecification<number>,
+          "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
+          "circle-opacity": 0.88,
+          "circle-stroke-color": "white",
+          "circle-stroke-width": 1.5,
         },
       });
 
@@ -625,7 +622,7 @@ export default function Home() {
       // Hover state management
       let hoveredName: string | null = null;
 
-      map.on("mousemove", "localities-small-fill", (e) => {
+      map.on("mousemove", "localities-fill", (e) => {
         if (!e.features?.length) return;
         const name = e.features[0].properties?.name;
         if (name === hoveredName) return;
@@ -635,7 +632,7 @@ export default function Home() {
         map.getCanvas().style.cursor = "pointer";
       });
 
-      map.on("mouseleave", "localities-small-fill", () => {
+      map.on("mouseleave", "localities-fill", () => {
         if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
         hoveredName = null;
         map.getCanvas().style.cursor = "";
@@ -646,29 +643,14 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `position:relative;background:white;border-radius:20px;padding:5px 10px 5px 8px;display:none;align-items:center;gap:6px;box-shadow:0 2px 12px rgba(0,0,0,0.2),0 0 0 1.5px rgba(0,0,0,0.06);cursor:pointer;white-space:nowrap;transition:transform 0.12s ease,box-shadow 0.12s ease;font-family:-apple-system,BlinkMacSystemFont,sans-serif`;
-
-        const dot = document.createElement("span");
-        dot.className = "pin-dot";
-        dot.style.cssText = `width:9px;height:9px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0`;
-
-        const scoreSpan = document.createElement("span");
-        scoreSpan.className = "pin-score";
-        scoreSpan.style.cssText = `font-weight:700;font-size:13px;color:#111827;letter-spacing:-0.2px;line-height:1`;
-        scoreSpan.textContent = String(overall_score);
-
-        const tail = document.createElement("div");
-        tail.style.cssText = `position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid white;pointer-events:none`;
-
-        el.appendChild(dot);
-        el.appendChild(scoreSpan);
-        el.appendChild(tail);
+        el.style.cssText = `width:34px;height:34px;border-radius:50%;background:${color};border:2.5px solid white;display:none;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:white;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.25);transition:transform 0.12s ease,box-shadow 0.12s ease;font-family:-apple-system,BlinkMacSystemFont,sans-serif`;
+        el.textContent = String(overall_score);
         markersRef.current.push({ el, factors });
 
         // Bubble hover also triggers polygon highlight
         el.addEventListener("mouseenter", () => {
-          el.style.transform = "scale(1.14) translateY(-1px)";
-          el.style.boxShadow = "0 6px 20px rgba(0,0,0,0.26),0 0 0 1.5px rgba(0,0,0,0.1)";
+          el.style.transform = "scale(1.2)";
+          el.style.boxShadow = "0 4px 16px rgba(0,0,0,0.32)";
           el.style.zIndex = "999";
           if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
           hoveredName = name;
@@ -676,9 +658,8 @@ export default function Home() {
         });
         el.addEventListener("mouseleave", () => {
           el.style.transform = "";
-          el.style.boxShadow = "0 2px 12px rgba(0,0,0,0.2),0 0 0 1.5px rgba(0,0,0,0.06)";
+          el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
           el.style.zIndex = "";
-          // Only clear hover if this feature isn't the tapped/selected one
           if (highlightedRef.current !== name) {
             map.setFeatureState({ source: "localities", id: name }, { hover: false });
           }
