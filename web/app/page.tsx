@@ -307,7 +307,8 @@ export default function Home() {
   const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
 
   const updateMarkerVisibility = () => {
-    const showMarkers = true;
+    const zoom = mapInstanceRef.current?.getZoom() ?? 0;
+    const showMarkers = zoom >= DETAIL_ZOOM;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weightsRef.current);
       const visibleByFilter =
@@ -852,7 +853,7 @@ export default function Home() {
           <div style={{ position: "absolute", top: 68, left: 16, zIndex: 10, display: "flex", gap: 6 }}>
             <FilterChips value={scoreFilter} onChange={setScoreFilter} />
           </div>
-          <div ref={mapRef} style={{ flex: 1 }} />
+          <div ref={mapRef} style={{ flex: 1, overflow: "hidden" }} />
           <div style={{ width: 300, padding: 20, overflowY: "auto", borderLeft: "1px solid #e5e7eb", background: "#f9fafb" }}>
             {!selected ? (
               <div>
@@ -890,7 +891,7 @@ export default function Home() {
             <FilterChips value={scoreFilter} onChange={setScoreFilter} vertical={true} />
           </div>
           {/* Map — fixed to viewport so it is never inside overflow:hidden, preventing iOS WebGL blank */}
-          <div ref={mapRef} style={{ position: "fixed", inset: 0, top: "max(0px, env(safe-area-inset-top, 0px))", zIndex: 0, background: "#e8e0d5" }} />
+          <div ref={mapRef} style={{ position: "fixed", inset: 0, top: "max(0px, env(safe-area-inset-top, 0px))", zIndex: 0, background: "#e8e0d5", overflow: "hidden" }} />
 
           {!sheetOpen && (
             <div style={{
