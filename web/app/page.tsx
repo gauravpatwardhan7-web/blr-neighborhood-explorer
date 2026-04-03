@@ -459,6 +459,8 @@ export default function Home() {
       style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
       center: [77.6, 12.97],
       zoom: 11,
+      pitch: 45,
+      bearing: -10,
       preserveDrawingBuffer: true,  // keeps WebGL buffer alive on iOS (must be set at context creation)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
@@ -521,6 +523,22 @@ export default function Home() {
       }));
       // Zoomed-out view: only show major Bengaluru areas
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
+
+      // ── 3D buildings ─────────────────────────────────────────────────────
+      // Carto Voyager tiles include OpenMapTiles building layer with height data
+      map.addLayer({
+        id: "3d-buildings",
+        source: "carto",
+        "source-layer": "building",
+        type: "fill-extrusion",
+        minzoom: 14,
+        paint: {
+          "fill-extrusion-color": "#d6cfc4",
+          "fill-extrusion-height": ["coalesce", ["get", "render_height"], ["get", "height"], 5],
+          "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], ["get", "min_height"], 0],
+          "fill-extrusion-opacity": 0.72,
+        },
+      } as maplibregl.AddLayerObject);
 
       // Point source: one point per locality centroid for the dot layer
       const localityPoints = (data.features as LocalityFeature[]).map((f: LocalityFeature) => ({
