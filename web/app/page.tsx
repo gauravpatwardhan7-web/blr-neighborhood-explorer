@@ -606,6 +606,7 @@ export default function Home() {
         id: "localities-labels",
         type: "symbol",
         source: "localities",
+        maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["concat", ["get", "name"], "\n", ["to-string", ["get", "overall_score"]]],
           "text-size": ["interpolate", ["linear"], ["zoom"], 9, 8, 12, 11] as maplibregl.DataDrivenPropertyValueSpecification<number>,
@@ -645,13 +646,13 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:34px;height:34px;border-radius:50%;background:${color};border:2.5px solid white;display:none;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:white;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.25);transition:transform 0.12s ease,box-shadow 0.12s ease;font-family:-apple-system,BlinkMacSystemFont,sans-serif`;
+        el.style.cssText = `width:34px;height:34px;border-radius:50%;background:${color};border:2.5px solid white;display:none;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:white;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.25);font-family:-apple-system,BlinkMacSystemFont,sans-serif`;
         el.textContent = String(overall_score);
         markersRef.current.push({ el, factors });
 
         // Bubble hover also triggers polygon highlight
         el.addEventListener("mouseenter", () => {
-          el.style.transform = "scale(1.2)";
+          el.style.border = "2.5px solid rgba(0,0,0,0.35)";
           el.style.boxShadow = "0 4px 16px rgba(0,0,0,0.32)";
           el.style.zIndex = "999";
           if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
@@ -659,7 +660,7 @@ export default function Home() {
           map.setFeatureState({ source: "localities", id: name }, { hover: true });
         });
         el.addEventListener("mouseleave", () => {
-          el.style.transform = "";
+          el.style.border = "2.5px solid white";
           el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
           el.style.zIndex = "";
           if (highlightedRef.current !== name) {
@@ -669,8 +670,6 @@ export default function Home() {
         });
 
         el.onclick = () => {
-          // Fly to clicked locality so the marker stays centred and stable
-          map.flyTo({ center: [f.properties.lon, f.properties.lat], zoom: Math.max(map.getZoom(), DETAIL_ZOOM), duration: 600 });
           if (highlightedRef.current && highlightedRef.current !== name) {
             map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
           }
