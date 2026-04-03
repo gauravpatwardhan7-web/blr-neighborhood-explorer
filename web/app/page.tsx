@@ -438,8 +438,11 @@ export default function Home() {
     weightsRef.current = weights;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weights);
-      el.style.background = scoreColor(score);
-      el.innerText = String(score);
+      const newColor = scoreColor(score);
+      const dotEl = el.querySelector(".pin-dot") as HTMLElement | null;
+      const scoreEl = el.querySelector(".pin-score") as HTMLElement | null;
+      if (dotEl) dotEl.style.background = newColor;
+      if (scoreEl) scoreEl.textContent = String(score);
     });
     updateMarkerVisibility();
   }, [weights]);
@@ -455,7 +458,7 @@ export default function Home() {
     if (!mapRef.current) return;
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+      style: "https://tiles.openfreemap.com/styles/liberty",
       center: [77.6, 12.97],
       zoom: 11,
       preserveDrawingBuffer: true,  // keeps WebGL buffer alive on iOS (must be set at context creation)
@@ -642,17 +645,38 @@ export default function Home() {
         const color = scoreColor(overall_score);
 
         const el = document.createElement("div");
-        el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};opacity:0.85;border:1.5px solid rgba(255,255,255,0.8);display:none;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:white;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.15)`;
-        el.innerText = String(overall_score);
+        el.style.cssText = `position:relative;background:white;border-radius:20px;padding:5px 10px 5px 8px;display:none;align-items:center;gap:6px;box-shadow:0 2px 12px rgba(0,0,0,0.2),0 0 0 1.5px rgba(0,0,0,0.06);cursor:pointer;white-space:nowrap;transition:transform 0.12s ease,box-shadow 0.12s ease;font-family:-apple-system,BlinkMacSystemFont,sans-serif`;
+
+        const dot = document.createElement("span");
+        dot.className = "pin-dot";
+        dot.style.cssText = `width:9px;height:9px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0`;
+
+        const scoreSpan = document.createElement("span");
+        scoreSpan.className = "pin-score";
+        scoreSpan.style.cssText = `font-weight:700;font-size:13px;color:#111827;letter-spacing:-0.2px;line-height:1`;
+        scoreSpan.textContent = String(overall_score);
+
+        const tail = document.createElement("div");
+        tail.style.cssText = `position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid white;pointer-events:none`;
+
+        el.appendChild(dot);
+        el.appendChild(scoreSpan);
+        el.appendChild(tail);
         markersRef.current.push({ el, factors });
 
         // Bubble hover also triggers polygon highlight
         el.addEventListener("mouseenter", () => {
+          el.style.transform = "scale(1.14) translateY(-1px)";
+          el.style.boxShadow = "0 6px 20px rgba(0,0,0,0.26),0 0 0 1.5px rgba(0,0,0,0.1)";
+          el.style.zIndex = "999";
           if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
           hoveredName = name;
           map.setFeatureState({ source: "localities", id: name }, { hover: true });
         });
         el.addEventListener("mouseleave", () => {
+          el.style.transform = "";
+          el.style.boxShadow = "0 2px 12px rgba(0,0,0,0.2),0 0 0 1.5px rgba(0,0,0,0.06)";
+          el.style.zIndex = "";
           // Only clear hover if this feature isn't the tapped/selected one
           if (highlightedRef.current !== name) {
             map.setFeatureState({ source: "localities", id: name }, { hover: false });
