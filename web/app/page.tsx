@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -134,7 +134,7 @@ function computeRegionRatings(localities: LocalityFull[], weights: Weights): Reg
   }).filter((r) => r.count > 0);
 }
 
-function getRegionCircleFeatures(localities: LocalityFull[]) {
+function getRegionLabelFeatures(localities: LocalityFull[]) {
   if (!localities.length) return [];
   const ratings = computeRegionRatings(localities, DEFAULT_WEIGHTS);
   return ratings
@@ -450,7 +450,7 @@ export default function Home() {
     scoreFilterRef.current = scoreFilter;
     updateMarkerVisibility();
     updateMajorCircleFilter();
-  }, [scoreFilter, weights]);
+  }, [scoreFilter]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -509,9 +509,7 @@ export default function Home() {
     }
 
     map.on("load", async () => {
-      const [res] = await Promise.all([
-        fetch("/localities_scored.geojson"),
-      ]);
+      const res = await fetch("/localities_scored.geojson");
       const data = await res.json();
       const mapLocalities: LocalityFull[] = (data.features as LocalityFeature[]).map((f) => ({
         name: f.properties.name,
@@ -535,8 +533,8 @@ export default function Home() {
         data: { type: "FeatureCollection", features: localityPoints },
       });
 
-      // Build a Point source for region circles positioned at each region's centroid
-      const majorPointFeatures = getRegionCircleFeatures(mapLocalities);
+      // Build a Point source for region labels positioned at each region's centroid
+      const majorPointFeatures = getRegionLabelFeatures(mapLocalities);
       map.addSource("localities-major-points", {
         type: "geojson",
         data: { type: "FeatureCollection", features: majorPointFeatures },
@@ -605,7 +603,7 @@ export default function Home() {
       map.addLayer({
         id: "localities-labels",
         type: "symbol",
-        source: "localities",
+        source: "localities-points",
         maxzoom: DETAIL_ZOOM,
         layout: {
           "text-field": ["concat", ["get", "name"], "\n", ["to-string", ["get", "overall_score"]]],
@@ -689,21 +687,13 @@ export default function Home() {
       map.on("zoomend", updateMarkerVisibility);
 
       // Populate locality list for search and URL deep-links
-      const allLocs: LocalityFull[] = (data.features as LocalityFeature[]).map((f) => ({
-        name: f.properties.name,
-        lat: f.properties.lat,
-        lon: f.properties.lon,
-        overall_score: f.properties.overall_score,
-        factors: f.properties.factors,
-        raw: f.properties.raw,
-      }));
-      setAllLocalities(allLocs);
-      localitiesRef.current = allLocs;
+      setAllLocalities(mapLocalities);
+      localitiesRef.current = mapLocalities;
 
       // Auto-select from ?locality= URL param
       const paramLocality = new URLSearchParams(window.location.search).get("locality");
       if (paramLocality) {
-        const match = allLocs.find((l) => l.name === paramLocality);
+        const match = mapLocalities.find((l) => l.name === paramLocality);
         if (match) {
           highlightedRef.current = match.name;
           map.setFeatureState({ source: "localities", id: match.name }, { hover: true });
