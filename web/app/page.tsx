@@ -458,7 +458,7 @@ export default function Home() {
     if (!mapRef.current) return;
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: "https://tiles.openfreemap.com/styles/liberty",
+      style: "https://tiles.openfreemap.org/styles/liberty",
       center: [77.6, 12.97],
       zoom: 11,
       preserveDrawingBuffer: true,  // keeps WebGL buffer alive on iOS (must be set at context creation)
