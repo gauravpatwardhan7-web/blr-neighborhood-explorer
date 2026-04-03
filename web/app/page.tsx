@@ -456,7 +456,7 @@ export default function Home() {
     if (!mapRef.current) return;
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY ?? "04bSXwUhzSopi5O4VlUz"}`,
       center: [77.6, 12.97],
       zoom: 11,
       pitch: 45,
