@@ -449,6 +449,18 @@ export default function Home() {
         map.getCanvas().style.cursor = "";
       });
 
+      // Click on empty map → dismiss selected locality
+      map.on("click", (e) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ["localities-fill"] });
+        if (!features.length && highlightedRef.current) {
+          if (highlightedRef.current) map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
+          highlightedRef.current = null;
+          history.replaceState(null, "", window.location.pathname);
+          setSelected(null);
+          setSheetExpanded(false);
+        }
+      });
+
       (data.features as LocalityFeature[]).forEach((f) => {
         const { name, overall_score, factors, raw } = f.properties;
         const color = scoreColor(overall_score);
