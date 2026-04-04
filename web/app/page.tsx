@@ -659,7 +659,9 @@ export default function Home() {
           el.style.border = "2.5px solid rgba(0,0,0,0.35)";
           el.style.boxShadow = "0 4px 16px rgba(0,0,0,0.32)";
           el.style.zIndex = "999";
-          if (hoveredName) map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+          if (hoveredName && hoveredName !== highlightedRef.current) {
+            map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
+          }
           hoveredName = name;
           map.setFeatureState({ source: "localities", id: name }, { hover: true });
         });
