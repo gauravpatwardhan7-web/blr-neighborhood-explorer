@@ -14,31 +14,8 @@ type LocalityFull = Locality & { lat: number; lon: number };
 type LocalityFeature = { properties: LocalityFull };
 
 type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
-type RegionRating = { region: string; score: number; count: number; centerLat: number; centerLon: number };
-type RegionName =
-  | "Central Bangalore"
-  | "North Bangalore"
-  | "North-East Bangalore"
-  | "East Bangalore"
-  | "South-East Bangalore"
-  | "South Bangalore"
-  | "South-West Bangalore"
-  | "West Bangalore"
-  | "North-West Bangalore";
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
-const REGION_ORDER: RegionName[] = [
-  "Central Bangalore",
-  "North Bangalore",
-  "North-East Bangalore",
-  "East Bangalore",
-  "South-East Bangalore",
-  "South Bangalore",
-  "South-West Bangalore",
-  "West Bangalore",
-  "North-West Bangalore",
-];
-const DETAIL_ZOOM = 12;
 
 // Raw composite range from the scoring pipeline — used to normalise recomputeScore
 // to the same 1.0–9.5 scale as the stored overall_score values.
@@ -71,79 +48,6 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
     Math.sin(dLat / 2) ** 2 +
     Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
-
-function getRegionName(lat: number, lon: number, centerLat: number, centerLon: number, centralRadiusKm: number): RegionName {
-  const distanceKm = haversineKm(lat, lon, centerLat, centerLon);
-  if (distanceKm <= centralRadiusKm) return "Central Bangalore";
-
-  const dy = lat - centerLat;
-  const dx = (lon - centerLon) * Math.cos((centerLat * Math.PI) / 180);
-  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-  if (angle >= -22.5 && angle < 22.5) return "East Bangalore";
-  if (angle >= 22.5 && angle < 67.5) return "North-East Bangalore";
-  if (angle >= 67.5 && angle < 112.5) return "North Bangalore";
-  if (angle >= 112.5 && angle < 157.5) return "North-West Bangalore";
-  if (angle >= 157.5 || angle < -157.5) return "West Bangalore";
-  if (angle >= -157.5 && angle < -112.5) return "South-West Bangalore";
-  if (angle >= -112.5 && angle < -67.5) return "South Bangalore";
-  return "South-East Bangalore";
-}
-
-function getCentralRadiusKm(localities: Pick<LocalityFull, "lat" | "lon">[], centerLat: number, centerLon: number): number {
-  const dists = localities
-    .map((l) => haversineKm(l.lat, l.lon, centerLat, centerLon))
-    .sort((a, b) => a - b);
-  if (!dists.length) return 0;
-  const p20 = dists[Math.floor(dists.length * 0.2)];
-  return Math.max(2, Math.min(6, p20));
-}
-
-function computeRegionRatings(localities: LocalityFull[], weights: Weights): RegionRating[] {
-  if (!localities.length) return [];
-
-  const centerLat = localities.reduce((sum, l) => sum + l.lat, 0) / localities.length;
-  const centerLon = localities.reduce((sum, l) => sum + l.lon, 0) / localities.length;
-  const centralRadiusKm = getCentralRadiusKm(localities, centerLat, centerLon);
-
-  const grouped = new Map<RegionName, LocalityFull[]>();
-  REGION_ORDER.forEach((r) => grouped.set(r, []));
-
-  localities.forEach((loc) => {
-    const region = getRegionName(loc.lat, loc.lon, centerLat, centerLon, centralRadiusKm);
-    grouped.get(region)?.push(loc);
-  });
-
-  return REGION_ORDER.map((region) => {
-    const group = grouped.get(region) ?? [];
-    if (!group.length) return { region, score: 0, count: 0, centerLat: 0, centerLon: 0 };
-
-    const scored = group.map((l) => ({ ...l, liveScore: recomputeScore(l.factors, weights) }));
-    const avg = scored.reduce((sum, l) => sum + l.liveScore, 0) / scored.length;
-    const rCenterLat = group.reduce((sum, l) => sum + l.lat, 0) / group.length;
-    const rCenterLon = group.reduce((sum, l) => sum + l.lon, 0) / group.length;
-
-    return {
-      region,
-      score: Math.round(avg * 10) / 10,
-      count: group.length,
-      centerLat: rCenterLat,
-      centerLon: rCenterLon,
-    };
-  }).filter((r) => r.count > 0);
-}
-
-function getRegionLabelFeatures(localities: LocalityFull[]) {
-  if (!localities.length) return [];
-  const ratings = computeRegionRatings(localities, DEFAULT_WEIGHTS);
-  return ratings
-    .filter((r) => r.count > 0)
-    .map((r) => ({
-      type: "Feature" as const,
-      geometry: { type: "Point" as const, coordinates: [r.centerLon, r.centerLat] },
-      properties: { name: r.region, overall_score: r.score },
-    }));
 }
 
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
@@ -307,8 +211,6 @@ export default function Home() {
   const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
 
   const updateMarkerVisibility = () => {
-    const zoom = mapInstanceRef.current?.getZoom() ?? 0;
-    const showMarkers = zoom >= DETAIL_ZOOM;
     markersRef.current.forEach(({ el, factors }) => {
       const score = recomputeScore(factors, weightsRef.current);
       const visibleByFilter =
@@ -316,32 +218,12 @@ export default function Home() {
         (scoreFilterRef.current === "great" && score >= 7) ||
         (scoreFilterRef.current === "good"  && score >= 4 && score < 7) ||
         (scoreFilterRef.current === "low"   && score < 4);
-      if (showMarkers && visibleByFilter) {
+      if (visibleByFilter) {
         el.style.display = "flex";
         el.style.alignItems = "center";
         el.style.opacity = "0.85";
       } else {
         el.style.display = "none";
-      }
-    });
-  };
-
-  const updateMajorCircleFilter = () => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
-    const f = scoreFilterRef.current;
-    const layerFilter: maplibregl.FilterSpecification =
-      f === "great" ? [">=", ["get", "overall_score"], 7] as unknown as maplibregl.FilterSpecification :
-      f === "good"  ? ["all", [">=", ["get", "overall_score"], 4], ["<",  ["get", "overall_score"], 7]] as unknown as maplibregl.FilterSpecification :
-      f === "low"   ? ["<",  ["get", "overall_score"], 4] as unknown as maplibregl.FilterSpecification :
-      null as unknown as maplibregl.FilterSpecification; // "all" — remove filter
-    const MAJOR_LAYERS = ["localities-major-labels"];
-    MAJOR_LAYERS.forEach((id) => {
-      if (!map.getLayer(id)) return;
-      if (layerFilter) {
-        map.setFilter(id, layerFilter);
-      } else {
-        map.setFilter(id, null);
       }
     });
   };
@@ -445,11 +327,10 @@ export default function Home() {
     updateMarkerVisibility();
   }, [weights]);
 
-  // Show/hide markers and major circles based on the active score filter
+  // Show/hide markers based on the active score filter
   useEffect(() => {
     scoreFilterRef.current = scoreFilter;
     updateMarkerVisibility();
-    updateMajorCircleFilter();
   }, [scoreFilter]);
 
   useEffect(() => {
@@ -519,104 +400,27 @@ export default function Home() {
         factors: f.properties.factors,
         raw: f.properties.raw,
       }));
-      // Zoomed-out view: only show major Bengaluru areas
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
-      // Point source: one point per locality centroid for the dot layer
-      const localityPoints = (data.features as LocalityFeature[]).map((f: LocalityFeature) => ({
-        type: "Feature" as const,
-        geometry: { type: "Point" as const, coordinates: [f.properties.lon, f.properties.lat] },
-        properties: { name: f.properties.name, overall_score: f.properties.overall_score },
-      }));
-      map.addSource("localities-points", {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: localityPoints },
-      });
-
-      // Build a Point source for region labels positioned at each region's centroid
-      const majorPointFeatures = getRegionLabelFeatures(mapLocalities);
-      map.addSource("localities-major-points", {
-        type: "geojson",
-        data: { type: "FeatureCollection", features: majorPointFeatures },
-      });
-
-      // Zoomed-out view: region name labels only — no circles
-      map.addLayer({
-        id: "localities-major-labels",
-        type: "symbol",
-        source: "localities-major-points",
-        maxzoom: DETAIL_ZOOM,
-        layout: {
-          "text-field": ["get", "name"],
-          "text-size": 13,
-          "text-font": ["Open Sans Bold", "Arial Unicode MS Regular"],
-          "text-anchor": "center",
-          "text-offset": [0, 0],
-          "text-max-width": 8,
-        },
-        paint: {
-          "text-color": "#1f2937",
-          "text-halo-color": "rgba(255,255,255,0.9)",
-          "text-halo-width": 2,
-        },
-      });
-
-      // Zoomed-out dots — small colored circles, one per locality, disappear when pills take over
-      map.addLayer({
-        id: "localities-dots",
-        type: "circle",
-        source: "localities-points",
-        maxzoom: DETAIL_ZOOM,
-        paint: {
-          "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 4, 11, 7] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-          "circle-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"] as maplibregl.DataDrivenPropertyValueSpecification<string>,
-          "circle-opacity": 0.88,
-          "circle-stroke-color": "white",
-          "circle-stroke-width": 1.5,
-        },
-      });
-
-      // Fill — only visible on hover/click (amenity-based radius)
+      // Fill — only visible on hover/click
       map.addLayer({
         id: "localities-fill",
         type: "fill",
         source: "localities",
-        minzoom: DETAIL_ZOOM,
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
           "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0],
         },
       });
 
-      // Outline — thin always, thicker on hover
+      // Outline — thicker on hover
       map.addLayer({
         id: "localities-outline",
         type: "line",
         source: "localities",
-        minzoom: DETAIL_ZOOM,
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
           "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
-        },
-      });
-
-      map.addLayer({
-        id: "localities-labels",
-        type: "symbol",
-        source: "localities-points",
-        maxzoom: DETAIL_ZOOM,
-        layout: {
-          "text-field": ["concat", ["get", "name"], "\n", ["to-string", ["get", "overall_score"]]],
-          "text-size": ["interpolate", ["linear"], ["zoom"], 9, 8, 12, 11] as maplibregl.DataDrivenPropertyValueSpecification<number>,
-          "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],
-          "text-anchor": "top",
-          "text-offset": [0, 1.8],
-          "text-max-width": 8,
-        },
-        paint: {
-          "text-color": "#1f2937",
-          "text-halo-color": "#ffffff",
-          "text-halo-width": 1.5,
         },
       });
 
@@ -691,8 +495,6 @@ export default function Home() {
       });
 
       updateMarkerVisibility();
-      map.on("zoom", updateMarkerVisibility);
-      map.on("zoomend", updateMarkerVisibility);
 
       // Populate locality list for search and URL deep-links
       setAllLocalities(mapLocalities);
