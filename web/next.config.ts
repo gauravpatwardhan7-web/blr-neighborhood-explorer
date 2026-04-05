@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           // Restrict referrer info leakage
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // Permissions policy — disable unused browser features
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+          // Permissions policy — disable unused browser features; allow geolocation for the locate button
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self), interest-cohort=()" },
           // Content Security Policy
           // Allows the map tile CDN (maptiler.com) and MapLibre GL assets
           {
