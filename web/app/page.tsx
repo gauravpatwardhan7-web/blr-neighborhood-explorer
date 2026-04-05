@@ -18,6 +18,7 @@ type Locality = {
     supermarkets: number;
     restaurants: number;
     metro_stations: number;
+    bus_stops: number;
   };
 };
 
@@ -62,6 +63,7 @@ const SLIDER_LABELS: Record<FactorKey, string> = {
 // Raw data keys → human-readable labels (override the default key→words fallback)
 const RAW_LABELS: Partial<Record<keyof Locality["raw"], string>> = {
   metro_stations: "transit stations (metro + rail)",
+  bus_stops:      "bus stops",
   aqi:            "AQI (US)",
   temperature_c:  "temperature (°C)",
 };
@@ -759,6 +761,7 @@ export default function Home() {
       });
 
       // Landmark labels: prominent names for well-known areas, always visible
+      // text-offset pushes the label below the 34px DOM bubble marker so it isn't hidden behind it
       map.addLayer({
         id: "localities-labels",
         type: "symbol",
@@ -771,9 +774,10 @@ export default function Home() {
         ]]],
         layout: {
           "text-field": ["get", "name"],
-          "text-size": 13,
+          "text-size": 12,
           "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
-          "text-anchor": "center",
+          "text-anchor": "top",
+          "text-offset": [0, 1.6],
           "text-allow-overlap": false,
         },
         paint: {

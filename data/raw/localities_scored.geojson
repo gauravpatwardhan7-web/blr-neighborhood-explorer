@@ -21,7 +21,8 @@
           "schools": 36,
           "supermarkets": 15,
           "restaurants": 69,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 134
         }
       },
       "geometry": {
@@ -312,7 +313,8 @@
           "schools": 21,
           "supermarkets": 16,
           "restaurants": 223,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 72
         }
       },
       "geometry": {
@@ -603,7 +605,8 @@
           "schools": 41,
           "supermarkets": 14,
           "restaurants": 64,
-          "metro_stations": 5
+          "metro_stations": 5,
+          "bus_stops": 76
         }
       },
       "geometry": {
@@ -894,7 +897,8 @@
           "schools": 45,
           "supermarkets": 18,
           "restaurants": 215,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 133
         }
       },
       "geometry": {
@@ -1185,7 +1189,8 @@
           "schools": 10,
           "supermarkets": 11,
           "restaurants": 63,
-          "metro_stations": 4
+          "metro_stations": 4,
+          "bus_stops": 153
         }
       },
       "geometry": {
@@ -1476,7 +1481,8 @@
           "schools": 12,
           "supermarkets": 12,
           "restaurants": 43,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 72
         }
       },
       "geometry": {
@@ -1767,7 +1773,8 @@
           "schools": 57,
           "supermarkets": 15,
           "restaurants": 104,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 100
         }
       },
       "geometry": {
@@ -2058,7 +2065,8 @@
           "schools": 11,
           "supermarkets": 19,
           "restaurants": 85,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 115
         }
       },
       "geometry": {
@@ -2349,7 +2357,8 @@
           "schools": 26,
           "supermarkets": 13,
           "restaurants": 79,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 91
         }
       },
       "geometry": {
@@ -2640,7 +2649,8 @@
           "schools": 27,
           "supermarkets": 13,
           "restaurants": 35,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 77
         }
       },
       "geometry": {
@@ -2931,7 +2941,8 @@
           "schools": 15,
           "supermarkets": 9,
           "restaurants": 92,
-          "metro_stations": 4
+          "metro_stations": 4,
+          "bus_stops": 97
         }
       },
       "geometry": {
@@ -3222,7 +3233,8 @@
           "schools": 25,
           "supermarkets": 15,
           "restaurants": 201,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 101
         }
       },
       "geometry": {
@@ -3513,7 +3525,8 @@
           "schools": 33,
           "supermarkets": 15,
           "restaurants": 170,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 56
         }
       },
       "geometry": {
@@ -3804,7 +3817,8 @@
           "schools": 16,
           "supermarkets": 7,
           "restaurants": 45,
-          "metro_stations": 5
+          "metro_stations": 5,
+          "bus_stops": 95
         }
       },
       "geometry": {
@@ -4095,7 +4109,8 @@
           "schools": 49,
           "supermarkets": 12,
           "restaurants": 104,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 101
         }
       },
       "geometry": {
@@ -4386,7 +4401,8 @@
           "schools": 19,
           "supermarkets": 12,
           "restaurants": 83,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 28
         }
       },
       "geometry": {
@@ -4677,7 +4693,8 @@
           "schools": 14,
           "supermarkets": 17,
           "restaurants": 26,
-          "metro_stations": 6
+          "metro_stations": 6,
+          "bus_stops": 56
         }
       },
       "geometry": {
@@ -4968,7 +4985,8 @@
           "schools": 14,
           "supermarkets": 20,
           "restaurants": 83,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 26
         }
       },
       "geometry": {
@@ -5259,7 +5277,8 @@
           "schools": 19,
           "supermarkets": 23,
           "restaurants": 109,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 19
         }
       },
       "geometry": {
@@ -5550,7 +5569,8 @@
           "schools": 36,
           "supermarkets": 13,
           "restaurants": 67,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 123
         }
       },
       "geometry": {
@@ -5841,7 +5861,8 @@
           "schools": 32,
           "supermarkets": 7,
           "restaurants": 100,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 65
         }
       },
       "geometry": {
@@ -6132,7 +6153,8 @@
           "schools": 21,
           "supermarkets": 19,
           "restaurants": 92,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 58
         }
       },
       "geometry": {
@@ -6423,7 +6445,8 @@
           "schools": 15,
           "supermarkets": 17,
           "restaurants": 26,
-          "metro_stations": 5
+          "metro_stations": 5,
+          "bus_stops": 56
         }
       },
       "geometry": {
@@ -6714,7 +6737,8 @@
           "schools": 17,
           "supermarkets": 21,
           "restaurants": 104,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 19
         }
       },
       "geometry": {
@@ -7005,7 +7029,8 @@
           "schools": 12,
           "supermarkets": 11,
           "restaurants": 24,
-          "metro_stations": 5
+          "metro_stations": 5,
+          "bus_stops": 38
         }
       },
       "geometry": {
@@ -7296,7 +7321,8 @@
           "schools": 3,
           "supermarkets": 6,
           "restaurants": 120,
-          "metro_stations": 4
+          "metro_stations": 4,
+          "bus_stops": 133
         }
       },
       "geometry": {
@@ -7587,7 +7613,8 @@
           "schools": 30,
           "supermarkets": 9,
           "restaurants": 25,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 50
         }
       },
       "geometry": {
@@ -7878,7 +7905,8 @@
           "schools": 37,
           "supermarkets": 9,
           "restaurants": 57,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 96
         }
       },
       "geometry": {
@@ -8169,7 +8197,8 @@
           "schools": 11,
           "supermarkets": 6,
           "restaurants": 24,
-          "metro_stations": 4
+          "metro_stations": 4,
+          "bus_stops": 77
         }
       },
       "geometry": {
@@ -8460,7 +8489,8 @@
           "schools": 17,
           "supermarkets": 6,
           "restaurants": 35,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 86
         }
       },
       "geometry": {
@@ -8751,7 +8781,8 @@
           "schools": 7,
           "supermarkets": 10,
           "restaurants": 19,
-          "metro_stations": 5
+          "metro_stations": 5,
+          "bus_stops": 44
         }
       },
       "geometry": {
@@ -9042,7 +9073,8 @@
           "schools": 9,
           "supermarkets": 6,
           "restaurants": 88,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 95
         }
       },
       "geometry": {
@@ -9333,7 +9365,8 @@
           "schools": 12,
           "supermarkets": 10,
           "restaurants": 31,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 47
         }
       },
       "geometry": {
@@ -9624,7 +9657,8 @@
           "schools": 14,
           "supermarkets": 19,
           "restaurants": 108,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 71
         }
       },
       "geometry": {
@@ -9915,7 +9949,8 @@
           "schools": 22,
           "supermarkets": 22,
           "restaurants": 27,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 59
         }
       },
       "geometry": {
@@ -10206,7 +10241,8 @@
           "schools": 9,
           "supermarkets": 16,
           "restaurants": 52,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 81
         }
       },
       "geometry": {
@@ -10497,7 +10533,8 @@
           "schools": 19,
           "supermarkets": 9,
           "restaurants": 31,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 57
         }
       },
       "geometry": {
@@ -10788,7 +10825,8 @@
           "schools": 37,
           "supermarkets": 16,
           "restaurants": 18,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 14
         }
       },
       "geometry": {
@@ -11079,7 +11117,8 @@
           "schools": 35,
           "supermarkets": 2,
           "restaurants": 10,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 22
         }
       },
       "geometry": {
@@ -11370,7 +11409,8 @@
           "schools": 7,
           "supermarkets": 13,
           "restaurants": 70,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 98
         }
       },
       "geometry": {
@@ -11661,7 +11701,8 @@
           "schools": 5,
           "supermarkets": 1,
           "restaurants": 4,
-          "metro_stations": 5
+          "metro_stations": 5,
+          "bus_stops": 52
         }
       },
       "geometry": {
@@ -11952,7 +11993,8 @@
           "schools": 11,
           "supermarkets": 9,
           "restaurants": 79,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 66
         }
       },
       "geometry": {
@@ -12243,7 +12285,8 @@
           "schools": 20,
           "supermarkets": 11,
           "restaurants": 45,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 25
         }
       },
       "geometry": {
@@ -12534,7 +12577,8 @@
           "schools": 3,
           "supermarkets": 19,
           "restaurants": 84,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 29
         }
       },
       "geometry": {
@@ -12825,7 +12869,8 @@
           "schools": 8,
           "supermarkets": 4,
           "restaurants": 41,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 55
         }
       },
       "geometry": {
@@ -13116,7 +13161,8 @@
           "schools": 11,
           "supermarkets": 9,
           "restaurants": 9,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 47
         }
       },
       "geometry": {
@@ -13407,7 +13453,8 @@
           "schools": 8,
           "supermarkets": 2,
           "restaurants": 56,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 33
         }
       },
       "geometry": {
@@ -13698,7 +13745,8 @@
           "schools": 24,
           "supermarkets": 19,
           "restaurants": 46,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 0
         }
       },
       "geometry": {
@@ -13989,7 +14037,8 @@
           "schools": 3,
           "supermarkets": 1,
           "restaurants": 9,
-          "metro_stations": 4
+          "metro_stations": 4,
+          "bus_stops": 61
         }
       },
       "geometry": {
@@ -14280,7 +14329,8 @@
           "schools": 16,
           "supermarkets": 10,
           "restaurants": 42,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 82
         }
       },
       "geometry": {
@@ -14571,7 +14621,8 @@
           "schools": 9,
           "supermarkets": 3,
           "restaurants": 11,
-          "metro_stations": 3
+          "metro_stations": 3,
+          "bus_stops": 37
         }
       },
       "geometry": {
@@ -14862,7 +14913,8 @@
           "schools": 6,
           "supermarkets": 10,
           "restaurants": 18,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 63
         }
       },
       "geometry": {
@@ -15153,7 +15205,8 @@
           "schools": 18,
           "supermarkets": 19,
           "restaurants": 30,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 38
         }
       },
       "geometry": {
@@ -15444,7 +15497,8 @@
           "schools": 11,
           "supermarkets": 5,
           "restaurants": 17,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 16
         }
       },
       "geometry": {
@@ -15735,7 +15789,8 @@
           "schools": 34,
           "supermarkets": 8,
           "restaurants": 7,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 11
         }
       },
       "geometry": {
@@ -16026,7 +16081,8 @@
           "schools": 16,
           "supermarkets": 4,
           "restaurants": 7,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 75
         }
       },
       "geometry": {
@@ -16317,7 +16373,8 @@
           "schools": 24,
           "supermarkets": 18,
           "restaurants": 20,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 11
         }
       },
       "geometry": {
@@ -16608,7 +16665,8 @@
           "schools": 15,
           "supermarkets": 4,
           "restaurants": 20,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 54
         }
       },
       "geometry": {
@@ -16899,7 +16957,8 @@
           "schools": 14,
           "supermarkets": 15,
           "restaurants": 20,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 74
         }
       },
       "geometry": {
@@ -17190,7 +17249,8 @@
           "schools": 20,
           "supermarkets": 7,
           "restaurants": 38,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 28
         }
       },
       "geometry": {
@@ -17481,7 +17541,8 @@
           "schools": 15,
           "supermarkets": 4,
           "restaurants": 16,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 21
         }
       },
       "geometry": {
@@ -17772,7 +17833,8 @@
           "schools": 18,
           "supermarkets": 9,
           "restaurants": 16,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 48
         }
       },
       "geometry": {
@@ -18063,7 +18125,8 @@
           "schools": 13,
           "supermarkets": 4,
           "restaurants": 21,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 61
         }
       },
       "geometry": {
@@ -18354,7 +18417,8 @@
           "schools": 14,
           "supermarkets": 9,
           "restaurants": 26,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 55
         }
       },
       "geometry": {
@@ -18645,7 +18709,8 @@
           "schools": 3,
           "supermarkets": 14,
           "restaurants": 77,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 20
         }
       },
       "geometry": {
@@ -18936,7 +19001,8 @@
           "schools": 10,
           "supermarkets": 8,
           "restaurants": 39,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 8
         }
       },
       "geometry": {
@@ -19227,7 +19293,8 @@
           "schools": 16,
           "supermarkets": 6,
           "restaurants": 23,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 40
         }
       },
       "geometry": {
@@ -19518,7 +19585,8 @@
           "schools": 4,
           "supermarkets": 7,
           "restaurants": 23,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 79
         }
       },
       "geometry": {
@@ -19809,7 +19877,8 @@
           "schools": 15,
           "supermarkets": 4,
           "restaurants": 17,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 0
         }
       },
       "geometry": {
@@ -20100,7 +20169,8 @@
           "schools": 12,
           "supermarkets": 2,
           "restaurants": 9,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 16
         }
       },
       "geometry": {
@@ -20391,7 +20461,8 @@
           "schools": 7,
           "supermarkets": 8,
           "restaurants": 23,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 59
         }
       },
       "geometry": {
@@ -20682,7 +20753,8 @@
           "schools": 1,
           "supermarkets": 5,
           "restaurants": 22,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 46
         }
       },
       "geometry": {
@@ -20973,7 +21045,8 @@
           "schools": 5,
           "supermarkets": 1,
           "restaurants": 4,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 28
         }
       },
       "geometry": {
@@ -21264,7 +21337,8 @@
           "schools": 23,
           "supermarkets": 14,
           "restaurants": 10,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 16
         }
       },
       "geometry": {
@@ -21555,7 +21629,8 @@
           "schools": 9,
           "supermarkets": 2,
           "restaurants": 24,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 43
         }
       },
       "geometry": {
@@ -21846,7 +21921,8 @@
           "schools": 9,
           "supermarkets": 3,
           "restaurants": 23,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 17
         }
       },
       "geometry": {
@@ -22137,7 +22213,8 @@
           "schools": 3,
           "supermarkets": 3,
           "restaurants": 5,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 38
         }
       },
       "geometry": {
@@ -22428,7 +22505,8 @@
           "schools": 8,
           "supermarkets": 4,
           "restaurants": 72,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 8
         }
       },
       "geometry": {
@@ -22719,7 +22797,8 @@
           "schools": 12,
           "supermarkets": 5,
           "restaurants": 17,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 13
         }
       },
       "geometry": {
@@ -23010,7 +23089,8 @@
           "schools": 6,
           "supermarkets": 4,
           "restaurants": 14,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 90
         }
       },
       "geometry": {
@@ -23301,7 +23381,8 @@
           "schools": 8,
           "supermarkets": 6,
           "restaurants": 11,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 44
         }
       },
       "geometry": {
@@ -23592,7 +23673,8 @@
           "schools": 8,
           "supermarkets": 3,
           "restaurants": 4,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 76
         }
       },
       "geometry": {
@@ -23883,7 +23965,8 @@
           "schools": 8,
           "supermarkets": 6,
           "restaurants": 32,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 25
         }
       },
       "geometry": {
@@ -24174,7 +24257,8 @@
           "schools": 4,
           "supermarkets": 0,
           "restaurants": 5,
-          "metro_stations": 2
+          "metro_stations": 2,
+          "bus_stops": 23
         }
       },
       "geometry": {
@@ -24465,7 +24549,8 @@
           "schools": 24,
           "supermarkets": 1,
           "restaurants": 4,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 41
         }
       },
       "geometry": {
@@ -24756,7 +24841,8 @@
           "schools": 9,
           "supermarkets": 11,
           "restaurants": 2,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 17
         }
       },
       "geometry": {
@@ -25047,7 +25133,8 @@
           "schools": 11,
           "supermarkets": 5,
           "restaurants": 5,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 50
         }
       },
       "geometry": {
@@ -25338,7 +25425,8 @@
           "schools": 1,
           "supermarkets": 4,
           "restaurants": 9,
-          "metro_stations": 1
+          "metro_stations": 1,
+          "bus_stops": 49
         }
       },
       "geometry": {
@@ -25629,7 +25717,8 @@
           "schools": 13,
           "supermarkets": 2,
           "restaurants": 5,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 37
         }
       },
       "geometry": {
@@ -25920,7 +26009,8 @@
           "schools": 7,
           "supermarkets": 2,
           "restaurants": 15,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 13
         }
       },
       "geometry": {
@@ -26211,7 +26301,8 @@
           "schools": 4,
           "supermarkets": 1,
           "restaurants": 1,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 47
         }
       },
       "geometry": {
@@ -26502,7 +26593,8 @@
           "schools": 8,
           "supermarkets": 4,
           "restaurants": 6,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 60
         }
       },
       "geometry": {
@@ -26793,7 +26885,8 @@
           "schools": 9,
           "supermarkets": 2,
           "restaurants": 0,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 4
         }
       },
       "geometry": {
@@ -27084,7 +27177,8 @@
           "schools": 9,
           "supermarkets": 3,
           "restaurants": 0,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 4
         }
       },
       "geometry": {
@@ -27375,7 +27469,8 @@
           "schools": 2,
           "supermarkets": 5,
           "restaurants": 16,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 12
         }
       },
       "geometry": {
@@ -27666,7 +27761,8 @@
           "schools": 8,
           "supermarkets": 1,
           "restaurants": 3,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 10
         }
       },
       "geometry": {
@@ -27957,7 +28053,8 @@
           "schools": 8,
           "supermarkets": 0,
           "restaurants": 6,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 7
         }
       },
       "geometry": {
@@ -28248,7 +28345,8 @@
           "schools": 3,
           "supermarkets": 0,
           "restaurants": 1,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 34
         }
       },
       "geometry": {
@@ -28539,7 +28637,8 @@
           "schools": 4,
           "supermarkets": 2,
           "restaurants": 1,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 33
         }
       },
       "geometry": {
@@ -28830,7 +28929,8 @@
           "schools": 5,
           "supermarkets": 1,
           "restaurants": 1,
-          "metro_stations": 0
+          "metro_stations": 0,
+          "bus_stops": 8
         }
       },
       "geometry": {

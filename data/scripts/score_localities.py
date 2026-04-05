@@ -106,6 +106,7 @@ for i, feature in enumerate(localities):
             "supermarkets":  a.get("supermarkets", 0),
             "restaurants":   a.get("restaurants", 0),
             "metro_stations":a.get("metro_stations", 0),
+            "bus_stops":     a.get("bus_stops", 0),
         }
     })
 
