@@ -41,7 +41,7 @@
     "restaurants": 108,
     "gyms": 12,
     "atms": 20,
-    "metro_stations": 0,
+    "metro_stations": 1,
     "bus_stops": 71
   },
   {
@@ -56,7 +56,7 @@
     "restaurants": 85,
     "gyms": 8,
     "atms": 35,
-    "metro_stations": 3,
+    "metro_stations": 2,
     "bus_stops": 115
   },
   {
@@ -71,7 +71,7 @@
     "restaurants": 63,
     "gyms": 3,
     "atms": 33,
-    "metro_stations": 4,
+    "metro_stations": 3,
     "bus_stops": 153
   },
   {
@@ -101,7 +101,7 @@
     "restaurants": 64,
     "gyms": 12,
     "atms": 32,
-    "metro_stations": 5,
+    "metro_stations": 4,
     "bus_stops": 76
   },
   {
@@ -191,7 +191,7 @@
     "restaurants": 9,
     "gyms": 0,
     "atms": 8,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 49
   },
   {
@@ -236,7 +236,7 @@
     "restaurants": 18,
     "gyms": 1,
     "atms": 18,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 63
   },
   {
@@ -281,7 +281,7 @@
     "restaurants": 22,
     "gyms": 3,
     "atms": 15,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 46
   },
   {
@@ -296,7 +296,7 @@
     "restaurants": 52,
     "gyms": 10,
     "atms": 19,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 81
   },
   {
@@ -326,7 +326,7 @@
     "restaurants": 120,
     "gyms": 4,
     "atms": 22,
-    "metro_stations": 4,
+    "metro_stations": 3,
     "bus_stops": 133
   },
   {
@@ -431,7 +431,7 @@
     "restaurants": 9,
     "gyms": 2,
     "atms": 6,
-    "metro_stations": 3,
+    "metro_stations": 1,
     "bus_stops": 47
   },
   {
@@ -461,7 +461,7 @@
     "restaurants": 27,
     "gyms": 2,
     "atms": 10,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 59
   },
   {
@@ -506,7 +506,7 @@
     "restaurants": 67,
     "gyms": 2,
     "atms": 31,
-    "metro_stations": 2,
+    "metro_stations": 1,
     "bus_stops": 123
   },
   {
@@ -521,7 +521,7 @@
     "restaurants": 24,
     "gyms": 0,
     "atms": 20,
-    "metro_stations": 4,
+    "metro_stations": 3,
     "bus_stops": 77
   },
   {
@@ -551,7 +551,7 @@
     "restaurants": 4,
     "gyms": 0,
     "atms": 6,
-    "metro_stations": 5,
+    "metro_stations": 2,
     "bus_stops": 52
   },
   {
@@ -641,7 +641,7 @@
     "restaurants": 26,
     "gyms": 1,
     "atms": 8,
-    "metro_stations": 6,
+    "metro_stations": 2,
     "bus_stops": 56
   },
   {
@@ -686,7 +686,7 @@
     "restaurants": 23,
     "gyms": 1,
     "atms": 5,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 17
   },
   {
@@ -941,7 +941,7 @@
     "restaurants": 45,
     "gyms": 2,
     "atms": 27,
-    "metro_stations": 5,
+    "metro_stations": 4,
     "bus_stops": 95
   },
   {
@@ -1001,7 +1001,7 @@
     "restaurants": 79,
     "gyms": 0,
     "atms": 22,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 66
   },
   {
@@ -1031,7 +1031,7 @@
     "restaurants": 9,
     "gyms": 0,
     "atms": 9,
-    "metro_stations": 4,
+    "metro_stations": 3,
     "bus_stops": 61
   },
   {
@@ -1196,7 +1196,7 @@
     "restaurants": 42,
     "gyms": 3,
     "atms": 10,
-    "metro_stations": 1,
+    "metro_stations": 0,
     "bus_stops": 82
   },
   {
@@ -1226,7 +1226,7 @@
     "restaurants": 19,
     "gyms": 1,
     "atms": 11,
-    "metro_stations": 5,
+    "metro_stations": 2,
     "bus_stops": 44
   },
   {
@@ -1241,7 +1241,7 @@
     "restaurants": 26,
     "gyms": 1,
     "atms": 8,
-    "metro_stations": 5,
+    "metro_stations": 1,
     "bus_stops": 56
   },
   {
@@ -1271,7 +1271,7 @@
     "restaurants": 24,
     "gyms": 1,
     "atms": 10,
-    "metro_stations": 5,
+    "metro_stations": 2,
     "bus_stops": 38
   },
   {
@@ -1481,7 +1481,7 @@
     "restaurants": 9,
     "gyms": 0,
     "atms": 2,
-    "metro_stations": 2,
+    "metro_stations": 1,
     "bus_stops": 16
   },
   {

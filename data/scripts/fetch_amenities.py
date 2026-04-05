@@ -23,8 +23,8 @@ def count_amenities(name, lat, lon):
       nwr["amenity"="restaurant"](around:{RADIUS},{lat},{lon});
       nwr["leisure"="fitness_centre"](around:{RADIUS},{lat},{lon});
       nwr["amenity"="atm"](around:{RADIUS},{lat},{lon});
-      nwr["railway"="station"](around:{RADIUS},{lat},{lon});
-      nwr["station"="subway"](around:{RADIUS},{lat},{lon});
+      nwr["station"="subway"]["network"="Namma Metro"](around:{RADIUS},{lat},{lon});
+      nwr["railway"="station"]["network"="Namma Metro"](around:{RADIUS},{lat},{lon});
     );
     out center;
     """
@@ -53,6 +53,7 @@ def count_amenities(name, lat, lon):
         "parks": 0, "schools": 0, "restaurants": 0,
         "gyms": 0, "atms": 0, "metro_stations": 0
     }
+    metro_names: set[str] = set()  # deduplicate by name (OSM has node+way+relation for same station)
 
     for el in elements:
         tags = el.get("tags", {})
@@ -70,9 +71,10 @@ def count_amenities(name, lat, lon):
         elif shop == "supermarket":     counts["supermarkets"] += 1
         elif leisure == "park":         counts["parks"] += 1
         elif leisure == "fitness_centre": counts["gyms"] += 1
-        elif railway == "station" or station == "subway":
-            counts["metro_stations"] += 1
+        elif (station == "subway" or railway == "station") and tags.get("network") == "Namma Metro":
+            metro_names.add(tags.get("name", f"__id_{el['id']}"))
 
+    counts["metro_stations"] = len(metro_names)
     return counts
 
 output_path = "data/raw/amenities.json"
