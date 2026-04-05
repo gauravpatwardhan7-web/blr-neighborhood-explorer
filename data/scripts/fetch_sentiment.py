@@ -12,6 +12,7 @@ Strategy:
 - Pick 2-3 quotes that cover distinct aspects (traffic, cost, vibe ...)
 """
 
+import argparse
 import html
 import json
 import re
@@ -21,16 +22,131 @@ from pathlib import Path
 import requests
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-NEIGHBOURHOODS = [
+# Full locality list ordered by Reddit discussion volume (most-discussed first).
+# The first 6 are already processed; new batches pick up from where we left off.
+NEIGHBOURHOODS_ORDERED = [
+    # ── Tier 1: high Reddit discussion ────────────────────────────────────────
     "Koramangala",
     "Indiranagar",
     "Bellandur",
     "Sarjapur",
     "Whitefield",
     "Malleshwaram",
+    # ── Tier 2: well-known residential areas ──────────────────────────────────
+    "HSR Layout",
+    "BTM Layout",
+    "JP Nagar",
+    "Jayanagar",
+    "Hebbal",
+    "Electronic City",
+    "Marathahalli",
+    "Banashankari",
+    "Rajajinagar",
+    "Basavanagudi",
+    # ── Tier 3: growing / actively discussed ──────────────────────────────────
+    "KR Puram",
+    "Yelahanka",
+    "Mahadevapura",
+    "Domlur",
+    "RT Nagar",
+    "Banaswadi",
+    "Frazer Town",
+    "Ulsoor",
+    "Yeshwantpur",
+    "Hennur",
+    "Brookefield",
+    "Bannerghatta Road",
+    "Vijayanagar",
+    "MG Road",
+    # ── Tier 4: established but less Reddit-active ────────────────────────────
+    "HAL",
+    "CV Raman Nagar",
+    "Horamavu",
+    "Hoodi",
+    "Kadugodi",
+    "Nagavara",
+    "Thanisandra",
+    "Kalyan Nagar",
+    "HBR Layout",
+    "Ramamurthy Nagar",
+    "Peenya",
+    "Shivajinagar",
+    "Vasanth Nagar",
+    "Richmond Town",
+    "Langford Town",
+    "Cox Town",
+    "Sadashivanagar",
+    "Cunningham Road",
+    "Dollars Colony",
+    "Varthur",
+    "Panathur",
+    "Munnekolala",
+    # ── Tier 5: peripheral / niche ────────────────────────────────────────────
+    "Nagarbhavi",
+    "Kengeri",
+    "Uttarahalli",
+    "Bommanahalli",
+    "Begur",
+    "Jakkur",
+    "Padmanabhanagar",
+    "Old Madras Road",
+    "RR Nagar",
+    "Jalahalli",
+    "Dasarahalli",
+    "Mahalakshmi Layout",
+    "Nandini Layout",
+    "Kamakshipalya",
+    "Chord Road",
+    "Arekere",
+    "Hulimavu",
+    "Gottigere",
+    "Akshayanagar",
+    "Hongasandra",
+    "Subramanyapura",
+    "Vasanthapura",
+    "Konanakunte",
+    "Talaghattapura",
+    "Sarakki",
+    "Puttenahalli",
+    "Chikkalasandra",
+    "Raghuvanahalli",
+    "Singasandra",
+    "Chandapura",
+    "Kasavanahalli",
+    "Girinagar",
+    "Chandra Layout",
+    "Herohalli",
+    "Mathikere",
+    "Bhattarahalli",
+    "Basaveshwara Nagar",
+    "BEL Layout",
+    "Hegganahalli",
+    "Victoria Layout",
+    "Kodigehalli",
+    "Kaggadasapura",
+    "Nallurhalli",
+    "Vibhutipura",
+    "Carmelaram",
+    "Kundalahalli",
+    "Devarabeesanahalli",
+    "Garudacharpalya",
+    "Thubarahalli",
+    "Dommasandra",
+    "Hagadur",
 ]
 
-SUBREDDITS = ["bangalore"]
+BATCH_SIZE = 5
+
+# Subreddits to search, with per-sub config:
+# - pages: how many result pages to fetch (1 page = up to 100 posts)
+# - bangalore_prefix: whether to prepend "Bangalore" to queries
+#   (needed for India-wide subs where posts aren't implicitly about BLR)
+SUBREDDIT_CONFIG = [
+    {"name": "bangalore",  "pages": 2, "bangalore_prefix": False},
+    {"name": "Bengaluru",  "pages": 1, "bangalore_prefix": False},
+    {"name": "india",      "pages": 1, "bangalore_prefix": True},
+    {"name": "AskIndia",   "pages": 1, "bangalore_prefix": True},
+]
 
 HEADERS = {"User-Agent": "blr-explorer/1.0"}
 SEARCH_URL = "https://www.reddit.com/r/{subreddit}/search.json"
@@ -223,53 +339,61 @@ def get_with_retry(url: str, params: dict) -> dict | None:
 
 def search_posts(neighbourhood: str) -> list[dict]:
     """
-    Search r/bangalore for posts about the neighbourhood.
+    Search multiple subreddits for posts about the neighbourhood.
     Returns all results deduped, then filtered to score > 3.
     """
     seen_ids: set[str] = set()
     posts: list[dict] = []
 
-    for template in QUERY_TEMPLATES:
-        query = template.format(name=neighbourhood)
-        after: str | None = None
+    for sub_cfg in SUBREDDIT_CONFIG:
+        sub = sub_cfg["name"]
+        n_pages = sub_cfg["pages"]
+        prefix = "Bangalore " if sub_cfg["bangalore_prefix"] else ""
 
-        for _page in range(2):
-            params: dict = {
-                "q": query,
-                "sort": "relevance",
-                "t": "all",
-                "limit": 100,
-                "type": "link",
-                "restrict_sr": "true",
-            }
-            if after:
-                params["after"] = after
+        for template in QUERY_TEMPLATES:
+            # For India-wide subs, prefix the neighbourhood with "Bangalore"
+            query = template.format(name=f"{prefix}{neighbourhood}")
+            after: str | None = None
 
-            data = get_with_retry(SEARCH_URL.format(subreddit="bangalore"), params)
-            if not data:
-                break
+            for _page in range(n_pages):
+                params: dict = {
+                    "q": query,
+                    "sort": "relevance",
+                    "t": "all",
+                    "limit": 100,
+                    "type": "link",
+                    "restrict_sr": "true",
+                }
+                if after:
+                    params["after"] = after
 
-            children = data["data"]["children"]
-            after = data["data"].get("after")
+                data = get_with_retry(SEARCH_URL.format(subreddit=sub), params)
+                if not data:
+                    break
 
-            for c in children:
-                d = c["data"]
-                post_id = d.get("id", "")
-                if post_id in seen_ids:
-                    continue
-                title = d.get("title", "")
-                body = d.get("selftext", "")
-                combined = title + " " + body
-                if not is_relevant(combined, neighbourhood):
-                    continue
-                seen_ids.add(post_id)
-                posts.append(d)
+                children = data["data"]["children"]
+                after = data["data"].get("after")
 
-            if not after:
-                break
+                for c in children:
+                    d = c["data"]
+                    post_id = d.get("id", "")
+                    if post_id in seen_ids:
+                        continue
+                    title = d.get("title", "")
+                    body = d.get("selftext", "")
+                    combined = title + " " + body
+                    if not is_relevant(combined, neighbourhood):
+                        continue
+                    seen_ids.add(post_id)
+                    # Store which subreddit this post came from
+                    d["_subreddit"] = sub
+                    posts.append(d)
+
+                if not after:
+                    break
+                time.sleep(SLEEP_BETWEEN_REQUESTS)
+
             time.sleep(SLEEP_BETWEEN_REQUESTS)
-
-        time.sleep(SLEEP_BETWEEN_REQUESTS)
 
     # Keep posts with real signal: score > 3 (upvoted, not noise)
     posts = [p for p in posts if p.get("score", 0) > 3]
@@ -390,8 +514,10 @@ def collect_sentence_pool(neighbourhood: str) -> tuple[list[dict], int]:
         post_id = p.get("id", "")
         if not post_id:
             continue
+        # Use the subreddit the post came from for the comments URL
+        post_sub = p.get("_subreddit", "bangalore")
         print(f"  Fetching comments [{i+1}/{len(top_posts)}]: {p.get('title','')[:60]}…")
-        comments = fetch_comments_for_post("bangalore", post_id, neighbourhood)
+        comments = fetch_comments_for_post(post_sub, post_id, neighbourhood)
         for c in comments:
             sents = split_sentences(c["body"])
             add_sentences(sents, "comment", require_name=True)
@@ -557,27 +683,79 @@ def analyse(neighbourhood: str) -> dict:
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Fetch Reddit sentiment for Bangalore localities.")
+    parser.add_argument(
+        "--batch",
+        type=int,
+        default=None,
+        help=(
+            "Which batch (1-based) of BATCH_SIZE localities to process. "
+            "Omit to auto-detect the next unprocessed batch."
+        ),
+    )
+    parser.add_argument(
+        "--names",
+        nargs="+",
+        help="Process specific locality names instead of a batch.",
+    )
+    args = parser.parse_args()
+
     out_raw = Path("data/raw")
     out_raw.mkdir(parents=True, exist_ok=True)
     out_web = Path("web/public")
     out_web.mkdir(parents=True, exist_ok=True)
 
-    results = []
-    for name in NEIGHBOURHOODS:
+    raw_path = out_raw / "sentiment.json"
+    web_path = out_web / "sentiment.json"
+
+    # Load existing results so we can merge (not overwrite)
+    if raw_path.exists():
+        existing: list[dict] = json.loads(raw_path.read_text())
+    else:
+        existing = []
+    already_done = {e["name"] for e in existing}
+
+    # Determine which localities to process this run
+    if args.names:
+        to_process = args.names
+    elif args.batch is not None:
+        start = (args.batch - 1) * BATCH_SIZE
+        to_process = NEIGHBOURHOODS_ORDERED[start : start + BATCH_SIZE]
+    else:
+        # Auto-detect: next BATCH_SIZE localities not yet in the file
+        pending = [n for n in NEIGHBOURHOODS_ORDERED if n not in already_done]
+        to_process = pending[:BATCH_SIZE]
+
+    if not to_process:
+        print("All localities already processed. Nothing to do.")
+        return
+
+    print(f"Processing batch: {to_process}")
+    print(f"Already done: {len(already_done)}/{len(NEIGHBOURHOODS_ORDERED)} localities\n")
+
+    new_results: list[dict] = []
+    for name in to_process:
         print(f"\nFetching {name}…")
         result = analyse(name)
-        results.append(result)
+        new_results.append(result)
         print(f"  → {result['label']} (compound={result['compound']}, n_posts={result['total']})")
         print(f"  Summary: {result['summary']}")
         for q in result["quotes"]:
             print(f"  • {q}")
         time.sleep(2)
 
-    raw_path = out_raw / "sentiment.json"
-    web_path = out_web / "sentiment.json"
+    # Merge: update existing entries or append new ones, preserving order
+    results_map = {e["name"]: e for e in existing}
+    for r in new_results:
+        results_map[r["name"]] = r
+    # Write back in NEIGHBOURHOODS_ORDERED order, then any extras not in the list
+    ordered_names = [n for n in NEIGHBOURHOODS_ORDERED if n in results_map]
+    extras = [n for n in results_map if n not in set(NEIGHBOURHOODS_ORDERED)]
+    final = [results_map[n] for n in ordered_names + extras]
+
     for path in (raw_path, web_path):
-        path.write_text(json.dumps(results, indent=2))
-        print(f"\nWritten {path}")
+        path.write_text(json.dumps(final, indent=2))
+        print(f"\nWritten {path} ({len(final)} localities total)")
 
 
 if __name__ == "__main__":
