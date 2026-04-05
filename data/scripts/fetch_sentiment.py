@@ -15,31 +15,62 @@ NEIGHBOURHOODS = [
     "Malleshwaram",
 ]
 
-SUBREDDITS = ["bangalore", "indianrealestate", "india", "personalfinanceindia"]
+# Focus on r/bangalore only — broad enough to cover all topics
+SUBREDDITS = ["bangalore"]
 
 HEADERS = {"User-Agent": "blr-explorer/1.0"}
 SEARCH_URL = "https://www.reddit.com/r/{subreddit}/search.json"
-MAX_POSTS = 60
-SLEEP_BETWEEN_QUERIES = 3
+MAX_POSTS = 150          # more posts = better summary
+SLEEP_BETWEEN_QUERIES = 4
 
-# Queries force neighbourhood-context keywords so Reddit pre-filters relevance
 QUERY_TEMPLATES = [
-    '"{name}" living OR rent OR commute OR area OR residents',
-    '"{name}" traffic OR buy OR flat OR apartment OR neighbourhood',
+    '"{name}" living OR rent OR commute OR residents OR review',
+    '"{name}" flat OR apartment OR buy OR property OR neighbourhood',
+    '"{name}" traffic OR infrastructure OR metro OR safe OR vibe',
 ]
 
-# Post must contain the neighbourhood name AND at least one living-context keyword
+# Post must mention the neighbourhood AND at least one living-context keyword
 CONTEXT_KEYWORDS = {
     "living", "live", "rent", "renting", "commute", "traffic", "area",
     "neighbourhood", "neighborhood", "residents", "locality", "buy",
     "flat", "apartment", "1bhk", "2bhk", "3bhk", "moving", "relocating",
     "infrastructure", "safety", "safe", "road", "metro", "bus",
     "expensive", "affordable", "noisy", "quiet", "walkable", "congestion",
+    "review", "experience", "vibe", "culture", "community", "property",
+}
+
+# Aspects used to build the summary
+ASPECT_GROUPS: dict[str, dict] = {
+    "liveability": {
+        "keywords": ["peaceful", "quiet", "noisy", "green", "safe", "unsafe", "crime",
+                     "walkable", "charm", "vibe", "culture", "community", "pleasant", "lively"],
+        "label": "overall vibe and liveability",
+    },
+    "traffic": {
+        "keywords": ["traffic", "commute", "congestion", "jam", "road", "signal",
+                     "commuting", "gridlock"],
+        "label": "traffic and commute",
+    },
+    "cost": {
+        "keywords": ["rent", "expensive", "affordable", "cost", "price", "resale",
+                     "budget", "bhk", "flat", "apartment", "buy", "property"],
+        "label": "housing costs",
+    },
+    "transit": {
+        "keywords": ["metro", "bus", "connectivity", "transit", "station", "reach",
+                     "accessible", "bmtc"],
+        "label": "transit connectivity",
+    },
+    "amenities": {
+        "keywords": ["restaurant", "cafe", "mall", "hospital", "school", "park",
+                     "market", "supermarket", "shop"],
+        "label": "local amenities",
+    },
 }
 
 
 def is_relevant(text: str, neighbourhood: str) -> bool:
-    """True only if neighbourhood name + at least one context keyword are present."""
+    """True only if neighbourhood name + at least one living-context keyword present."""
     lower = text.lower()
     if neighbourhood.lower() not in lower:
         return False
@@ -47,7 +78,7 @@ def is_relevant(text: str, neighbourhood: str) -> bool:
 
 
 def clean_text(text: str) -> str:
-    """Strip basic Reddit markdown so snippets read cleanly."""
+    """Strip Reddit markdown so text reads cleanly."""
     text = re.sub(r"https?://\S+", "", text)
     text = re.sub(r"\*+([^*]+)\*+", r"\1", text)
     text = re.sub(r"#+\s*", "", text)
@@ -57,52 +88,85 @@ def clean_text(text: str) -> str:
     return text
 
 
-def extract_snippets(
-    posts: list[dict], neighbourhood: str, analyser
-) -> list[str]:
-    """Extract the most opinionated sentences from post bodies and titles."""
-    seen_keys: set[str] = set()
-    candidates: list[dict] = []
-
+def generate_summary(
+    neighbourhood: str,
+    label: str,
+    compound: float,
+    posts: list[dict],
+    analyser,
+) -> str:
+    """Build a 2-3 sentence aspect-based summary from scored sentences."""
+    # Collect all scored sentences that are relevant
+    all_sents: list[dict] = []
     for p in posts:
-        title = clean_text(p.get("title") or "")
         body = clean_text(p.get("selftext") or "")
-
-        # Prefer body sentences; fall back to the title as a single sentence
+        title = clean_text(p.get("title") or "")
         sources = re.split(r"(?<=[.!?])\s+", body) if body else []
         if title:
             sources.append(title)
+        for s in sources:
+            s = s.strip()
+            if 40 <= len(s) <= 220 and is_relevant(s, neighbourhood):
+                vs = analyser.polarity_scores(s)
+                all_sents.append({"text": s, "compound": vs["compound"]})
 
-        post_best: list[dict] = []
-        for sent in sources:
-            sent = sent.strip()
-            if len(sent) < 35 or len(sent) > 280:
-                continue
-            if not is_relevant(sent, neighbourhood):
-                continue
-            key = sent.lower()[:60]
-            if key in seen_keys:
-                continue
-            seen_keys.add(key)
-            vs = analyser.polarity_scores(sent)
-            if abs(vs["compound"]) > 0.05:
-                post_best.append({"text": sent, "compound": vs["compound"]})
+    if not all_sents:
+        tone = ("positively" if label == "Positive"
+                else "negatively" if label == "Negative"
+                else "with mixed views")
+        return f"Reddit users in r/bangalore discuss {neighbourhood} {tone}."
 
-        post_best.sort(key=lambda x: abs(x["compound"]), reverse=True)
-        candidates.extend(post_best[:2])  # at most 2 sentences per post
+    # Map sentences to aspects and compute avg sentiment per aspect
+    aspect_scores: dict[str, list[float]] = {k: [] for k in ASPECT_GROUPS}
+    for sent in all_sents:
+        lower = sent["text"].lower()
+        for aspect, info in ASPECT_GROUPS.items():
+            if any(kw in lower for kw in info["keywords"]):
+                aspect_scores[aspect].append(sent["compound"])
 
-    candidates.sort(key=lambda x: abs(x["compound"]), reverse=True)
-    result = []
-    for c in candidates[:4]:
-        text = c["text"]
-        if len(text) > 160:
-            text = text[:157] + "\u2026"
-        result.append(text)
-    return result
+    positives: list[str] = []
+    negatives: list[str] = []
+    for aspect, scores in aspect_scores.items():
+        if not scores:
+            continue
+        avg = sum(scores) / len(scores)
+        if avg >= 0.1:
+            positives.append(ASPECT_GROUPS[aspect]["label"])
+        elif avg <= -0.1:
+            negatives.append(ASPECT_GROUPS[aspect]["label"])
+
+    # Build a natural intro sentence
+    if compound >= 0.25:
+        intro = f"{neighbourhood} is viewed positively on Reddit."
+    elif compound <= -0.1:
+        intro = f"Reddit reflects some concerns about {neighbourhood}."
+    else:
+        intro = f"Reddit shows mixed opinions on {neighbourhood}."
+
+    parts = [intro]
+
+    if positives:
+        pos_str = " and ".join(positives[:2])
+        parts.append(f"Residents speak well of {pos_str}.")
+
+    if negatives:
+        neg_str = " and ".join(negatives[:2])
+        parts.append(f"Common concerns include {neg_str}.")
+
+    # If we couldn't extract aspect-level opinions, fall back to best sentence
+    if len(parts) == 1:
+        best = max(all_sents, key=lambda x: abs(x["compound"]))
+        if abs(best["compound"]) > 0.1:
+            text = best["text"]
+            if len(text) > 180:
+                text = text[:177] + "\u2026"
+            parts.append(text)
+
+    return " ".join(parts)
 
 
 def fetch_posts(neighbourhood: str) -> list[dict]:
-    """Fetch subreddit posts relevant to living in the neighbourhood."""
+    """Fetch and deduplicate posts from Bangalore subreddits, all time, paginated."""
     seen_ids: set[str] = set()
     posts: list[dict] = []
 
@@ -113,35 +177,56 @@ def fetch_posts(neighbourhood: str) -> list[dict]:
             if len(posts) >= MAX_POSTS:
                 break
             query = template.format(name=neighbourhood)
-            params = {
-                "q": query,
-                "sort": "relevance",
-                "limit": 25,
-                "type": "link",
-                "restrict_sr": "true",
-            }
-            url = SEARCH_URL.format(subreddit=subreddit)
-            for attempt in range(3):
-                try:
-                    r = requests.get(url, params=params, headers=HEADERS, timeout=15)
-                    if r.status_code == 429:
-                        wait = 30 * (attempt + 1)
-                        print(f"  Rate limited — waiting {wait}s…")
-                        time.sleep(wait)
-                        continue
-                    r.raise_for_status()
-                    children = r.json()["data"]["children"]
-                    for c in children:
-                        d = c["data"]
-                        post_id = d.get("id", "")
-                        text = (d.get("title") or "") + " " + (d.get("selftext") or "")
-                        if is_relevant(text, neighbourhood) and post_id not in seen_ids:
-                            seen_ids.add(post_id)
-                            posts.append(d)
+            after: str | None = None
+
+            for page in range(2):  # up to 2 pages of 100 each
+                if len(posts) >= MAX_POSTS:
                     break
-                except Exception as e:
-                    print(f"  WARNING: {subreddit} / {query!r}: {e}")
-                    break
+                params: dict = {
+                    "q": query,
+                    "sort": "relevance",
+                    "t": "all",        # all time
+                    "limit": 100,      # max per page
+                    "type": "link",
+                    "restrict_sr": "true",
+                }
+                if after:
+                    params["after"] = after
+
+                url = SEARCH_URL.format(subreddit=subreddit)
+                fetched = False
+                for attempt in range(3):
+                    try:
+                        r = requests.get(url, params=params, headers=HEADERS, timeout=15)
+                        if r.status_code == 429:
+                            wait = 30 * (attempt + 1)
+                            print(f"  Rate limited — waiting {wait}s…")
+                            time.sleep(wait)
+                            continue
+                        if r.status_code == 404:
+                            print(f"  r/{subreddit} not found — skipping")
+                            break
+                        r.raise_for_status()
+                        data = r.json()["data"]
+                        children = data["children"]
+                        after = data.get("after")  # pagination token
+                        for c in children:
+                            d = c["data"]
+                            post_id = d.get("id", "")
+                            text = (d.get("title") or "") + " " + (d.get("selftext") or "")
+                            if is_relevant(text, neighbourhood) and post_id not in seen_ids:
+                                seen_ids.add(post_id)
+                                posts.append(d)
+                        fetched = True
+                        break
+                    except Exception as e:
+                        print(f"  WARNING: {subreddit} / {query!r}: {e}")
+                        break
+
+                if not fetched or not after:
+                    break  # no more pages or fetch failed
+                time.sleep(SLEEP_BETWEEN_QUERIES)
+
             time.sleep(SLEEP_BETWEEN_QUERIES)
 
     return posts[:MAX_POSTS]
@@ -160,7 +245,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
             "neutral": 0,
             "negative": 0,
             "total": 0,
-            "snippets": [],
+            "summary": f"Not enough Reddit data found for {neighbourhood} yet.",
         }
 
     scores = []
@@ -179,7 +264,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
     compound = round(sum(scores) / len(scores), 3)
     label = "Positive" if compound >= 0.05 else ("Negative" if compound <= -0.05 else "Neutral")
 
-    snippets = extract_snippets(posts, neighbourhood, analyser)
+    summary = generate_summary(neighbourhood, label, compound, posts, analyser)
 
     return {
         "name": neighbourhood,
@@ -187,7 +272,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
         "label": label,
         **labelled,
         "total": len(posts),
-        "snippets": snippets,
+        "summary": summary,
     }
 
 
@@ -205,6 +290,7 @@ def main():
         result = analyse(name, analyser)
         results.append(result)
         print(f"  → {result['label']} (compound={result['compound']}, n={result['total']})")
+        print(f"     {result['summary']}")
         time.sleep(2)
 
     raw_path = out_raw / "sentiment.json"

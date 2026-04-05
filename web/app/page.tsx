@@ -22,7 +22,7 @@ type SentimentEntry = {
   neutral: number;
   negative: number;
   total: number;
-  snippets: string[];
+  summary: string;
 };
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
@@ -112,7 +112,6 @@ const SENTIMENT_COLORS: Record<SentimentEntry["label"], { bg: string; text: stri
 };
 
 function SentimentCard({ data }: { data: SentimentEntry }) {
-  const [expanded, setExpanded] = useState(false);
   const c = SENTIMENT_COLORS[data.label];
   const pct = Math.round(((data.compound + 1) / 2) * 100); // map -1..1 → 0..100%
   return (
@@ -134,31 +133,9 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
         <span>👎 {data.negative}</span>
         <span style={{ marginLeft: "auto" }}>from {data.total} posts</span>
       </div>
-      {/* Snippets */}
-      {data.snippets.length > 0 && (
-        <>
-          <button
-            onClick={() => setExpanded(v => !v)}
-            style={{ fontSize: 13, color: "#374151", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
-          >
-            {expanded ? "\u25b2 Hide what people say" : "\u25bc What people say"}
-          </button>
-          {expanded && (
-            <ul style={{ margin: "8px 0 0", padding: 0, listStyle: "none" }}>
-              {data.snippets.map((s, i) => (
-                <li key={i} style={{
-                  borderLeft: `3px solid ${c.bar}`,
-                  paddingLeft: 10,
-                  marginBottom: 8,
-                  fontSize: 13,
-                  color: "#374151",
-                  fontStyle: "italic",
-                  lineHeight: 1.5,
-                }}>&ldquo;{s}&rdquo;</li>
-              ))}
-            </ul>
-          )}
-        </>
+      {/* Summary */}
+      {data.summary && (
+        <p style={{ margin: "8px 0 0", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>{data.summary}</p>
       )}
     </div>
   );
