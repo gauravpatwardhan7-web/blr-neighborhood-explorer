@@ -23,6 +23,7 @@ type SentimentEntry = {
   negative: number;
   total: number;
   summary: string;
+  quotes: string[];
 };
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
@@ -136,6 +137,22 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
       {/* Summary */}
       {data.summary && (
         <p style={{ margin: "8px 0 0", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>{data.summary}</p>
+      )}
+      {/* User quotes */}
+      {data.quotes && data.quotes.length > 0 && (
+        <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none" }}>
+          {data.quotes.map((q, i) => (
+            <li key={i} style={{
+              borderLeft: `3px solid ${c.bar}`,
+              paddingLeft: 10,
+              marginBottom: 8,
+              fontSize: 12,
+              color: "#4b5563",
+              fontStyle: "italic",
+              lineHeight: 1.55,
+            }}>&ldquo;{q}&rdquo;</li>
+          ))}
+        </ul>
       )}
     </div>
   );

@@ -165,6 +165,87 @@ def generate_summary(
     return " ".join(parts)
 
 
+def pick_quotes(
+    neighbourhood: str,
+    posts: list[dict],
+    analyser,
+    n: int = 3,
+) -> list[str]:
+    """Pick 2-3 distinct, opinionated sentences that cover different aspects.
+
+    Strategy:
+    - Only sentences from post body (selftext), not just titles — so they read
+      like real user comments.
+    - Must be relevant (neighbourhood + context keyword).
+    - Must carry actual opinion (|compound| > 0.15).
+    - Prefer sentences that each cover a *different* aspect so the quotes
+      illustrate variety (traffic, cost, vibe, etc.).
+    - Cap at 180 chars so they're readable as inline quotes.
+    """
+    # Build scored sentence pool from post bodies
+    candidates: list[dict] = []
+    seen_keys: set[str] = set()
+
+    for p in posts:
+        body = clean_text(p.get("selftext") or "")
+        if not body:
+            continue  # skip title-only posts for quotes
+        sentences = re.split(r"(?<=[.!?])\s+", body)
+        for s in sentences:
+            s = s.strip()
+            if not (50 <= len(s) <= 180):
+                continue
+            if not is_relevant(s, neighbourhood):
+                continue
+            key = s.lower()[:60]
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
+            vs = analyser.polarity_scores(s)
+            if abs(vs["compound"]) < 0.15:
+                continue  # not opinionated enough
+            # Tag which aspects this sentence covers
+            lower = s.lower()
+            aspects = [
+                asp for asp, info in ASPECT_GROUPS.items()
+                if any(kw in lower for kw in info["keywords"])
+            ]
+            candidates.append({
+                "text": s,
+                "compound": vs["compound"],
+                "aspects": aspects,
+            })
+
+    if not candidates:
+        return []
+
+    # Sort by opinion strength
+    candidates.sort(key=lambda x: abs(x["compound"]), reverse=True)
+
+    # Greedily pick quotes that cover distinct aspects
+    chosen: list[dict] = []
+    covered_aspects: set[str] = set()
+
+    # First pass: pick sentences that introduce a new aspect
+    for c in candidates:
+        if len(chosen) >= n:
+            break
+        new_aspects = set(c["aspects"]) - covered_aspects
+        if new_aspects or not c["aspects"]:
+            chosen.append(c)
+            covered_aspects.update(c["aspects"])
+
+    # Second pass: fill remaining slots with strongest remaining sentences
+    if len(chosen) < n:
+        for c in candidates:
+            if len(chosen) >= n:
+                break
+            if c not in chosen:
+                chosen.append(c)
+
+    return [c["text"] for c in chosen[:n]]
+
+
 def fetch_posts(neighbourhood: str) -> list[dict]:
     """Fetch and deduplicate posts from Bangalore subreddits, all time, paginated."""
     seen_ids: set[str] = set()
@@ -246,6 +327,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
             "negative": 0,
             "total": 0,
             "summary": f"Not enough Reddit data found for {neighbourhood} yet.",
+            "quotes": [],
         }
 
     scores = []
@@ -265,6 +347,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
     label = "Positive" if compound >= 0.05 else ("Negative" if compound <= -0.05 else "Neutral")
 
     summary = generate_summary(neighbourhood, label, compound, posts, analyser)
+    quotes = pick_quotes(neighbourhood, posts, analyser)
 
     return {
         "name": neighbourhood,
@@ -273,6 +356,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
         **labelled,
         "total": len(posts),
         "summary": summary,
+        "quotes": quotes,
     }
 
 
@@ -291,6 +375,8 @@ def main():
         results.append(result)
         print(f"  → {result['label']} (compound={result['compound']}, n={result['total']})")
         print(f"     {result['summary']}")
+        for q in result["quotes"]:
+            print(f"     • {q}")
         time.sleep(2)
 
     raw_path = out_raw / "sentiment.json"
