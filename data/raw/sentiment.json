@@ -233,5 +233,151 @@
       "Honestly national college metro is on one end of Basavanagudi, just like tyagarajanagar area..",
       "Basavanagudi has many metro stations, none of the areas near National college, lalbagh or South end circle look like whatever you are explaining."
     ]
+  },
+  {
+    "name": "KR Puram",
+    "compound": -0.062,
+    "label": "Negative",
+    "positive": 6,
+    "neutral": 12,
+    "negative": 12,
+    "total": 72,
+    "summary": "Residents appreciate KR Puram's local amenities. The main criticisms are around overall vibe and public transit.",
+    "quotes": [
+      "Behind the chaos of that KR Puram stretch \u2014 the metro construction, the buses, the zero oxygen \u2014 there are still these moments that remind you why this city gets under your skin.",
+      "I was also stuck in the middle of KR Puram traffic with no tools on me.",
+      "There are CCTV cameras at KR Puram, but clearly they are not enough of a deterrent for criminals."
+    ]
+  },
+  {
+    "name": "Yelahanka",
+    "compound": 0.033,
+    "label": "Neutral",
+    "positive": 2,
+    "neutral": 5,
+    "negative": 0,
+    "total": 38,
+    "summary": "Reddit discussions about Yelahanka are broadly positive. Residents particularly appreciate the public transit and traffic and commute.",
+    "quotes": []
+  },
+  {
+    "name": "Mahadevapura",
+    "compound": -0.025,
+    "label": "Neutral",
+    "positive": 1,
+    "neutral": 3,
+    "negative": 2,
+    "total": 33,
+    "summary": "Residents appreciate Mahadevapura's public transit. The main criticisms are around housing costs.",
+    "quotes": [
+      "I want to know what is the most efficient way of reaching Mahadevapura from Hosa road as I have got a new job.",
+      "These inherent vulnerabilities in the system, while not necessarily proof of deliberate fraud, create fertile ground for the types of manipulations alleged in the Mahadevapura\u2026",
+      "This morning (around 9:30 AM), I was on a packed non-AC bus from Marathahalli headed towards Mahadevapura when I became the victim of a well-orchestrated theft."
+    ]
+  },
+  {
+    "name": "Domlur",
+    "compound": 0.037,
+    "label": "Neutral",
+    "positive": 3,
+    "neutral": 5,
+    "negative": 2,
+    "total": 44,
+    "summary": "Residents appreciate Domlur's overall vibe. The main criticisms are around traffic and commute and housing costs.",
+    "quotes": [
+      "Was on my usual run this morning on old airport road and was running towards marathahalli from domlur side (but on the opposite side for safety) when I heard a loud bang from\u2026",
+      "Not at one place, whole road from EGL till Domlur was pathetic today morning with bumper to bumper traffic.",
+      "For images: Hike is currently admitted at Cessna Lifeline Veterinary Hospital, Domlur (Bangalore) and is fighting severe spinal disease along with systemic infections."
+    ]
+  },
+  {
+    "name": "RT Nagar",
+    "compound": -0.075,
+    "label": "Negative",
+    "positive": 2,
+    "neutral": 3,
+    "negative": 3,
+    "total": 25,
+    "summary": "Reddit sentiment on RT Nagar leans negative. The main criticisms concern traffic and commute.",
+    "quotes": [
+      "If uve lived in rt nagar for quite a while, ull find a lady who owns like 24 golden retrievers, usually on rt nagar main road or presidency school",
+      "Found him near rt nagar post office,seemed scared and was running into traffic , incase he's lost just posting it here",
+      "I lived there, it all started in 2012 on RT Nagar, few farmers started selling their produce, after 2018 it became a full blown market, with no farmers."
+    ]
+  },
+  {
+    "name": "Banaswadi",
+    "compound": -0.141,
+    "label": "Negative",
+    "positive": 1,
+    "neutral": 1,
+    "negative": 4,
+    "total": 35,
+    "summary": "Residents appreciate Banaswadi's overall vibe. The main criticisms are around local amenities.",
+    "quotes": [
+      "Irresponsible BBMP collects garbage from households in HRBR Layout, dumps it all in empty sites along the 100ft road in Dodda Banaswadi and sets it on fire.",
+      "Hi, I'm looking for the best swimming coaching classes in Bengaluru especially near the northern side of Bengaluru near Hebbal, Manyata tech park, Hennur, Kalyan Nagar, HBR\u2026",
+      "I live in the Banaswadi area and power cuts have become so much more frequent and last for a whole working day."
+    ]
+  },
+  {
+    "name": "Frazer Town",
+    "compound": 0.176,
+    "label": "Positive",
+    "positive": 2,
+    "neutral": 2,
+    "negative": 1,
+    "total": 24,
+    "summary": "Residents appreciate Frazer Town's housing costs. The main criticisms are around local amenities.",
+    "quotes": [
+      "Plus, there's no brokerage fee!So if you're looking for a comfortable room in a spacious 2 BHK flat in Frazer Town, Bangalore, this is the perfect place for you.",
+      "I witnessed a man near Frazer Town (Promenade road), where the streets are being dug, lose control and skid due to an unfinished patch filled with rainwater.",
+      "Mohnish Chittoory If you are looking for a comfortable room in a spacious 2 BHK flat in Frazer Town, Bangalore, this fully furnished flat can end your search!"
+    ]
+  },
+  {
+    "name": "Ulsoor",
+    "compound": 0.287,
+    "label": "Positive",
+    "positive": 5,
+    "neutral": 5,
+    "negative": 0,
+    "total": 33,
+    "summary": "Reddit discussions about Ulsoor are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
+    "quotes": [
+      "St John\u2019s Road if you don\u2019t want any of the above but a nice quiet neighbourhood that is also in close proximity to malls, MG Road and of course, Ulsoor Lake.",
+      "Sirsi Circle \u2022 Kothnur \u2022 Adugodi \u2022 Malleswaram \u2022 Ulsoor lake \u2022 Cubbon Park Meet active citizens at these gatherings, volunteer some time, and have a great weekend \u270c\ud83c\udffd",
+      "So if anyone knows any swimming coaching center near Marathahalli/ Ulsoor/Indiranagar area that teaches adults and is safe for women please lmk \ud83d\ude4f (willing to travel far too if it\u2026"
+    ]
+  },
+  {
+    "name": "Yeshwantpur",
+    "compound": 0.093,
+    "label": "Positive",
+    "positive": 3,
+    "neutral": 4,
+    "negative": 2,
+    "total": 41,
+    "summary": "Residents appreciate Yeshwantpur's local amenities. The main criticisms are around traffic and commute.",
+    "quotes": [
+      "My friend (a Rapido captain) got a really good booking today: Yeshwantpur Metro \u2192 a nearby hospital, \u20b960 fare + \u20b950 tip.",
+      "So I had my bus from yeshwantpur (govardhan theatre) at 10:15 P.M which got so delayed due the traffic and now it's 1:30 A.M.",
+      "recommend me a good training academy for bank po exams in Bangalore (Malleswaram-Yeshwantpur-Vijaynagar-Rajajinagar region) Thanks!"
+    ]
+  },
+  {
+    "name": "Hennur",
+    "compound": -0.065,
+    "label": "Negative",
+    "positive": 4,
+    "neutral": 2,
+    "negative": 6,
+    "total": 36,
+    "summary": "Residents appreciate Hennur's overall vibe and housing costs. The main criticisms are around traffic and commute and public transit.",
+    "quotes": [
+      "Hennur Road itself is struggling to keep up with the traffic plying on that road.",
+      "(I live in Hennur, and during the recent floods they had to bring in boats, firetrucks and JCB to get rid of water and last year a building collapsed which caused a construction\u2026",
+      "I dont know why government is not developing Hennur-Bagalur main road- the best alternative route to airport."
+    ]
   }
 ]
