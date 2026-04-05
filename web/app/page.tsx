@@ -14,6 +14,16 @@ type LocalityFull = Locality & { lat: number; lon: number };
 type LocalityFeature = { properties: LocalityFull };
 
 type Weights = { air_quality: number; amenities: number; metro_access: number; restaurants: number };
+type SentimentEntry = {
+  name: string;
+  compound: number;
+  label: "Positive" | "Neutral" | "Negative";
+  positive: number;
+  neutral: number;
+  negative: number;
+  total: number;
+  top_posts: string[];
+};
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
 
@@ -80,6 +90,55 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
         </div>
       ))}
     </>
+  );
+}
+
+const SENTIMENT_COLORS: Record<SentimentEntry["label"], { bg: string; text: string; bar: string }> = {
+  Positive: { bg: "#ecfdf5", text: "#065f46", bar: "#4ade80" },
+  Neutral:  { bg: "#f3f4f6", text: "#374151", bar: "#9ca3af" },
+  Negative: { bg: "#fef2f2", text: "#7f1d1d", bar: "#f87171" },
+};
+
+function SentimentCard({ data }: { data: SentimentEntry }) {
+  const [expanded, setExpanded] = useState(false);
+  const c = SENTIMENT_COLORS[data.label];
+  const pct = Math.round(((data.compound + 1) / 2) * 100); // map -1..1 → 0..100%
+  return (
+    <div style={{ marginTop: 16, borderTop: "1px solid #e5e7eb", paddingTop: 14 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#111827", margin: 0 }}>Reddit sentiment</h3>
+        <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 9px", borderRadius: 12, background: c.bg, color: c.text }}>
+          {data.label}
+        </span>
+      </div>
+      {/* Compound score bar */}
+      <div style={{ height: 6, background: "#e5e7eb", borderRadius: 3, marginBottom: 8 }}>
+        <div style={{ height: 6, width: `${pct}%`, background: c.bar, borderRadius: 3, transition: "width 0.4s" }} />
+      </div>
+      {/* Post counts */}
+      <div style={{ display: "flex", gap: 10, fontSize: 12, color: "#6b7280", marginBottom: 10 }}>
+        <span>👍 {data.positive}</span>
+        <span>😐 {data.neutral}</span>
+        <span>👎 {data.negative}</span>
+        <span style={{ marginLeft: "auto" }}>from {data.total} posts</span>
+      </div>
+      {/* Top posts */}
+      {data.top_posts.length > 0 && (
+        <>
+          <button
+            onClick={() => setExpanded(v => !v)}
+            style={{ fontSize: 12, color: "#374151", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
+          >
+            {expanded ? "▲ Hide top posts" : "▼ Top posts"}
+          </button>
+          {expanded && (
+            <ul style={{ margin: "8px 0 0", paddingLeft: 16, fontSize: 12, color: "#374151", lineHeight: 1.6 }}>
+              {data.top_posts.slice(0, 3).map((t, i) => <li key={i}>{t}</li>)}
+            </ul>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 
@@ -207,6 +266,7 @@ export default function Home() {
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [geoLoading, setGeoLoading] = useState(false);
   const [scoreFilter, setScoreFilter] = useState<"all" | "great" | "good" | "low">("all");
+  const [sentimentData, setSentimentData] = useState<Record<string, SentimentEntry>>({});
   const weightsRef = useRef(weights);
   const scoreFilterRef = useRef<ScoreFilter>(scoreFilter);
 
@@ -390,8 +450,15 @@ export default function Home() {
     }
 
     map.on("load", async () => {
-      const res = await fetch("/localities_scored.geojson");
+      const [res, sentRes] = await Promise.all([
+        fetch("/localities_scored.geojson"),
+        fetch("/sentiment.json"),
+      ]);
       const data = await res.json();
+      const sentimentList: SentimentEntry[] = sentRes.ok ? await sentRes.json() : [];
+      const sentMap: Record<string, SentimentEntry> = {};
+      sentimentList.forEach((s) => { sentMap[s.name] = s; });
+      setSentimentData(sentMap);
       const mapLocalities: LocalityFull[] = (data.features as LocalityFeature[]).map((f) => ({
         name: f.properties.name,
         lat: f.properties.lat,
@@ -673,6 +740,7 @@ export default function Home() {
                 </div>
                 <FactorBars factors={selected.factors} />
                 <RawData raw={selected.raw} />
+                {sentimentData[selected.name] && <SentimentCard data={sentimentData[selected.name]} />}
               </div>
             )}
           </div>
@@ -768,6 +836,7 @@ export default function Home() {
                 </div>
                 <FactorBars factors={selected!.factors} />
                 <RawData raw={selected!.raw} />
+                {sentimentData[selected!.name] && <SentimentCard data={sentimentData[selected!.name]} />}
               </div>
             </div>
           )}

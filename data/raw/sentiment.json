@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Koramangala",
+    "compound": 0.656,
+    "label": "Positive",
+    "positive": 85,
+    "neutral": 6,
+    "negative": 9,
+    "total": 100,
+    "top_posts": [
+      "Best Building Contractors in Bangalore for Your Home",
+      "Does Namma BLR Metro Have A Music Night Like Delhi Metro Does, To Allow Live Music To Be Performed On Platforms, &amp; Trains ?",
+      "Bengaluru Food Diary: Real Talk on Seafood and 2026 Trending Spots",
+      "Got our Japan visa (30 days) approved from VFS Bangalore despite heavy fund movement!!",
+      "Euphoria Watch Party"
+    ]
+  },
+  {
+    "name": "Indiranagar",
+    "compound": 0.811,
+    "label": "Positive",
+    "positive": 96,
+    "neutral": 0,
+    "negative": 4,
+    "total": 100,
+    "top_posts": [
+      "Best Building Contractors in Bangalore for Your Home",
+      "Does Namma BLR Metro Have A Music Night Like Delhi Metro Does, To Allow Live Music To Be Performed On Platforms, &amp; Trains ?",
+      "My full journey with Web Marketing Academy and how their placement support actually helped me",
+      "My experience with buildAhome",
+      "The ULTIMATE RR Nagar 101: And Why We Never Leave the Hood"
+    ]
+  },
+  {
+    "name": "Bellandur",
+    "compound": 0.717,
+    "label": "Positive",
+    "positive": 86,
+    "neutral": 8,
+    "negative": 6,
+    "total": 100,
+    "top_posts": [
+      "How Yoga Improves Your Dance and Fitness Performance: A Complete Wellness Approach",
+      "How Personalized Yoga and Dance Sessions Boost Daily Energy for Residents of Panathur and Kadubeesanahalli",
+      "How Personalized Yoga and Dance Sessions Boost Daily Energy for Residents of Panathur and Kadubeesanahalli",
+      "Group Classes vs Personalized Yoga Sessions for Panathur and Kadubeesanahalli Residents",
+      "How Apartment Fitness Programs Improve Physical &amp; Mental Health"
+    ]
+  },
+  {
+    "name": "Sarjapur",
+    "compound": 0.692,
+    "label": "Positive",
+    "positive": 88,
+    "neutral": 5,
+    "negative": 7,
+    "total": 100,
+    "top_posts": [
+      "How Yoga Improves Your Dance and Fitness Performance: A Complete Wellness Approach",
+      "Group Classes vs Personalized Yoga Sessions for Panathur and Kadubeesanahalli Residents",
+      "How Apartment Fitness Programs Improve Physical &amp; Mental Health",
+      "Complete Guide to Personalized Yoga, Fitness and Dance Classes in East Bangalore",
+      "How Apartment Communities Can Build a Strong Fitness Culture"
+    ]
+  },
+  {
+    "name": "Whitefield",
+    "compound": 0.715,
+    "label": "Positive",
+    "positive": 86,
+    "neutral": 8,
+    "negative": 6,
+    "total": 100,
+    "top_posts": [
+      "Best Building Contractors in Bangalore for Your Home",
+      "Dream Job - Just apply guys -",
+      "Godrej Bannerghatta Road Bangalore \u2013 Worth the Buzz or Overhyped?",
+      "27 Estates | Own the Extraordinary",
+      "Premium Villas in Bangalore for Modern Living"
+    ]
+  },
+  {
+    "name": "Malleshwaram",
+    "compound": 0.663,
+    "label": "Positive",
+    "positive": 83,
+    "neutral": 10,
+    "negative": 7,
+    "total": 100,
+    "top_posts": [
+      "Manga in India: Current Access and Options",
+      "Manga in India: Current Access and Options",
+      "Best Building Contractors in Bangalore for Your Home",
+      "Manga in India: Current Access and Options",
+      "Manga in India: Current Access and Options"
+    ]
+  }
+]
