@@ -63,11 +63,11 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
   return (
     <>
-      <h3 style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Factor scores</h3>
+      <h3 style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Factor scores</h3>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
         {Object.entries(factors).map(([k, v]) => (
           <div key={k}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 3 }}>
               <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
               <span style={{ fontWeight: 700, color: "#111827" }}>{v}/10</span>
             </div>
@@ -94,7 +94,7 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
       {open && (
         <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px" }}>
           {Object.entries(raw).map(([k, v]) => (
-            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "4px 0", borderBottom: "1px solid #f3f4f6" }}>
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "4px 0", borderBottom: "1px solid #f3f4f6" }}>
               <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
               <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
             </div>
@@ -118,8 +118,8 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#111827", margin: 0 }}>Reddit sentiment</h3>
-        <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 9px", borderRadius: 12, background: c.bg, color: c.text }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: "#111827", margin: 0 }}>Reddit sentiment</h3>
+        <span style={{ fontSize: 12, fontWeight: 700, padding: "3px 9px", borderRadius: 12, background: c.bg, color: c.text }}>
           {data.label}
         </span>
       </div>
@@ -128,7 +128,7 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
         <div style={{ height: 6, width: `${pct}%`, background: c.bar, borderRadius: 3, transition: "width 0.4s" }} />
       </div>
       {/* Post counts */}
-      <div style={{ display: "flex", gap: 10, fontSize: 12, color: "#6b7280", marginBottom: 10 }}>
+      <div style={{ display: "flex", gap: 10, fontSize: 13, color: "#6b7280", marginBottom: 10 }}>
         <span>👍 {data.positive}</span>
         <span>😐 {data.neutral}</span>
         <span>👎 {data.negative}</span>
@@ -139,7 +139,7 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
         <>
           <button
             onClick={() => setExpanded(v => !v)}
-            style={{ fontSize: 12, color: "#374151", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
+            style={{ fontSize: 13, color: "#374151", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
           >
             {expanded ? "\u25b2 Hide what people say" : "\u25bc What people say"}
           </button>
@@ -150,7 +150,7 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
                   borderLeft: `3px solid ${c.bar}`,
                   paddingLeft: 10,
                   marginBottom: 8,
-                  fontSize: 12,
+                  fontSize: 13,
                   color: "#374151",
                   fontStyle: "italic",
                   lineHeight: 1.5,
@@ -199,7 +199,7 @@ function FilterChips({ value, onChange, vertical }: { value: ScoreFilter; onChan
 
 function Legend() {
   return (
-    <div style={{ fontSize: 13, color: "#374151" }}>
+    <div style={{ fontSize: 14, color: "#374151" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
         <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#4ade80", display: "inline-block", flexShrink: 0 }} /> Score 7–10 (Great)
       </div>
@@ -224,7 +224,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#111827", margin: 0 }}>Personalise weights</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: "#111827", margin: 0 }}>Personalise weights</h3>
         <button
           onClick={() => onChange(DEFAULT_WEIGHTS)}
           style={{ fontSize: 11, color: "#111827", background: "white", border: "1.5px solid #374151", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 600 }}
@@ -232,7 +232,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
       </div>
       {(Object.keys(weights) as (keyof Weights)[]).map((k) => (
         <div key={k} style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 13, marginBottom: 4, color: "#374151", fontWeight: 500 }}>{SLIDER_LABELS[k]}</div>
+          <div style={{ fontSize: 14, marginBottom: 4, color: "#374151", fontWeight: 500 }}>{SLIDER_LABELS[k]}</div>
           <input
             type="range" min={0} max={100} step={5}
             value={Math.round(weights[k] * 100)}
@@ -262,7 +262,7 @@ function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: 
           />
         </div>
       ))}
-      <p style={{ fontSize: 12, color: "#374151", margin: "4px 0 0" }}>
+      <p style={{ fontSize: 13, color: "#374151", margin: "4px 0 0" }}>
         Drag to prioritise what matters to you
       </p>
     </div>
@@ -716,18 +716,75 @@ export default function Home() {
 
       {!isMobile ? (
         /* ── Desktop layout ── */
-        <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif", position: "relative" }}>
-          {searchBar}
-          {/* Filter chips — float on the map below the search bar */}
-          <div style={{ position: "absolute", top: 68, left: 16, zIndex: 10, display: "flex", gap: 6 }}>
-            <FilterChips value={scoreFilter} onChange={setScoreFilter} />
-          </div>
+        <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif" }}>
           <div ref={mapRef} style={{ flex: 1, overflow: "hidden" }} />
-          <div style={{ width: 300, padding: 20, overflowY: "auto", borderLeft: "1px solid #e5e7eb", background: "#f9fafb" }}>
+          <div style={{ width: 360, display: "flex", flexDirection: "column", borderLeft: "1px solid #e5e7eb", background: "#f9fafb" }}>
+            {/* Search + filter bar — pinned at top of sidebar */}
+            <div style={{ padding: "14px 16px 12px", borderBottom: "1px solid #e5e7eb", flexShrink: 0, background: "white" }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
+                <div style={{ flex: 1, position: "relative" }}>
+                  <input
+                    type="text"
+                    placeholder="Search neighbourhood…"
+                    value={searchQuery}
+                    onChange={(e) => { setSearchQuery(e.target.value); setShowDropdown(true); }}
+                    onFocus={() => setShowDropdown(true)}
+                    onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none", boxSizing: "border-box", background: "white", color: "#111827" }}
+                  />
+                  {showDropdown && searchResults.length > 0 && (
+                    <div style={{ position: "absolute", left: 0, right: 0, background: "white", borderRadius: 8, marginTop: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.12)", overflow: "hidden", zIndex: 20 }}>
+                      {searchResults.map((loc) => (
+                        <div
+                          key={loc.name}
+                          onMouseDown={() => flyToLocality(loc)}
+                          style={{ padding: "9px 12px", fontSize: 14, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6", color: "#111827", background: "white" }}
+                        >
+                          <span>{loc.name}</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: scoreColor(loc.overall_score) }}>{loc.overall_score}/10</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={locateUser}
+                  disabled={geoLoading}
+                  title="Find nearest neighbourhood"
+                  style={{
+                    flexShrink: 0, width: 40, height: 40, borderRadius: 8,
+                    background: "white", border: "1.5px solid #e5e7eb",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    cursor: geoLoading ? "default" : "pointer", padding: 0,
+                  }}
+                >
+                  {geoLoading ? (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ animation: "spin 1s linear infinite" }}>
+                      <circle cx="9" cy="9" r="7" stroke="#9ca3af" strokeWidth="2" strokeDasharray="22 12" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <circle cx="9" cy="9" r="6.5" stroke="#374151" strokeWidth="1.8" />
+                      <circle cx="9" cy="9" r="2" fill="#111827" />
+                      <line x1="9" y1="1" x2="9" y2="3.5" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+                      <line x1="9" y1="14.5" x2="9" y2="17" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+                      <line x1="1" y1="9" x2="3.5" y2="9" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+                      <line x1="14.5" y1="9" x2="17" y2="9" stroke="#374151" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+            </div>
+            {/* Scrollable content */}
+            <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
             {!selected ? (
               <div>
-                <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
-                <p style={{ fontSize: 13, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
+                <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
+                <p style={{ fontSize: 14, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
                 <Legend />
                 <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
@@ -741,8 +798,8 @@ export default function Home() {
                     style={{ fontSize: 11, color: copied ? "#059669" : "#374151", background: "white", border: "1.5px solid #9ca3af", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 500 }}
                   >{copied ? "✓ Copied!" : "🔗 Copy link"}</button>
                 </div>
-                <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
-                <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(recomputeScore(selected.factors, weights)), marginBottom: 16 }}>
+                <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
+                <div style={{ fontSize: 36, fontWeight: 800, color: scoreColor(recomputeScore(selected.factors, weights)), marginBottom: 16 }}>
                   {recomputeScore(selected.factors, weights)}<span style={{ fontSize: 14, color: "#6b7280" }}>/10</span>
                 </div>
                 {sentimentData[selected.name] && <SentimentCard data={sentimentData[selected.name]} />}
@@ -751,16 +808,13 @@ export default function Home() {
                 <RawData raw={selected.raw} />
               </div>
             )}
+            </div>
           </div>
         </div>
       ) : (
         /* ── Mobile layout: full-screen map + bottom sheet ── */
         <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif", paddingTop: "max(0px, env(safe-area-inset-top, 0px))" }}>
           {searchBar}
-          {/* Filter chips — vertical stack on right side */}
-          <div style={{ position: "fixed", top: 80, right: 16, zIndex: 10, display: "flex", flexDirection: "column", gap: 6, paddingBottom: 2, pointerEvents: "auto" }}>
-            <FilterChips value={scoreFilter} onChange={setScoreFilter} vertical={true} />
-          </div>
           {/* Map — fixed to viewport so it is never inside overflow:hidden, preventing iOS WebGL blank */}
           <div ref={mapRef} style={{ position: "fixed", inset: 0, top: "max(0px, env(safe-area-inset-top, 0px))", zIndex: 0, background: "#e8e0d5", overflow: "hidden" }} />
 
@@ -790,7 +844,9 @@ export default function Home() {
               </div>
               {/* Expanded content */}
               <div style={{ padding: "4px 20px 20px", overflowY: "auto", maxHeight: "calc(55dvh - 52px)" }}>
-                <p style={{ fontSize: 12, color: "#374151", marginBottom: 12 }}>Tap any circle on the map.</p>
+                <p style={{ fontSize: 13, color: "#374151", marginBottom: 12 }}>Tap any circle on the map.</p>
+                <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+                <div style={{ margin: "12px 0 10px", borderTop: "1px solid #e5e7eb" }} />
                 <Legend />
                 <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
                 <WeightSliders weights={weights} onChange={setWeights} />
