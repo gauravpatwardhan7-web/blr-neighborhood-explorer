@@ -206,6 +206,11 @@ REQUEST_STARTERS = (
     "i was having", "i was eating", "i was sitting",
     # Community mobilisation / outreach openers
     "i'm reaching out", "i am reaching out", "reaching out to the",
+    # Formal request openers
+    "kindly recommend", "kindly suggest", "kindly share", "kindly let",
+    "anybody know", "anybody have", "anybody here",
+    # Date / event anecdotes not about living here
+    "i'm on a mission", "i am on a mission",
 )
 
 # Words that immediately disqualify a sentence (off-topic content)
@@ -214,6 +219,8 @@ EXCLUSION_WORDS = {
     "parrot", "rabbit", "guinea", "bird", "foster", "adoption",
     "vaccinated", "dewormed", "potty",
     "gaming", "playstation", "xbox", "fifa", "game ",
+    # Crime/assault reports — inappropriate as neighbourhood review quotes
+    "sexually", "casteist", "molestation",
 }
 
 # Phrases that immediately disqualify a sentence even if in the middle
@@ -223,12 +230,14 @@ SENTENCE_EXCLUDES = (
     "hope the driver", "hope he is", "hope she is", "hope they are",
     "hope everyone", "hope everyone is",
     "would love to get suggestions", "love to get suggestions",
+    "would love to hear", "would love to know",
     "is planning to take", "is planning to rent", "is planning to move",
     "i am thinking if", "i'm thinking if",
     # Subletting / self-promotion posts
     "posting this on reddit", "posting this here", "posting here since",
     # Embedded questions / checking-in phrases (no trailing ?)
     "wanted to check if", "want to check if", "wanted to know if",
+    "wanted to ask",
     # Third-person narratives, not first-hand resident opinions
     "my parents know", "my parents grew", "my parents live",
     "i and my friends", "me and my friends",
@@ -237,7 +246,23 @@ SENTENCE_EXCLUDES = (
     # Request embedded after context phrase
     "as the title suggests",
     # Community mobilisation / outreach sentences
-    "reaching out to the", "reaching out to you",
+    "reaching out to",
+    # Greeting-prefixed requests ("Hi everyone, I'm looking for...")
+    "hi everyone", "hi all,", "hi folks", "hi there,",
+    "hey everyone", "hey all,", "hey folks", "hey there,",
+    # Mission / goal statements that are requests in disguise
+    "on a mission to find", "on a mission to get", "on a mission to",
+    # Food/service recommendation requests (not neighbourhood opinion)
+    "best place for a family", "best place to eat", "best bowl",
+    "best veg restaurant", "best place for dinner",
+    "recommendations for a", "recommendations for the",
+    # Job/relocation queries pretending to be area questions
+    "looking at a job", "got a job offer", "have a job offer",
+    "looking for a flat", "looking for a house", "looking for an apartment",
+    "looking for pg", "looking for a pg",
+    # Commute time-tables (structured data, not opinions)
+    "1 hour 20 mins", "1 hour 30 mins", "2 hours 30 mins",
+    "-> 2 hours", "-> 1 hour", "->2 hours", "->1 hour", "-> 1hr", "->1hr",
 )
 
 ASPECT_GROUPS: dict[str, dict] = {
@@ -245,7 +270,7 @@ ASPECT_GROUPS: dict[str, dict] = {
         "keywords": ["peaceful", "quiet", "noisy", "green", "safe", "unsafe", "crime",
                      "walkable", "charm", "vibe", "culture", "community", "pleasant",
                      "lively", "nice", "terrible", "worst", "best", "horrible",
-                     "love", "hate", "avoid", "recommend", "great"],
+                     "love", "hate", "avoid", "great"],
         "label": "overall vibe and liveability",
     },
     "traffic": {

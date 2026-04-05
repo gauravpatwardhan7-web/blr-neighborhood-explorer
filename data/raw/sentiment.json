@@ -1,58 +1,57 @@
 [
   {
     "name": "Koramangala",
-    "compound": 0.196,
+    "compound": 0.127,
     "label": "Positive",
-    "positive": 4,
+    "positive": 2,
     "neutral": 8,
     "negative": 0,
-    "total": 141,
+    "total": 138,
     "summary": "(Neither of us are from BLR.) We'll be staying for 3 days and a friend recommended Koramangala for cafes and the happening scene (though honestly, we\u2026 My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
     "quotes": [
       "(Neither of us are from BLR.) We'll be staying for 3 days and a friend recommended Koramangala for cafes and the happening scene (though honestly, we just want to spend time\u2026",
-      "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
-      "Hey fellow foodies \ud83c\udf5c I\u2019ve been on a bit of a ramen kick lately and I\u2019m hunting for the best bowls in Indira Nagar and Koramangala."
+      "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place."
     ]
   },
   {
     "name": "Indiranagar",
-    "compound": 0.108,
-    "label": "Positive",
-    "positive": 3,
+    "compound": 0.036,
+    "label": "Neutral",
+    "positive": 2,
     "neutral": 6,
     "negative": 1,
-    "total": 160,
-    "summary": "Hi everyone, I\u2019m looking for recommendations for a good gynaecologist in or near Indiranagar, preferably someone who\u2019s patient, listens well, and\u2026 On the other hand, my wife and I (both lacto-ovo-vegetarians) visited the Lavonne cafe at Indiranagar for the third time today and had a hattrick of poor experiences.",
+    "total": 158,
+    "summary": "I recently went on a stroll through Defence Colony in Indiranagar and couldn't help but imagine how nice it would be to have a home there. On the other hand, my wife and I (both lacto-ovo-vegetarians) visited the Lavonne cafe at Indiranagar for the third time today and had a hattrick of poor experiences.",
     "quotes": [
-      "Hi everyone, I\u2019m looking for recommendations for a good gynaecologist in or near Indiranagar, preferably someone who\u2019s patient, listens well, and handles non-maternity issues\u2026",
+      "I recently went on a stroll through Defence Colony in Indiranagar and couldn't help but imagine how nice it would be to have a home there.",
       "My wife and I (both lacto-ovo-vegetarians) visited the Lavonne cafe at Indiranagar for the third time today and had a hattrick of poor experiences.",
       "In the salon on 100 Feet Road, a stylist applies \u20b92,000 keratin treatment to a customer's hair, then boards a BMTC bus from Indiranagar BDA Complex to get home to his 10x10 PG in\u2026"
     ]
   },
   {
     "name": "Bellandur",
-    "compound": -0.086,
+    "compound": -0.128,
     "label": "Negative",
-    "positive": 4,
-    "neutral": 14,
+    "positive": 3,
+    "neutral": 13,
     "negative": 9,
     "total": 130,
-    "summary": "Wanted to ask if this is a decent deal for the area or if I got scammed lol Would love to hear what others are paying in/around Bellandur or similar\u2026 On the other hand, just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur.",
+    "summary": "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters. On the other hand, just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur.",
     "quotes": [
       "Thankfully I dont travel via this route but I travel to bellandur from Banashankari on 500 series bus and after Silk board its a hellish traffic, I usually i just sleep in the bus\u2026",
-      "Wanted to ask if this is a decent deal for the area or if I got scammed lol Would love to hear what others are paying in/around Bellandur or similar localities \ud83d\udc40 Also open to any\u2026",
-      "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters."
+      "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters.",
+      "Some times I feel I live in a under developed village named bellandur in bangalore, high rents, worst infrastructure and now the electricity is gone from last 20 hours."
     ]
   },
   {
     "name": "Sarjapur",
-    "compound": -0.055,
+    "compound": -0.073,
     "label": "Negative",
-    "positive": 9,
+    "positive": 8,
     "neutral": 18,
     "negative": 15,
-    "total": 172,
-    "summary": "Hi Folks, Looking for healthy, home-style and budget-friendly tiffin / meal subscription options around HSR / Haralur / Sarjapur (other area\u2026 On the other hand, after facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse.",
+    "total": 173,
+    "summary": "I want to get a full preventive health checkup done in the HSR / Koramangala / Bellandur / Sarjapur areas of Bengaluru, but places like Manipal feel\u2026 On the other hand, after facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse.",
     "quotes": [
       "Just wait till they start the inevitable metro construction in sarjapur road and watch the chaos unfold.",
       "Every resident of Sarjapur road deserves this traffic time for their crime to overpopulate the under-developed area.",
@@ -61,42 +60,42 @@
   },
   {
     "name": "Whitefield",
-    "compound": -0.125,
+    "compound": -0.07,
     "label": "Negative",
-    "positive": 2,
-    "neutral": 10,
-    "negative": 8,
-    "total": 153,
+    "positive": 3,
+    "neutral": 11,
+    "negative": 7,
+    "total": 155,
     "summary": "Even though I'm traveling on a BMTC public bus, the Silkboard to Whitefield route at this time is a clear sign that everyone is heading for their 9-5\u2026 On the other hand, but this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
     "quotes": [
       "But this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
-      "Hey everyone, The main road connecting Mahadevpura and Whitefield near my area is in a terrible state \u2014 full of potholes and broken patches.",
-      "I saw a video of a school bus belonging to EuroKids Pre-school Whitefield driving on the wrong side of the road in Whitefield during school commute hours."
+      "I saw a video of a school bus belonging to EuroKids Pre-school Whitefield driving on the wrong side of the road in Whitefield during school commute hours.",
+      "In the meanwhile, I\u2019m looking to move in Whitefield for rent till my house is ready for me to stay."
     ]
   },
   {
     "name": "Malleshwaram",
-    "compound": 0.227,
+    "compound": 0.199,
     "label": "Positive",
     "positive": 19,
     "neutral": 18,
     "negative": 3,
     "total": 94,
-    "summary": "Kindly recommend good & effective dermatologists who specialise in skin & hair care (preferably in Northwest Bengaluru - Rajaji Nagar, Mahalakshmi\u2026 On the other hand, had not been to Malleshwaram since I stopped living there sometime in 1994 -- Until today morning.",
+    "summary": "But I knew Malleshwaram was quite safe and the owners assured me that there are cameras pointing towards the street and I can safely keep my vehicle\u2026 On the other hand, had not been to Malleshwaram since I stopped living there sometime in 1994 -- Until today morning.",
     "quotes": [
-      "Kindly recommend good & effective dermatologists who specialise in skin & hair care (preferably in Northwest Bengaluru - Rajaji Nagar, Mahalakshmi Layout, Malleshwaram\u2026",
+      "But I knew Malleshwaram was quite safe and the owners assured me that there are cameras pointing towards the street and I can safely keep my vehicle in front of the house.",
       "This is a really good juice shop that i found in Malleshwaram its walking distance from the metro station and the famous CTR cafe, the lady is just the sweetest doing a great job\u2026",
       "I will go first - If I want to buy any items for a festival, I will always go to Malleshwaram."
     ]
   },
   {
     "name": "HSR Layout",
-    "compound": 0.203,
+    "compound": 0.181,
     "label": "Positive",
-    "positive": 10,
+    "positive": 8,
     "neutral": 7,
     "negative": 3,
-    "total": 136,
+    "total": 137,
     "summary": "So, here's the deal: my girlfriend (who is Indian, but was born and brought up abroad) and I decided to treat ourselves to some of her favorite East\u2026 On the other hand, there is also a traffic board which says No Entry except residents and the road the blocked with HSR Layout police station barricades.",
     "quotes": [
       "So, here's the deal: my girlfriend (who is Indian, but was born and brought up abroad) and I decided to treat ourselves to some of her favorite East Asian food at Suku in HSR\u2026",
@@ -106,32 +105,32 @@
   },
   {
     "name": "BTM Layout",
-    "compound": 0.053,
-    "label": "Positive",
-    "positive": 5,
-    "neutral": 3,
-    "negative": 3,
-    "total": 70,
-    "summary": "Colombia Asia(now Manipal), Mysore to NICE Road Exit - 1 hour 20 mins BTM Layout to Whitefield - 1 hour 30 mins Also, attaching a pic of the\u2026 On the other hand, in the BTM Layout area of Bengaluru, Karnataka, a 43-year-old Hindu woman was sexually exploited, abused with casteist slurs and pressured for\u2026",
+    "compound": -0.113,
+    "label": "Negative",
+    "positive": 2,
+    "neutral": 2,
+    "negative": 2,
+    "total": 71,
+    "summary": "I like learning languages/ cultures in general as I joined Navis, BTM Layout last year to learn some Japanese. On the other hand, saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !",
     "quotes": [
-      "Colombia Asia(now Manipal), Mysore to NICE Road Exit - 1 hour 20 mins BTM Layout to Whitefield - 1 hour 30 mins Also, attaching a pic of the stupendous view of the sunset from\u2026",
-      "In the BTM Layout area of Bengaluru, Karnataka, a 43-year-old Hindu woman was sexually exploited, abused with casteist slurs and pressured for religious conversion by a Muslim man\u2026",
-      "Saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !"
+      "Saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !",
+      "I'm currently residing at a PG in BTM layout , where I did not feel very comfortable regarding the food provided here.",
+      "I like learning languages/ cultures in general as I joined Navis, BTM Layout last year to learn some Japanese."
     ]
   },
   {
     "name": "JP Nagar",
-    "compound": 0.486,
+    "compound": 0.427,
     "label": "Positive",
-    "positive": 21,
+    "positive": 20,
     "neutral": 1,
-    "negative": 1,
-    "total": 147,
-    "summary": "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP\u2026 On the other hand, do not encourage the girl selling jasmine flowers under jp nagar metro station.",
+    "negative": 2,
+    "total": 148,
+    "summary": "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP\u2026 On the other hand, in my extremely stressful and sad house hunting journey so far I finally found a decent 2bhk with a good rent (jp nagar).",
     "quotes": [
       "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP Nagar, footphaths and street\u2026",
       "That's why, I'm reaching out to get some authentic suggestions on the best dermatologists we can go to in and around JP Nagar and Jayanagar.",
-      "Hi all, I\u2019m looking for recommendations for a nice South Indian fine dining restaurant near JP Nagar."
+      "At the JP Nagar metro station exit towards Outer Ring Road, there\u2019s a pile of garbage happily burning away."
     ]
   },
   {
@@ -141,7 +140,7 @@
     "positive": 15,
     "neutral": 6,
     "negative": 5,
-    "total": 114,
+    "total": 117,
     "summary": "This is why I love Jayanagar, Basavanagudi, Basaveshwaranagar area, people are lovely! On the other hand, get down at Jayanagar metro station, walk to nearest park in Jayanagar 4th, 7th, 8th block.",
     "quotes": [
       "This is why I love Jayanagar, Basavanagudi, Basaveshwaranagar area, people are lovely!",
@@ -151,17 +150,92 @@
   },
   {
     "name": "Hebbal",
-    "compound": 0.112,
+    "compound": 0.113,
     "label": "Positive",
-    "positive": 18,
+    "positive": 17,
     "neutral": 11,
     "negative": 7,
-    "total": 156,
+    "total": 155,
     "summary": "The Hebbal flyover loop is set to open, easing traffic congestion and ensuring smoother and faster commutes as a part of our government's commitment\u2026 On the other hand, due to construction works at Hebbal, a lot more traffic uses these roads now and it's a pain in the ass to go in and out of the city.",
     "quotes": [
       "This after the current government claimed they have \u201csolved\u201d the hebbal traffic issues and now flows like a river.",
       "i used to travel from kadubeeshanlli to ramaiah college, easily took 3.5 hours+ w/o metro, kadubeeshanhalli to hebbal -> 2 hours, hebbal to mathikere ->1hr",
       "Have a nice day :) So I'm looking at a job that's in hsr and I'm near hebbal and I've never done this kind of travel on a daily basis (it's 5 day wfo) and i can't move due to\u2026"
+    ]
+  },
+  {
+    "name": "Electronic City",
+    "compound": 0.04,
+    "label": "Neutral",
+    "positive": 8,
+    "neutral": 13,
+    "negative": 5,
+    "total": 128,
+    "summary": "Anybody know any good place/best place for a family to have a nice meal in and around Electronic City, please do suggest. On the other hand, heck, I even tried to offer erickshaw rides in electronic city for Rs 10, but few auto goons actually abused my driver, discouraging me from\u2026",
+    "quotes": [
+      "Heck, I even tried to offer erickshaw rides in electronic city for Rs 10, but few auto goons actually abused my driver, discouraging me from coninuing the service.",
+      "Anybody know any good place/best place for a family to have a nice meal in and around Electronic City, please do suggest.",
+      "Just as the title, I would like to get some recommendations for some great veg restaurants to go to with my parents which is near Electronic City."
+    ]
+  },
+  {
+    "name": "Marathahalli",
+    "compound": 0.013,
+    "label": "Neutral",
+    "positive": 10,
+    "neutral": 10,
+    "negative": 8,
+    "total": 158,
+    "summary": "Couple of my friends stay in gated community near Marathahalli (prestige and Rohan jharoka). On the other hand, was sat through some of the worst traffic on Marathahalli bridge when I saw this person scrolling memes using his phone holder.",
+    "quotes": [
+      "Couple of my friends stay in gated community near Marathahalli (prestige and Rohan jharoka).",
+      "it's a maze of narrow streets packed with traffic, poorly constructed roads, potholes, garbage and reaching the interior of Marathahalli from ORR is a nightmare.",
+      "After a month of searching, I had to agree to 22k for a 1BHK in Marathahalli, in an independent building."
+    ]
+  },
+  {
+    "name": "Banashankari",
+    "compound": 0.141,
+    "label": "Positive",
+    "positive": 12,
+    "neutral": 12,
+    "negative": 5,
+    "total": 90,
+    "summary": "But that the same time, I found this really good place in JP Nagar, 1BHK, way withing my budget and close to Banashankari metro. On the other hand, i think Banashankari Junction, Kaderenahalli junction and the circles surrounding it are one of the most worst places to ride, drive, walk in\u2026",
+    "quotes": [
+      "But that the same time, I found this really good place in JP Nagar, 1BHK, way withing my budget and close to Banashankari metro.",
+      "Vehicle: Hero Duet 2016 (Scooter) Left Home: 11am Reached: 1:45pm Magadi Road to Banashankari was peaceful, little traffic here and there near Katriguppe.",
+      "There are several popular places nearby, like the Banashankari 2nd Stage market complex, Gandhi Bazaar, and Basavanagudi."
+    ]
+  },
+  {
+    "name": "Rajajinagar",
+    "compound": 0.096,
+    "label": "Positive",
+    "positive": 8,
+    "neutral": 9,
+    "negative": 5,
+    "total": 77,
+    "summary": "I'm on a mission to find the best places near Rajajinagar for food, shopping, and indoor/outdoor games for my wife and I to enjoy on our dates. On the other hand, i had a really terrible experience today by a DTDC staff named Anjali in DTDC Bangalore Rajajinagar branch.",
+    "quotes": [
+      "Rajajinagar and it's nearby areas have great connectivity to metros.",
+      "I'm on a mission to find the best places near Rajajinagar for food, shopping, and indoor/outdoor games for my wife and I to enjoy on our dates.",
+      "I was recently looking for a freestanding house to buy in Bangalore and was horrified at the prices of pretty much anything in the established localities like Malleswaram\u2026"
+    ]
+  },
+  {
+    "name": "Basavanagudi",
+    "compound": 0.364,
+    "label": "Positive",
+    "positive": 11,
+    "neutral": 5,
+    "negative": 0,
+    "total": 80,
+    "summary": "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP\u2026 There are several popular places nearby, like the Banashankari 2nd Stage market complex, Gandhi Bazaar, and Basavanagudi.",
+    "quotes": [
+      "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP Nagar, footphaths and street\u2026",
+      "Basavanagudi was a beautiful part of my life, for a really small time (6 months) but left that everlasting impact that i belong there and i love that place so much and one day i\u2026",
+      "Anything, like renting cost, eating cost (i am big foodie), travel destinations, anything I can know about Bangalore & about Basavanagudi."
     ]
   }
 ]
