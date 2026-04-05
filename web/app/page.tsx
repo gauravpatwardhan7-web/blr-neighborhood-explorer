@@ -55,8 +55,15 @@ const SCORE_NORM_MAX = 9.5;
 const SLIDER_LABELS: Record<FactorKey, string> = {
   air_quality:  "Air Quality",
   amenities:    "Amenities",
-  metro_access: "Metro Access",
+  metro_access: "Transit Access",
   restaurants:  "Restaurants",
+};
+
+// Raw data keys → human-readable labels (override the default key→words fallback)
+const RAW_LABELS: Partial<Record<keyof Locality["raw"], string>> = {
+  metro_stations: "transit stations (metro + rail)",
+  aqi:            "AQI (US)",
+  temperature_c:  "temperature (°C)",
 };
 
 const SENTIMENT_COLORS = {
@@ -326,7 +333,7 @@ function FactorBars({ factors }: { factors: Locality["factors"] }) {
         {Object.entries(factors).map(([k, v]) => (
           <div key={k}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 3 }}>
-              <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
+              <span style={{ color: "#374151", textTransform: "capitalize" }}>{SLIDER_LABELS[k as FactorKey] ?? k.replace(/_/g, " ")}</span>
               <span style={{ fontWeight: 700, color: "#111827" }}>{v}/10</span>
             </div>
             <div style={{ height: 5, background: "#e5e7eb", borderRadius: 3 }}>
@@ -354,7 +361,7 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
         <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px" }}>
           {Object.entries(raw).map(([k, v]) => (
             <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "4px 0", borderBottom: "1px solid #f3f4f6" }}>
-              <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
+              <span style={{ color: "#374151", textTransform: "capitalize" }}>{RAW_LABELS[k as keyof Locality["raw"]] ?? k.replace(/_/g, " ")}</span>
               <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
             </div>
           ))}
