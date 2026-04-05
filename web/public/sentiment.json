@@ -1,57 +1,56 @@
 [
   {
     "name": "Koramangala",
-    "compound": 0.127,
-    "label": "Positive",
+    "compound": -0.015,
+    "label": "Neutral",
     "positive": 2,
-    "neutral": 8,
-    "negative": 0,
-    "total": 138,
-    "summary": "(Neither of us are from BLR.) We'll be staying for 3 days and a friend recommended Koramangala for cafes and the happening scene (though honestly, we\u2026 My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
+    "neutral": 2,
+    "negative": 4,
+    "total": 59,
+    "summary": "Residents appreciate Koramangala's housing costs and local amenities. The main criticisms are around traffic and commute and overall vibe.",
     "quotes": [
-      "(Neither of us are from BLR.) We'll be staying for 3 days and a friend recommended Koramangala for cafes and the happening scene (though honestly, we just want to spend time\u2026",
-      "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place."
+      "These are parks in areas like Koramangala, HSR Layout, JP Nagar, Jayanagar.",
+      "I want to get a full preventive health checkup done in the HSR / Koramangala / Bellandur / Sarjapur areas of Bengaluru, but places like Manipal feel too pricey for what I need.",
+      "How this impacts you today: Intensified Checks: In direct response to this crash, Bengaluru Traffic Police have launched a massive drunk-driving crackdown** across East Bengaluru\u2026"
     ]
   },
   {
     "name": "Indiranagar",
-    "compound": 0.036,
+    "compound": -0.043,
     "label": "Neutral",
-    "positive": 2,
-    "neutral": 6,
+    "positive": 0,
+    "neutral": 8,
     "negative": 1,
-    "total": 158,
-    "summary": "I recently went on a stroll through Defence Colony in Indiranagar and couldn't help but imagine how nice it would be to have a home there. On the other hand, my wife and I (both lacto-ovo-vegetarians) visited the Lavonne cafe at Indiranagar for the third time today and had a hattrick of poor experiences.",
+    "total": 61,
+    "summary": "Reddit sentiment on Indiranagar leans negative. The main criticisms concern traffic and commute.",
     "quotes": [
-      "I recently went on a stroll through Defence Colony in Indiranagar and couldn't help but imagine how nice it would be to have a home there.",
-      "My wife and I (both lacto-ovo-vegetarians) visited the Lavonne cafe at Indiranagar for the third time today and had a hattrick of poor experiences.",
-      "In the salon on 100 Feet Road, a stylist applies \u20b92,000 keratin treatment to a customer's hair, then boards a BMTC bus from Indiranagar BDA Complex to get home to his 10x10 PG in\u2026"
+      "How this impacts you today: Intensified Checks: In direct response to this crash, Bengaluru Traffic Police have launched a massive drunk-driving crackdown** across East Bengaluru\u2026"
     ]
   },
   {
     "name": "Bellandur",
-    "compound": -0.128,
+    "compound": -0.054,
     "label": "Negative",
-    "positive": 3,
-    "neutral": 13,
-    "negative": 9,
-    "total": 130,
-    "summary": "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters. On the other hand, just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur.",
+    "positive": 5,
+    "neutral": 7,
+    "negative": 4,
+    "total": 41,
+    "summary": "Residents appreciate Bellandur's housing costs. The main criticisms are around public transit and overall vibe.",
     "quotes": [
       "Thankfully I dont travel via this route but I travel to bellandur from Banashankari on 500 series bus and after Silk board its a hellish traffic, I usually i just sleep in the bus\u2026",
-      "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters.",
-      "Some times I feel I live in a under developed village named bellandur in bangalore, high rents, worst infrastructure and now the electricity is gone from last 20 hours."
+      "I want to get a full preventive health checkup done in the HSR / Koramangala / Bellandur / Sarjapur areas of Bengaluru, but places like Manipal feel too pricey for what I need.",
+      "They say silkboard has the worst AQI, but that is only because they don't monitor in Mahadevpura and Bellandur."
     ]
   },
   {
     "name": "Sarjapur",
-    "compound": -0.073,
+    "compound": -0.079,
     "label": "Negative",
-    "positive": 8,
-    "neutral": 18,
-    "negative": 15,
-    "total": 173,
-    "summary": "I want to get a full preventive health checkup done in the HSR / Koramangala / Bellandur / Sarjapur areas of Bengaluru, but places like Manipal feel\u2026 On the other hand, after facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse.",
+    "positive": 4,
+    "neutral": 6,
+    "negative": 6,
+    "total": 59,
+    "summary": "Reddit sentiment on Sarjapur leans negative. The main criticisms concern public transit and overall vibe.",
     "quotes": [
       "Just wait till they start the inevitable metro construction in sarjapur road and watch the chaos unfold.",
       "Every resident of Sarjapur road deserves this traffic time for their crime to overpopulate the under-developed area.",
@@ -60,182 +59,179 @@
   },
   {
     "name": "Whitefield",
-    "compound": -0.07,
-    "label": "Negative",
+    "compound": 0.062,
+    "label": "Positive",
     "positive": 3,
-    "neutral": 11,
-    "negative": 7,
-    "total": 155,
-    "summary": "Even though I'm traveling on a BMTC public bus, the Silkboard to Whitefield route at this time is a clear sign that everyone is heading for their 9-5\u2026 On the other hand, but this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
+    "neutral": 4,
+    "negative": 1,
+    "total": 51,
+    "summary": "Reddit discussions about Whitefield are broadly positive. Residents particularly appreciate the public transit.",
     "quotes": [
-      "But this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
-      "I saw a video of a school bus belonging to EuroKids Pre-school Whitefield driving on the wrong side of the road in Whitefield during school commute hours.",
-      "In the meanwhile, I\u2019m looking to move in Whitefield for rent till my house is ready for me to stay."
+      "I shifted to a new room in Whitefield on 15th, yesterday I got electric shock from the geyser tap, then I checked and came to know that there is current leak.",
+      "My friend had lost his bike near Whitefield metro station back in 5th of Feb.",
+      "I've learnt that the rents in Bangalore are pretty high(I plan to share a flat in the Whitefield area, no PG)."
     ]
   },
   {
     "name": "Malleshwaram",
-    "compound": 0.199,
+    "compound": 0.382,
     "label": "Positive",
-    "positive": 19,
-    "neutral": 18,
-    "negative": 3,
-    "total": 94,
-    "summary": "But I knew Malleshwaram was quite safe and the owners assured me that there are cameras pointing towards the street and I can safely keep my vehicle\u2026 On the other hand, had not been to Malleshwaram since I stopped living there sometime in 1994 -- Until today morning.",
+    "positive": 16,
+    "neutral": 4,
+    "negative": 1,
+    "total": 55,
+    "summary": "Reddit discussions about Malleshwaram are broadly positive. Residents particularly appreciate the overall vibe and housing costs.",
     "quotes": [
-      "But I knew Malleshwaram was quite safe and the owners assured me that there are cameras pointing towards the street and I can safely keep my vehicle in front of the house.",
-      "This is a really good juice shop that i found in Malleshwaram its walking distance from the metro station and the famous CTR cafe, the lady is just the sweetest doing a great job\u2026",
-      "I will go first - If I want to buy any items for a festival, I will always go to Malleshwaram."
+      "Best to go around Malleshwaram and eat at multiple joints - Idli at Veena Stores, Shavige bath at Raghvendra stores, Masala Dose and filter coffee at CTR.",
+      "I will go first - If I want to buy any items for a festival, I will always go to Malleshwaram.",
+      "We took the cab only thing is we had some traffic in malleshwaram but that's still worth it given the point we dint have to carry luggage all along."
     ]
   },
   {
     "name": "HSR Layout",
-    "compound": 0.181,
+    "compound": 0.065,
     "label": "Positive",
-    "positive": 8,
-    "neutral": 7,
-    "negative": 3,
-    "total": 137,
-    "summary": "So, here's the deal: my girlfriend (who is Indian, but was born and brought up abroad) and I decided to treat ourselves to some of her favorite East\u2026 On the other hand, there is also a traffic board which says No Entry except residents and the road the blocked with HSR Layout police station barricades.",
+    "positive": 1,
+    "neutral": 1,
+    "negative": 1,
+    "total": 52,
+    "summary": "Residents appreciate HSR Layout's local amenities. The main criticisms are around overall vibe.",
     "quotes": [
-      "So, here's the deal: my girlfriend (who is Indian, but was born and brought up abroad) and I decided to treat ourselves to some of her favorite East Asian food at Suku in HSR\u2026",
-      "Relatively safe and accessible: Good connectivity within HSR Layout is essential.",
-      "There is also a traffic board which says No Entry except residents and the road the blocked with HSR Layout police station barricades."
+      "These are parks in areas like Koramangala, HSR Layout, JP Nagar, Jayanagar.",
+      "Naren rao in manoshanti clinic, hsr layout or in kauvery hospital, electronic city, i am in a terrible mental state right now, if anyone has consulted plz let me know."
     ]
   },
   {
     "name": "BTM Layout",
-    "compound": -0.113,
+    "compound": -0.149,
     "label": "Negative",
-    "positive": 2,
+    "positive": 1,
     "neutral": 2,
-    "negative": 2,
-    "total": 71,
-    "summary": "I like learning languages/ cultures in general as I joined Navis, BTM Layout last year to learn some Japanese. On the other hand, saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !",
+    "negative": 1,
+    "total": 38,
+    "summary": "Reddit sentiment on BTM Layout leans negative. The main criticisms concern local amenities.",
     "quotes": [
-      "Saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !",
-      "I'm currently residing at a PG in BTM layout , where I did not feel very comfortable regarding the food provided here.",
-      "I like learning languages/ cultures in general as I joined Navis, BTM Layout last year to learn some Japanese."
+      "Saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !"
     ]
   },
   {
     "name": "JP Nagar",
-    "compound": 0.427,
+    "compound": 0.585,
     "label": "Positive",
-    "positive": 20,
-    "neutral": 1,
-    "negative": 2,
-    "total": 148,
-    "summary": "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP\u2026 On the other hand, in my extremely stressful and sad house hunting journey so far I finally found a decent 2bhk with a good rent (jp nagar).",
+    "positive": 9,
+    "neutral": 0,
+    "negative": 0,
+    "total": 55,
+    "summary": "Reddit discussions about JP Nagar are broadly positive. Residents particularly appreciate the overall vibe and public transit.",
     "quotes": [
-      "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP Nagar, footphaths and street\u2026",
-      "That's why, I'm reaching out to get some authentic suggestions on the best dermatologists we can go to in and around JP Nagar and Jayanagar.",
+      "I live in Bangalore and after so much hunting found a very nice flat in a 10 floor apartment building in an extremely peaceful neighborhood (near JP nagar if anyone wants to know).",
+      "Truffles at Puneeth Rajkumar Ring Road near JP Nagar metro station has encroached this wide beautiful footpath since 5 months.",
       "At the JP Nagar metro station exit towards Outer Ring Road, there\u2019s a pile of garbage happily burning away."
     ]
   },
   {
     "name": "Jayanagar",
-    "compound": 0.267,
-    "label": "Positive",
-    "positive": 15,
-    "neutral": 6,
+    "compound": -0.025,
+    "label": "Neutral",
+    "positive": 4,
+    "neutral": 2,
     "negative": 5,
-    "total": 117,
-    "summary": "This is why I love Jayanagar, Basavanagudi, Basaveshwaranagar area, people are lovely! On the other hand, get down at Jayanagar metro station, walk to nearest park in Jayanagar 4th, 7th, 8th block.",
+    "total": 65,
+    "summary": "Residents appreciate Jayanagar's housing costs. The main criticisms are around traffic and commute and local amenities.",
     "quotes": [
-      "This is why I love Jayanagar, Basavanagudi, Basaveshwaranagar area, people are lovely!",
-      "When ever I got bugged in college I used to ride my bike to Jayanagar just to loiter in this road for a couple of minutes, my college was in RR nagar, this was before the era of\u2026",
-      "Bored of the cafe culture here to a degree where I see myself travelling all the way to Jayanagara just to eat food"
+      "Why does malleswaram and jayanagar have good civic infra , but the tech bro corridor residential areas are crap, mostly because tech bros dont have time to protest for the same",
+      "He should've stuck to some of those points instead of doing dick measuring contest from chatgpt like Jayanagar, dosa, Kanakapura road etc ..ohhhh we pay so much taxes ...",
+      "Blud, individual houses in Malleswaram or Jayanagar alone are worth 3\u00d7 the entire net worth that our apartment-dwelling, fake-rich, 2.5-LPM-earning ahh could ever afford."
     ]
   },
   {
     "name": "Hebbal",
-    "compound": 0.113,
-    "label": "Positive",
-    "positive": 17,
-    "neutral": 11,
+    "compound": 0.017,
+    "label": "Neutral",
+    "positive": 8,
+    "neutral": 12,
     "negative": 7,
-    "total": 155,
-    "summary": "The Hebbal flyover loop is set to open, easing traffic congestion and ensuring smoother and faster commutes as a part of our government's commitment\u2026 On the other hand, due to construction works at Hebbal, a lot more traffic uses these roads now and it's a pain in the ass to go in and out of the city.",
+    "total": 78,
+    "summary": "Reddit sentiment on Hebbal leans negative. The main criticisms concern local amenities.",
     "quotes": [
+      "from 2:30-3pm build up gets started and peaks 5-7pm again from 8:30-10pm on Fridays and festive times it will be hectic due to travel buses going to TN ( silboard route) and\u2026",
       "This after the current government claimed they have \u201csolved\u201d the hebbal traffic issues and now flows like a river.",
-      "i used to travel from kadubeeshanlli to ramaiah college, easily took 3.5 hours+ w/o metro, kadubeeshanhalli to hebbal -> 2 hours, hebbal to mathikere ->1hr",
-      "Have a nice day :) So I'm looking at a job that's in hsr and I'm near hebbal and I've never done this kind of travel on a daily basis (it's 5 day wfo) and i can't move due to\u2026"
+      "[TOI Source]( Edit 5: [Firstpost Live Feed]( Edit 6: ~~One more Bomb Blast reported in Hebbal near Coke Factory/Esteem Mall~~ **[This is a media Hoax.]("
     ]
   },
   {
     "name": "Electronic City",
-    "compound": 0.04,
+    "compound": -0.043,
     "label": "Neutral",
-    "positive": 8,
-    "neutral": 13,
-    "negative": 5,
-    "total": 128,
-    "summary": "Anybody know any good place/best place for a family to have a nice meal in and around Electronic City, please do suggest. On the other hand, heck, I even tried to offer erickshaw rides in electronic city for Rs 10, but few auto goons actually abused my driver, discouraging me from\u2026",
+    "positive": 3,
+    "neutral": 5,
+    "negative": 3,
+    "total": 53,
+    "summary": "Residents appreciate Electronic City's housing costs. The main criticisms are around local amenities and public transit.",
     "quotes": [
-      "Heck, I even tried to offer erickshaw rides in electronic city for Rs 10, but few auto goons actually abused my driver, discouraging me from coninuing the service.",
-      "Anybody know any good place/best place for a family to have a nice meal in and around Electronic City, please do suggest.",
-      "Just as the title, I would like to get some recommendations for some great veg restaurants to go to with my parents which is near Electronic City."
+      "As for electronic city, it got a expressway from silk board in 2000s and nice road connectivity just after that, followed by yellow line metro connectivity.",
+      "Hey guys, I\u2019m living in a moderate apartment on the outskirts of Bengaluru (Electronic City Phase 2), and I\u2019m honestly at my wits\u2019 end.",
+      "Naren rao in manoshanti clinic, hsr layout or in kauvery hospital, electronic city, i am in a terrible mental state right now, if anyone has consulted plz let me know."
     ]
   },
   {
     "name": "Marathahalli",
-    "compound": 0.013,
-    "label": "Neutral",
-    "positive": 10,
-    "neutral": 10,
-    "negative": 8,
-    "total": 158,
-    "summary": "Couple of my friends stay in gated community near Marathahalli (prestige and Rohan jharoka). On the other hand, was sat through some of the worst traffic on Marathahalli bridge when I saw this person scrolling memes using his phone holder.",
+    "compound": -0.084,
+    "label": "Negative",
+    "positive": 5,
+    "neutral": 2,
+    "negative": 6,
+    "total": 60,
+    "summary": "Residents appreciate Marathahalli's housing costs and public transit. The main criticisms are around overall vibe and local amenities.",
     "quotes": [
-      "Couple of my friends stay in gated community near Marathahalli (prestige and Rohan jharoka).",
-      "it's a maze of narrow streets packed with traffic, poorly constructed roads, potholes, garbage and reaching the interior of Marathahalli from ORR is a nightmare.",
-      "After a month of searching, I had to agree to 22k for a 1BHK in Marathahalli, in an independent building."
+      "They should just stop private buses from parking near Marathahalli",
+      "But sometimes this traffic is so frustrating specially Marathahalli.",
+      "Was sat through some of the worst traffic on Marathahalli bridge when I saw this person scrolling memes using his phone holder."
     ]
   },
   {
     "name": "Banashankari",
-    "compound": 0.141,
+    "compound": 0.074,
     "label": "Positive",
-    "positive": 12,
-    "neutral": 12,
+    "positive": 6,
+    "neutral": 2,
     "negative": 5,
-    "total": 90,
-    "summary": "But that the same time, I found this really good place in JP Nagar, 1BHK, way withing my budget and close to Banashankari metro. On the other hand, i think Banashankari Junction, Kaderenahalli junction and the circles surrounding it are one of the most worst places to ride, drive, walk in\u2026",
+    "total": 59,
+    "summary": "Reddit discussions about Banashankari are broadly positive. Residents particularly appreciate the public transit and traffic and commute.",
     "quotes": [
-      "But that the same time, I found this really good place in JP Nagar, 1BHK, way withing my budget and close to Banashankari metro.",
-      "Vehicle: Hero Duet 2016 (Scooter) Left Home: 11am Reached: 1:45pm Magadi Road to Banashankari was peaceful, little traffic here and there near Katriguppe.",
-      "There are several popular places nearby, like the Banashankari 2nd Stage market complex, Gandhi Bazaar, and Basavanagudi."
+      "Though Jayanagar and Banashankari have developed over time, they still have the old Bengaluru vibe which the eastern Bengaluru totally misses.",
+      "Was passing by Banashankari metro it\u2019s a festival here best Prasadam to have, if you are passing by this road please try.",
+      "Vehicle: Hero Duet 2016 (Scooter) Left Home: 11am Reached: 1:45pm Magadi Road to Banashankari was peaceful, little traffic here and there near Katriguppe."
     ]
   },
   {
     "name": "Rajajinagar",
-    "compound": 0.096,
+    "compound": 0.191,
     "label": "Positive",
-    "positive": 8,
-    "neutral": 9,
-    "negative": 5,
-    "total": 77,
-    "summary": "I'm on a mission to find the best places near Rajajinagar for food, shopping, and indoor/outdoor games for my wife and I to enjoy on our dates. On the other hand, i had a really terrible experience today by a DTDC staff named Anjali in DTDC Bangalore Rajajinagar branch.",
+    "positive": 5,
+    "neutral": 7,
+    "negative": 1,
+    "total": 41,
+    "summary": "Reddit discussions about Rajajinagar are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
     "quotes": [
       "Rajajinagar and it's nearby areas have great connectivity to metros.",
-      "I'm on a mission to find the best places near Rajajinagar for food, shopping, and indoor/outdoor games for my wife and I to enjoy on our dates.",
-      "I was recently looking for a freestanding house to buy in Bangalore and was horrified at the prices of pretty much anything in the established localities like Malleswaram\u2026"
+      "Rajajinagar in my opinion best area to have a home and leading peaceful life because if you want to roam commercial streets you have malleshwaram , magadi road if you want Malls ..",
+      "I have started noticing lot of ads on Instagram of standalone apartments build on small plots, in areas like Rajajinagar, Malleswaram, Basavanagudi etc..."
     ]
   },
   {
     "name": "Basavanagudi",
-    "compound": 0.364,
+    "compound": 0.399,
     "label": "Positive",
-    "positive": 11,
+    "positive": 16,
     "neutral": 5,
-    "negative": 0,
-    "total": 80,
-    "summary": "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP\u2026 There are several popular places nearby, like the Banashankari 2nd Stage market complex, Gandhi Bazaar, and Basavanagudi.",
+    "negative": 1,
+    "total": 68,
+    "summary": "Reddit discussions about Basavanagudi are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
     "quotes": [
-      "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP Nagar, footphaths and street\u2026",
-      "Basavanagudi was a beautiful part of my life, for a really small time (6 months) but left that everlasting impact that i belong there and i love that place so much and one day i\u2026",
-      "Anything, like renting cost, eating cost (i am big foodie), travel destinations, anything I can know about Bangalore & about Basavanagudi."
+      "The place you walked is Gandhi Bazar - it is definitely a part of Basavanagudi but more of a commercial area, rest of the Basavanagudi is even more beautiful with good green cover\u2026",
+      "Honestly national college metro is on one end of Basavanagudi, just like tyagarajanagar area..",
+      "Basavanagudi has many metro stations, none of the areas near National college, lalbagh or South end circle look like whatever you are explaining."
     ]
   }
 ]

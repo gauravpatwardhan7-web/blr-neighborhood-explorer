@@ -137,32 +137,26 @@ NEIGHBOURHOODS_ORDERED = [
 
 BATCH_SIZE = 5
 
-# Subreddits to search, with per-sub config:
-# - pages: how many result pages to fetch (1 page = up to 100 posts)
-# - bangalore_prefix: whether to prepend "Bangalore" to queries
-#   (needed for India-wide subs where posts aren't implicitly about BLR)
+# Arctic Shift API — free, no-auth Reddit archive.
+# Allows a few requests per second; no 429s in normal usage.
+# Docs: https://github.com/ArthurHeitmann/arctic_shift/blob/master/api/README.md
+ARCTIC_BASE = "https://arctic-shift.photon-reddit.com"
+HEADERS = {"User-Agent": "blr-neighbourhood-explorer/1.0 (non-commercial research)"}
+
+# Subreddits to search.
+# - prefix: optional query prefix for India-wide subs so results stay BLR-specific
 SUBREDDIT_CONFIG = [
-    {"name": "bangalore",  "pages": 2, "bangalore_prefix": False},
-    {"name": "Bengaluru",  "pages": 1, "bangalore_prefix": False},
-    {"name": "india",      "pages": 1, "bangalore_prefix": True},
-    {"name": "AskIndia",   "pages": 1, "bangalore_prefix": True},
+    {"name": "bangalore",  "prefix": ""},
+    {"name": "Bengaluru",  "prefix": ""},
+    {"name": "india",      "prefix": "Bangalore "},
+    {"name": "AskIndia",   "prefix": "Bangalore "},
 ]
 
-HEADERS = {"User-Agent": "blr-explorer/1.0"}
-SEARCH_URL = "https://www.reddit.com/r/{subreddit}/search.json"
-COMMENTS_URL = "https://www.reddit.com/r/{subreddit}/comments/{post_id}.json"
-
-# How many top posts to fetch comments for
-TOP_POSTS_FOR_COMMENTS = 8
-# Max comments to score across all posts
-MAX_COMMENT_SENTENCES = 200
-SLEEP_BETWEEN_REQUESTS = 2
-
-QUERY_TEMPLATES = [
-    '"{name}" living OR rent OR commute OR residents OR review',
-    '"{name}" flat OR apartment OR buy OR property OR neighbourhood',
-    '"{name}" traffic OR infrastructure OR metro OR safe OR vibe',
-]
+# How many top posts to fetch comments for (can be higher now — no paging cost)
+TOP_POSTS_FOR_COMMENTS = 15
+# Max comment sentences to score across all posts
+MAX_COMMENT_SENTENCES = 300
+SLEEP_BETWEEN_REQUESTS = 0.4
 
 # Post/comment must mention neighbourhood AND at least one of these
 CONTEXT_KEYWORDS = {
@@ -346,10 +340,16 @@ def split_sentences(text: str) -> list[str]:
 def get_with_retry(url: str, params: dict) -> dict | None:
     for attempt in range(3):
         try:
-            r = requests.get(url, params=params, headers=HEADERS, timeout=15)
+            r = requests.get(url, params=params, headers=HEADERS, timeout=20)
+            # Honour rate-limit headers if present
+            remaining = r.headers.get("X-RateLimit-Remaining")
+            if remaining is not None and float(remaining) < 2:
+                reset = float(r.headers.get("X-RateLimit-Reset", 5))
+                print(f"    Rate limit low — waiting {reset:.0f}s…")
+                time.sleep(reset)
             if r.status_code == 429:
-                wait = 30 * (attempt + 1)
-                print(f"    Rate limited — waiting {wait}s…")
+                wait = 10 * (attempt + 1)
+                print(f"    429 — waiting {wait}s…")
                 time.sleep(wait)
                 continue
             if r.status_code in (404, 403):
@@ -358,111 +358,96 @@ def get_with_retry(url: str, params: dict) -> dict | None:
             return r.json()
         except Exception as e:
             print(f"    WARNING: {url}: {e}")
-            return None
+            if attempt < 2:
+                time.sleep(2)
     return None
 
 
 def search_posts(neighbourhood: str) -> list[dict]:
     """
-    Search multiple subreddits for posts about the neighbourhood.
-    Returns all results deduped, then filtered to score > 3.
+    Search multiple subreddits for posts about the neighbourhood via Arctic Shift.
+    Returns posts deduped and filtered to score > 3, title-relevant posts first.
     """
     seen_ids: set[str] = set()
     posts: list[dict] = []
 
     for sub_cfg in SUBREDDIT_CONFIG:
         sub = sub_cfg["name"]
-        n_pages = sub_cfg["pages"]
-        prefix = "Bangalore " if sub_cfg["bangalore_prefix"] else ""
+        query = f"{sub_cfg['prefix']}{neighbourhood}"
 
-        for template in QUERY_TEMPLATES:
-            # For India-wide subs, prefix the neighbourhood with "Bangalore"
-            query = template.format(name=f"{prefix}{neighbourhood}")
-            after: str | None = None
+        params = {
+            "subreddit": sub,
+            "query": query,
+            "limit": 100,
+            "sort": "desc",
+            "fields": "id,title,selftext,score,num_comments",
+        }
+        data = get_with_retry(f"{ARCTIC_BASE}/api/posts/search", params)
+        if data:
+            for p in data.get("data", []):
+                post_id = p.get("id", "")
+                if not post_id or post_id in seen_ids:
+                    continue
+                combined = (p.get("title", "") + " " + (p.get("selftext") or ""))
+                if not is_relevant(combined, neighbourhood):
+                    continue
+                seen_ids.add(post_id)
+                p["_subreddit"] = sub
+                posts.append(p)
 
-            for _page in range(n_pages):
-                params: dict = {
-                    "q": query,
-                    "sort": "relevance",
-                    "t": "all",
-                    "limit": 100,
-                    "type": "link",
-                    "restrict_sr": "true",
-                }
-                if after:
-                    params["after"] = after
+        time.sleep(SLEEP_BETWEEN_REQUESTS)
 
-                data = get_with_retry(SEARCH_URL.format(subreddit=sub), params)
-                if not data:
-                    break
-
-                children = data["data"]["children"]
-                after = data["data"].get("after")
-
-                for c in children:
-                    d = c["data"]
-                    post_id = d.get("id", "")
-                    if post_id in seen_ids:
-                        continue
-                    title = d.get("title", "")
-                    body = d.get("selftext", "")
-                    combined = title + " " + body
-                    if not is_relevant(combined, neighbourhood):
-                        continue
-                    seen_ids.add(post_id)
-                    # Store which subreddit this post came from
-                    d["_subreddit"] = sub
-                    posts.append(d)
-
-                if not after:
-                    break
-                time.sleep(SLEEP_BETWEEN_REQUESTS)
-
-            time.sleep(SLEEP_BETWEEN_REQUESTS)
-
-    # Keep posts with real signal: score > 3 (upvoted, not noise)
+    # Keep posts with real signal: score > 3
     posts = [p for p in posts if p.get("score", 0) > 3]
 
-    # Partition: posts whose TITLE itself is about the neighbourhood (most relevant
-    # for comment-fetching) vs posts where name only appears in the body
+    # Title-relevant posts first (richest source for comments)
     def title_is_relevant(p: dict) -> bool:
         return is_relevant(p.get("title", ""), neighbourhood)
 
-    title_posts = [p for p in posts if title_is_relevant(p)]
-    other_posts = [p for p in posts if not title_is_relevant(p)]
-
-    # Sort each group by score, then merge — title-relevant posts first
-    title_posts.sort(key=lambda p: p.get("score", 0), reverse=True)
-    other_posts.sort(key=lambda p: p.get("score", 0), reverse=True)
+    title_posts = sorted([p for p in posts if title_is_relevant(p)],
+                         key=lambda p: p.get("score", 0), reverse=True)
+    other_posts  = sorted([p for p in posts if not title_is_relevant(p)],
+                          key=lambda p: p.get("score", 0), reverse=True)
     return title_posts + other_posts
 
 
 def fetch_comments_for_post(subreddit: str, post_id: str, neighbourhood: str) -> list[dict]:
     """
-    Fetch top-level comments for a post.
+    Fetch all comments for a post via Arctic Shift comments tree.
     Returns comment dicts with keys: body, score.
     """
-    url = COMMENTS_URL.format(subreddit=subreddit, post_id=post_id)
-    data = get_with_retry(url, {"limit": 100, "depth": 1})
-    if not data or not isinstance(data, list) or len(data) < 2:
+    params = {
+        "link_id": post_id,
+        "limit": 9999,
+    }
+    data = get_with_retry(f"{ARCTIC_BASE}/api/comments/tree", params)
+    if not data:
         return []
 
-    comments = []
-    try:
-        for c in data[1]["data"]["children"]:
-            if c.get("kind") != "t1":
-                continue
-            d = c["data"]
-            body = clean_text(d.get("body", "") or "")
-            score = d.get("score", 0)
-            if not body or body == "[deleted]" or body == "[removed]":
-                continue
-            if score < 0:
-                continue
-            comments.append({"body": body, "score": score})
-    except (KeyError, TypeError):
-        pass
+    comments: list[dict] = []
 
+    def walk(nodes: list) -> None:
+        for node in nodes:
+            if not isinstance(node, dict):
+                continue
+            kind = node.get("kind")
+            # Skip collapsed "load more" stubs
+            if kind == "more":
+                continue
+            # Arctic Shift wraps each comment as {"kind": "t1", "data": {...}}
+            inner = node.get("data") if kind == "t1" else node
+            if not isinstance(inner, dict):
+                continue
+            body = clean_text((inner.get("body") or "").strip())
+            score = inner.get("score", 0) or 0
+            if body and body not in ("[deleted]", "[removed]") and score >= 0:
+                comments.append({"body": body, "score": score})
+            # Recurse into replies
+            replies = inner.get("replies") or {}
+            if isinstance(replies, dict):
+                walk(replies.get("data", {}).get("children", []))
+
+    walk(data.get("data", []))
     return comments
 
 
@@ -539,10 +524,8 @@ def collect_sentence_pool(neighbourhood: str) -> tuple[list[dict], int]:
         post_id = p.get("id", "")
         if not post_id:
             continue
-        # Use the subreddit the post came from for the comments URL
-        post_sub = p.get("_subreddit", "bangalore")
         print(f"  Fetching comments [{i+1}/{len(top_posts)}]: {p.get('title','')[:60]}…")
-        comments = fetch_comments_for_post(post_sub, post_id, neighbourhood)
+        comments = fetch_comments_for_post(p.get("_subreddit", ""), post_id, neighbourhood)
         for c in comments:
             sents = split_sentences(c["body"])
             add_sentences(sents, "comment", require_name=True)
@@ -555,59 +538,75 @@ def collect_sentence_pool(neighbourhood: str) -> tuple[list[dict], int]:
 
 # ── analysis ──────────────────────────────────────────────────────────────────
 
+# Short human-readable labels used inside generated summary sentences.
+_ASPECT_DISPLAY: dict[str, str] = {
+    "liveability": "overall vibe",
+    "traffic":     "traffic and commute",
+    "cost":        "housing costs",
+    "transit":     "public transit",
+    "amenities":   "local amenities",
+}
+
+
 def build_summary(neighbourhood: str, compound: float, pool: list[dict]) -> str:
     """
-    Build a 2-sentence summary from real sentences in the pool.
-    Sentence 1: strongest positive. Sentence 2: strongest critical.
-    Both read as standalone statements — no template labels.
+    Build a 1–2 sentence synthesised summary using aspect-level sentiment.
+    Never quotes verbatim Reddit text — describes what aspects residents
+    appreciate or criticise so the result reads as a real neighbourhood overview.
     """
-    def _sorted_pos(thr: float) -> list[dict]:
-        return sorted([s for s in pool if s["compound"] >= thr], key=lambda x: x["compound"], reverse=True)
+    # Aggregate compound scores per aspect
+    aspect_scores: dict[str, list[float]] = {a: [] for a in ASPECT_GROUPS}
+    for s in pool:
+        for asp in (s.get("aspects") or []):
+            if asp in aspect_scores:
+                aspect_scores[asp].append(s["compound"])
 
-    def _sorted_neg(thr: float) -> list[dict]:
-        return sorted([s for s in pool if s["compound"] <= -thr], key=lambda x: x["compound"])
+    aspect_means: dict[str, float] = {
+        a: sum(sc) / len(sc)
+        for a, sc in aspect_scores.items()
+        if sc
+    }
 
-    # Try progressively lower thresholds so thin pools still get real sentences
-    positives = _sorted_pos(0.30) or _sorted_pos(0.20) or _sorted_pos(0.10)
-    negatives = _sorted_neg(0.20) or _sorted_neg(0.15) or _sorted_neg(0.10)
+    # Sort aspects by strength of signal
+    pos_aspects = [
+        _ASPECT_DISPLAY[a]
+        for a, m in sorted(aspect_means.items(), key=lambda x: -x[1])
+        if m >= 0.05
+    ]
+    neg_aspects = [
+        _ASPECT_DISPLAY[a]
+        for a, m in sorted(aspect_means.items(), key=lambda x: x[1])
+        if m <= -0.05
+    ]
 
-    def trim(text: str, limit: int = 150) -> str:
-        if len(text) <= limit:
-            return text
-        cut = text[:limit].rsplit(" ", 1)[0]
-        return cut.rstrip(".,;:—") + "…"
+    def _join(labels: list[str]) -> str:
+        if len(labels) == 1:
+            return labels[0]
+        return ", ".join(labels[:-1]) + f" and {labels[-1]}"
 
-    pos_sent = trim(positives[0]["text"]) if positives else None
-    neg_sent = trim(negatives[0]["text"]) if negatives else None
-
-    if pos_sent and neg_sent:
-        # Lowercase the start of neg_sent to flow naturally after "On the other hand, "
-        neg_lower = neg_sent[0].lower() + neg_sent[1:]
-        return f"{pos_sent} On the other hand, {neg_lower}"
-    elif pos_sent:
-        second = next(
-            (s for s in positives[1:]
-             if not set(s["aspects"]) & set(positives[0]["aspects"])),
-            positives[1] if len(positives) > 1 else None,
+    if pos_aspects and neg_aspects:
+        return (
+            f"Residents appreciate {neighbourhood}'s {_join(pos_aspects[:2])}. "
+            f"The main criticisms are around {_join(neg_aspects[:2])}."
         )
-        if second:
-            return f"{pos_sent} {trim(second['text'])}"
-        return pos_sent
-    elif neg_sent:
-        second_neg = next(
-            (s for s in negatives[1:]
-             if not set(s["aspects"]) & set(negatives[0]["aspects"])),
-            negatives[1] if len(negatives) > 1 else None,
+    elif pos_aspects:
+        return (
+            f"Reddit discussions about {neighbourhood} are broadly positive. "
+            f"Residents particularly appreciate the {_join(pos_aspects[:2])}."
         )
-        if second_neg:
-            return f"{neg_sent} {trim(second_neg['text'])}"
-        return neg_sent
+    elif neg_aspects:
+        return (
+            f"Reddit sentiment on {neighbourhood} leans negative. "
+            f"The main criticisms concern {_join(neg_aspects[:2])}."
+        )
     else:
-        if pool:
-            best = max(pool, key=lambda x: abs(x["compound"]))
-            return trim(best["text"])
-        tone = "positively" if compound >= 0.05 else ("negatively" if compound <= -0.05 else "with mixed views")
-        return f"Reddit in r/bangalore discusses {neighbourhood} {tone}."
+        # No strong aspect signals — fall back to overall tone
+        if compound >= 0.05:
+            return f"Reddit broadly views {neighbourhood} positively, though opinions are spread across many topics."
+        elif compound <= -0.05:
+            return f"Reddit broadly views {neighbourhood} negatively, with complaints spread across many topics."
+        else:
+            return f"Reddit has mixed views on {neighbourhood}, with no single theme dominating the conversation."
 
 
 def pick_quotes(pool: list[dict], n: int = 3) -> list[str]:
