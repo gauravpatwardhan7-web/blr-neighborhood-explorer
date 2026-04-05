@@ -140,19 +140,22 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
       )}
       {/* User quotes */}
       {data.quotes && data.quotes.length > 0 && (
-        <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none" }}>
-          {data.quotes.map((q, i) => (
-            <li key={i} style={{
-              borderLeft: `3px solid ${c.bar}`,
-              paddingLeft: 10,
-              marginBottom: 8,
-              fontSize: 12,
-              color: "#4b5563",
-              fontStyle: "italic",
-              lineHeight: 1.55,
-            }}>&ldquo;{q}&rdquo;</li>
-          ))}
-        </ul>
+        <div style={{ marginTop: 12 }}>
+          <p style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>What Redditors say</p>
+          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+            {data.quotes.map((q, i) => (
+              <li key={i} style={{
+                borderLeft: `3px solid ${c.bar}`,
+                paddingLeft: 10,
+                marginBottom: 8,
+                fontSize: 12,
+                color: "#4b5563",
+                fontStyle: "italic",
+                lineHeight: 1.55,
+              }}>&ldquo;{q}&rdquo;</li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

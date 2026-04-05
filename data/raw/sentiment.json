@@ -1,92 +1,92 @@
 [
   {
     "name": "Koramangala",
-    "compound": 0.241,
+    "compound": 0.138,
     "label": "Positive",
-    "positive": 68,
-    "neutral": 8,
-    "negative": 40,
-    "total": 116,
-    "summary": "Reddit shows mixed opinions on Koramangala. Residents speak well of overall vibe and liveability. Common concerns include traffic and commute.",
+    "positive": 3,
+    "neutral": 7,
+    "negative": 0,
+    "total": 110,
+    "summary": "I and my friends were walking towards the Koramangala bus stop since I have 7am classes. My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
     "quotes": [
-      "I keep hearing about the usual hotspots like Indiranagar, Koramangala, and HSR great places, no doubt but I\u2019m curious about the lesser-talked-about areas that have their own charm.",
-      "I never expected to experience such a lack of hygiene and customer care, especially at a bar in a prominent area like Koramangala.",
-      "Well, I'm new to Bangalore, I live in Koramangala and am wondering if you're looking for someone to play chill with while playing some games."
+      "I and my friends were walking towards the Koramangala bus stop since I have 7am classes.",
+      "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
+      "Hey folks, I live in Koramangala and wanted to check if others are facing similar water quality issues and whether the water is actually safe to drink."
     ]
   },
   {
     "name": "Indiranagar",
-    "compound": 0.228,
+    "compound": 0.188,
     "label": "Positive",
-    "positive": 67,
-    "neutral": 14,
-    "negative": 41,
-    "total": 122,
-    "summary": "Reddit shows mixed opinions on Indiranagar. Residents speak well of overall vibe and liveability and housing costs. Common concerns include traffic and commute.",
+    "positive": 6,
+    "neutral": 5,
+    "negative": 1,
+    "total": 129,
+    "summary": "Posting this on Reddit since you folks are the nicest and I'd love for one of you to take my place in 60, 15th Main, Indiranagar. On the other hand, we'll follow up with the current case and see where it takes us, but if you selectively take out data from ANY police station, then such\u2026",
     "quotes": [
-      "I keep hearing about the usual hotspots like Indiranagar, Koramangala, and HSR great places, no doubt but I\u2019m curious about the lesser-talked-about areas that have their own charm.",
-      "I am aware about this scam and prevented this from happening to few people in the Indiranagar 100Ft road.",
-      "Yesterday, our group had a horrifying experience at Chin Lung Indiranagar."
+      "Posting this on Reddit since you folks are the nicest and I'd love for one of you to take my place in 60, 15th Main, Indiranagar.",
+      "I have a friend staying in a 2BHK near Indiranagar with a spare room, and I\u2019m considering moving in there.",
+      "In the salon on 100 Feet Road, a stylist applies \u20b92,000 keratin treatment to a customer's hair, then boards a BMTC bus from Indiranagar BDA Complex to get home to his 10x10 PG in\u2026"
     ]
   },
   {
     "name": "Bellandur",
-    "compound": 0.227,
-    "label": "Positive",
-    "positive": 67,
-    "neutral": 13,
-    "negative": 35,
-    "total": 115,
-    "summary": "Reddit shows mixed opinions on Bellandur. Residents speak well of overall vibe and liveability and local amenities.",
+    "compound": -0.138,
+    "label": "Negative",
+    "positive": 4,
+    "neutral": 12,
+    "negative": 10,
+    "total": 101,
+    "summary": "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters. On the other hand, just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur.",
     "quotes": [
-      "Please share your tips on how you save your money living in Bellandur.",
+      "Thankfully I dont travel via this route but I travel to bellandur from Banashankari on 500 series bus and after Silk board its a hellish traffic, I usually i just sleep in the bus\u2026",
       "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters.",
-      "Just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur."
+      "Some times I feel I live in a under developed village named bellandur in bangalore, high rents, worst infrastructure and now the electricity is gone from last 20 hours."
     ]
   },
   {
     "name": "Sarjapur",
-    "compound": 0.109,
-    "label": "Positive",
-    "positive": 77,
-    "neutral": 14,
-    "negative": 59,
-    "total": 150,
-    "summary": "Reddit shows mixed opinions on Sarjapur. Residents speak well of overall vibe and liveability and housing costs.",
+    "compound": -0.118,
+    "label": "Negative",
+    "positive": 3,
+    "neutral": 15,
+    "negative": 14,
+    "total": 136,
+    "summary": "I have observed that the junctions (big ones, for example, Sarjapur) which have the red light timer refresh after 30-60 seconds have way better\u2026 On the other hand, after facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse.",
     "quotes": [
-      "Saw bunch of ads on Facebook marketplace about gorgeous looking houses in Sarjapur Road in the likes of 75 to 90L and all of them are negotiable.",
-      "Saw this truck in this condition in Sarjapur Road, hope the driver is safe.",
-      "I am looking for flats / rooms around sarjapur, hsr, bellandur, green glen layout basically any safe and clean locality within 5-6km radius."
+      "Cross Sarjapura and see, they're building crores worth of apartments but the roads, drainage is disappointing",
+      "Due to the traffic in ORR, staying beyond Marathahalli or Sarjapur is difficult.",
+      "in haralur road off sarjapura road i have been stuck in so many traffic jams, n almost always, always its due to these cows either going to or coming back from their graze trip.."
     ]
   },
   {
     "name": "Whitefield",
-    "compound": 0.075,
-    "label": "Positive",
-    "positive": 58,
-    "neutral": 33,
-    "negative": 54,
-    "total": 145,
-    "summary": "Reddit shows mixed opinions on Whitefield. Residents speak well of local amenities. Common concerns include traffic and commute.",
+    "compound": -0.125,
+    "label": "Negative",
+    "positive": 2,
+    "neutral": 11,
+    "negative": 8,
+    "total": 123,
+    "summary": "Even though I'm traveling on a BMTC public bus, the Silkboard to Whitefield route at this time is a clear sign that everyone is heading for their 9-5\u2026 On the other hand, but this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
     "quotes": [
-      "Small update To make sure the dog is safe and well cared for, the Whitefield Canine Squad, along with BBMP, will do regular checks.",
       "But this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
-      "Anyone know good gynecologists in varthur/ whitefield area and have good personal experience."
+      "Hey everyone, The main road connecting Mahadevpura and Whitefield near my area is in a terrible state \u2014 full of potholes and broken patches.",
+      "Should I cut my losses (renting) and move back to Whitefield (expensive to rent)."
     ]
   },
   {
     "name": "Malleshwaram",
-    "compound": 0.477,
+    "compound": 0.18,
     "label": "Positive",
-    "positive": 55,
-    "neutral": 3,
-    "negative": 14,
-    "total": 72,
-    "summary": "Malleshwaram is viewed positively on Reddit. Residents speak well of overall vibe and liveability and housing costs.",
+    "positive": 15,
+    "neutral": 20,
+    "negative": 3,
+    "total": 71,
+    "summary": "My parents know the city so well, and so do my friends that grew up in more central areas like Malleshwaram, Indiranagar, Jayanagar, etc. On the other hand, &amp;x200B; Had not been to Malleshwaram since I stopped living there sometime in 1994 -- Until today morning.",
     "quotes": [
-      "Hope to visit some good areas in future if I get to stay in Bangalore like Malleshwaram, Jayanagar, Indiranagar and ofcourse Cubbon park, lalbagh as well.",
       "My parents know the city so well, and so do my friends that grew up in more central areas like Malleshwaram, Indiranagar, Jayanagar, etc.",
-      "Overall, Malleshwaram is a lovely area with a unique charm."
+      "Even super crowded areas like Lalbagh, Gandhi Bazaar, Malleshwaram back markets are quiet as far as vehicle noise is concerned.",
+      "This is a really good juice shop that i found in Malleshwaram its walking distance from the metro station and the famous CTR cafe, the lady is just the sweetest doing a great job\u2026"
     ]
   }
 ]
