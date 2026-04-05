@@ -1,42 +1,39 @@
 [
   {
     "name": "Koramangala",
-    "compound": 0.138,
+    "compound": 0.058,
     "label": "Positive",
-    "positive": 3,
+    "positive": 1,
     "neutral": 7,
     "negative": 0,
     "total": 110,
-    "summary": "I and my friends were walking towards the Koramangala bus stop since I have 7am classes. My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
+    "summary": "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
     "quotes": [
-      "I and my friends were walking towards the Koramangala bus stop since I have 7am classes.",
-      "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place.",
-      "Hey folks, I live in Koramangala and wanted to check if others are facing similar water quality issues and whether the water is actually safe to drink."
+      "My office is in Richmond Town and some relatives have advised to me rent a room in Koramangala saying that it is a better place."
     ]
   },
   {
     "name": "Indiranagar",
-    "compound": 0.188,
+    "compound": 0.115,
     "label": "Positive",
-    "positive": 6,
+    "positive": 2,
     "neutral": 5,
-    "negative": 1,
+    "negative": 0,
     "total": 129,
-    "summary": "Posting this on Reddit since you folks are the nicest and I'd love for one of you to take my place in 60, 15th Main, Indiranagar. On the other hand, we'll follow up with the current case and see where it takes us, but if you selectively take out data from ANY police station, then such\u2026",
+    "summary": "I recently went on a stroll through Defence Colony in Indiranagar and couldn't help but imagine how nice it would be to have a home there.",
     "quotes": [
-      "Posting this on Reddit since you folks are the nicest and I'd love for one of you to take my place in 60, 15th Main, Indiranagar.",
-      "I have a friend staying in a 2BHK near Indiranagar with a spare room, and I\u2019m considering moving in there.",
+      "I recently went on a stroll through Defence Colony in Indiranagar and couldn't help but imagine how nice it would be to have a home there.",
       "In the salon on 100 Feet Road, a stylist applies \u20b92,000 keratin treatment to a customer's hair, then boards a BMTC bus from Indiranagar BDA Complex to get home to his 10x10 PG in\u2026"
     ]
   },
   {
     "name": "Bellandur",
-    "compound": -0.138,
+    "compound": -0.139,
     "label": "Negative",
-    "positive": 4,
-    "neutral": 12,
-    "negative": 10,
-    "total": 101,
+    "positive": 3,
+    "neutral": 11,
+    "negative": 9,
+    "total": 104,
     "summary": "Once, Bellandur Lake teemed with life, supporting a bustling fish market that echoed the richness of its waters. On the other hand, just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur.",
     "quotes": [
       "Thankfully I dont travel via this route but I travel to bellandur from Banashankari on 500 series bus and after Silk board its a hellish traffic, I usually i just sleep in the bus\u2026",
@@ -46,47 +43,47 @@
   },
   {
     "name": "Sarjapur",
-    "compound": -0.118,
+    "compound": -0.086,
     "label": "Negative",
     "positive": 3,
-    "neutral": 15,
-    "negative": 14,
-    "total": 136,
+    "neutral": 13,
+    "negative": 10,
+    "total": 135,
     "summary": "I have observed that the junctions (big ones, for example, Sarjapur) which have the red light timer refresh after 30-60 seconds have way better\u2026 On the other hand, after facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse.",
     "quotes": [
-      "Cross Sarjapura and see, they're building crores worth of apartments but the roads, drainage is disappointing",
-      "Due to the traffic in ORR, staying beyond Marathahalli or Sarjapur is difficult.",
-      "in haralur road off sarjapura road i have been stuck in so many traffic jams, n almost always, always its due to these cows either going to or coming back from their graze trip.."
+      "After facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse.",
+      "I know that Sarjapur Road-Bellandur have crazy high rents even though public infrastructure is not good.",
+      "Godrej Park Retreat: Hadosaddipura, near sarjapur road, G+27 x 4 towers Each flat is a car on road Each office seat is a car on road Will add at least 5000+ cars on a daily basis\u2026"
     ]
   },
   {
     "name": "Whitefield",
-    "compound": -0.125,
+    "compound": -0.107,
     "label": "Negative",
     "positive": 2,
-    "neutral": 11,
-    "negative": 8,
-    "total": 123,
+    "neutral": 10,
+    "negative": 7,
+    "total": 124,
     "summary": "Even though I'm traveling on a BMTC public bus, the Silkboard to Whitefield route at this time is a clear sign that everyone is heading for their 9-5\u2026 On the other hand, but this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
     "quotes": [
       "But this is the third day in a row I\u2019ve been stuck in hopeless traffic because of garba or Durga Pooja around whitefield.",
       "Hey everyone, The main road connecting Mahadevpura and Whitefield near my area is in a terrible state \u2014 full of potholes and broken patches.",
-      "Should I cut my losses (renting) and move back to Whitefield (expensive to rent)."
+      "Even though I'm traveling on a BMTC public bus, the Silkboard to Whitefield route at this time is a clear sign that everyone is heading for their 9-5 jobs."
     ]
   },
   {
     "name": "Malleshwaram",
-    "compound": 0.18,
+    "compound": 0.166,
     "label": "Positive",
-    "positive": 15,
-    "neutral": 20,
+    "positive": 13,
+    "neutral": 16,
     "negative": 3,
-    "total": 71,
-    "summary": "My parents know the city so well, and so do my friends that grew up in more central areas like Malleshwaram, Indiranagar, Jayanagar, etc. On the other hand, &amp;x200B; Had not been to Malleshwaram since I stopped living there sometime in 1994 -- Until today morning.",
+    "total": 69,
+    "summary": "Even super crowded areas like Lalbagh, Gandhi Bazaar, Malleshwaram back markets are quiet as far as vehicle noise is concerned. On the other hand, had not been to Malleshwaram since I stopped living there sometime in 1994 -- Until today morning.",
     "quotes": [
-      "My parents know the city so well, and so do my friends that grew up in more central areas like Malleshwaram, Indiranagar, Jayanagar, etc.",
       "Even super crowded areas like Lalbagh, Gandhi Bazaar, Malleshwaram back markets are quiet as far as vehicle noise is concerned.",
-      "This is a really good juice shop that i found in Malleshwaram its walking distance from the metro station and the famous CTR cafe, the lady is just the sweetest doing a great job\u2026"
+      "This is a really good juice shop that i found in Malleshwaram its walking distance from the metro station and the famous CTR cafe, the lady is just the sweetest doing a great job\u2026",
+      "Much of Mysuru still retains that old Kannada charm found in neighborhoods like Jayanagar and Malleshwaram."
     ]
   }
 ]

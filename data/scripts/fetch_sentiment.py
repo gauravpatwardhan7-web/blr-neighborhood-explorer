@@ -12,6 +12,7 @@ Strategy:
 - Pick 2-3 quotes that cover distinct aspects (traffic, cost, vibe ...)
 """
 
+import html
 import json
 import re
 import time
@@ -81,6 +82,14 @@ REQUEST_STARTERS = (
     # Third-party housing searches (not resident opinion)
     "my friend is", "my female friend", "my male friend", "my colleague",
     "a friend of mine", "a colleague of mine",
+    # Conditional questions (don't end in ? but are still questions)
+    "should i", "should we",
+    # Third-party anecdotes — not first-hand resident opinion
+    "i have a friend", "i've a friend",
+    # Personal-activity anecdotes (not area opinions)
+    "i was having", "i was eating", "i was sitting",
+    # Community mobilisation / outreach openers
+    "i'm reaching out", "i am reaching out", "reaching out to the",
 )
 
 # Words that immediately disqualify a sentence (off-topic content)
@@ -100,6 +109,19 @@ SENTENCE_EXCLUDES = (
     "would love to get suggestions", "love to get suggestions",
     "is planning to take", "is planning to rent", "is planning to move",
     "i am thinking if", "i'm thinking if",
+    # Subletting / self-promotion posts
+    "posting this on reddit", "posting this here", "posting here since",
+    # Embedded questions / checking-in phrases (no trailing ?)
+    "wanted to check if", "want to check if", "wanted to know if",
+    # Third-person narratives, not first-hand resident opinions
+    "my parents know", "my parents grew", "my parents live",
+    "i and my friends", "me and my friends",
+    # Crime/case follow-up discussion
+    "follow up with the", "current case and",
+    # Request embedded after context phrase
+    "as the title suggests",
+    # Community mobilisation / outreach sentences
+    "reaching out to the", "reaching out to you",
 )
 
 ASPECT_GROUPS: dict[str, dict] = {
@@ -122,8 +144,9 @@ ASPECT_GROUPS: dict[str, dict] = {
         "label": "housing costs",
     },
     "transit": {
-        "keywords": ["metro", "bus", "connectivity", "transit", "station", "reach",
-                     "accessible", "bmtc", "auto", "cab"],
+        "keywords": ["metro", "bus", "connectivity", "transit", "bus stop",
+                     "bus stand", "metro station", "railway station",
+                     "reach", "accessible", "bmtc", "auto", "cab"],
         "label": "transit connectivity",
     },
     "amenities": {
@@ -161,6 +184,9 @@ def is_opinion_sentence(text: str) -> bool:
 
 
 def clean_text(text: str) -> str:
+    text = html.unescape(text)
+    # Strip any remaining HTML/Reddit entity-like tokens (e.g. &x200B;)
+    text = re.sub(r"&[#a-zA-Z][^;]{0,10};", "", text)
     text = re.sub(r"https?://\S+", "", text)
     text = re.sub(r"\*+([^*]+)\*+", r"\1", text)
     text = re.sub(r"#+\s*", "", text)
@@ -207,7 +233,7 @@ def search_posts(neighbourhood: str) -> list[dict]:
         query = template.format(name=neighbourhood)
         after: str | None = None
 
-        for _page in range(1):
+        for _page in range(2):
             params: dict = {
                 "q": query,
                 "sort": "relevance",
@@ -384,14 +410,15 @@ def build_summary(neighbourhood: str, compound: float, pool: list[dict]) -> str:
     Sentence 1: strongest positive. Sentence 2: strongest critical.
     Both read as standalone statements — no template labels.
     """
-    positives = sorted(
-        [s for s in pool if s["compound"] >= 0.30],
-        key=lambda x: x["compound"], reverse=True
-    )
-    negatives = sorted(
-        [s for s in pool if s["compound"] <= -0.20],
-        key=lambda x: x["compound"]
-    )
+    def _sorted_pos(thr: float) -> list[dict]:
+        return sorted([s for s in pool if s["compound"] >= thr], key=lambda x: x["compound"], reverse=True)
+
+    def _sorted_neg(thr: float) -> list[dict]:
+        return sorted([s for s in pool if s["compound"] <= -thr], key=lambda x: x["compound"])
+
+    # Try progressively lower thresholds so thin pools still get real sentences
+    positives = _sorted_pos(0.30) or _sorted_pos(0.20) or _sorted_pos(0.10)
+    negatives = _sorted_neg(0.20) or _sorted_neg(0.15) or _sorted_neg(0.10)
 
     def trim(text: str, limit: int = 150) -> str:
         if len(text) <= limit:
