@@ -751,6 +751,32 @@ export default function Home() {
         },
       });
 
+      // Landmark labels: prominent names for well-known areas, always visible
+      map.addLayer({
+        id: "localities-labels",
+        type: "symbol",
+        source: "localities",
+        filter: ["in", ["get", "name"], ["literal", [
+          "Koramangala", "Indiranagar", "Whitefield", "Malleshwaram",
+          "MG Road", "Jayanagar", "JP Nagar", "HSR Layout",
+          "Bellandur", "Sarjapur", "Electronic City", "Hebbal",
+          "Marathahalli", "Rajajinagar", "Basavanagudi",
+        ]]],
+        layout: {
+          "text-field": ["get", "name"],
+          "text-size": 13,
+          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+          "text-anchor": "center",
+          "text-allow-overlap": false,
+        },
+        paint: {
+          "text-color": "#111827",
+          "text-halo-color": "#ffffff",
+          "text-halo-width": 2,
+          "text-halo-blur": 0.5,
+        },
+      });
+
       map.on("mousemove", "localities-fill", () => { map.getCanvas().style.cursor = "pointer"; });
       map.on("mouseleave", "localities-fill", () => { map.getCanvas().style.cursor = ""; });
 
