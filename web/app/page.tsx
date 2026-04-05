@@ -22,7 +22,7 @@ type SentimentEntry = {
   neutral: number;
   negative: number;
   total: number;
-  top_posts: string[];
+  snippets: string[];
 };
 
 const DEFAULT_WEIGHTS: Weights = { air_quality: 0.15, amenities: 0.45, metro_access: 0.25, restaurants: 0.15 };
@@ -63,33 +63,45 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
   return (
     <>
-      <h3 style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, color: "#111827" }}>Factor scores</h3>
-      {Object.entries(factors).map(([k, v]) => (
-        <div key={k} style={{ marginBottom: 10 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 3 }}>
-            <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
-            <span style={{ fontWeight: 600, color: "#111827" }}>{v}/10</span>
+      <h3 style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Factor scores</h3>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
+        {Object.entries(factors).map(([k, v]) => (
+          <div key={k}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
+              <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
+              <span style={{ fontWeight: 700, color: "#111827" }}>{v}/10</span>
+            </div>
+            <div style={{ height: 5, background: "#e5e7eb", borderRadius: 3 }}>
+              <div style={{ height: 5, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3 }} />
+            </div>
           </div>
-          <div style={{ height: 6, background: "#e5e7eb", borderRadius: 3 }}>
-            <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3 }} />
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </>
   );
 }
 
 function RawData({ raw }: { raw: Locality["raw"] }) {
+  const [open, setOpen] = useState(false);
   return (
-    <>
-      <h3 style={{ fontSize: 13, fontWeight: 600, margin: "16px 0 8px", color: "#111827" }}>Raw data</h3>
-      {Object.entries(raw).map(([k, v]) => (
-        <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "5px 0", borderBottom: "1px solid #e5e7eb" }}>
-          <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
-          <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
+    <div style={{ marginTop: 12 }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        style={{ fontSize: 12, color: "#6b7280", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
+      >
+        {open ? "▲ Hide raw data" : "▼ Show raw data"}
+      </button>
+      {open && (
+        <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px" }}>
+          {Object.entries(raw).map(([k, v]) => (
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "4px 0", borderBottom: "1px solid #f3f4f6" }}>
+              <span style={{ color: "#374151", textTransform: "capitalize" }}>{k.replace(/_/g, " ")}</span>
+              <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
+            </div>
+          ))}
         </div>
-      ))}
-    </>
+      )}
+    </div>
   );
 }
 
@@ -104,7 +116,7 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
   const c = SENTIMENT_COLORS[data.label];
   const pct = Math.round(((data.compound + 1) / 2) * 100); // map -1..1 → 0..100%
   return (
-    <div style={{ marginTop: 16, borderTop: "1px solid #e5e7eb", paddingTop: 14 }}>
+    <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
         <h3 style={{ fontSize: 13, fontWeight: 600, color: "#111827", margin: 0 }}>Reddit sentiment</h3>
         <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 9px", borderRadius: 12, background: c.bg, color: c.text }}>
@@ -122,18 +134,28 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
         <span>👎 {data.negative}</span>
         <span style={{ marginLeft: "auto" }}>from {data.total} posts</span>
       </div>
-      {/* Top posts */}
-      {data.top_posts.length > 0 && (
+      {/* Snippets */}
+      {data.snippets.length > 0 && (
         <>
           <button
             onClick={() => setExpanded(v => !v)}
             style={{ fontSize: 12, color: "#374151", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
           >
-            {expanded ? "▲ Hide top posts" : "▼ Top posts"}
+            {expanded ? "\u25b2 Hide what people say" : "\u25bc What people say"}
           </button>
           {expanded && (
-            <ul style={{ margin: "8px 0 0", paddingLeft: 16, fontSize: 12, color: "#374151", lineHeight: 1.6 }}>
-              {data.top_posts.slice(0, 3).map((t, i) => <li key={i}>{t}</li>)}
+            <ul style={{ margin: "8px 0 0", padding: 0, listStyle: "none" }}>
+              {data.snippets.map((s, i) => (
+                <li key={i} style={{
+                  borderLeft: `3px solid ${c.bar}`,
+                  paddingLeft: 10,
+                  marginBottom: 8,
+                  fontSize: 12,
+                  color: "#374151",
+                  fontStyle: "italic",
+                  lineHeight: 1.5,
+                }}>&ldquo;{s}&rdquo;</li>
+              ))}
             </ul>
           )}
         </>
@@ -491,28 +513,12 @@ export default function Home() {
         },
       });
 
-      // Hover state management
-      let hoveredName: string | null = null;
-
-      map.on("mousemove", "localities-fill", (e) => {
-        if (!e.features?.length) return;
-        const name = e.features[0].properties?.name;
-        if (name === hoveredName) return;
-        // Don't clear the selected (clicked) locality's fill when hovering over a different one
-        if (hoveredName && hoveredName !== highlightedRef.current) {
-          map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
-        }
-        hoveredName = name;
-        map.setFeatureState({ source: "localities", id: name }, { hover: true });
+      // Cursor pointer on hover (no fill/outline change on hover — only on click)
+      map.on("mousemove", "localities-fill", () => {
         map.getCanvas().style.cursor = "pointer";
       });
 
       map.on("mouseleave", "localities-fill", () => {
-        // Keep the selected locality's fill visible when the cursor leaves it
-        if (hoveredName && hoveredName !== highlightedRef.current) {
-          map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
-        }
-        hoveredName = null;
         map.getCanvas().style.cursor = "";
       });
 
@@ -528,6 +534,7 @@ export default function Home() {
         }
       });
 
+      let hoveredName: string | null = null;
       (data.features as LocalityFeature[]).forEach((f) => {
         const { name, overall_score, factors, raw } = f.properties;
         const color = scoreColor(overall_score);
@@ -738,9 +745,10 @@ export default function Home() {
                 <div style={{ fontSize: 32, fontWeight: 800, color: scoreColor(recomputeScore(selected.factors, weights)), marginBottom: 16 }}>
                   {recomputeScore(selected.factors, weights)}<span style={{ fontSize: 14, color: "#6b7280" }}>/10</span>
                 </div>
+                {sentimentData[selected.name] && <SentimentCard data={sentimentData[selected.name]} />}
+                <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
                 <FactorBars factors={selected.factors} />
                 <RawData raw={selected.raw} />
-                {sentimentData[selected.name] && <SentimentCard data={sentimentData[selected.name]} />}
               </div>
             )}
           </div>
@@ -834,9 +842,10 @@ export default function Home() {
                     {recomputeScore(selected!.factors, weights)}<span style={{ fontSize: 12, color: "#6b7280" }}>/10</span>
                   </div>
                 </div>
+                {sentimentData[selected!.name] && <SentimentCard data={sentimentData[selected!.name]} />}
+                <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
                 <FactorBars factors={selected!.factors} />
                 <RawData raw={selected!.raw} />
-                {sentimentData[selected!.name] && <SentimentCard data={sentimentData[selected!.name]} />}
               </div>
             </div>
           )}

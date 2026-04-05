@@ -1,94 +1,92 @@
 [
   {
     "name": "Koramangala",
-    "compound": -0.045,
+    "compound": 0.001,
     "label": "Neutral",
-    "positive": 12,
-    "neutral": 5,
-    "negative": 14,
-    "total": 31,
-    "top_posts": [
-      "Seeking Advice on a purchase of a flat in Koramangala",
-      "How should I price a premium builder-floor flat in Bangalore (Koramangala 4th )Block? Need help with resale expectations",
-      "Avoid Church St, MG Road, Indiranagar, Koramangala tonight",
+    "positive": 17,
+    "neutral": 6,
+    "negative": 16,
+    "total": 39,
+    "snippets": [
       "Shocking road rage incident on koramangala 100ft road",
+      "We eventually want to stay here, but for now, we would mostly put it on rent since my spouse\u2019s office is in Koramangala (I have WFH, no kids yet), so the com\u2026",
+      "It has close proximity to education, medical and daily needs and good connectivity to nearby areas of HSR Layout, Koramangala and Hosur [Road.It]( also has e\u2026",
       "Need Help in finding good gated societies in Koramangala / Bengaluru (Budget 3Cr) (2-3BHK)"
     ]
   },
   {
     "name": "Indiranagar",
-    "compound": 0.621,
+    "compound": 0.483,
     "label": "Positive",
-    "positive": 25,
-    "neutral": 2,
-    "negative": 3,
-    "total": 30,
-    "top_posts": [
-      "Indiranagar 3BHK for Sale!",
-      "Avoid Church St, MG Road, Indiranagar, Koramangala tonight",
-      "Looking for a 2BHK under 1cr within 10km of Indiranagar",
-      "Appreciation post for Broseph @namma Bengaluru! /u/St_Broseph the real batman helped us fix these street lights in Indiranagar today. A very dark unsafe road once, is now lit. This has changed the whole vibe. I\u2019m glad my area is safe. I can\u2019t thank Broseph enough for his support. Thanks a million \ud83e\udee1\ud83d\ude4f",
-      "Beware of conman &amp; conwomen on Indiranagar 100Ft road - Asking for money to travel back to their hometown"
+    "positive": 33,
+    "neutral": 3,
+    "negative": 6,
+    "total": 42,
+    "snippets": [
+      "After spending couple of hours, we would be all moving to ~~TOIT [Reservation is taken care of]~~ For more details, please refer the [meetup page]( Edit: Alt\u2026",
+      "Lifestyle and entertainment: Bangalore\u2019s social scene is lively \u2014 caf\u00e9s in Church Street, pubs in Indiranagar, and malls like Phoenix Marketcity or Orion Mal\u2026",
+      "Mahadevpura ORR is the best in terms of connectivity to ORR, airport, Whitefield, Indiranagar etc for restaurants and fairly fast reach to Sarjapura road res\u2026",
+      "I am aware about this scam and prevented this from happening to few people in the Indiranagar 100Ft road."
     ]
   },
   {
     "name": "Bellandur",
-    "compound": 0.372,
+    "compound": 0.392,
     "label": "Positive",
-    "positive": 26,
-    "neutral": 2,
+    "positive": 30,
+    "neutral": 4,
     "negative": 11,
-    "total": 39,
-    "top_posts": [
-      "The Symphony of Modern Living. Perfectly Composed for You.Discover a Harmonious Blend of Luxury, Connectivity, and Serenity at Iblur, Bellandur.",
-      "New couple looking to buy in Bangalore \u2014 Bellandur/Yemalur work locations, need area &amp; budget advice!",
+    "total": 45,
+    "snippets": [
       "Hebbal to Bellandur: 2 Hours in Bus Traffic Hell \ud83d\ude24 Even Bikers Trapped! WFH Now!",
-      "Swiggy to move HQ from Bengaluru's Bellandur to Whitefield; cites better infra, affordable housing",
-      "Looking for a 2bhk apartment near bellandur and surrounding areas."
+      "The Symphony of Modern Living. Perfectly Composed for You.Discover a Harmonious Blend of Luxury, Connectivity, and Serenity at Iblur, Bellandur.",
+      "Just endured 2 FULL HOURS in this kia bus jam from Hebbal to Bellandur.",
+      "We want to purchase a good 3bhk around Mahadevpura, Whitefield, bellandur,sarjapur etc areas preferably due to family but not a single projects feels good."
     ]
   },
   {
     "name": "Sarjapur",
-    "compound": 0.234,
+    "compound": 0.254,
     "label": "Positive",
-    "positive": 27,
+    "positive": 36,
     "neutral": 6,
-    "negative": 15,
-    "total": 48,
-    "top_posts": [
-      "Worth flipping a 3BHK in Sarjapur Road in 3 years? Getting it at ~30% under market\u2014thoughts on appreciation?",
-      "Springfields Sarjapur Road",
-      "Fixing Sarjapur Road",
-      "Ram Navami lightings on Sarjapur Road",
-      "Looking for 3BHK flat recommendations near Sarjapur, Whitefield, or Varthur under \u20b92 Cr"
+    "negative": 18,
+    "total": 60,
+    "snippets": [
+      "But I honestly don\u2019t want to spend my life in crowded, dusty, poorly planned areas like Whitefield, Sarjapur, Varthur etc.",
+      "If you think your kids are safe in a gated community . This happened in Prestige city -sarjapur road. Thankfully kids are safe",
+      "Food Safety Alert: Fungal growth found inside sealed D\u2019lecta shredded mozzarella cheese bought from Ratnadeep, Kasavanahalli (Sarjapur Road, Bengaluru)",
+      "After facing the traffic woes, I decided to walk everyday to office situated in Sarjapur road 3 kms from home, and that was even worse."
     ]
   },
   {
     "name": "Whitefield",
-    "compound": 0.415,
+    "compound": 0.332,
     "label": "Positive",
-    "positive": 28,
-    "neutral": 9,
-    "negative": 7,
-    "total": 44,
-    "top_posts": [
-      "Need Advice \u2014 Continue Renting or Buy a 3BHK in Whitefield (\u20b92.3 Cr)?",
-      "Majestic to Whitefield metro",
-      "Whitefield Bangalore | Advise on buying a 3 BHK",
-      "Thanks to the ladies on 8:39 am Whitefield metro today.",
-      "Swiggy to move HQ from Bengaluru's Bellandur to Whitefield; cites better infra, affordable housing"
+    "positive": 37,
+    "neutral": 10,
+    "negative": 13,
+    "total": 60,
+    "snippets": [
+      "But I honestly don\u2019t want to spend my life in crowded, dusty, poorly planned areas like Whitefield, Sarjapur, Varthur etc.",
+      "A cobbler in Bengaluru\u2019s Whitefield who pets and looks after stray animals in his area was in for a big surprise after a kind woman told him that the interne\u2026",
+      "Sharing details of an resale apartment at Pursuit of Radical Rhapsody, Whitefield, Bangalore, for discussion and genuine buyer interest.",
+      "Mahadevpura ORR is the best in terms of connectivity to ORR, airport, Whitefield, Indiranagar etc for restaurants and fairly fast reach to Sarjapura road res\u2026"
     ]
   },
   {
     "name": "Malleshwaram",
-    "compound": 0.636,
+    "compound": 0.649,
     "label": "Positive",
-    "positive": 11,
+    "positive": 17,
     "neutral": 1,
     "negative": 1,
-    "total": 13,
-    "top_posts": [
-      "3 days, from tomorrow, malleshwaram will have heavy traffic."
+    "total": 19,
+    "snippets": [
+      "Overall, Malleshwaram is a lovely area with a unique charm.",
+      "Office is in Malleshwaram area but flats are really small or dirty or both.",
+      "Hi everyone I have recently moved to Malleshwaram, Bangalore from Mumbai and I must say this area is one of the greenest and peaceful areas I have ever lived\u2026",
+      "Residential areas of old Bangalore, especially Malleshwaram and Basavanagudi, weren't commercialized yet and had sense of quaintness to them and in its own w\u2026"
     ]
   }
 ]

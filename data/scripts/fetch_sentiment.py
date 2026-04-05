@@ -1,4 +1,5 @@
 import json
+import re
 import time
 from pathlib import Path
 
@@ -14,7 +15,7 @@ NEIGHBOURHOODS = [
     "Malleshwaram",
 ]
 
-SUBREDDITS = ["bangalore", "indianrealestate"]
+SUBREDDITS = ["bangalore", "indianrealestate", "india", "personalfinanceindia"]
 
 HEADERS = {"User-Agent": "blr-explorer/1.0"}
 SEARCH_URL = "https://www.reddit.com/r/{subreddit}/search.json"
@@ -43,6 +44,61 @@ def is_relevant(text: str, neighbourhood: str) -> bool:
     if neighbourhood.lower() not in lower:
         return False
     return any(kw in lower for kw in CONTEXT_KEYWORDS)
+
+
+def clean_text(text: str) -> str:
+    """Strip basic Reddit markdown so snippets read cleanly."""
+    text = re.sub(r"https?://\S+", "", text)
+    text = re.sub(r"\*+([^*]+)\*+", r"\1", text)
+    text = re.sub(r"#+\s*", "", text)
+    text = re.sub(r"^\s*>\s*", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^\s*[\*\-]\s+", "", text, flags=re.MULTILINE)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def extract_snippets(
+    posts: list[dict], neighbourhood: str, analyser
+) -> list[str]:
+    """Extract the most opinionated sentences from post bodies and titles."""
+    seen_keys: set[str] = set()
+    candidates: list[dict] = []
+
+    for p in posts:
+        title = clean_text(p.get("title") or "")
+        body = clean_text(p.get("selftext") or "")
+
+        # Prefer body sentences; fall back to the title as a single sentence
+        sources = re.split(r"(?<=[.!?])\s+", body) if body else []
+        if title:
+            sources.append(title)
+
+        post_best: list[dict] = []
+        for sent in sources:
+            sent = sent.strip()
+            if len(sent) < 35 or len(sent) > 280:
+                continue
+            if not is_relevant(sent, neighbourhood):
+                continue
+            key = sent.lower()[:60]
+            if key in seen_keys:
+                continue
+            seen_keys.add(key)
+            vs = analyser.polarity_scores(sent)
+            if abs(vs["compound"]) > 0.05:
+                post_best.append({"text": sent, "compound": vs["compound"]})
+
+        post_best.sort(key=lambda x: abs(x["compound"]), reverse=True)
+        candidates.extend(post_best[:2])  # at most 2 sentences per post
+
+    candidates.sort(key=lambda x: abs(x["compound"]), reverse=True)
+    result = []
+    for c in candidates[:4]:
+        text = c["text"]
+        if len(text) > 160:
+            text = text[:157] + "\u2026"
+        result.append(text)
+    return result
 
 
 def fetch_posts(neighbourhood: str) -> list[dict]:
@@ -104,7 +160,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
             "neutral": 0,
             "negative": 0,
             "total": 0,
-            "top_posts": [],
+            "snippets": [],
         }
 
     scores = []
@@ -123,24 +179,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
     compound = round(sum(scores) / len(scores), 3)
     label = "Positive" if compound >= 0.05 else ("Negative" if compound <= -0.05 else "Neutral")
 
-    # Top posts: boost those whose TITLE is itself relevant (neighbourhood + context keyword)
-    # so generic posts that just mention the name in selftext rank lower
-    def post_relevance_score(p: dict) -> float:
-        title = (p.get("title") or "")
-        body = (p.get("selftext") or "")
-        title_relevant = is_relevant(title, neighbourhood)
-        vs = analyser.polarity_scores(title + " " + body)
-        return abs(vs["compound"]) * (2.0 if title_relevant else 1.0)
-
-    ranked = sorted(posts, key=post_relevance_score, reverse=True)
-    # Only show posts whose title is itself relevant — filters "nearby" mentions
-    top_posts = [
-        p["title"] for p in ranked
-        if p.get("title") and is_relevant(p.get("title", ""), neighbourhood)
-    ][:5]
-    # Only fall back if we have zero title-relevant posts (not just few)
-    if not top_posts:
-        top_posts = [p["title"] for p in ranked[:5] if p.get("title")]
+    snippets = extract_snippets(posts, neighbourhood, analyser)
 
     return {
         "name": neighbourhood,
@@ -148,7 +187,7 @@ def analyse(neighbourhood: str, analyser: SentimentIntensityAnalyzer) -> dict:
         "label": label,
         **labelled,
         "total": len(posts),
-        "top_posts": top_posts,
+        "snippets": snippets,
     }
 
 
