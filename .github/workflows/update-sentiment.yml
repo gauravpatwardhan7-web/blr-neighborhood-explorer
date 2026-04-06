@@ -1,0 +1,63 @@
+name: Update Reddit Sentiment
+
+on:
+  schedule:
+    # Run on the 1st of every month at 03:30 UTC (approx. every 4–5 weeks).
+    # Increase cadence here if needed; use workflow_dispatch for manual runs.
+    - cron: "30 3 1 * *"
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  update-sentiment:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests vaderSentiment
+
+      - name: Refresh Reddit sentiment (all localities)
+        # Pass every locality name explicitly so the script re-processes them all,
+        # overwriting stale summaries with fresh Reddit data.
+        run: |
+          python3 data/scripts/fetch_sentiment.py --names \
+            "Akshayanagar" "Arekere" "BEL Layout" "BTM Layout" \
+            "Banashankari" "Banaswadi" "Bannerghatta Road" "Basavanagudi" \
+            "Basaveshwara Nagar" "Begur" "Bellandur" "Bhattarahalli" \
+            "Bommanahalli" "Brookefield" "CV Raman Nagar" "Carmelaram" \
+            "Chandapura" "Chandra Layout" "Chikkalasandra" "Chord Road" \
+            "Cox Town" "Cunningham Road" "Dasarahalli" "Devarabeesanahalli" \
+            "Dollars Colony" "Domlur" "Dommasandra" "Electronic City" \
+            "Frazer Town" "Garudacharpalya" "Girinagar" "Gottigere" \
+            "HAL" "HSR Layout" "Hagadur" "Hebbal" \
+            "Hegganahalli" "Hennur" "Herohalli" "Hongasandra" \
+            "Hoodi" "Horamavu" "Hulimavu" "Indiranagar" \
+            "JP Nagar" "Jakkur" "Jalahalli" "Jayanagar" \
+            "KR Puram" "Kadugodi" "Kaggadasapura" "Kamakshipalya" \
+            "Kasavanahalli" "Kengeri" "Kodigehalli" "Konanakunte" \
+            "Koramangala" "Kundalahalli" "Langford Town" "MG Road" \
+            "Mahadevapura" "Mahalakshmi Layout" "Malleshwaram" "Marathahalli" \
+            "Mathikere" "Munnekolala" "Nagarbhavi" "Nagavara" \
+            "Nallurhalli" "Nandini Layout" "Old Madras Road" "Padmanabhanagar" \
+            "Panathur" "Peenya" "Puttenahalli" "RR Nagar" \
+            "RT Nagar" "Raghuvanahalli" "Rajajinagar" "Ramamurthy Nagar" \
+            "Richmond Town" "Sadashivanagar" "Sarakki" "Sarjapur" \
+            "Shivajinagar" "Singasandra" "Subramanyapura" "Talaghattapura" \
+            "Thubarahalli" "Ulsoor" "Uttarahalli" "Varthur" \
+            "Vasanth Nagar" "Vasanthapura" "Vibhutipura" "Victoria Layout" \
+            "Vijayanagar" "Whitefield" "Yelahanka" "Yeshwantpur"
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/sentiment.json web/public/sentiment.json
+          git diff --cached --quiet || git commit -m "chore: monthly Reddit sentiment refresh [skip ci]"
+          git push

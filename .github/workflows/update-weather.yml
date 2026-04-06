@@ -1,0 +1,46 @@
+name: Update Weather Data
+
+on:
+  schedule:
+    # 9:00 AM IST = 03:30 UTC
+    - cron: "30 3 * * *"
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch weather & AQI
+        run: python3 data/scripts/fetch_weather.py
+
+      - name: Re-score localities
+        run: python3 data/scripts/score_localities.py
+
+      - name: Copy GeoJSON to web/public
+        run: |
+          cp data/raw/localities_scored.geojson web/public/localities_scored.geojson
+          cp data/raw/localities_small.geojson   web/public/localities_small.geojson
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/weather.json \
+                  data/raw/localities_scored.geojson \
+                  data/raw/localities_small.geojson \
+                  web/public/localities_scored.geojson \
+                  web/public/localities_small.geojson
+          git diff --cached --quiet || git commit -m "chore: daily weather + AQI update [skip ci]"
+          git push

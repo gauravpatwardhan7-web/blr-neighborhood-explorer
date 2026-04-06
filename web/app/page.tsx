@@ -760,34 +760,6 @@ export default function Home() {
         },
       });
 
-      // Landmark labels: prominent names for well-known areas, always visible
-      // text-offset pushes the label below the 34px DOM bubble marker so it isn't hidden behind it
-      map.addLayer({
-        id: "localities-labels",
-        type: "symbol",
-        source: "localities",
-        filter: ["in", ["get", "name"], ["literal", [
-          "Koramangala", "Indiranagar", "Whitefield", "Malleshwaram",
-          "MG Road", "Jayanagar", "JP Nagar", "HSR Layout",
-          "Bellandur", "Sarjapur", "Electronic City", "Hebbal",
-          "Marathahalli", "Rajajinagar", "Basavanagudi",
-        ]]],
-        layout: {
-          "text-field": ["get", "name"],
-          "text-size": 12,
-          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
-          "text-anchor": "top",
-          "text-offset": [0, 1.6],
-          "text-allow-overlap": false,
-        },
-        paint: {
-          "text-color": "#111827",
-          "text-halo-color": "#ffffff",
-          "text-halo-width": 2,
-          "text-halo-blur": 0.5,
-        },
-      });
-
       map.on("mousemove", "localities-fill", () => { map.getCanvas().style.cursor = "pointer"; });
       map.on("mouseleave", "localities-fill", () => { map.getCanvas().style.cursor = ""; });
 
@@ -815,26 +787,65 @@ export default function Home() {
       });
 
       // Bubble markers
+      // LANDMARK_AREAS get a pill-shaped marker: score circle + name label below.
+      // Rendered as DOM, so always visible above the WebGL canvas.
+      const LANDMARK_AREAS = new Set([
+        "Koramangala", "Indiranagar", "Whitefield", "Malleshwaram",
+        "MG Road", "Jayanagar", "JP Nagar", "HSR Layout",
+        "Bellandur", "Sarjapur", "Electronic City", "Hebbal",
+        "Marathahalli", "Rajajinagar", "Basavanagudi",
+      ]);
+
       let hoveredName: string | null = null;
       (data.features as LocalityFeature[]).forEach((f) => {
         const { name, overall_score, factors, raw } = f.properties;
+        const isLandmark = LANDMARK_AREAS.has(name);
 
         const el = document.createElement("div");
         el.style.cssText = [
+          "display:none", "flex-direction:column",
+          "align-items:center", "cursor:pointer",
+          "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+          "gap:2px",
+        ].join(";");
+
+        // Score circle
+        const circle = document.createElement("div");
+        circle.style.cssText = [
           "width:34px", "height:34px", "border-radius:50%",
           `background:${scoreColor(overall_score)}`,
-          "border:2.5px solid white", "display:none",
-          "align-items:center", "justify-content:center",
-          "font-weight:800", "font-size:11px", "color:white", "cursor:pointer",
+          "border:2.5px solid white",
+          "display:flex", "align-items:center", "justify-content:center",
+          "font-weight:800", "font-size:11px", "color:white",
           "box-shadow:0 2px 8px rgba(0,0,0,0.25)",
-          "font-family:-apple-system,BlinkMacSystemFont,sans-serif",
+          "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+          "flex-shrink:0",
         ].join(";");
-        el.textContent = String(overall_score);
+        circle.textContent = String(overall_score);
+        el.appendChild(circle);
+
+        // Name label — only for landmark areas
+        if (isLandmark) {
+          const label = document.createElement("div");
+          label.style.cssText = [
+            "font-size:10px", "font-weight:700",
+            "color:#111827", "white-space:nowrap",
+            "background:rgba(255,255,255,0.92)",
+            "padding:1px 5px", "border-radius:4px",
+            "line-height:1.4",
+            "box-shadow:0 1px 3px rgba(0,0,0,0.15)",
+            "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+            "pointer-events:none",
+          ].join(";");
+          label.textContent = name;
+          el.appendChild(label);
+        }
+
         markersRef.current.push({ el, factors });
 
         el.addEventListener("mouseenter", () => {
-          el.style.border     = "2.5px solid rgba(0,0,0,0.35)";
-          el.style.boxShadow  = "0 4px 16px rgba(0,0,0,0.32)";
+          circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
+          circle.style.boxShadow  = "0 4px 16px rgba(0,0,0,0.32)";
           el.style.zIndex     = "999";
           if (hoveredName && hoveredName !== highlightedRef.current) {
             map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
@@ -843,8 +854,8 @@ export default function Home() {
           map.setFeatureState({ source: "localities", id: name }, { hover: true });
         });
         el.addEventListener("mouseleave", () => {
-          el.style.border    = "2.5px solid white";
-          el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
+          circle.style.border    = "2.5px solid white";
+          circle.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
           el.style.zIndex    = "";
           if (highlightedRef.current !== name) {
             map.setFeatureState({ source: "localities", id: name }, { hover: false });
