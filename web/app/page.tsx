@@ -146,6 +146,51 @@ function estimateTravel(
   return { distanceKm, durationMin };
 }
 
+// ── Commute map pin (SVG drop-pin for origin A / destination B) ───────────────
+function createCommutePin(label: string, color: string): HTMLDivElement {
+  const el = document.createElement("div");
+  el.style.cssText = "display:flex;flex-direction:column;align-items:center;pointer-events:none;";
+
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("width", "34");
+  svg.setAttribute("height", "44");
+  svg.setAttribute("viewBox", "0 0 34 44");
+
+  // Drop-pin shape: circle body + pointed base
+  const path = document.createElementNS(ns, "path");
+  path.setAttribute(
+    "d",
+    "M17 0C7.61 0 0 7.61 0 17c0 10.73 17 27 17 27S34 27.73 34 17C34 7.61 26.39 0 17 0z"
+  );
+  path.setAttribute("fill", color);
+  path.setAttribute("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.4))");
+  svg.appendChild(path);
+
+  // White inner circle
+  const circle = document.createElementNS(ns, "circle");
+  circle.setAttribute("cx", "17");
+  circle.setAttribute("cy", "17");
+  circle.setAttribute("r", "9");
+  circle.setAttribute("fill", "white");
+  svg.appendChild(circle);
+
+  // Label
+  const text = document.createElementNS(ns, "text");
+  text.setAttribute("x", "17");
+  text.setAttribute("y", "21");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("font-size", "11");
+  text.setAttribute("font-weight", "800");
+  text.setAttribute("fill", color);
+  text.setAttribute("font-family", "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif");
+  text.textContent = label;
+  svg.appendChild(text);
+
+  el.appendChild(svg);
+  return el;
+}
+
 // ── Shared locate icon ────────────────────────────────────────────────────────
 function LocateIcon({ loading }: { loading: boolean }) {
   if (loading) {
@@ -452,10 +497,12 @@ function CommutePanel({
   originLat,
   originLon,
   localities,
+  onDestinationChange,
 }: {
   originLat: number;
   originLon: number;
   localities: LocalityFull[];
+  onDestinationChange?: (dest: { name: string; lat: number; lon: number } | null) => void;
 }) {
   const [tab, setTab]               = useState<"techpark" | "locality">("techpark");
   const [selectedDest, setSelectedDest] = useState<{ name: string; lat: number; lon: number } | null>(null);
@@ -470,6 +517,11 @@ function CommutePanel({
     setResult(null);
     setError(null);
   }, [originLat, originLon]);
+
+  // Notify parent when destination changes (for map pin rendering)
+  useEffect(() => {
+    onDestinationChange?.(selectedDest);
+  }, [selectedDest]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch from OSRM proxy whenever dest or mode changes
   useEffect(() => {
@@ -614,7 +666,9 @@ function CommutePanel({
             to {selectedDest.name} by {mode === "drive" ? "driving" : "walking"} · via road
           </div>
           <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>
-            Based on road distance · no live traffic
+            {mode === "drive"
+              ? "Includes Bengaluru traffic estimate · no live data"
+              : "Based on walking distance · no live data"}
           </div>
         </div>
       )}
@@ -633,6 +687,7 @@ function LocalityDetail({
   originLat,
   originLon,
   localities,
+  onDestinationChange,
 }: {
   selected: Locality;
   score: number;
@@ -643,6 +698,7 @@ function LocalityDetail({
   originLat: number;
   originLon: number;
   localities: LocalityFull[];
+  onDestinationChange?: (dest: { name: string; lat: number; lon: number } | null) => void;
 }) {
   return (
     <>
@@ -668,7 +724,7 @@ function LocalityDetail({
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <FactorBars factors={selected.factors} />
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <CommutePanel originLat={originLat} originLon={originLon} localities={localities} />
+      <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <RawData raw={selected.raw} />
     </>
@@ -734,6 +790,7 @@ export default function Home() {
   const weightsRef        = useRef<Weights>(DEFAULT_WEIGHTS);
   const scoreFilterRef    = useRef<ScoreFilter>("all");
   const isMobileRef       = useRef(false);
+  const commuteMarkersRef = useRef<{ origin: maplibregl.Marker | null; dest: maplibregl.Marker | null }>({ origin: null, dest: null });
 
   const [selected,      setSelected]      = useState<Locality | null>(null);
   const [isMobile,      setIsMobile]      = useState(false);
@@ -776,6 +833,9 @@ export default function Home() {
       map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
       highlightedRef.current = null;
     }
+    commuteMarkersRef.current.origin?.remove();
+    commuteMarkersRef.current.dest?.remove();
+    commuteMarkersRef.current = { origin: null, dest: null };
     history.replaceState(null, "", window.location.pathname);
     setSelected(null);
     setSheetExpanded(false);
@@ -831,8 +891,41 @@ export default function Home() {
     );
   }, [flyToLocality]);
 
-  const handleGateSubmit = useCallback(async (email: string) => {
-    setGateSubmitting(true);
+  const handleCommuteDestChange = useCallback((dest: { name: string; lat: number; lon: number } | null) => {
+    const map = mapInstanceRef.current;
+    // Always clear the old commute markers first
+    commuteMarkersRef.current.origin?.remove();
+    commuteMarkersRef.current.dest?.remove();
+    commuteMarkersRef.current = { origin: null, dest: null };
+    if (!dest || !map) return;
+    const origin = localitiesRef.current.find((l) => l.name === highlightedRef.current);
+    if (!origin) return;
+
+    const originEl = createCommutePin("A", "#3b82f6"); // blue
+    const destEl   = createCommutePin("B", "#8b5cf6"); // purple
+
+    commuteMarkersRef.current.origin = new maplibregl.Marker({ element: originEl, anchor: "bottom" })
+      .setLngLat([origin.lon, origin.lat])
+      .addTo(map);
+    commuteMarkersRef.current.dest = new maplibregl.Marker({ element: destEl, anchor: "bottom" })
+      .setLngLat([dest.lon, dest.lat])
+      .addTo(map);
+
+    // Fit map to show both pins
+    const bounds = new maplibregl.LngLatBounds(
+      [Math.min(origin.lon, dest.lon), Math.min(origin.lat, dest.lat)],
+      [Math.max(origin.lon, dest.lon), Math.max(origin.lat, dest.lat)],
+    );
+    const bottomPad = isMobileRef.current ? 320 : 100;
+    const rightPad  = isMobileRef.current ? 60 : 400;
+    map.fitBounds(bounds, {
+      padding: { top: 100, bottom: bottomPad, left: 60, right: rightPad },
+      maxZoom: 14,
+      duration: 900,
+    });
+  }, []);
+
+  const handleGateSubmit = useCallback(async (email: string) => {    setGateSubmitting(true);
     try {
       if (email) {
         await fetch("/api/signup", {
@@ -1151,6 +1244,7 @@ export default function Home() {
                   originLat={selectedFull?.lat ?? 0}
                   originLon={selectedFull?.lon ?? 0}
                   localities={allLocalities}
+                  onDestinationChange={handleCommuteDestChange}
                 />
               )}
             </div>
@@ -1236,6 +1330,7 @@ export default function Home() {
                     originLat={selectedFull?.lat ?? 0}
                     originLon={selectedFull?.lon ?? 0}
                     localities={allLocalities}
+                    onDestinationChange={handleCommuteDestChange}
                   />
                 </div>
               ) : (

@@ -56,7 +56,10 @@ export async function POST(req: NextRequest) {
     }
 
     const route = data.routes[0];
-    const durationMin = Math.round(route.duration / 60);
+    // Bengaluru traffic congestion multiplier: OSRM uses free-flow speeds which are
+    // ~2-2.5x faster than real city driving conditions in Bengaluru.
+    const trafficMultiplier = profile === "driving" ? 2.2 : 1.0;
+    const durationMin = Math.round((route.duration * trafficMultiplier) / 60);
     const distanceKm  = Math.round(route.distance / 100) / 10;
 
     return NextResponse.json({ durationMin, distanceKm });
