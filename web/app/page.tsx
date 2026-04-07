@@ -517,7 +517,7 @@ export default function Home() {
   const mapInstanceRef    = useRef<maplibregl.Map | null>(null);
   const highlightedRef    = useRef<string | null>(null);
   const localitiesRef     = useRef<LocalityFull[]>([]);
-  const markersRef        = useRef<{ el: HTMLDivElement; factors: Locality["factors"] }[]>([]);
+  const markersRef        = useRef<{ el: HTMLDivElement; circle: HTMLDivElement; factors: Locality["factors"] }[]>([]);
   const weightsRef        = useRef<Weights>(DEFAULT_WEIGHTS);
   const scoreFilterRef    = useRef<ScoreFilter>("all");
   const isMobileRef       = useRef(false);
@@ -661,10 +661,10 @@ export default function Home() {
   // Re-colour markers when weights change
   useEffect(() => {
     weightsRef.current = weights;
-    markersRef.current.forEach(({ el, factors }) => {
+    markersRef.current.forEach(({ circle, factors }) => {
       const score = recomputeScore(factors, weights);
-      el.style.background = scoreColor(score);
-      el.textContent = String(score);
+      circle.style.background = scoreColor(score);
+      circle.textContent = String(score);
     });
     updateMarkerVisibility();
   }, [weights, updateMarkerVisibility]);
@@ -825,7 +825,7 @@ export default function Home() {
           el.appendChild(label);
         }
 
-        markersRef.current.push({ el: circle, factors });
+        markersRef.current.push({ el, circle, factors });
 
         el.addEventListener("mouseenter", () => {
           circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
