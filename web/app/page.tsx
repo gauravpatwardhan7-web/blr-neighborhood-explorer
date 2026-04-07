@@ -796,7 +796,6 @@ export default function Home() {
         "Marathahalli", "Rajajinagar", "Basavanagudi",
       ]);
 
-      let hoveredName: string | null = null;
       (data.features as LocalityFeature[]).forEach((f) => {
         const { name, overall_score, factors, raw } = f.properties;
         const isLandmark = LANDMARK_AREAS.has(name);
@@ -846,21 +845,12 @@ export default function Home() {
         el.addEventListener("mouseenter", () => {
           circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
           circle.style.boxShadow  = "0 4px 16px rgba(0,0,0,0.32)";
-          el.style.zIndex     = "999";
-          if (hoveredName && hoveredName !== highlightedRef.current) {
-            map.setFeatureState({ source: "localities", id: hoveredName }, { hover: false });
-          }
-          hoveredName = name;
-          map.setFeatureState({ source: "localities", id: name }, { hover: true });
+          el.style.zIndex         = "999";
         });
         el.addEventListener("mouseleave", () => {
           circle.style.border    = "2.5px solid white";
           circle.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
-          el.style.zIndex    = "";
-          if (highlightedRef.current !== name) {
-            map.setFeatureState({ source: "localities", id: name }, { hover: false });
-          }
-          hoveredName = null;
+          el.style.zIndex        = "";
         });
         el.addEventListener("click", () => {
           if (highlightedRef.current && highlightedRef.current !== name) {
