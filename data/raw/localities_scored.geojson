@@ -9,14 +9,14 @@
         "lon": 77.546,
         "overall_score": 9.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 10.0,
           "metro_access": 7.5,
           "restaurants": 3.09
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 58,
           "schools": 36,
           "supermarkets": 15,
@@ -296,311 +296,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Indiranagar",
-        "lat": 12.9784,
-        "lon": 77.6408,
-        "overall_score": 8.8,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 7.87,
-          "metro_access": 5.0,
-          "restaurants": 10.0
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
-          "hospitals": 25,
-          "schools": 21,
-          "supermarkets": 16,
-          "restaurants": 223,
-          "metro_stations": 2,
-          "bus_stops": 72
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.660169,
-              12.9784
-            ],
-            [
-              77.660075,
-              12.98025
-            ],
-            [
-              77.659796,
-              12.982082
-            ],
-            [
-              77.659335,
-              12.983879
-            ],
-            [
-              77.658694,
-              12.985623
-            ],
-            [
-              77.657882,
-              12.987297
-            ],
-            [
-              77.656904,
-              12.988886
-            ],
-            [
-              77.655772,
-              12.990373
-            ],
-            [
-              77.654496,
-              12.991746
-            ],
-            [
-              77.653087,
-              12.99299
-            ],
-            [
-              77.651561,
-              12.994093
-            ],
-            [
-              77.64993,
-              12.995045
-            ],
-            [
-              77.648212,
-              12.995837
-            ],
-            [
-              77.646422,
-              12.996461
-            ],
-            [
-              77.644579,
-              12.996911
-            ],
-            [
-              77.642698,
-              12.997183
-            ],
-            [
-              77.6408,
-              12.997274
-            ],
-            [
-              77.638902,
-              12.997183
-            ],
-            [
-              77.637021,
-              12.996911
-            ],
-            [
-              77.635178,
-              12.996461
-            ],
-            [
-              77.633388,
-              12.995837
-            ],
-            [
-              77.63167,
-              12.995045
-            ],
-            [
-              77.630039,
-              12.994093
-            ],
-            [
-              77.628513,
-              12.99299
-            ],
-            [
-              77.627104,
-              12.991746
-            ],
-            [
-              77.625828,
-              12.990373
-            ],
-            [
-              77.624696,
-              12.988886
-            ],
-            [
-              77.623718,
-              12.987297
-            ],
-            [
-              77.622906,
-              12.985623
-            ],
-            [
-              77.622265,
-              12.983879
-            ],
-            [
-              77.621804,
-              12.982082
-            ],
-            [
-              77.621525,
-              12.98025
-            ],
-            [
-              77.621431,
-              12.9784
-            ],
-            [
-              77.621525,
-              12.97655
-            ],
-            [
-              77.621804,
-              12.974718
-            ],
-            [
-              77.622265,
-              12.972921
-            ],
-            [
-              77.622906,
-              12.971177
-            ],
-            [
-              77.623718,
-              12.969503
-            ],
-            [
-              77.624696,
-              12.967914
-            ],
-            [
-              77.625828,
-              12.966427
-            ],
-            [
-              77.627104,
-              12.965054
-            ],
-            [
-              77.628513,
-              12.96381
-            ],
-            [
-              77.630039,
-              12.962707
-            ],
-            [
-              77.63167,
-              12.961755
-            ],
-            [
-              77.633388,
-              12.960963
-            ],
-            [
-              77.635178,
-              12.960339
-            ],
-            [
-              77.637021,
-              12.959889
-            ],
-            [
-              77.638902,
-              12.959617
-            ],
-            [
-              77.6408,
-              12.959526
-            ],
-            [
-              77.642698,
-              12.959617
-            ],
-            [
-              77.644579,
-              12.959889
-            ],
-            [
-              77.646422,
-              12.960339
-            ],
-            [
-              77.648212,
-              12.960963
-            ],
-            [
-              77.64993,
-              12.961755
-            ],
-            [
-              77.651561,
-              12.962707
-            ],
-            [
-              77.653087,
-              12.96381
-            ],
-            [
-              77.654496,
-              12.965054
-            ],
-            [
-              77.655772,
-              12.966427
-            ],
-            [
-              77.656904,
-              12.967914
-            ],
-            [
-              77.657882,
-              12.969503
-            ],
-            [
-              77.658694,
-              12.971177
-            ],
-            [
-              77.659335,
-              12.972921
-            ],
-            [
-              77.659796,
-              12.974718
-            ],
-            [
-              77.660075,
-              12.97655
-            ],
-            [
-              77.660169,
-              12.9784
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "MG Road",
         "lat": 12.9753,
         "lon": 77.6076,
-        "overall_score": 8.8,
+        "overall_score": 8.9,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.65,
           "metro_access": 7.5,
           "restaurants": 9.64
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 15,
           "schools": 45,
           "supermarkets": 18,
@@ -880,19 +588,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Indiranagar",
+        "lat": 12.9784,
+        "lon": 77.6408,
+        "overall_score": 8.8,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 7.87,
+          "metro_access": 5.0,
+          "restaurants": 10.0
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 25,
+          "schools": 21,
+          "supermarkets": 16,
+          "restaurants": 223,
+          "metro_stations": 2,
+          "bus_stops": 72
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.660169,
+              12.9784
+            ],
+            [
+              77.660075,
+              12.98025
+            ],
+            [
+              77.659796,
+              12.982082
+            ],
+            [
+              77.659335,
+              12.983879
+            ],
+            [
+              77.658694,
+              12.985623
+            ],
+            [
+              77.657882,
+              12.987297
+            ],
+            [
+              77.656904,
+              12.988886
+            ],
+            [
+              77.655772,
+              12.990373
+            ],
+            [
+              77.654496,
+              12.991746
+            ],
+            [
+              77.653087,
+              12.99299
+            ],
+            [
+              77.651561,
+              12.994093
+            ],
+            [
+              77.64993,
+              12.995045
+            ],
+            [
+              77.648212,
+              12.995837
+            ],
+            [
+              77.646422,
+              12.996461
+            ],
+            [
+              77.644579,
+              12.996911
+            ],
+            [
+              77.642698,
+              12.997183
+            ],
+            [
+              77.6408,
+              12.997274
+            ],
+            [
+              77.638902,
+              12.997183
+            ],
+            [
+              77.637021,
+              12.996911
+            ],
+            [
+              77.635178,
+              12.996461
+            ],
+            [
+              77.633388,
+              12.995837
+            ],
+            [
+              77.63167,
+              12.995045
+            ],
+            [
+              77.630039,
+              12.994093
+            ],
+            [
+              77.628513,
+              12.99299
+            ],
+            [
+              77.627104,
+              12.991746
+            ],
+            [
+              77.625828,
+              12.990373
+            ],
+            [
+              77.624696,
+              12.988886
+            ],
+            [
+              77.623718,
+              12.987297
+            ],
+            [
+              77.622906,
+              12.985623
+            ],
+            [
+              77.622265,
+              12.983879
+            ],
+            [
+              77.621804,
+              12.982082
+            ],
+            [
+              77.621525,
+              12.98025
+            ],
+            [
+              77.621431,
+              12.9784
+            ],
+            [
+              77.621525,
+              12.97655
+            ],
+            [
+              77.621804,
+              12.974718
+            ],
+            [
+              77.622265,
+              12.972921
+            ],
+            [
+              77.622906,
+              12.971177
+            ],
+            [
+              77.623718,
+              12.969503
+            ],
+            [
+              77.624696,
+              12.967914
+            ],
+            [
+              77.625828,
+              12.966427
+            ],
+            [
+              77.627104,
+              12.965054
+            ],
+            [
+              77.628513,
+              12.96381
+            ],
+            [
+              77.630039,
+              12.962707
+            ],
+            [
+              77.63167,
+              12.961755
+            ],
+            [
+              77.633388,
+              12.960963
+            ],
+            [
+              77.635178,
+              12.960339
+            ],
+            [
+              77.637021,
+              12.959889
+            ],
+            [
+              77.638902,
+              12.959617
+            ],
+            [
+              77.6408,
+              12.959526
+            ],
+            [
+              77.642698,
+              12.959617
+            ],
+            [
+              77.644579,
+              12.959889
+            ],
+            [
+              77.646422,
+              12.960339
+            ],
+            [
+              77.648212,
+              12.960963
+            ],
+            [
+              77.64993,
+              12.961755
+            ],
+            [
+              77.651561,
+              12.962707
+            ],
+            [
+              77.653087,
+              12.96381
+            ],
+            [
+              77.654496,
+              12.965054
+            ],
+            [
+              77.655772,
+              12.966427
+            ],
+            [
+              77.656904,
+              12.967914
+            ],
+            [
+              77.657882,
+              12.969503
+            ],
+            [
+              77.658694,
+              12.971177
+            ],
+            [
+              77.659335,
+              12.972921
+            ],
+            [
+              77.659796,
+              12.974718
+            ],
+            [
+              77.660075,
+              12.97655
+            ],
+            [
+              77.660169,
+              12.9784
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "BTM Layout",
         "lat": 12.9166,
         "lon": 77.6101,
-        "overall_score": 8.6,
+        "overall_score": 8.8,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 7.29,
           "metro_access": 10.0,
           "restaurants": 2.87
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 25,
           "schools": 41,
           "supermarkets": 14,
@@ -1177,14 +1177,14 @@
         "lon": 77.5348,
         "overall_score": 7.8,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 7.29,
           "metro_access": 7.5,
           "restaurants": 1.93
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 60,
           "schools": 12,
           "supermarkets": 12,
@@ -1467,16 +1467,16 @@
         "name": "Victoria Layout",
         "lat": 12.9677,
         "lon": 77.6176,
-        "overall_score": 7.6,
+        "overall_score": 7.8,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.32,
           "metro_access": 7.5,
           "restaurants": 4.66
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 17,
           "schools": 57,
           "supermarkets": 15,
@@ -1761,14 +1761,14 @@
         "lon": 77.5555,
         "overall_score": 7.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.52,
           "metro_access": 7.5,
           "restaurants": 2.83
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 43,
           "schools": 10,
           "supermarkets": 11,
@@ -2053,14 +2053,14 @@
         "lon": 77.5752,
         "overall_score": 7.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 4.84,
           "metro_access": 10.0,
           "restaurants": 4.13
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 36,
           "schools": 15,
           "supermarkets": 9,
@@ -2345,14 +2345,14 @@
         "lon": 77.5838,
         "overall_score": 7.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.19,
           "metro_access": 7.5,
           "restaurants": 3.54
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 35,
           "schools": 26,
           "supermarkets": 13,
@@ -2637,14 +2637,14 @@
         "lon": 77.538,
         "overall_score": 7.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 7.87,
           "metro_access": 5.0,
           "restaurants": 1.57
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 57,
           "schools": 27,
           "supermarkets": 13,
@@ -2929,14 +2929,14 @@
         "lon": 77.7157,
         "overall_score": 7.0,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 5.48,
           "metro_access": 7.5,
           "restaurants": 3.72
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.3,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 12,
           "schools": 19,
           "supermarkets": 12,
@@ -3221,14 +3221,14 @@
         "lon": 77.548,
         "overall_score": 6.9,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 4.26,
           "metro_access": 10.0,
           "restaurants": 2.02
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 23,
           "schools": 16,
           "supermarkets": 7,
@@ -3513,14 +3513,14 @@
         "lon": 77.571,
         "overall_score": 6.8,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 6.32,
           "metro_access": 5.0,
           "restaurants": 3.81
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 29,
           "schools": 11,
           "supermarkets": 19,
@@ -3805,14 +3805,14 @@
         "lon": 77.707,
         "overall_score": 6.6,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.13,
           "metro_access": 5.0,
           "restaurants": 3.72
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.3,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 14,
           "schools": 14,
           "supermarkets": 20,
@@ -4097,14 +4097,14 @@
         "lon": 77.6245,
         "overall_score": 6.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.65,
           "metro_access": 0.0,
           "restaurants": 9.01
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 25,
           "schools": 25,
           "supermarkets": 15,
@@ -4389,14 +4389,14 @@
         "lon": 77.6384,
         "overall_score": 6.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 7.23,
           "metro_access": 0.0,
           "restaurants": 7.62
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 23,
           "schools": 33,
           "supermarkets": 15,
@@ -4681,14 +4681,14 @@
         "lon": 77.599,
         "overall_score": 6.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 7.94,
           "metro_access": 0.0,
           "restaurants": 4.66
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 30,
           "schools": 49,
           "supermarkets": 12,
@@ -4973,14 +4973,14 @@
         "lon": 77.628,
         "overall_score": 6.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 5.16,
           "metro_access": 5.0,
           "restaurants": 4.48
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 16,
           "schools": 32,
           "supermarkets": 7,
@@ -5265,14 +5265,14 @@
         "lon": 77.5857,
         "overall_score": 6.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 5.1,
           "metro_access": 5.0,
           "restaurants": 4.13
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 16,
           "schools": 21,
           "supermarkets": 19,
@@ -5557,14 +5557,14 @@
         "lon": 77.7198,
         "overall_score": 6.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 7.55,
           "metro_access": 0.0,
           "restaurants": 4.89
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.4,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 14,
           "schools": 19,
           "supermarkets": 23,
@@ -5847,16 +5847,16 @@
         "name": "Puttenahalli",
         "lat": 12.899,
         "lon": 77.5707,
-        "overall_score": 5.8,
+        "overall_score": 5.9,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 4.13,
           "metro_access": 7.5,
           "restaurants": 1.12
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 11,
           "schools": 30,
           "supermarkets": 9,
@@ -6136,311 +6136,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Shivajinagar",
-        "lat": 12.9894,
-        "lon": 77.6012,
-        "overall_score": 5.5,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 5.81,
-          "metro_access": 2.5,
-          "restaurants": 3.0
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.6,
-          "hospitals": 25,
-          "schools": 36,
-          "supermarkets": 13,
-          "restaurants": 67,
-          "metro_stations": 1,
-          "bus_stops": 123
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.616945,
-              12.9894
-            ],
-            [
-              77.616869,
-              12.990904
-            ],
-            [
-              77.616643,
-              12.992393
-            ],
-            [
-              77.616267,
-              12.993854
-            ],
-            [
-              77.615747,
-              12.995271
-            ],
-            [
-              77.615086,
-              12.996632
-            ],
-            [
-              77.614292,
-              12.997924
-            ],
-            [
-              77.613371,
-              12.999133
-            ],
-            [
-              77.612334,
-              13.000249
-            ],
-            [
-              77.611189,
-              13.00126
-            ],
-            [
-              77.609948,
-              13.002157
-            ],
-            [
-              77.608622,
-              13.002931
-            ],
-            [
-              77.607225,
-              13.003574
-            ],
-            [
-              77.605771,
-              13.004082
-            ],
-            [
-              77.604272,
-              13.004448
-            ],
-            [
-              77.602743,
-              13.004668
-            ],
-            [
-              77.6012,
-              13.004742
-            ],
-            [
-              77.599657,
-              13.004668
-            ],
-            [
-              77.598128,
-              13.004448
-            ],
-            [
-              77.596629,
-              13.004082
-            ],
-            [
-              77.595175,
-              13.003574
-            ],
-            [
-              77.593778,
-              13.002931
-            ],
-            [
-              77.592452,
-              13.002157
-            ],
-            [
-              77.591211,
-              13.00126
-            ],
-            [
-              77.590066,
-              13.000249
-            ],
-            [
-              77.589029,
-              12.999133
-            ],
-            [
-              77.588108,
-              12.997924
-            ],
-            [
-              77.587314,
-              12.996632
-            ],
-            [
-              77.586653,
-              12.995271
-            ],
-            [
-              77.586133,
-              12.993854
-            ],
-            [
-              77.585757,
-              12.992393
-            ],
-            [
-              77.585531,
-              12.990904
-            ],
-            [
-              77.585455,
-              12.9894
-            ],
-            [
-              77.585531,
-              12.987896
-            ],
-            [
-              77.585757,
-              12.986407
-            ],
-            [
-              77.586133,
-              12.984946
-            ],
-            [
-              77.586653,
-              12.983529
-            ],
-            [
-              77.587314,
-              12.982168
-            ],
-            [
-              77.588108,
-              12.980876
-            ],
-            [
-              77.589029,
-              12.979667
-            ],
-            [
-              77.590066,
-              12.978551
-            ],
-            [
-              77.591211,
-              12.97754
-            ],
-            [
-              77.592452,
-              12.976643
-            ],
-            [
-              77.593778,
-              12.975869
-            ],
-            [
-              77.595175,
-              12.975226
-            ],
-            [
-              77.596629,
-              12.974718
-            ],
-            [
-              77.598128,
-              12.974352
-            ],
-            [
-              77.599657,
-              12.974132
-            ],
-            [
-              77.6012,
-              12.974058
-            ],
-            [
-              77.602743,
-              12.974132
-            ],
-            [
-              77.604272,
-              12.974352
-            ],
-            [
-              77.605771,
-              12.974718
-            ],
-            [
-              77.607225,
-              12.975226
-            ],
-            [
-              77.608622,
-              12.975869
-            ],
-            [
-              77.609948,
-              12.976643
-            ],
-            [
-              77.611189,
-              12.97754
-            ],
-            [
-              77.612334,
-              12.978551
-            ],
-            [
-              77.613371,
-              12.979667
-            ],
-            [
-              77.614292,
-              12.980876
-            ],
-            [
-              77.615086,
-              12.982168
-            ],
-            [
-              77.615747,
-              12.983529
-            ],
-            [
-              77.616267,
-              12.984946
-            ],
-            [
-              77.616643,
-              12.986407
-            ],
-            [
-              77.616869,
-              12.987896
-            ],
-            [
-              77.616945,
-              12.9894
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Frazer Town",
         "lat": 12.9833,
         "lon": 77.6167,
-        "overall_score": 5.4,
+        "overall_score": 5.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 2.52,
           "metro_access": 7.5,
           "restaurants": 3.95
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 10,
           "schools": 9,
           "supermarkets": 6,
@@ -6720,19 +6428,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Shivajinagar",
+        "lat": 12.9894,
+        "lon": 77.6012,
+        "overall_score": 5.5,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 5.81,
+          "metro_access": 2.5,
+          "restaurants": 3.0
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 25,
+          "schools": 36,
+          "supermarkets": 13,
+          "restaurants": 67,
+          "metro_stations": 1,
+          "bus_stops": 123
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.616945,
+              12.9894
+            ],
+            [
+              77.616869,
+              12.990904
+            ],
+            [
+              77.616643,
+              12.992393
+            ],
+            [
+              77.616267,
+              12.993854
+            ],
+            [
+              77.615747,
+              12.995271
+            ],
+            [
+              77.615086,
+              12.996632
+            ],
+            [
+              77.614292,
+              12.997924
+            ],
+            [
+              77.613371,
+              12.999133
+            ],
+            [
+              77.612334,
+              13.000249
+            ],
+            [
+              77.611189,
+              13.00126
+            ],
+            [
+              77.609948,
+              13.002157
+            ],
+            [
+              77.608622,
+              13.002931
+            ],
+            [
+              77.607225,
+              13.003574
+            ],
+            [
+              77.605771,
+              13.004082
+            ],
+            [
+              77.604272,
+              13.004448
+            ],
+            [
+              77.602743,
+              13.004668
+            ],
+            [
+              77.6012,
+              13.004742
+            ],
+            [
+              77.599657,
+              13.004668
+            ],
+            [
+              77.598128,
+              13.004448
+            ],
+            [
+              77.596629,
+              13.004082
+            ],
+            [
+              77.595175,
+              13.003574
+            ],
+            [
+              77.593778,
+              13.002931
+            ],
+            [
+              77.592452,
+              13.002157
+            ],
+            [
+              77.591211,
+              13.00126
+            ],
+            [
+              77.590066,
+              13.000249
+            ],
+            [
+              77.589029,
+              12.999133
+            ],
+            [
+              77.588108,
+              12.997924
+            ],
+            [
+              77.587314,
+              12.996632
+            ],
+            [
+              77.586653,
+              12.995271
+            ],
+            [
+              77.586133,
+              12.993854
+            ],
+            [
+              77.585757,
+              12.992393
+            ],
+            [
+              77.585531,
+              12.990904
+            ],
+            [
+              77.585455,
+              12.9894
+            ],
+            [
+              77.585531,
+              12.987896
+            ],
+            [
+              77.585757,
+              12.986407
+            ],
+            [
+              77.586133,
+              12.984946
+            ],
+            [
+              77.586653,
+              12.983529
+            ],
+            [
+              77.587314,
+              12.982168
+            ],
+            [
+              77.588108,
+              12.980876
+            ],
+            [
+              77.589029,
+              12.979667
+            ],
+            [
+              77.590066,
+              12.978551
+            ],
+            [
+              77.591211,
+              12.97754
+            ],
+            [
+              77.592452,
+              12.976643
+            ],
+            [
+              77.593778,
+              12.975869
+            ],
+            [
+              77.595175,
+              12.975226
+            ],
+            [
+              77.596629,
+              12.974718
+            ],
+            [
+              77.598128,
+              12.974352
+            ],
+            [
+              77.599657,
+              12.974132
+            ],
+            [
+              77.6012,
+              12.974058
+            ],
+            [
+              77.602743,
+              12.974132
+            ],
+            [
+              77.604272,
+              12.974352
+            ],
+            [
+              77.605771,
+              12.974718
+            ],
+            [
+              77.607225,
+              12.975226
+            ],
+            [
+              77.608622,
+              12.975869
+            ],
+            [
+              77.609948,
+              12.976643
+            ],
+            [
+              77.611189,
+              12.97754
+            ],
+            [
+              77.612334,
+              12.978551
+            ],
+            [
+              77.613371,
+              12.979667
+            ],
+            [
+              77.614292,
+              12.980876
+            ],
+            [
+              77.615086,
+              12.982168
+            ],
+            [
+              77.615747,
+              12.983529
+            ],
+            [
+              77.616267,
+              12.984946
+            ],
+            [
+              77.616643,
+              12.986407
+            ],
+            [
+              77.616869,
+              12.987896
+            ],
+            [
+              77.616945,
+              12.9894
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Cunningham Road",
         "lat": 12.9833,
         "lon": 77.5933,
         "overall_score": 5.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.87,
           "metro_access": 7.5,
           "restaurants": 5.38
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 7,
           "schools": 3,
           "supermarkets": 6,
@@ -7017,14 +7017,14 @@
         "lon": 77.71,
         "overall_score": 5.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.32,
           "metro_access": 0.0,
           "restaurants": 4.66
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 14,
           "schools": 17,
           "supermarkets": 21,
@@ -7309,14 +7309,14 @@
         "lon": 77.6473,
         "overall_score": 5.3,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 4.65,
           "metro_access": 2.5,
           "restaurants": 4.84
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 12,
           "schools": 14,
           "supermarkets": 19,
@@ -7601,14 +7601,14 @@
         "lon": 77.5657,
         "overall_score": 5.3,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 4.39,
           "metro_access": 5.0,
           "restaurants": 1.57
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 32,
           "schools": 17,
           "supermarkets": 6,
@@ -7893,14 +7893,14 @@
         "lon": 77.5479,
         "overall_score": 5.1,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.9,
           "metro_access": 7.5,
           "restaurants": 1.08
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 19,
           "schools": 11,
           "supermarkets": 6,
@@ -8185,14 +8185,14 @@
         "lon": 77.5968,
         "overall_score": 5.0,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 6.45,
           "metro_access": 0.0,
           "restaurants": 2.56
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 29,
           "schools": 37,
           "supermarkets": 9,
@@ -8477,14 +8477,14 @@
         "lon": 77.527,
         "overall_score": 4.9,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 5.1,
           "metro_access": 2.5,
           "restaurants": 1.39
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 37,
           "schools": 12,
           "supermarkets": 10,
@@ -8767,16 +8767,16 @@
         "name": "Singasandra",
         "lat": 12.8938,
         "lon": 77.6299,
-        "overall_score": 4.6,
+        "overall_score": 4.8,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.74,
           "metro_access": 5.0,
           "restaurants": 0.45
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.1,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 14,
           "schools": 35,
           "supermarkets": 2,
@@ -9056,311 +9056,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Electronic City",
-        "lat": 12.8468,
-        "lon": 77.668,
-        "overall_score": 4.5,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 1.61,
-          "metro_access": 7.5,
-          "restaurants": 1.84
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
-          "hospitals": 13,
-          "schools": 8,
-          "supermarkets": 4,
-          "restaurants": 41,
-          "metro_stations": 3,
-          "bus_stops": 55
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.676372,
-              12.8468
-            ],
-            [
-              77.676331,
-              12.8476
-            ],
-            [
-              77.676211,
-              12.848392
-            ],
-            [
-              77.676011,
-              12.849169
-            ],
-            [
-              77.675734,
-              12.849924
-            ],
-            [
-              77.675383,
-              12.850648
-            ],
-            [
-              77.674961,
-              12.851335
-            ],
-            [
-              77.674471,
-              12.851978
-            ],
-            [
-              77.67392,
-              12.852572
-            ],
-            [
-              77.673311,
-              12.853109
-            ],
-            [
-              77.672651,
-              12.853587
-            ],
-            [
-              77.671946,
-              12.853998
-            ],
-            [
-              77.671204,
-              12.854341
-            ],
-            [
-              77.67043,
-              12.854611
-            ],
-            [
-              77.669633,
-              12.854805
-            ],
-            [
-              77.668821,
-              12.854923
-            ],
-            [
-              77.668,
-              12.854962
-            ],
-            [
-              77.667179,
-              12.854923
-            ],
-            [
-              77.666367,
-              12.854805
-            ],
-            [
-              77.66557,
-              12.854611
-            ],
-            [
-              77.664796,
-              12.854341
-            ],
-            [
-              77.664054,
-              12.853998
-            ],
-            [
-              77.663349,
-              12.853587
-            ],
-            [
-              77.662689,
-              12.853109
-            ],
-            [
-              77.66208,
-              12.852572
-            ],
-            [
-              77.661529,
-              12.851978
-            ],
-            [
-              77.661039,
-              12.851335
-            ],
-            [
-              77.660617,
-              12.850648
-            ],
-            [
-              77.660266,
-              12.849924
-            ],
-            [
-              77.659989,
-              12.849169
-            ],
-            [
-              77.659789,
-              12.848392
-            ],
-            [
-              77.659669,
-              12.8476
-            ],
-            [
-              77.659628,
-              12.8468
-            ],
-            [
-              77.659669,
-              12.846
-            ],
-            [
-              77.659789,
-              12.845208
-            ],
-            [
-              77.659989,
-              12.844431
-            ],
-            [
-              77.660266,
-              12.843676
-            ],
-            [
-              77.660617,
-              12.842952
-            ],
-            [
-              77.661039,
-              12.842265
-            ],
-            [
-              77.661529,
-              12.841622
-            ],
-            [
-              77.66208,
-              12.841028
-            ],
-            [
-              77.662689,
-              12.840491
-            ],
-            [
-              77.663349,
-              12.840013
-            ],
-            [
-              77.664054,
-              12.839602
-            ],
-            [
-              77.664796,
-              12.839259
-            ],
-            [
-              77.66557,
-              12.838989
-            ],
-            [
-              77.666367,
-              12.838795
-            ],
-            [
-              77.667179,
-              12.838677
-            ],
-            [
-              77.668,
-              12.838638
-            ],
-            [
-              77.668821,
-              12.838677
-            ],
-            [
-              77.669633,
-              12.838795
-            ],
-            [
-              77.67043,
-              12.838989
-            ],
-            [
-              77.671204,
-              12.839259
-            ],
-            [
-              77.671946,
-              12.839602
-            ],
-            [
-              77.672651,
-              12.840013
-            ],
-            [
-              77.673311,
-              12.840491
-            ],
-            [
-              77.67392,
-              12.841028
-            ],
-            [
-              77.674471,
-              12.841622
-            ],
-            [
-              77.674961,
-              12.842265
-            ],
-            [
-              77.675383,
-              12.842952
-            ],
-            [
-              77.675734,
-              12.843676
-            ],
-            [
-              77.676011,
-              12.844431
-            ],
-            [
-              77.676211,
-              12.845208
-            ],
-            [
-              77.676331,
-              12.846
-            ],
-            [
-              77.676372,
-              12.8468
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Brookefield",
         "lat": 12.9783,
         "lon": 77.7277,
-        "overall_score": 4.5,
+        "overall_score": 4.6,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.48,
           "metro_access": 7.5,
           "restaurants": 2.51
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.2,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 9,
           "schools": 8,
           "supermarkets": 2,
@@ -9640,19 +9348,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Electronic City",
+        "lat": 12.8468,
+        "lon": 77.668,
+        "overall_score": 4.5,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 1.61,
+          "metro_access": 7.5,
+          "restaurants": 1.84
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 13,
+          "schools": 8,
+          "supermarkets": 4,
+          "restaurants": 41,
+          "metro_stations": 3,
+          "bus_stops": 55
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.676372,
+              12.8468
+            ],
+            [
+              77.676331,
+              12.8476
+            ],
+            [
+              77.676211,
+              12.848392
+            ],
+            [
+              77.676011,
+              12.849169
+            ],
+            [
+              77.675734,
+              12.849924
+            ],
+            [
+              77.675383,
+              12.850648
+            ],
+            [
+              77.674961,
+              12.851335
+            ],
+            [
+              77.674471,
+              12.851978
+            ],
+            [
+              77.67392,
+              12.852572
+            ],
+            [
+              77.673311,
+              12.853109
+            ],
+            [
+              77.672651,
+              12.853587
+            ],
+            [
+              77.671946,
+              12.853998
+            ],
+            [
+              77.671204,
+              12.854341
+            ],
+            [
+              77.67043,
+              12.854611
+            ],
+            [
+              77.669633,
+              12.854805
+            ],
+            [
+              77.668821,
+              12.854923
+            ],
+            [
+              77.668,
+              12.854962
+            ],
+            [
+              77.667179,
+              12.854923
+            ],
+            [
+              77.666367,
+              12.854805
+            ],
+            [
+              77.66557,
+              12.854611
+            ],
+            [
+              77.664796,
+              12.854341
+            ],
+            [
+              77.664054,
+              12.853998
+            ],
+            [
+              77.663349,
+              12.853587
+            ],
+            [
+              77.662689,
+              12.853109
+            ],
+            [
+              77.66208,
+              12.852572
+            ],
+            [
+              77.661529,
+              12.851978
+            ],
+            [
+              77.661039,
+              12.851335
+            ],
+            [
+              77.660617,
+              12.850648
+            ],
+            [
+              77.660266,
+              12.849924
+            ],
+            [
+              77.659989,
+              12.849169
+            ],
+            [
+              77.659789,
+              12.848392
+            ],
+            [
+              77.659669,
+              12.8476
+            ],
+            [
+              77.659628,
+              12.8468
+            ],
+            [
+              77.659669,
+              12.846
+            ],
+            [
+              77.659789,
+              12.845208
+            ],
+            [
+              77.659989,
+              12.844431
+            ],
+            [
+              77.660266,
+              12.843676
+            ],
+            [
+              77.660617,
+              12.842952
+            ],
+            [
+              77.661039,
+              12.842265
+            ],
+            [
+              77.661529,
+              12.841622
+            ],
+            [
+              77.66208,
+              12.841028
+            ],
+            [
+              77.662689,
+              12.840491
+            ],
+            [
+              77.663349,
+              12.840013
+            ],
+            [
+              77.664054,
+              12.839602
+            ],
+            [
+              77.664796,
+              12.839259
+            ],
+            [
+              77.66557,
+              12.838989
+            ],
+            [
+              77.666367,
+              12.838795
+            ],
+            [
+              77.667179,
+              12.838677
+            ],
+            [
+              77.668,
+              12.838638
+            ],
+            [
+              77.668821,
+              12.838677
+            ],
+            [
+              77.669633,
+              12.838795
+            ],
+            [
+              77.67043,
+              12.838989
+            ],
+            [
+              77.671204,
+              12.839259
+            ],
+            [
+              77.671946,
+              12.839602
+            ],
+            [
+              77.672651,
+              12.840013
+            ],
+            [
+              77.673311,
+              12.840491
+            ],
+            [
+              77.67392,
+              12.841028
+            ],
+            [
+              77.674471,
+              12.841622
+            ],
+            [
+              77.674961,
+              12.842265
+            ],
+            [
+              77.675383,
+              12.842952
+            ],
+            [
+              77.675734,
+              12.843676
+            ],
+            [
+              77.676011,
+              12.844431
+            ],
+            [
+              77.676211,
+              12.845208
+            ],
+            [
+              77.676331,
+              12.846
+            ],
+            [
+              77.676372,
+              12.8468
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Old Madras Road",
         "lat": 13.005,
         "lon": 77.665,
         "overall_score": 4.5,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 3.23,
           "metro_access": 5.0,
           "restaurants": 1.17
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 15,
           "schools": 14,
           "supermarkets": 17,
@@ -9937,14 +9937,14 @@
         "lon": 77.7424,
         "overall_score": 4.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.55,
           "metro_access": 2.5,
           "restaurants": 2.02
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.3,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 6,
           "schools": 20,
           "supermarkets": 11,
@@ -10229,14 +10229,14 @@
         "lon": 77.549,
         "overall_score": 4.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 5.23,
           "metro_access": 0.0,
           "restaurants": 1.39
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 34,
           "schools": 19,
           "supermarkets": 9,
@@ -10521,14 +10521,14 @@
         "lon": 77.6132,
         "overall_score": 4.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 5.42,
           "metro_access": 0.0,
           "restaurants": 0.81
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 17,
           "schools": 37,
           "supermarkets": 16,
@@ -10813,14 +10813,14 @@
         "lon": 77.5485,
         "overall_score": 4.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.35,
           "metro_access": 7.5,
           "restaurants": 0.49
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 9,
           "supermarkets": 3,
@@ -11100,311 +11100,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Sadashivanagar",
-        "lat": 13.005,
-        "lon": 77.58,
-        "overall_score": 4.0,
-        "factors": {
-          "air_quality": 8.3,
-          "amenities": 4.45,
-          "metro_access": 0.0,
-          "restaurants": 3.14
-        },
-        "raw": {
-          "aqi": 78,
-          "temperature_c": 33.5,
-          "hospitals": 21,
-          "schools": 7,
-          "supermarkets": 13,
-          "restaurants": 70,
-          "metro_stations": 0,
-          "bus_stops": 98
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.59337,
-              13.005
-            ],
-            [
-              77.593306,
-              13.006277
-            ],
-            [
-              77.593113,
-              13.007541
-            ],
-            [
-              77.592794,
-              13.008782
-            ],
-            [
-              77.592352,
-              13.009985
-            ],
-            [
-              77.591791,
-              13.011141
-            ],
-            [
-              77.591117,
-              13.012237
-            ],
-            [
-              77.590335,
-              13.013264
-            ],
-            [
-              77.589454,
-              13.014211
-            ],
-            [
-              77.588482,
-              13.01507
-            ],
-            [
-              77.587428,
-              13.015832
-            ],
-            [
-              77.586303,
-              13.016489
-            ],
-            [
-              77.585116,
-              13.017035
-            ],
-            [
-              77.583881,
-              13.017466
-            ],
-            [
-              77.582608,
-              13.017777
-            ],
-            [
-              77.58131,
-              13.017964
-            ],
-            [
-              77.58,
-              13.018027
-            ],
-            [
-              77.57869,
-              13.017964
-            ],
-            [
-              77.577392,
-              13.017777
-            ],
-            [
-              77.576119,
-              13.017466
-            ],
-            [
-              77.574884,
-              13.017035
-            ],
-            [
-              77.573697,
-              13.016489
-            ],
-            [
-              77.572572,
-              13.015832
-            ],
-            [
-              77.571518,
-              13.01507
-            ],
-            [
-              77.570546,
-              13.014211
-            ],
-            [
-              77.569665,
-              13.013264
-            ],
-            [
-              77.568883,
-              13.012237
-            ],
-            [
-              77.568209,
-              13.011141
-            ],
-            [
-              77.567648,
-              13.009985
-            ],
-            [
-              77.567206,
-              13.008782
-            ],
-            [
-              77.566887,
-              13.007541
-            ],
-            [
-              77.566694,
-              13.006277
-            ],
-            [
-              77.56663,
-              13.005
-            ],
-            [
-              77.566694,
-              13.003723
-            ],
-            [
-              77.566887,
-              13.002459
-            ],
-            [
-              77.567206,
-              13.001218
-            ],
-            [
-              77.567648,
-              13.000015
-            ],
-            [
-              77.568209,
-              12.998859
-            ],
-            [
-              77.568883,
-              12.997763
-            ],
-            [
-              77.569665,
-              12.996736
-            ],
-            [
-              77.570546,
-              12.995789
-            ],
-            [
-              77.571518,
-              12.99493
-            ],
-            [
-              77.572572,
-              12.994168
-            ],
-            [
-              77.573697,
-              12.993511
-            ],
-            [
-              77.574884,
-              12.992965
-            ],
-            [
-              77.576119,
-              12.992534
-            ],
-            [
-              77.577392,
-              12.992223
-            ],
-            [
-              77.57869,
-              12.992036
-            ],
-            [
-              77.58,
-              12.991973
-            ],
-            [
-              77.58131,
-              12.992036
-            ],
-            [
-              77.582608,
-              12.992223
-            ],
-            [
-              77.583881,
-              12.992534
-            ],
-            [
-              77.585116,
-              12.992965
-            ],
-            [
-              77.586303,
-              12.993511
-            ],
-            [
-              77.587428,
-              12.994168
-            ],
-            [
-              77.588482,
-              12.99493
-            ],
-            [
-              77.589454,
-              12.995789
-            ],
-            [
-              77.590335,
-              12.996736
-            ],
-            [
-              77.591117,
-              12.997763
-            ],
-            [
-              77.591791,
-              12.998859
-            ],
-            [
-              77.592352,
-              13.000015
-            ],
-            [
-              77.592794,
-              13.001218
-            ],
-            [
-              77.593113,
-              13.002459
-            ],
-            [
-              77.593306,
-              13.003723
-            ],
-            [
-              77.59337,
-              13.005
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Kaggadasapura",
         "lat": 12.9974,
         "lon": 77.6735,
-        "overall_score": 4.0,
+        "overall_score": 4.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 2.45,
           "metro_access": 5.0,
           "restaurants": 1.08
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 7,
           "schools": 12,
           "supermarkets": 11,
@@ -11684,19 +11392,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Sadashivanagar",
+        "lat": 13.005,
+        "lon": 77.58,
+        "overall_score": 4.0,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 4.45,
+          "metro_access": 0.0,
+          "restaurants": 3.14
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 21,
+          "schools": 7,
+          "supermarkets": 13,
+          "restaurants": 70,
+          "metro_stations": 0,
+          "bus_stops": 98
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.59337,
+              13.005
+            ],
+            [
+              77.593306,
+              13.006277
+            ],
+            [
+              77.593113,
+              13.007541
+            ],
+            [
+              77.592794,
+              13.008782
+            ],
+            [
+              77.592352,
+              13.009985
+            ],
+            [
+              77.591791,
+              13.011141
+            ],
+            [
+              77.591117,
+              13.012237
+            ],
+            [
+              77.590335,
+              13.013264
+            ],
+            [
+              77.589454,
+              13.014211
+            ],
+            [
+              77.588482,
+              13.01507
+            ],
+            [
+              77.587428,
+              13.015832
+            ],
+            [
+              77.586303,
+              13.016489
+            ],
+            [
+              77.585116,
+              13.017035
+            ],
+            [
+              77.583881,
+              13.017466
+            ],
+            [
+              77.582608,
+              13.017777
+            ],
+            [
+              77.58131,
+              13.017964
+            ],
+            [
+              77.58,
+              13.018027
+            ],
+            [
+              77.57869,
+              13.017964
+            ],
+            [
+              77.577392,
+              13.017777
+            ],
+            [
+              77.576119,
+              13.017466
+            ],
+            [
+              77.574884,
+              13.017035
+            ],
+            [
+              77.573697,
+              13.016489
+            ],
+            [
+              77.572572,
+              13.015832
+            ],
+            [
+              77.571518,
+              13.01507
+            ],
+            [
+              77.570546,
+              13.014211
+            ],
+            [
+              77.569665,
+              13.013264
+            ],
+            [
+              77.568883,
+              13.012237
+            ],
+            [
+              77.568209,
+              13.011141
+            ],
+            [
+              77.567648,
+              13.009985
+            ],
+            [
+              77.567206,
+              13.008782
+            ],
+            [
+              77.566887,
+              13.007541
+            ],
+            [
+              77.566694,
+              13.006277
+            ],
+            [
+              77.56663,
+              13.005
+            ],
+            [
+              77.566694,
+              13.003723
+            ],
+            [
+              77.566887,
+              13.002459
+            ],
+            [
+              77.567206,
+              13.001218
+            ],
+            [
+              77.567648,
+              13.000015
+            ],
+            [
+              77.568209,
+              12.998859
+            ],
+            [
+              77.568883,
+              12.997763
+            ],
+            [
+              77.569665,
+              12.996736
+            ],
+            [
+              77.570546,
+              12.995789
+            ],
+            [
+              77.571518,
+              12.99493
+            ],
+            [
+              77.572572,
+              12.994168
+            ],
+            [
+              77.573697,
+              12.993511
+            ],
+            [
+              77.574884,
+              12.992965
+            ],
+            [
+              77.576119,
+              12.992534
+            ],
+            [
+              77.577392,
+              12.992223
+            ],
+            [
+              77.57869,
+              12.992036
+            ],
+            [
+              77.58,
+              12.991973
+            ],
+            [
+              77.58131,
+              12.992036
+            ],
+            [
+              77.582608,
+              12.992223
+            ],
+            [
+              77.583881,
+              12.992534
+            ],
+            [
+              77.585116,
+              12.992965
+            ],
+            [
+              77.586303,
+              12.993511
+            ],
+            [
+              77.587428,
+              12.994168
+            ],
+            [
+              77.588482,
+              12.99493
+            ],
+            [
+              77.589454,
+              12.995789
+            ],
+            [
+              77.590335,
+              12.996736
+            ],
+            [
+              77.591117,
+              12.997763
+            ],
+            [
+              77.591791,
+              12.998859
+            ],
+            [
+              77.592352,
+              13.000015
+            ],
+            [
+              77.592794,
+              13.001218
+            ],
+            [
+              77.593113,
+              13.002459
+            ],
+            [
+              77.593306,
+              13.003723
+            ],
+            [
+              77.59337,
+              13.005
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Ramamurthy Nagar",
         "lat": 13.0142,
         "lon": 77.6608,
         "overall_score": 3.9,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 4.9,
           "metro_access": 0.0,
           "restaurants": 1.21
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 25,
           "schools": 22,
           "supermarkets": 22,
@@ -11981,14 +11981,14 @@
         "lon": 77.539,
         "overall_score": 3.9,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.97,
           "metro_access": 7.5,
           "restaurants": 0.4
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 11,
           "schools": 3,
           "supermarkets": 1,
@@ -12273,14 +12273,14 @@
         "lon": 77.6974,
         "overall_score": 3.8,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.68,
           "metro_access": 0.0,
           "restaurants": 3.77
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.3,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 5,
           "schools": 3,
           "supermarkets": 19,
@@ -12560,19 +12560,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "CV Raman Nagar",
+        "lat": 12.9913,
+        "lon": 77.6595,
+        "overall_score": 3.8,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 1.87,
+          "metro_access": 5.0,
+          "restaurants": 0.85
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 5,
+          "schools": 7,
+          "supermarkets": 10,
+          "restaurants": 19,
+          "metro_stations": 2,
+          "bus_stops": 44
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.66833,
+              12.9913
+            ],
+            [
+              77.668287,
+              12.992143
+            ],
+            [
+              77.66816,
+              12.992978
+            ],
+            [
+              77.667949,
+              12.993797
+            ],
+            [
+              77.667657,
+              12.994592
+            ],
+            [
+              77.667287,
+              12.995356
+            ],
+            [
+              77.666842,
+              12.99608
+            ],
+            [
+              77.666325,
+              12.996758
+            ],
+            [
+              77.665743,
+              12.997384
+            ],
+            [
+              77.665101,
+              12.997951
+            ],
+            [
+              77.664405,
+              12.998454
+            ],
+            [
+              77.663662,
+              12.998888
+            ],
+            [
+              77.662879,
+              12.999249
+            ],
+            [
+              77.662063,
+              12.999533
+            ],
+            [
+              77.661223,
+              12.999738
+            ],
+            [
+              77.660365,
+              12.999862
+            ],
+            [
+              77.6595,
+              12.999904
+            ],
+            [
+              77.658635,
+              12.999862
+            ],
+            [
+              77.657777,
+              12.999738
+            ],
+            [
+              77.656937,
+              12.999533
+            ],
+            [
+              77.656121,
+              12.999249
+            ],
+            [
+              77.655338,
+              12.998888
+            ],
+            [
+              77.654595,
+              12.998454
+            ],
+            [
+              77.653899,
+              12.997951
+            ],
+            [
+              77.653257,
+              12.997384
+            ],
+            [
+              77.652675,
+              12.996758
+            ],
+            [
+              77.652158,
+              12.99608
+            ],
+            [
+              77.651713,
+              12.995356
+            ],
+            [
+              77.651343,
+              12.994592
+            ],
+            [
+              77.651051,
+              12.993797
+            ],
+            [
+              77.65084,
+              12.992978
+            ],
+            [
+              77.650713,
+              12.992143
+            ],
+            [
+              77.65067,
+              12.9913
+            ],
+            [
+              77.650713,
+              12.990457
+            ],
+            [
+              77.65084,
+              12.989622
+            ],
+            [
+              77.651051,
+              12.988803
+            ],
+            [
+              77.651343,
+              12.988008
+            ],
+            [
+              77.651713,
+              12.987244
+            ],
+            [
+              77.652158,
+              12.98652
+            ],
+            [
+              77.652675,
+              12.985842
+            ],
+            [
+              77.653257,
+              12.985216
+            ],
+            [
+              77.653899,
+              12.984649
+            ],
+            [
+              77.654595,
+              12.984146
+            ],
+            [
+              77.655338,
+              12.983712
+            ],
+            [
+              77.656121,
+              12.983351
+            ],
+            [
+              77.656937,
+              12.983067
+            ],
+            [
+              77.657777,
+              12.982862
+            ],
+            [
+              77.658635,
+              12.982738
+            ],
+            [
+              77.6595,
+              12.982696
+            ],
+            [
+              77.660365,
+              12.982738
+            ],
+            [
+              77.661223,
+              12.982862
+            ],
+            [
+              77.662063,
+              12.983067
+            ],
+            [
+              77.662879,
+              12.983351
+            ],
+            [
+              77.663662,
+              12.983712
+            ],
+            [
+              77.664405,
+              12.984146
+            ],
+            [
+              77.665101,
+              12.984649
+            ],
+            [
+              77.665743,
+              12.985216
+            ],
+            [
+              77.666325,
+              12.985842
+            ],
+            [
+              77.666842,
+              12.98652
+            ],
+            [
+              77.667287,
+              12.987244
+            ],
+            [
+              77.667657,
+              12.988008
+            ],
+            [
+              77.667949,
+              12.988803
+            ],
+            [
+              77.66816,
+              12.989622
+            ],
+            [
+              77.668287,
+              12.990457
+            ],
+            [
+              77.66833,
+              12.9913
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Horamavu",
         "lat": 13.0055,
         "lon": 77.6648,
         "overall_score": 3.8,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 3.23,
           "metro_access": 2.5,
           "restaurants": 1.17
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 15,
           "schools": 15,
           "supermarkets": 17,
@@ -12852,19 +13144,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Nallurhalli",
+        "lat": 12.954,
+        "lon": 77.731,
+        "overall_score": 3.8,
+        "factors": {
+          "air_quality": 9.5,
+          "amenities": 2.9,
+          "metro_access": 0.0,
+          "restaurants": 1.75
+        },
+        "raw": {
+          "aqi": 59,
+          "temperature_c": null,
+          "hospitals": 4,
+          "schools": 10,
+          "supermarkets": 8,
+          "restaurants": 39,
+          "metro_stations": 0,
+          "bus_stops": 8
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.741649,
+              12.954
+            ],
+            [
+              77.741598,
+              12.955017
+            ],
+            [
+              77.741445,
+              12.956025
+            ],
+            [
+              77.741191,
+              12.957013
+            ],
+            [
+              77.740839,
+              12.957972
+            ],
+            [
+              77.740392,
+              12.958892
+            ],
+            [
+              77.739855,
+              12.959766
+            ],
+            [
+              77.739232,
+              12.960584
+            ],
+            [
+              77.73853,
+              12.961339
+            ],
+            [
+              77.737756,
+              12.962023
+            ],
+            [
+              77.736916,
+              12.962629
+            ],
+            [
+              77.73602,
+              12.963153
+            ],
+            [
+              77.735075,
+              12.963588
+            ],
+            [
+              77.734091,
+              12.963931
+            ],
+            [
+              77.733078,
+              12.964179
+            ],
+            [
+              77.732044,
+              12.964328
+            ],
+            [
+              77.731,
+              12.964378
+            ],
+            [
+              77.729956,
+              12.964328
+            ],
+            [
+              77.728922,
+              12.964179
+            ],
+            [
+              77.727909,
+              12.963931
+            ],
+            [
+              77.726925,
+              12.963588
+            ],
+            [
+              77.72598,
+              12.963153
+            ],
+            [
+              77.725084,
+              12.962629
+            ],
+            [
+              77.724244,
+              12.962023
+            ],
+            [
+              77.72347,
+              12.961339
+            ],
+            [
+              77.722768,
+              12.960584
+            ],
+            [
+              77.722145,
+              12.959766
+            ],
+            [
+              77.721608,
+              12.958892
+            ],
+            [
+              77.721161,
+              12.957972
+            ],
+            [
+              77.720809,
+              12.957013
+            ],
+            [
+              77.720555,
+              12.956025
+            ],
+            [
+              77.720402,
+              12.955017
+            ],
+            [
+              77.720351,
+              12.954
+            ],
+            [
+              77.720402,
+              12.952983
+            ],
+            [
+              77.720555,
+              12.951975
+            ],
+            [
+              77.720809,
+              12.950987
+            ],
+            [
+              77.721161,
+              12.950028
+            ],
+            [
+              77.721608,
+              12.949108
+            ],
+            [
+              77.722145,
+              12.948234
+            ],
+            [
+              77.722768,
+              12.947416
+            ],
+            [
+              77.72347,
+              12.946661
+            ],
+            [
+              77.724244,
+              12.945977
+            ],
+            [
+              77.725084,
+              12.945371
+            ],
+            [
+              77.72598,
+              12.944847
+            ],
+            [
+              77.726925,
+              12.944412
+            ],
+            [
+              77.727909,
+              12.944069
+            ],
+            [
+              77.728922,
+              12.943821
+            ],
+            [
+              77.729956,
+              12.943672
+            ],
+            [
+              77.731,
+              12.943622
+            ],
+            [
+              77.732044,
+              12.943672
+            ],
+            [
+              77.733078,
+              12.943821
+            ],
+            [
+              77.734091,
+              12.944069
+            ],
+            [
+              77.735075,
+              12.944412
+            ],
+            [
+              77.73602,
+              12.944847
+            ],
+            [
+              77.736916,
+              12.945371
+            ],
+            [
+              77.737756,
+              12.945977
+            ],
+            [
+              77.73853,
+              12.946661
+            ],
+            [
+              77.739232,
+              12.947416
+            ],
+            [
+              77.739855,
+              12.948234
+            ],
+            [
+              77.740392,
+              12.949108
+            ],
+            [
+              77.740839,
+              12.950028
+            ],
+            [
+              77.741191,
+              12.950987
+            ],
+            [
+              77.741445,
+              12.951975
+            ],
+            [
+              77.741598,
+              12.952983
+            ],
+            [
+              77.741649,
+              12.954
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Bannerghatta Road",
         "lat": 12.8933,
         "lon": 77.5975,
         "overall_score": 3.6,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 4.19,
           "metro_access": 0.0,
           "restaurants": 2.06
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 9,
           "schools": 24,
           "supermarkets": 19,
@@ -13149,14 +13733,14 @@
         "lon": 77.619,
         "overall_score": 3.6,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 4.06,
           "metro_access": 0.0,
           "restaurants": 2.33
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 13,
           "schools": 9,
           "supermarkets": 16,
@@ -13441,14 +14025,14 @@
         "lon": 77.7127,
         "overall_score": 3.6,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.74,
           "metro_access": 5.0,
           "restaurants": 0.76
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.2,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 6,
           "schools": 11,
           "supermarkets": 5,
@@ -13733,14 +14317,14 @@
         "lon": 77.5546,
         "overall_score": 3.6,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.68,
           "metro_access": 5.0,
           "restaurants": 0.9
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 8,
           "schools": 15,
           "supermarkets": 4,
@@ -14020,311 +14604,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "CV Raman Nagar",
-        "lat": 12.9913,
-        "lon": 77.6595,
-        "overall_score": 3.6,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 1.87,
-          "metro_access": 5.0,
-          "restaurants": 0.85
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
-          "hospitals": 5,
-          "schools": 7,
-          "supermarkets": 10,
-          "restaurants": 19,
-          "metro_stations": 2,
-          "bus_stops": 44
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.66833,
-              12.9913
-            ],
-            [
-              77.668287,
-              12.992143
-            ],
-            [
-              77.66816,
-              12.992978
-            ],
-            [
-              77.667949,
-              12.993797
-            ],
-            [
-              77.667657,
-              12.994592
-            ],
-            [
-              77.667287,
-              12.995356
-            ],
-            [
-              77.666842,
-              12.99608
-            ],
-            [
-              77.666325,
-              12.996758
-            ],
-            [
-              77.665743,
-              12.997384
-            ],
-            [
-              77.665101,
-              12.997951
-            ],
-            [
-              77.664405,
-              12.998454
-            ],
-            [
-              77.663662,
-              12.998888
-            ],
-            [
-              77.662879,
-              12.999249
-            ],
-            [
-              77.662063,
-              12.999533
-            ],
-            [
-              77.661223,
-              12.999738
-            ],
-            [
-              77.660365,
-              12.999862
-            ],
-            [
-              77.6595,
-              12.999904
-            ],
-            [
-              77.658635,
-              12.999862
-            ],
-            [
-              77.657777,
-              12.999738
-            ],
-            [
-              77.656937,
-              12.999533
-            ],
-            [
-              77.656121,
-              12.999249
-            ],
-            [
-              77.655338,
-              12.998888
-            ],
-            [
-              77.654595,
-              12.998454
-            ],
-            [
-              77.653899,
-              12.997951
-            ],
-            [
-              77.653257,
-              12.997384
-            ],
-            [
-              77.652675,
-              12.996758
-            ],
-            [
-              77.652158,
-              12.99608
-            ],
-            [
-              77.651713,
-              12.995356
-            ],
-            [
-              77.651343,
-              12.994592
-            ],
-            [
-              77.651051,
-              12.993797
-            ],
-            [
-              77.65084,
-              12.992978
-            ],
-            [
-              77.650713,
-              12.992143
-            ],
-            [
-              77.65067,
-              12.9913
-            ],
-            [
-              77.650713,
-              12.990457
-            ],
-            [
-              77.65084,
-              12.989622
-            ],
-            [
-              77.651051,
-              12.988803
-            ],
-            [
-              77.651343,
-              12.988008
-            ],
-            [
-              77.651713,
-              12.987244
-            ],
-            [
-              77.652158,
-              12.98652
-            ],
-            [
-              77.652675,
-              12.985842
-            ],
-            [
-              77.653257,
-              12.985216
-            ],
-            [
-              77.653899,
-              12.984649
-            ],
-            [
-              77.654595,
-              12.984146
-            ],
-            [
-              77.655338,
-              12.983712
-            ],
-            [
-              77.656121,
-              12.983351
-            ],
-            [
-              77.656937,
-              12.983067
-            ],
-            [
-              77.657777,
-              12.982862
-            ],
-            [
-              77.658635,
-              12.982738
-            ],
-            [
-              77.6595,
-              12.982696
-            ],
-            [
-              77.660365,
-              12.982738
-            ],
-            [
-              77.661223,
-              12.982862
-            ],
-            [
-              77.662063,
-              12.983067
-            ],
-            [
-              77.662879,
-              12.983351
-            ],
-            [
-              77.663662,
-              12.983712
-            ],
-            [
-              77.664405,
-              12.984146
-            ],
-            [
-              77.665101,
-              12.984649
-            ],
-            [
-              77.665743,
-              12.985216
-            ],
-            [
-              77.666325,
-              12.985842
-            ],
-            [
-              77.666842,
-              12.98652
-            ],
-            [
-              77.667287,
-              12.987244
-            ],
-            [
-              77.667657,
-              12.988008
-            ],
-            [
-              77.667949,
-              12.988803
-            ],
-            [
-              77.66816,
-              12.989622
-            ],
-            [
-              77.668287,
-              12.990457
-            ],
-            [
-              77.66833,
-              12.9913
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Uttarahalli",
         "lat": 12.8914,
         "lon": 77.5519,
         "overall_score": 3.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.55,
           "metro_access": 5.0,
           "restaurants": 0.94
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 6,
           "schools": 13,
           "supermarkets": 4,
@@ -14609,14 +14901,14 @@
         "lon": 77.563,
         "overall_score": 3.4,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 3.23,
           "metro_access": 0.0,
           "restaurants": 3.54
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 16,
           "schools": 11,
           "supermarkets": 9,
@@ -14896,19 +15188,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Vibhutipura",
+        "lat": 12.9655,
+        "lon": 77.664,
+        "overall_score": 3.4,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 3.81,
+          "metro_access": 0.0,
+          "restaurants": 1.35
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 10,
+          "schools": 18,
+          "supermarkets": 19,
+          "restaurants": 30,
+          "metro_stations": 0,
+          "bus_stops": 38
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.676231,
+              12.9655
+            ],
+            [
+              77.676172,
+              12.966668
+            ],
+            [
+              77.675996,
+              12.967825
+            ],
+            [
+              77.675704,
+              12.96896
+            ],
+            [
+              77.6753,
+              12.970061
+            ],
+            [
+              77.674787,
+              12.971119
+            ],
+            [
+              77.674169,
+              12.972122
+            ],
+            [
+              77.673454,
+              12.973061
+            ],
+            [
+              77.672648,
+              12.973928
+            ],
+            [
+              77.671759,
+              12.974713
+            ],
+            [
+              77.670795,
+              12.97541
+            ],
+            [
+              77.669766,
+              12.976012
+            ],
+            [
+              77.668681,
+              12.976512
+            ],
+            [
+              77.66755,
+              12.976906
+            ],
+            [
+              77.666386,
+              12.97719
+            ],
+            [
+              77.665199,
+              12.977362
+            ],
+            [
+              77.664,
+              12.977419
+            ],
+            [
+              77.662801,
+              12.977362
+            ],
+            [
+              77.661614,
+              12.97719
+            ],
+            [
+              77.66045,
+              12.976906
+            ],
+            [
+              77.659319,
+              12.976512
+            ],
+            [
+              77.658234,
+              12.976012
+            ],
+            [
+              77.657205,
+              12.97541
+            ],
+            [
+              77.656241,
+              12.974713
+            ],
+            [
+              77.655352,
+              12.973928
+            ],
+            [
+              77.654546,
+              12.973061
+            ],
+            [
+              77.653831,
+              12.972122
+            ],
+            [
+              77.653213,
+              12.971119
+            ],
+            [
+              77.6527,
+              12.970061
+            ],
+            [
+              77.652296,
+              12.96896
+            ],
+            [
+              77.652004,
+              12.967825
+            ],
+            [
+              77.651828,
+              12.966668
+            ],
+            [
+              77.651769,
+              12.9655
+            ],
+            [
+              77.651828,
+              12.964332
+            ],
+            [
+              77.652004,
+              12.963175
+            ],
+            [
+              77.652296,
+              12.96204
+            ],
+            [
+              77.6527,
+              12.960939
+            ],
+            [
+              77.653213,
+              12.959881
+            ],
+            [
+              77.653831,
+              12.958878
+            ],
+            [
+              77.654546,
+              12.957939
+            ],
+            [
+              77.655352,
+              12.957072
+            ],
+            [
+              77.656241,
+              12.956287
+            ],
+            [
+              77.657205,
+              12.95559
+            ],
+            [
+              77.658234,
+              12.954988
+            ],
+            [
+              77.659319,
+              12.954488
+            ],
+            [
+              77.66045,
+              12.954094
+            ],
+            [
+              77.661614,
+              12.95381
+            ],
+            [
+              77.662801,
+              12.953638
+            ],
+            [
+              77.664,
+              12.953581
+            ],
+            [
+              77.665199,
+              12.953638
+            ],
+            [
+              77.666386,
+              12.95381
+            ],
+            [
+              77.66755,
+              12.954094
+            ],
+            [
+              77.668681,
+              12.954488
+            ],
+            [
+              77.669766,
+              12.954988
+            ],
+            [
+              77.670795,
+              12.95559
+            ],
+            [
+              77.671759,
+              12.956287
+            ],
+            [
+              77.672648,
+              12.957072
+            ],
+            [
+              77.673454,
+              12.957939
+            ],
+            [
+              77.674169,
+              12.958878
+            ],
+            [
+              77.674787,
+              12.959881
+            ],
+            [
+              77.6753,
+              12.960939
+            ],
+            [
+              77.675704,
+              12.96204
+            ],
+            [
+              77.675996,
+              12.963175
+            ],
+            [
+              77.676172,
+              12.964332
+            ],
+            [
+              77.676231,
+              12.9655
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "KR Puram",
         "lat": 13.0067,
         "lon": 77.6928,
         "overall_score": 3.2,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.45,
           "metro_access": 2.5,
           "restaurants": 0.72
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.3,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 19,
           "schools": 15,
           "supermarkets": 4,
@@ -15193,14 +15777,14 @@
         "lon": 77.638,
         "overall_score": 3.2,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.45,
           "metro_access": 2.5,
           "restaurants": 0.72
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 6,
           "schools": 18,
           "supermarkets": 9,
@@ -15480,603 +16064,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Vibhutipura",
-        "lat": 12.9655,
-        "lon": 77.664,
-        "overall_score": 3.2,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 3.81,
-          "metro_access": 0.0,
-          "restaurants": 1.35
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
-          "hospitals": 10,
-          "schools": 18,
-          "supermarkets": 19,
-          "restaurants": 30,
-          "metro_stations": 0,
-          "bus_stops": 38
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.676231,
-              12.9655
-            ],
-            [
-              77.676172,
-              12.966668
-            ],
-            [
-              77.675996,
-              12.967825
-            ],
-            [
-              77.675704,
-              12.96896
-            ],
-            [
-              77.6753,
-              12.970061
-            ],
-            [
-              77.674787,
-              12.971119
-            ],
-            [
-              77.674169,
-              12.972122
-            ],
-            [
-              77.673454,
-              12.973061
-            ],
-            [
-              77.672648,
-              12.973928
-            ],
-            [
-              77.671759,
-              12.974713
-            ],
-            [
-              77.670795,
-              12.97541
-            ],
-            [
-              77.669766,
-              12.976012
-            ],
-            [
-              77.668681,
-              12.976512
-            ],
-            [
-              77.66755,
-              12.976906
-            ],
-            [
-              77.666386,
-              12.97719
-            ],
-            [
-              77.665199,
-              12.977362
-            ],
-            [
-              77.664,
-              12.977419
-            ],
-            [
-              77.662801,
-              12.977362
-            ],
-            [
-              77.661614,
-              12.97719
-            ],
-            [
-              77.66045,
-              12.976906
-            ],
-            [
-              77.659319,
-              12.976512
-            ],
-            [
-              77.658234,
-              12.976012
-            ],
-            [
-              77.657205,
-              12.97541
-            ],
-            [
-              77.656241,
-              12.974713
-            ],
-            [
-              77.655352,
-              12.973928
-            ],
-            [
-              77.654546,
-              12.973061
-            ],
-            [
-              77.653831,
-              12.972122
-            ],
-            [
-              77.653213,
-              12.971119
-            ],
-            [
-              77.6527,
-              12.970061
-            ],
-            [
-              77.652296,
-              12.96896
-            ],
-            [
-              77.652004,
-              12.967825
-            ],
-            [
-              77.651828,
-              12.966668
-            ],
-            [
-              77.651769,
-              12.9655
-            ],
-            [
-              77.651828,
-              12.964332
-            ],
-            [
-              77.652004,
-              12.963175
-            ],
-            [
-              77.652296,
-              12.96204
-            ],
-            [
-              77.6527,
-              12.960939
-            ],
-            [
-              77.653213,
-              12.959881
-            ],
-            [
-              77.653831,
-              12.958878
-            ],
-            [
-              77.654546,
-              12.957939
-            ],
-            [
-              77.655352,
-              12.957072
-            ],
-            [
-              77.656241,
-              12.956287
-            ],
-            [
-              77.657205,
-              12.95559
-            ],
-            [
-              77.658234,
-              12.954988
-            ],
-            [
-              77.659319,
-              12.954488
-            ],
-            [
-              77.66045,
-              12.954094
-            ],
-            [
-              77.661614,
-              12.95381
-            ],
-            [
-              77.662801,
-              12.953638
-            ],
-            [
-              77.664,
-              12.953581
-            ],
-            [
-              77.665199,
-              12.953638
-            ],
-            [
-              77.666386,
-              12.95381
-            ],
-            [
-              77.66755,
-              12.954094
-            ],
-            [
-              77.668681,
-              12.954488
-            ],
-            [
-              77.669766,
-              12.954988
-            ],
-            [
-              77.670795,
-              12.95559
-            ],
-            [
-              77.671759,
-              12.956287
-            ],
-            [
-              77.672648,
-              12.957072
-            ],
-            [
-              77.673454,
-              12.957939
-            ],
-            [
-              77.674169,
-              12.958878
-            ],
-            [
-              77.674787,
-              12.959881
-            ],
-            [
-              77.6753,
-              12.960939
-            ],
-            [
-              77.675704,
-              12.96204
-            ],
-            [
-              77.675996,
-              12.963175
-            ],
-            [
-              77.676172,
-              12.964332
-            ],
-            [
-              77.676231,
-              12.9655
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hagadur",
-        "lat": 12.9757,
-        "lon": 77.76,
-        "overall_score": 3.2,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 2.32,
-          "metro_access": 2.5,
-          "restaurants": 1.03
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.4,
-          "hospitals": 2,
-          "schools": 16,
-          "supermarkets": 6,
-          "restaurants": 23,
-          "metro_stations": 1,
-          "bus_stops": 40
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.769624,
-              12.9757
-            ],
-            [
-              77.769578,
-              12.976619
-            ],
-            [
-              77.769439,
-              12.97753
-            ],
-            [
-              77.76921,
-              12.978422
-            ],
-            [
-              77.768892,
-              12.979289
-            ],
-            [
-              77.768488,
-              12.980121
-            ],
-            [
-              77.768002,
-              12.98091
-            ],
-            [
-              77.76744,
-              12.98165
-            ],
-            [
-              77.766805,
-              12.982332
-            ],
-            [
-              77.766105,
-              12.98295
-            ],
-            [
-              77.765347,
-              12.983498
-            ],
-            [
-              77.764537,
-              12.983971
-            ],
-            [
-              77.763683,
-              12.984364
-            ],
-            [
-              77.762794,
-              12.984675
-            ],
-            [
-              77.761878,
-              12.984898
-            ],
-            [
-              77.760943,
-              12.985033
-            ],
-            [
-              77.76,
-              12.985078
-            ],
-            [
-              77.759057,
-              12.985033
-            ],
-            [
-              77.758122,
-              12.984898
-            ],
-            [
-              77.757206,
-              12.984675
-            ],
-            [
-              77.756317,
-              12.984364
-            ],
-            [
-              77.755463,
-              12.983971
-            ],
-            [
-              77.754653,
-              12.983498
-            ],
-            [
-              77.753895,
-              12.98295
-            ],
-            [
-              77.753195,
-              12.982332
-            ],
-            [
-              77.75256,
-              12.98165
-            ],
-            [
-              77.751998,
-              12.98091
-            ],
-            [
-              77.751512,
-              12.980121
-            ],
-            [
-              77.751108,
-              12.979289
-            ],
-            [
-              77.75079,
-              12.978422
-            ],
-            [
-              77.750561,
-              12.97753
-            ],
-            [
-              77.750422,
-              12.976619
-            ],
-            [
-              77.750376,
-              12.9757
-            ],
-            [
-              77.750422,
-              12.974781
-            ],
-            [
-              77.750561,
-              12.97387
-            ],
-            [
-              77.75079,
-              12.972978
-            ],
-            [
-              77.751108,
-              12.972111
-            ],
-            [
-              77.751512,
-              12.971279
-            ],
-            [
-              77.751998,
-              12.97049
-            ],
-            [
-              77.75256,
-              12.96975
-            ],
-            [
-              77.753195,
-              12.969068
-            ],
-            [
-              77.753895,
-              12.96845
-            ],
-            [
-              77.754653,
-              12.967902
-            ],
-            [
-              77.755463,
-              12.967429
-            ],
-            [
-              77.756317,
-              12.967036
-            ],
-            [
-              77.757206,
-              12.966725
-            ],
-            [
-              77.758122,
-              12.966502
-            ],
-            [
-              77.759057,
-              12.966367
-            ],
-            [
-              77.76,
-              12.966322
-            ],
-            [
-              77.760943,
-              12.966367
-            ],
-            [
-              77.761878,
-              12.966502
-            ],
-            [
-              77.762794,
-              12.966725
-            ],
-            [
-              77.763683,
-              12.967036
-            ],
-            [
-              77.764537,
-              12.967429
-            ],
-            [
-              77.765347,
-              12.967902
-            ],
-            [
-              77.766105,
-              12.96845
-            ],
-            [
-              77.766805,
-              12.969068
-            ],
-            [
-              77.76744,
-              12.96975
-            ],
-            [
-              77.768002,
-              12.97049
-            ],
-            [
-              77.768488,
-              12.971279
-            ],
-            [
-              77.768892,
-              12.972111
-            ],
-            [
-              77.76921,
-              12.972978
-            ],
-            [
-              77.769439,
-              12.97387
-            ],
-            [
-              77.769578,
-              12.974781
-            ],
-            [
-              77.769624,
-              12.9757
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Bommanahalli",
         "lat": 12.8932,
         "lon": 77.6198,
-        "overall_score": 3.1,
+        "overall_score": 3.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.94,
           "metro_access": 0.0,
           "restaurants": 0.31
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 10,
           "schools": 34,
           "supermarkets": 8,
@@ -16356,19 +16356,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Hagadur",
+        "lat": 12.9757,
+        "lon": 77.76,
+        "overall_score": 3.2,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 2.32,
+          "metro_access": 2.5,
+          "restaurants": 1.03
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 2,
+          "schools": 16,
+          "supermarkets": 6,
+          "restaurants": 23,
+          "metro_stations": 1,
+          "bus_stops": 40
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.769624,
+              12.9757
+            ],
+            [
+              77.769578,
+              12.976619
+            ],
+            [
+              77.769439,
+              12.97753
+            ],
+            [
+              77.76921,
+              12.978422
+            ],
+            [
+              77.768892,
+              12.979289
+            ],
+            [
+              77.768488,
+              12.980121
+            ],
+            [
+              77.768002,
+              12.98091
+            ],
+            [
+              77.76744,
+              12.98165
+            ],
+            [
+              77.766805,
+              12.982332
+            ],
+            [
+              77.766105,
+              12.98295
+            ],
+            [
+              77.765347,
+              12.983498
+            ],
+            [
+              77.764537,
+              12.983971
+            ],
+            [
+              77.763683,
+              12.984364
+            ],
+            [
+              77.762794,
+              12.984675
+            ],
+            [
+              77.761878,
+              12.984898
+            ],
+            [
+              77.760943,
+              12.985033
+            ],
+            [
+              77.76,
+              12.985078
+            ],
+            [
+              77.759057,
+              12.985033
+            ],
+            [
+              77.758122,
+              12.984898
+            ],
+            [
+              77.757206,
+              12.984675
+            ],
+            [
+              77.756317,
+              12.984364
+            ],
+            [
+              77.755463,
+              12.983971
+            ],
+            [
+              77.754653,
+              12.983498
+            ],
+            [
+              77.753895,
+              12.98295
+            ],
+            [
+              77.753195,
+              12.982332
+            ],
+            [
+              77.75256,
+              12.98165
+            ],
+            [
+              77.751998,
+              12.98091
+            ],
+            [
+              77.751512,
+              12.980121
+            ],
+            [
+              77.751108,
+              12.979289
+            ],
+            [
+              77.75079,
+              12.978422
+            ],
+            [
+              77.750561,
+              12.97753
+            ],
+            [
+              77.750422,
+              12.976619
+            ],
+            [
+              77.750376,
+              12.9757
+            ],
+            [
+              77.750422,
+              12.974781
+            ],
+            [
+              77.750561,
+              12.97387
+            ],
+            [
+              77.75079,
+              12.972978
+            ],
+            [
+              77.751108,
+              12.972111
+            ],
+            [
+              77.751512,
+              12.971279
+            ],
+            [
+              77.751998,
+              12.97049
+            ],
+            [
+              77.75256,
+              12.96975
+            ],
+            [
+              77.753195,
+              12.969068
+            ],
+            [
+              77.753895,
+              12.96845
+            ],
+            [
+              77.754653,
+              12.967902
+            ],
+            [
+              77.755463,
+              12.967429
+            ],
+            [
+              77.756317,
+              12.967036
+            ],
+            [
+              77.757206,
+              12.966725
+            ],
+            [
+              77.758122,
+              12.966502
+            ],
+            [
+              77.759057,
+              12.966367
+            ],
+            [
+              77.76,
+              12.966322
+            ],
+            [
+              77.760943,
+              12.966367
+            ],
+            [
+              77.761878,
+              12.966502
+            ],
+            [
+              77.762794,
+              12.966725
+            ],
+            [
+              77.763683,
+              12.967036
+            ],
+            [
+              77.764537,
+              12.967429
+            ],
+            [
+              77.765347,
+              12.967902
+            ],
+            [
+              77.766105,
+              12.96845
+            ],
+            [
+              77.766805,
+              12.969068
+            ],
+            [
+              77.76744,
+              12.96975
+            ],
+            [
+              77.768002,
+              12.97049
+            ],
+            [
+              77.768488,
+              12.971279
+            ],
+            [
+              77.768892,
+              12.972111
+            ],
+            [
+              77.76921,
+              12.972978
+            ],
+            [
+              77.769439,
+              12.97387
+            ],
+            [
+              77.769578,
+              12.974781
+            ],
+            [
+              77.769624,
+              12.9757
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Basaveshwara Nagar",
         "lat": 13.006,
         "lon": 77.535,
         "overall_score": 3.1,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 3.74,
           "metro_access": 0.0,
           "restaurants": 0.31
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 29,
           "schools": 16,
           "supermarkets": 4,
@@ -16653,14 +16945,14 @@
         "lon": 77.6096,
         "overall_score": 3.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.61,
           "metro_access": 0.0,
           "restaurants": 0.9
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 8,
           "schools": 24,
           "supermarkets": 18,
@@ -16945,14 +17237,14 @@
         "lon": 77.5552,
         "overall_score": 3.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.68,
           "metro_access": 0.0,
           "restaurants": 0.9
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 17,
           "schools": 14,
           "supermarkets": 15,
@@ -17237,14 +17529,14 @@
         "lon": 77.5932,
         "overall_score": 3.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.23,
           "metro_access": 0.0,
           "restaurants": 1.88
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 19,
           "schools": 16,
           "supermarkets": 10,
@@ -17529,14 +17821,14 @@
         "lon": 77.6836,
         "overall_score": 3.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.42,
           "metro_access": 0.0,
           "restaurants": 1.7
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 10,
           "schools": 20,
           "supermarkets": 7,
@@ -17816,19 +18108,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Bellandur",
+        "lat": 12.9257,
+        "lon": 77.6762,
+        "overall_score": 3.0,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 2.45,
+          "metro_access": 0.0,
+          "restaurants": 3.45
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 8,
+          "schools": 3,
+          "supermarkets": 14,
+          "restaurants": 77,
+          "metro_stations": 0,
+          "bus_stops": 20
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.686053,
+              12.9257
+            ],
+            [
+              77.686006,
+              12.926641
+            ],
+            [
+              77.685864,
+              12.927574
+            ],
+            [
+              77.685629,
+              12.928488
+            ],
+            [
+              77.685303,
+              12.929375
+            ],
+            [
+              77.68489,
+              12.930227
+            ],
+            [
+              77.684393,
+              12.931035
+            ],
+            [
+              77.683817,
+              12.931792
+            ],
+            [
+              77.683167,
+              12.932491
+            ],
+            [
+              77.682451,
+              12.933124
+            ],
+            [
+              77.681674,
+              12.933685
+            ],
+            [
+              77.680845,
+              12.93417
+            ],
+            [
+              77.679971,
+              12.934573
+            ],
+            [
+              77.67906,
+              12.93489
+            ],
+            [
+              77.678122,
+              12.935119
+            ],
+            [
+              77.677166,
+              12.935257
+            ],
+            [
+              77.6762,
+              12.935304
+            ],
+            [
+              77.675234,
+              12.935257
+            ],
+            [
+              77.674278,
+              12.935119
+            ],
+            [
+              77.67334,
+              12.93489
+            ],
+            [
+              77.672429,
+              12.934573
+            ],
+            [
+              77.671555,
+              12.93417
+            ],
+            [
+              77.670726,
+              12.933685
+            ],
+            [
+              77.669949,
+              12.933124
+            ],
+            [
+              77.669233,
+              12.932491
+            ],
+            [
+              77.668583,
+              12.931792
+            ],
+            [
+              77.668007,
+              12.931035
+            ],
+            [
+              77.66751,
+              12.930227
+            ],
+            [
+              77.667097,
+              12.929375
+            ],
+            [
+              77.666771,
+              12.928488
+            ],
+            [
+              77.666536,
+              12.927574
+            ],
+            [
+              77.666394,
+              12.926641
+            ],
+            [
+              77.666347,
+              12.9257
+            ],
+            [
+              77.666394,
+              12.924759
+            ],
+            [
+              77.666536,
+              12.923826
+            ],
+            [
+              77.666771,
+              12.922912
+            ],
+            [
+              77.667097,
+              12.922025
+            ],
+            [
+              77.66751,
+              12.921173
+            ],
+            [
+              77.668007,
+              12.920365
+            ],
+            [
+              77.668583,
+              12.919608
+            ],
+            [
+              77.669233,
+              12.918909
+            ],
+            [
+              77.669949,
+              12.918276
+            ],
+            [
+              77.670726,
+              12.917715
+            ],
+            [
+              77.671555,
+              12.91723
+            ],
+            [
+              77.672429,
+              12.916827
+            ],
+            [
+              77.67334,
+              12.91651
+            ],
+            [
+              77.674278,
+              12.916281
+            ],
+            [
+              77.675234,
+              12.916143
+            ],
+            [
+              77.6762,
+              12.916096
+            ],
+            [
+              77.677166,
+              12.916143
+            ],
+            [
+              77.678122,
+              12.916281
+            ],
+            [
+              77.67906,
+              12.91651
+            ],
+            [
+              77.679971,
+              12.916827
+            ],
+            [
+              77.680845,
+              12.91723
+            ],
+            [
+              77.681674,
+              12.917715
+            ],
+            [
+              77.682451,
+              12.918276
+            ],
+            [
+              77.683167,
+              12.918909
+            ],
+            [
+              77.683817,
+              12.919608
+            ],
+            [
+              77.684393,
+              12.920365
+            ],
+            [
+              77.68489,
+              12.921173
+            ],
+            [
+              77.685303,
+              12.922025
+            ],
+            [
+              77.685629,
+              12.922912
+            ],
+            [
+              77.685864,
+              12.923826
+            ],
+            [
+              77.686006,
+              12.924759
+            ],
+            [
+              77.686053,
+              12.9257
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Banaswadi",
         "lat": 13.0013,
         "lon": 77.6456,
         "overall_score": 3.0,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.19,
           "metro_access": 2.5,
           "restaurants": 0.4
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 8,
           "schools": 11,
           "supermarkets": 9,
@@ -18113,14 +18697,14 @@
         "lon": 77.4829,
         "overall_score": 3.0,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.77,
           "metro_access": 5.0,
           "restaurants": 0.18
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.3,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 7,
           "schools": 5,
           "supermarkets": 1,
@@ -18405,14 +18989,14 @@
         "lon": 77.5494,
         "overall_score": 3.0,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 3.35,
           "metro_access": 0.0,
           "restaurants": 1.17
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 24,
           "schools": 14,
           "supermarkets": 9,
@@ -18697,14 +19281,14 @@
         "lon": 77.517,
         "overall_score": 3.0,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.84,
           "metro_access": 5.0,
           "restaurants": 0.18
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 8,
           "schools": 5,
           "supermarkets": 1,
@@ -18984,311 +19568,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Bellandur",
-        "lat": 12.9257,
-        "lon": 77.6762,
-        "overall_score": 2.9,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 2.45,
-          "metro_access": 0.0,
-          "restaurants": 3.45
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 34.1,
-          "hospitals": 8,
-          "schools": 3,
-          "supermarkets": 14,
-          "restaurants": 77,
-          "metro_stations": 0,
-          "bus_stops": 20
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.686053,
-              12.9257
-            ],
-            [
-              77.686006,
-              12.926641
-            ],
-            [
-              77.685864,
-              12.927574
-            ],
-            [
-              77.685629,
-              12.928488
-            ],
-            [
-              77.685303,
-              12.929375
-            ],
-            [
-              77.68489,
-              12.930227
-            ],
-            [
-              77.684393,
-              12.931035
-            ],
-            [
-              77.683817,
-              12.931792
-            ],
-            [
-              77.683167,
-              12.932491
-            ],
-            [
-              77.682451,
-              12.933124
-            ],
-            [
-              77.681674,
-              12.933685
-            ],
-            [
-              77.680845,
-              12.93417
-            ],
-            [
-              77.679971,
-              12.934573
-            ],
-            [
-              77.67906,
-              12.93489
-            ],
-            [
-              77.678122,
-              12.935119
-            ],
-            [
-              77.677166,
-              12.935257
-            ],
-            [
-              77.6762,
-              12.935304
-            ],
-            [
-              77.675234,
-              12.935257
-            ],
-            [
-              77.674278,
-              12.935119
-            ],
-            [
-              77.67334,
-              12.93489
-            ],
-            [
-              77.672429,
-              12.934573
-            ],
-            [
-              77.671555,
-              12.93417
-            ],
-            [
-              77.670726,
-              12.933685
-            ],
-            [
-              77.669949,
-              12.933124
-            ],
-            [
-              77.669233,
-              12.932491
-            ],
-            [
-              77.668583,
-              12.931792
-            ],
-            [
-              77.668007,
-              12.931035
-            ],
-            [
-              77.66751,
-              12.930227
-            ],
-            [
-              77.667097,
-              12.929375
-            ],
-            [
-              77.666771,
-              12.928488
-            ],
-            [
-              77.666536,
-              12.927574
-            ],
-            [
-              77.666394,
-              12.926641
-            ],
-            [
-              77.666347,
-              12.9257
-            ],
-            [
-              77.666394,
-              12.924759
-            ],
-            [
-              77.666536,
-              12.923826
-            ],
-            [
-              77.666771,
-              12.922912
-            ],
-            [
-              77.667097,
-              12.922025
-            ],
-            [
-              77.66751,
-              12.921173
-            ],
-            [
-              77.668007,
-              12.920365
-            ],
-            [
-              77.668583,
-              12.919608
-            ],
-            [
-              77.669233,
-              12.918909
-            ],
-            [
-              77.669949,
-              12.918276
-            ],
-            [
-              77.670726,
-              12.917715
-            ],
-            [
-              77.671555,
-              12.91723
-            ],
-            [
-              77.672429,
-              12.916827
-            ],
-            [
-              77.67334,
-              12.91651
-            ],
-            [
-              77.674278,
-              12.916281
-            ],
-            [
-              77.675234,
-              12.916143
-            ],
-            [
-              77.6762,
-              12.916096
-            ],
-            [
-              77.677166,
-              12.916143
-            ],
-            [
-              77.678122,
-              12.916281
-            ],
-            [
-              77.67906,
-              12.91651
-            ],
-            [
-              77.679971,
-              12.916827
-            ],
-            [
-              77.680845,
-              12.91723
-            ],
-            [
-              77.681674,
-              12.917715
-            ],
-            [
-              77.682451,
-              12.918276
-            ],
-            [
-              77.683167,
-              12.918909
-            ],
-            [
-              77.683817,
-              12.919608
-            ],
-            [
-              77.684393,
-              12.920365
-            ],
-            [
-              77.68489,
-              12.921173
-            ],
-            [
-              77.685303,
-              12.922025
-            ],
-            [
-              77.685629,
-              12.922912
-            ],
-            [
-              77.685864,
-              12.923826
-            ],
-            [
-              77.686006,
-              12.924759
-            ],
-            [
-              77.686053,
-              12.9257
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Kodigehalli",
         "lat": 13.0491,
         "lon": 77.6131,
         "overall_score": 2.9,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 1.74,
           "metro_access": 2.5,
           "restaurants": 0.76
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 15,
           "supermarkets": 4,
@@ -19568,311 +19860,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Nallurhalli",
-        "lat": 12.954,
-        "lon": 77.731,
-        "overall_score": 2.9,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 2.9,
-          "metro_access": 0.0,
-          "restaurants": 1.75
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.5,
-          "hospitals": 4,
-          "schools": 10,
-          "supermarkets": 8,
-          "restaurants": 39,
-          "metro_stations": 0,
-          "bus_stops": 8
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.741649,
-              12.954
-            ],
-            [
-              77.741598,
-              12.955017
-            ],
-            [
-              77.741445,
-              12.956025
-            ],
-            [
-              77.741191,
-              12.957013
-            ],
-            [
-              77.740839,
-              12.957972
-            ],
-            [
-              77.740392,
-              12.958892
-            ],
-            [
-              77.739855,
-              12.959766
-            ],
-            [
-              77.739232,
-              12.960584
-            ],
-            [
-              77.73853,
-              12.961339
-            ],
-            [
-              77.737756,
-              12.962023
-            ],
-            [
-              77.736916,
-              12.962629
-            ],
-            [
-              77.73602,
-              12.963153
-            ],
-            [
-              77.735075,
-              12.963588
-            ],
-            [
-              77.734091,
-              12.963931
-            ],
-            [
-              77.733078,
-              12.964179
-            ],
-            [
-              77.732044,
-              12.964328
-            ],
-            [
-              77.731,
-              12.964378
-            ],
-            [
-              77.729956,
-              12.964328
-            ],
-            [
-              77.728922,
-              12.964179
-            ],
-            [
-              77.727909,
-              12.963931
-            ],
-            [
-              77.726925,
-              12.963588
-            ],
-            [
-              77.72598,
-              12.963153
-            ],
-            [
-              77.725084,
-              12.962629
-            ],
-            [
-              77.724244,
-              12.962023
-            ],
-            [
-              77.72347,
-              12.961339
-            ],
-            [
-              77.722768,
-              12.960584
-            ],
-            [
-              77.722145,
-              12.959766
-            ],
-            [
-              77.721608,
-              12.958892
-            ],
-            [
-              77.721161,
-              12.957972
-            ],
-            [
-              77.720809,
-              12.957013
-            ],
-            [
-              77.720555,
-              12.956025
-            ],
-            [
-              77.720402,
-              12.955017
-            ],
-            [
-              77.720351,
-              12.954
-            ],
-            [
-              77.720402,
-              12.952983
-            ],
-            [
-              77.720555,
-              12.951975
-            ],
-            [
-              77.720809,
-              12.950987
-            ],
-            [
-              77.721161,
-              12.950028
-            ],
-            [
-              77.721608,
-              12.949108
-            ],
-            [
-              77.722145,
-              12.948234
-            ],
-            [
-              77.722768,
-              12.947416
-            ],
-            [
-              77.72347,
-              12.946661
-            ],
-            [
-              77.724244,
-              12.945977
-            ],
-            [
-              77.725084,
-              12.945371
-            ],
-            [
-              77.72598,
-              12.944847
-            ],
-            [
-              77.726925,
-              12.944412
-            ],
-            [
-              77.727909,
-              12.944069
-            ],
-            [
-              77.728922,
-              12.943821
-            ],
-            [
-              77.729956,
-              12.943672
-            ],
-            [
-              77.731,
-              12.943622
-            ],
-            [
-              77.732044,
-              12.943672
-            ],
-            [
-              77.733078,
-              12.943821
-            ],
-            [
-              77.734091,
-              12.944069
-            ],
-            [
-              77.735075,
-              12.944412
-            ],
-            [
-              77.73602,
-              12.944847
-            ],
-            [
-              77.736916,
-              12.945371
-            ],
-            [
-              77.737756,
-              12.945977
-            ],
-            [
-              77.73853,
-              12.946661
-            ],
-            [
-              77.739232,
-              12.947416
-            ],
-            [
-              77.739855,
-              12.948234
-            ],
-            [
-              77.740392,
-              12.949108
-            ],
-            [
-              77.740839,
-              12.950028
-            ],
-            [
-              77.741191,
-              12.950987
-            ],
-            [
-              77.741445,
-              12.951975
-            ],
-            [
-              77.741598,
-              12.952983
-            ],
-            [
-              77.741649,
-              12.954
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Hebbal",
         "lat": 13.035,
         "lon": 77.597,
         "overall_score": 2.8,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.9,
           "metro_access": 0.0,
           "restaurants": 0.81
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 12,
           "schools": 6,
           "supermarkets": 10,
@@ -20157,14 +20157,14 @@
         "lon": 77.515,
         "overall_score": 2.8,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.32,
           "metro_access": 5.0,
           "restaurants": 0.22
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 3,
           "schools": 3,
           "supermarkets": 3,
@@ -20449,14 +20449,14 @@
         "lon": 77.596,
         "overall_score": 2.6,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.65,
           "metro_access": 0.0,
           "restaurants": 1.03
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 14,
           "schools": 4,
           "supermarkets": 7,
@@ -20741,14 +20741,14 @@
         "lon": 77.6236,
         "overall_score": 2.6,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 1.29,
           "metro_access": 2.5,
           "restaurants": 1.08
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 5,
           "schools": 9,
           "supermarkets": 2,
@@ -21033,14 +21033,14 @@
         "lon": 77.5468,
         "overall_score": 2.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 2.39,
           "metro_access": 0.0,
           "restaurants": 1.03
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 17,
           "schools": 7,
           "supermarkets": 8,
@@ -21325,14 +21325,14 @@
         "lon": 77.6052,
         "overall_score": 2.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 2.71,
           "metro_access": 0.0,
           "restaurants": 0.45
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 23,
           "supermarkets": 14,
@@ -21617,14 +21617,14 @@
         "lon": 77.5274,
         "overall_score": 2.5,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.0,
           "metro_access": 5.0,
           "restaurants": 0.22
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 0,
           "schools": 4,
           "supermarkets": 0,
@@ -21909,14 +21909,14 @@
         "lon": 77.5149,
         "overall_score": 2.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.03,
           "metro_access": 2.5,
           "restaurants": 0.49
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.2,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 8,
           "supermarkets": 6,
@@ -22201,14 +22201,14 @@
         "lon": 77.758,
         "overall_score": 2.4,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.97,
           "metro_access": 2.5,
           "restaurants": 0.4
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 5,
           "schools": 12,
           "supermarkets": 2,
@@ -22493,14 +22493,14 @@
         "lon": 77.6865,
         "overall_score": 2.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.23,
           "metro_access": 0.0,
           "restaurants": 3.23
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.2,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 8,
           "supermarkets": 4,
@@ -22785,14 +22785,14 @@
         "lon": 77.7472,
         "overall_score": 2.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.87,
           "metro_access": 0.0,
           "restaurants": 0.76
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.4,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 12,
           "supermarkets": 5,
@@ -23077,14 +23077,14 @@
         "lon": 77.514,
         "overall_score": 2.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.87,
           "metro_access": 0.0,
           "restaurants": 0.63
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.1,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 20,
           "schools": 6,
           "supermarkets": 4,
@@ -23369,14 +23369,14 @@
         "lon": 77.532,
         "overall_score": 2.1,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 2.0,
           "metro_access": 0.0,
           "restaurants": 0.18
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 17,
           "schools": 8,
           "supermarkets": 3,
@@ -23661,14 +23661,14 @@
         "lon": 77.5963,
         "overall_score": 2.0,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 1.61,
           "metro_access": 0.0,
           "restaurants": 0.99
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 34.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 12,
           "schools": 1,
           "supermarkets": 5,
@@ -23953,14 +23953,14 @@
         "lon": 77.601,
         "overall_score": 2.0,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 1.35,
           "metro_access": 0.0,
           "restaurants": 1.43
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 34.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 6,
           "schools": 8,
           "supermarkets": 6,
@@ -24245,14 +24245,14 @@
         "lon": 77.6934,
         "overall_score": 1.9,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.42,
           "metro_access": 0.0,
           "restaurants": 1.03
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 32.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 4,
           "schools": 9,
           "supermarkets": 3,
@@ -24537,14 +24537,14 @@
         "lon": 77.587,
         "overall_score": 1.9,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.55,
           "metro_access": 0.0,
           "restaurants": 0.18
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 2,
           "schools": 24,
           "supermarkets": 1,
@@ -24829,14 +24829,14 @@
         "lon": 77.6698,
         "overall_score": 1.9,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.74,
           "metro_access": 0.0,
           "restaurants": 0.09
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 5,
           "schools": 9,
           "supermarkets": 11,
@@ -25121,14 +25121,14 @@
         "lon": 77.5361,
         "overall_score": 1.7,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 1.48,
           "metro_access": 0.0,
           "restaurants": 0.22
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.8,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 5,
           "schools": 11,
           "supermarkets": 5,
@@ -25413,14 +25413,14 @@
         "lon": 77.543,
         "overall_score": 1.5,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 1.03,
           "metro_access": 0.0,
           "restaurants": 0.22
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 3,
           "schools": 13,
           "supermarkets": 2,
@@ -25705,14 +25705,14 @@
         "lon": 77.7224,
         "overall_score": 1.5,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.84,
           "metro_access": 0.0,
           "restaurants": 0.67
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 3,
           "schools": 7,
           "supermarkets": 2,
@@ -25997,14 +25997,14 @@
         "lon": 77.518,
         "overall_score": 1.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.77,
           "metro_access": 0.0,
           "restaurants": 0.04
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 11,
           "schools": 4,
           "supermarkets": 1,
@@ -26284,19 +26284,311 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "Akshayanagar",
+        "lat": 12.8685,
+        "lon": 77.624,
+        "overall_score": 1.4,
+        "factors": {
+          "air_quality": 5.0,
+          "amenities": 0.71,
+          "metro_access": 0.0,
+          "restaurants": 0.0
+        },
+        "raw": {
+          "aqi": null,
+          "temperature_c": null,
+          "hospitals": 2,
+          "schools": 9,
+          "supermarkets": 3,
+          "restaurants": 0,
+          "metro_stations": 0,
+          "bus_stops": 4
+        }
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.630792,
+              12.8685
+            ],
+            [
+              77.63076,
+              12.869149
+            ],
+            [
+              77.630662,
+              12.869792
+            ],
+            [
+              77.6305,
+              12.870422
+            ],
+            [
+              77.630275,
+              12.871034
+            ],
+            [
+              77.62999,
+              12.871621
+            ],
+            [
+              77.629648,
+              12.872179
+            ],
+            [
+              77.62925,
+              12.872701
+            ],
+            [
+              77.628803,
+              12.873182
+            ],
+            [
+              77.628309,
+              12.873619
+            ],
+            [
+              77.627774,
+              12.874006
+            ],
+            [
+              77.627202,
+              12.87434
+            ],
+            [
+              77.626599,
+              12.874618
+            ],
+            [
+              77.625972,
+              12.874836
+            ],
+            [
+              77.625325,
+              12.874994
+            ],
+            [
+              77.624666,
+              12.87509
+            ],
+            [
+              77.624,
+              12.875122
+            ],
+            [
+              77.623334,
+              12.87509
+            ],
+            [
+              77.622675,
+              12.874994
+            ],
+            [
+              77.622028,
+              12.874836
+            ],
+            [
+              77.621401,
+              12.874618
+            ],
+            [
+              77.620798,
+              12.87434
+            ],
+            [
+              77.620226,
+              12.874006
+            ],
+            [
+              77.619691,
+              12.873619
+            ],
+            [
+              77.619197,
+              12.873182
+            ],
+            [
+              77.61875,
+              12.872701
+            ],
+            [
+              77.618352,
+              12.872179
+            ],
+            [
+              77.61801,
+              12.871621
+            ],
+            [
+              77.617725,
+              12.871034
+            ],
+            [
+              77.6175,
+              12.870422
+            ],
+            [
+              77.617338,
+              12.869792
+            ],
+            [
+              77.61724,
+              12.869149
+            ],
+            [
+              77.617208,
+              12.8685
+            ],
+            [
+              77.61724,
+              12.867851
+            ],
+            [
+              77.617338,
+              12.867208
+            ],
+            [
+              77.6175,
+              12.866578
+            ],
+            [
+              77.617725,
+              12.865966
+            ],
+            [
+              77.61801,
+              12.865379
+            ],
+            [
+              77.618352,
+              12.864821
+            ],
+            [
+              77.61875,
+              12.864299
+            ],
+            [
+              77.619197,
+              12.863818
+            ],
+            [
+              77.619691,
+              12.863381
+            ],
+            [
+              77.620226,
+              12.862994
+            ],
+            [
+              77.620798,
+              12.86266
+            ],
+            [
+              77.621401,
+              12.862382
+            ],
+            [
+              77.622028,
+              12.862164
+            ],
+            [
+              77.622675,
+              12.862006
+            ],
+            [
+              77.623334,
+              12.86191
+            ],
+            [
+              77.624,
+              12.861878
+            ],
+            [
+              77.624666,
+              12.86191
+            ],
+            [
+              77.625325,
+              12.862006
+            ],
+            [
+              77.625972,
+              12.862164
+            ],
+            [
+              77.626599,
+              12.862382
+            ],
+            [
+              77.627202,
+              12.86266
+            ],
+            [
+              77.627774,
+              12.862994
+            ],
+            [
+              77.628309,
+              12.863381
+            ],
+            [
+              77.628803,
+              12.863818
+            ],
+            [
+              77.62925,
+              12.864299
+            ],
+            [
+              77.629648,
+              12.864821
+            ],
+            [
+              77.62999,
+              12.865379
+            ],
+            [
+              77.630275,
+              12.865966
+            ],
+            [
+              77.6305,
+              12.866578
+            ],
+            [
+              77.630662,
+              12.867208
+            ],
+            [
+              77.63076,
+              12.867851
+            ],
+            [
+              77.630792,
+              12.8685
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Vasanthapura",
         "lat": 12.9042,
         "lon": 77.5193,
         "overall_score": 1.4,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.71,
           "metro_access": 0.0,
           "restaurants": 0.27
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.1,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 3,
           "schools": 8,
           "supermarkets": 4,
@@ -26581,14 +26873,14 @@
         "lon": 77.6241,
         "overall_score": 1.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.58,
           "metro_access": 0.0,
           "restaurants": 0.0
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 1,
           "schools": 9,
           "supermarkets": 2,
@@ -26868,311 +27160,19 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Akshayanagar",
-        "lat": 12.8685,
-        "lon": 77.624,
-        "overall_score": 1.2,
-        "factors": {
-          "air_quality": 8.2,
-          "amenities": 0.71,
-          "metro_access": 0.0,
-          "restaurants": 0.0
-        },
-        "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
-          "hospitals": 2,
-          "schools": 9,
-          "supermarkets": 3,
-          "restaurants": 0,
-          "metro_stations": 0,
-          "bus_stops": 4
-        }
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              77.630792,
-              12.8685
-            ],
-            [
-              77.63076,
-              12.869149
-            ],
-            [
-              77.630662,
-              12.869792
-            ],
-            [
-              77.6305,
-              12.870422
-            ],
-            [
-              77.630275,
-              12.871034
-            ],
-            [
-              77.62999,
-              12.871621
-            ],
-            [
-              77.629648,
-              12.872179
-            ],
-            [
-              77.62925,
-              12.872701
-            ],
-            [
-              77.628803,
-              12.873182
-            ],
-            [
-              77.628309,
-              12.873619
-            ],
-            [
-              77.627774,
-              12.874006
-            ],
-            [
-              77.627202,
-              12.87434
-            ],
-            [
-              77.626599,
-              12.874618
-            ],
-            [
-              77.625972,
-              12.874836
-            ],
-            [
-              77.625325,
-              12.874994
-            ],
-            [
-              77.624666,
-              12.87509
-            ],
-            [
-              77.624,
-              12.875122
-            ],
-            [
-              77.623334,
-              12.87509
-            ],
-            [
-              77.622675,
-              12.874994
-            ],
-            [
-              77.622028,
-              12.874836
-            ],
-            [
-              77.621401,
-              12.874618
-            ],
-            [
-              77.620798,
-              12.87434
-            ],
-            [
-              77.620226,
-              12.874006
-            ],
-            [
-              77.619691,
-              12.873619
-            ],
-            [
-              77.619197,
-              12.873182
-            ],
-            [
-              77.61875,
-              12.872701
-            ],
-            [
-              77.618352,
-              12.872179
-            ],
-            [
-              77.61801,
-              12.871621
-            ],
-            [
-              77.617725,
-              12.871034
-            ],
-            [
-              77.6175,
-              12.870422
-            ],
-            [
-              77.617338,
-              12.869792
-            ],
-            [
-              77.61724,
-              12.869149
-            ],
-            [
-              77.617208,
-              12.8685
-            ],
-            [
-              77.61724,
-              12.867851
-            ],
-            [
-              77.617338,
-              12.867208
-            ],
-            [
-              77.6175,
-              12.866578
-            ],
-            [
-              77.617725,
-              12.865966
-            ],
-            [
-              77.61801,
-              12.865379
-            ],
-            [
-              77.618352,
-              12.864821
-            ],
-            [
-              77.61875,
-              12.864299
-            ],
-            [
-              77.619197,
-              12.863818
-            ],
-            [
-              77.619691,
-              12.863381
-            ],
-            [
-              77.620226,
-              12.862994
-            ],
-            [
-              77.620798,
-              12.86266
-            ],
-            [
-              77.621401,
-              12.862382
-            ],
-            [
-              77.622028,
-              12.862164
-            ],
-            [
-              77.622675,
-              12.862006
-            ],
-            [
-              77.623334,
-              12.86191
-            ],
-            [
-              77.624,
-              12.861878
-            ],
-            [
-              77.624666,
-              12.86191
-            ],
-            [
-              77.625325,
-              12.862006
-            ],
-            [
-              77.625972,
-              12.862164
-            ],
-            [
-              77.626599,
-              12.862382
-            ],
-            [
-              77.627202,
-              12.86266
-            ],
-            [
-              77.627774,
-              12.862994
-            ],
-            [
-              77.628309,
-              12.863381
-            ],
-            [
-              77.628803,
-              12.863818
-            ],
-            [
-              77.62925,
-              12.864299
-            ],
-            [
-              77.629648,
-              12.864821
-            ],
-            [
-              77.62999,
-              12.865379
-            ],
-            [
-              77.630275,
-              12.865966
-            ],
-            [
-              77.6305,
-              12.866578
-            ],
-            [
-              77.630662,
-              12.867208
-            ],
-            [
-              77.63076,
-              12.867851
-            ],
-            [
-              77.630792,
-              12.8685
-            ]
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Chandapura",
         "lat": 12.8278,
         "lon": 77.6531,
         "overall_score": 1.2,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.32,
           "metro_access": 0.0,
           "restaurants": 0.72
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 33.9,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 1,
           "schools": 2,
           "supermarkets": 5,
@@ -27457,14 +27457,14 @@
         "lon": 77.742,
         "overall_score": 1.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.39,
           "metro_access": 0.0,
           "restaurants": 0.13
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 32.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 1,
           "schools": 8,
           "supermarkets": 1,
@@ -27749,14 +27749,14 @@
         "lon": 77.591,
         "overall_score": 1.1,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.19,
           "metro_access": 0.0,
           "restaurants": 0.4
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 0,
           "schools": 1,
           "supermarkets": 4,
@@ -28041,14 +28041,14 @@
         "lon": 77.7098,
         "overall_score": 1.1,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.32,
           "metro_access": 0.0,
           "restaurants": 0.27
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 32.5,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 1,
           "schools": 8,
           "supermarkets": 0,
@@ -28333,14 +28333,14 @@
         "lon": 77.51,
         "overall_score": 1.0,
         "factors": {
-          "air_quality": 8.3,
+          "air_quality": 5.0,
           "amenities": 0.19,
           "metro_access": 0.0,
           "restaurants": 0.04
         },
         "raw": {
-          "aqi": 78,
-          "temperature_c": 33.6,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 3,
           "schools": 3,
           "supermarkets": 0,
@@ -28625,14 +28625,14 @@
         "lon": 77.498,
         "overall_score": 1.0,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.19,
           "metro_access": 0.0,
           "restaurants": 0.04
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 34.0,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 1,
           "schools": 4,
           "supermarkets": 2,
@@ -28917,14 +28917,14 @@
         "lon": 77.7433,
         "overall_score": 1.0,
         "factors": {
-          "air_quality": 8.2,
+          "air_quality": 5.0,
           "amenities": 0.13,
           "metro_access": 0.0,
           "restaurants": 0.04
         },
         "raw": {
-          "aqi": 80,
-          "temperature_c": 32.7,
+          "aqi": null,
+          "temperature_c": null,
           "hospitals": 0,
           "schools": 5,
           "supermarkets": 1,
