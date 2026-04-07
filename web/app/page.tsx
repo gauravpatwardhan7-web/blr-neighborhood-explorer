@@ -87,6 +87,18 @@ const FILTER_OPTIONS: {
   { value: "low",   label: "Low",   color: "#7f1d1d", bg: "#fef2f2", activeBg: "#f87171" },
 ];
 
+// ── Tech park destinations ───────────────────────────────────────────────────
+const TECH_PARKS: { name: string; lat: number; lon: number }[] = [
+  { name: "Electronic City",           lat: 12.8399, lon: 77.6770 },
+  { name: "ITPL / Whitefield",         lat: 12.9698, lon: 77.7499 },
+  { name: "Manyata Tech Park",         lat: 13.0475, lon: 77.6220 },
+  { name: "Bagmane Tech Park",         lat: 12.9784, lon: 77.6408 },
+  { name: "Embassy Tech Village",      lat: 12.9020, lon: 77.7010 },
+  { name: "RMZ Ecospace",              lat: 12.9406, lon: 77.6969 },
+  { name: "Global Village Tech Park",  lat: 12.9113, lon: 77.5081 },
+  { name: "Prestige Tech Park",        lat: 12.9350, lon: 77.6860 },
+];
+
 // ── Pure helpers ──────────────────────────────────────────────────────────────
 function recomputeScore(factors: Locality["factors"], weights: Weights): number {
   const raw =
@@ -117,6 +129,21 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
       Math.cos((lat2 * Math.PI) / 180) *
       Math.sin(dLon / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+type TravelMode = "drive" | "walk";
+
+function estimateTravel(
+  lat1: number, lon1: number,
+  lat2: number, lon2: number,
+  mode: TravelMode
+): { distanceKm: number; durationMin: number } {
+  const straight = haversineKm(lat1, lon1, lat2, lon2);
+  const roadFactor = mode === "drive" ? 1.4 : 1.2;
+  const avgSpeedKmh = mode === "drive" ? 22 : 5;
+  const distanceKm = Math.round(straight * roadFactor * 10) / 10;
+  const durationMin = Math.round((distanceKm / avgSpeedKmh) * 60);
+  return { distanceKm, durationMin };
 }
 
 // ── Shared locate icon ────────────────────────────────────────────────────────
@@ -418,6 +445,183 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
   );
 }
 
+// ── Commute estimate panel ────────────────────────────────────────────────────
+type RouteResult = { durationMin: number; distanceKm: number };
+
+function CommutePanel({
+  originLat,
+  originLon,
+  localities,
+}: {
+  originLat: number;
+  originLon: number;
+  localities: LocalityFull[];
+}) {
+  const [tab, setTab]               = useState<"techpark" | "locality">("techpark");
+  const [selectedDest, setSelectedDest] = useState<{ name: string; lat: number; lon: number } | null>(null);
+  const [mode, setMode]             = useState<TravelMode>("drive");
+  const [result,  setResult]        = useState<RouteResult | null>(null);
+  const [loading, setLoading]       = useState(false);
+  const [error,   setError]         = useState<string | null>(null);
+
+  // Reset when origin neighbourhood changes
+  useEffect(() => {
+    setSelectedDest(null);
+    setResult(null);
+    setError(null);
+  }, [originLat, originLon]);
+
+  // Fetch from OSRM proxy whenever dest or mode changes
+  useEffect(() => {
+    if (!selectedDest) { setResult(null); setError(null); return; }
+    const profile = mode === "drive" ? "driving" : "foot";
+    let cancelled = false;
+    setLoading(true);
+    setResult(null);
+    setError(null);
+    fetch("/api/route-time", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        originLat, originLon,
+        destLat: selectedDest.lat, destLon: selectedDest.lon,
+        profile,
+      }),
+    })
+      .then((r) => r.json())
+      .then((data: RouteResult & { error?: string }) => {
+        if (cancelled) return;
+        if (data.error) { setError(data.error); }
+        else { setResult(data); }
+      })
+      .catch(() => { if (!cancelled) setError("Could not reach routing service"); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [selectedDest, mode, originLat, originLon]);
+
+  const sortedLocalities = [...localities].sort((a, b) => a.name.localeCompare(b.name));
+
+  return (
+    <>
+      <h3 style={{ fontSize: 13, fontWeight: 600, marginBottom: 10, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        Commute estimate
+      </h3>
+
+      {/* Tab toggle */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+        {(["techpark", "locality"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => { setTab(t); setSelectedDest(null); }}
+            style={{
+              padding: "5px 11px", borderRadius: 20, fontSize: 12,
+              fontWeight: tab === t ? 700 : 500,
+              background: tab === t ? "#111827" : "white",
+              color: tab === t ? "white" : "#374151",
+              border: tab === t ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+              cursor: "pointer",
+            }}
+          >
+            {t === "techpark" ? "🏢 Tech Parks" : "🏘️ Neighbourhood"}
+          </button>
+        ))}
+      </div>
+
+      {/* Destination picker */}
+      {tab === "techpark" ? (
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
+          {TECH_PARKS.map((tp) => {
+            const active = selectedDest?.name === tp.name;
+            return (
+              <button
+                key={tp.name}
+                onClick={() => setSelectedDest(tp)}
+                style={{
+                  padding: "5px 10px", borderRadius: 20, fontSize: 11,
+                  fontWeight: active ? 700 : 500,
+                  background: active ? "#4ade80" : "white",
+                  color: active ? "#065f46" : "#374151",
+                  border: active ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+                  cursor: "pointer",
+                  boxShadow: active ? "0 1px 4px rgba(0,0,0,0.10)" : "none",
+                }}
+              >
+                {tp.name}
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <select
+          value={selectedDest?.name ?? ""}
+          onChange={(e) => {
+            const loc = sortedLocalities.find((l) => l.name === e.target.value);
+            setSelectedDest(loc ? { name: loc.name, lat: loc.lat, lon: loc.lon } : null);
+          }}
+          style={{
+            width: "100%", padding: "8px 10px", borderRadius: 8, marginBottom: 10,
+            border: "1.5px solid #e5e7eb", fontSize: 13, color: "#111827",
+            background: "white", outline: "none", cursor: "pointer",
+          }}
+        >
+          <option value="">Select a neighbourhood…</option>
+          {sortedLocalities.map((l) => (
+            <option key={l.name} value={l.name}>{l.name}</option>
+          ))}
+        </select>
+      )}
+
+      {/* Mode toggle */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+        {(["drive", "walk"] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMode(m)}
+            style={{
+              padding: "5px 14px", borderRadius: 20, fontSize: 12,
+              fontWeight: mode === m ? 700 : 500,
+              background: mode === m ? "#111827" : "white",
+              color: mode === m ? "white" : "#374151",
+              border: mode === m ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+              cursor: "pointer",
+            }}
+          >
+            {m === "drive" ? "🚗 Drive" : "🚶 Walk"}
+          </button>
+        ))}
+      </div>
+
+      {/* Result / loading / error */}
+      {loading && (
+        <div style={{ fontSize: 13, color: "#6b7280", padding: "10px 0" }}>
+          Calculating route…
+        </div>
+      )}
+      {!loading && error && (
+        <div style={{ fontSize: 13, color: "#ef4444", padding: "10px 0" }}>
+          {error}
+        </div>
+      )}
+      {!loading && result && selectedDest && (
+        <div style={{
+          background: "#f9fafb", borderRadius: 8, padding: "10px 12px",
+          border: "1px solid #e5e7eb",
+        }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 2 }}>
+            {result.durationMin} min · {result.distanceKm} km
+          </div>
+          <div style={{ fontSize: 12, color: "#6b7280" }}>
+            to {selectedDest.name} by {mode === "drive" ? "driving" : "walking"} · via road
+          </div>
+          <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>
+            Based on road distance · no live traffic
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 // ── Locality detail — shared by desktop sidebar and mobile sheet ──────────────
 function LocalityDetail({
   selected,
@@ -426,6 +630,9 @@ function LocalityDetail({
   onDismiss,
   onCopy,
   copied,
+  originLat,
+  originLon,
+  localities,
 }: {
   selected: Locality;
   score: number;
@@ -433,6 +640,9 @@ function LocalityDetail({
   onDismiss: () => void;
   onCopy: () => void;
   copied: boolean;
+  originLat: number;
+  originLon: number;
+  localities: LocalityFull[];
 }) {
   return (
     <>
@@ -457,6 +667,9 @@ function LocalityDetail({
       {sentimentData[selected.name] && <SentimentCard data={sentimentData[selected.name]} />}
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <FactorBars factors={selected.factors} />
+      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
+      <CommutePanel originLat={originLat} originLon={originLon} localities={localities} />
+      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <RawData raw={selected.raw} />
     </>
   );
@@ -890,6 +1103,7 @@ export default function Home() {
 
   // Computed once per render — avoids calling recomputeScore 3–4x in JSX
   const currentScore = selected ? recomputeScore(selected.factors, weights) : null;
+  const selectedFull = selected ? allLocalities.find((l) => l.name === selected.name) ?? null : null;
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
@@ -934,6 +1148,9 @@ export default function Home() {
                   onDismiss={dismiss}
                   onCopy={handleCopy}
                   copied={copied}
+                  originLat={selectedFull?.lat ?? 0}
+                  originLon={selectedFull?.lon ?? 0}
+                  localities={allLocalities}
                 />
               )}
             </div>
@@ -1016,6 +1233,9 @@ export default function Home() {
                     onDismiss={dismiss}
                     onCopy={handleCopy}
                     copied={copied}
+                    originLat={selectedFull?.lat ?? 0}
+                    originLon={selectedFull?.lon ?? 0}
+                    localities={allLocalities}
                   />
                 </div>
               ) : (
