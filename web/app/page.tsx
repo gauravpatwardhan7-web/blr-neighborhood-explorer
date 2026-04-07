@@ -587,7 +587,7 @@ function CommutePanel({
             return (
               <button
                 key={tp.name}
-                onClick={() => setSelectedDest(tp)}
+                onClick={() => setSelectedDest(active ? null : tp)}
                 style={{
                   padding: "5px 10px", borderRadius: 20, fontSize: 11,
                   fontWeight: active ? 700 : 500,
@@ -659,8 +659,21 @@ function CommutePanel({
           background: "#f9fafb", borderRadius: 8, padding: "10px 12px",
           border: "1px solid #e5e7eb",
         }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 2 }}>
-            {result.durationMin} min · {result.distanceKm} km
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 2 }}>
+              {result.durationMin} min · {result.distanceKm} km
+            </div>
+            <button
+              onClick={() => setSelectedDest(null)}
+              title="Clear commute"
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                color: "#9ca3af", fontSize: 16, lineHeight: 1, padding: "0 0 0 8px",
+                flexShrink: 0,
+              }}
+            >
+              ✕
+            </button>
           </div>
           <div style={{ fontSize: 12, color: "#6b7280" }}>
             to {selectedDest.name} by {mode === "drive" ? "driving" : "walking"} · via road
