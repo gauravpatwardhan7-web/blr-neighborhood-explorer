@@ -760,24 +760,9 @@ export default function Home() {
         },
       });
 
-      map.on("mousemove", "localities-fill", () => { map.getCanvas().style.cursor = "pointer"; });
-      map.on("mouseleave", "localities-fill", () => { map.getCanvas().style.cursor = ""; });
-
-      // Unified click handler: select on polygon click, dismiss on empty-space click
-      map.on("click", (e) => {
-        const features = map.queryRenderedFeatures(e.point, { layers: ["localities-fill"] });
-        if (features.length > 0) {
-          const name = features[0].id as string;
-          const loc = mapLocalities.find((l) => l.name === name);
-          if (!loc) return;
-          if (highlightedRef.current && highlightedRef.current !== name) {
-            map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
-          }
-          highlightedRef.current = name;
-          map.setFeatureState({ source: "localities", id: name }, { hover: true });
-          setSelected(loc);
-          setSheetExpanded(true);
-        } else if (highlightedRef.current) {
+      // Click on empty map space → dismiss any active selection
+      map.on("click", () => {
+        if (highlightedRef.current) {
           map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
           highlightedRef.current = null;
           history.replaceState(null, "", window.location.pathname);
@@ -852,7 +837,8 @@ export default function Home() {
           circle.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
           el.style.zIndex        = "";
         });
-        el.addEventListener("click", () => {
+        el.addEventListener("click", (e) => {
+          e.stopPropagation(); // prevent bubbling to map → avoids wrong polygon highlight
           if (highlightedRef.current && highlightedRef.current !== name) {
             map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
           }
