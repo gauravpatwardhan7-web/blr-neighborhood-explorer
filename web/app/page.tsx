@@ -797,7 +797,7 @@ export default function Home() {
         const circle = document.createElement("div");
         circle.style.cssText = [
           "width:34px", "height:34px", "border-radius:50%",
-          `background:${scoreColor(overall_score)}`,
+          `background:${scoreColor(recomputeScore(factors, weightsRef.current))}`,
           "border:2.5px solid white",
           "display:flex", "align-items:center", "justify-content:center",
           "font-weight:800", "font-size:11px", "color:white",
@@ -805,7 +805,7 @@ export default function Home() {
           "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
           "flex-shrink:0",
         ].join(";");
-        circle.textContent = String(overall_score);
+        circle.textContent = String(recomputeScore(factors, weightsRef.current));
         el.appendChild(circle);
 
         // Name label — only for landmark areas
@@ -825,7 +825,7 @@ export default function Home() {
           el.appendChild(label);
         }
 
-        markersRef.current.push({ el, factors });
+        markersRef.current.push({ el: circle, factors });
 
         el.addEventListener("mouseenter", () => {
           circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
