@@ -668,7 +668,7 @@ function CommutePanel({
           <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 4 }}>
             {mode === "drive"
               ? "Includes Bengaluru traffic estimate · no live data"
-              : "Based on walking distance · no live data"}
+              : "Based on road distance at 5 km/h · includes safety buffer"}
           </div>
         </div>
       )}

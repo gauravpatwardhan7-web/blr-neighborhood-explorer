@@ -32,8 +32,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 
+  // The public OSRM demo server only reliably supports the "driving" profile.
+  // We always fetch driving road distance, then compute walking time manually.
   const url =
-    `https://router.project-osrm.org/route/v1/${profile}` +
+    `https://router.project-osrm.org/route/v1/driving` +
     `/${originLon},${originLat};${destLon},${destLat}?overview=false`;
 
   try {
@@ -56,11 +58,19 @@ export async function POST(req: NextRequest) {
     }
 
     const route = data.routes[0];
-    // Bengaluru traffic congestion multiplier: OSRM uses free-flow speeds which are
-    // ~2-2.5x faster than real city driving conditions in Bengaluru.
-    const trafficMultiplier = profile === "driving" ? 2.2 : 1.0;
-    const durationMin = Math.round((route.duration * trafficMultiplier) / 60);
-    const distanceKm  = Math.round(route.distance / 100) / 10;
+    const distanceKm = Math.round(route.distance / 100) / 10;
+
+    let durationMin: number;
+    if (profile === "foot") {
+      // Walking at ~5 km/h along road distance
+      durationMin = Math.round((distanceKm / 5.0) * 60);
+    } else {
+      // Driving: OSRM free-flow × 2.2 for Bengaluru congestion
+      durationMin = Math.round((route.duration * 2.2) / 60);
+    }
+
+    // +25% safety buffer for all modes (traffic uncertainty, signal delays, etc.)
+    durationMin = Math.round(durationMin * 1.25);
 
     return NextResponse.json({ durationMin, distanceKm });
   } catch {
