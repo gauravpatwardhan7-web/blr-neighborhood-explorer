@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const ALLOWED_PROFILES = new Set(["driving", "foot"]);
+// Rate limit: 60 requests per IP per minute
+const RL_MAX = 60;
+const RL_WINDOW_MS = 60_000;
 
 // Loose bounding box around greater Bengaluru region
 const BLR_LAT_MIN = 12.7, BLR_LAT_MAX = 13.2;
@@ -12,6 +16,15 @@ function inBounds(lat: number, lon: number): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`route-time:${ip}`, RL_MAX, RL_WINDOW_MS);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
+    );
+  }
+
   const body = await req.json().catch(() => ({}));
   const { originLat, originLon, destLat, destLon, profile } = body as {
     originLat?: unknown;

@@ -219,11 +219,24 @@ def upsert_listings(listings):
     return len(rows)
 
 
+def wipe_listings():
+    """Delete ALL rows from the listings table before a fresh scrape."""
+    from datetime import datetime, timezone
+    print(f"  Wiping listings table … ", end="", flush=True)
+    # Delete all rows by matching a condition that's always true
+    db.table("listings").delete().neq("source_id", "__never__").execute()
+    print(f"done at {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
+
+
 def main():
     test_mode = "--test" in sys.argv
     save_mode = "--save" in sys.argv  # --test --save to upsert during test
+    wipe_mode = "--wipe" in sys.argv  # delete all rows before scraping
     to_scrape = ["Koramangala", "Indiranagar", "HSR Layout"] if test_mode else LOCALITIES
     print(f"\n{'[TEST] ' if test_mode else ''}Scraping {len(to_scrape)} localities\n")
+
+    if wipe_mode and not test_mode:
+        wipe_listings()
 
     total = 0
     with sync_playwright() as p:

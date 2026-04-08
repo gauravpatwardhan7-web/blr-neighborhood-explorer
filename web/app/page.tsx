@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import type { Listing } from "@/lib/scrapers/types";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type FactorKey = "air_quality" | "amenities" | "metro_access" | "restaurants";
@@ -117,6 +118,17 @@ function scoreColor(score: number): string {
   if (score >= 7) return "#4ade80";
   if (score >= 4) return "#fbbf24";
   return "#f87171";
+}
+
+// Allow only http/https URLs in anchor hrefs — rejects javascript: and other schemes.
+function safeHref(url: string | undefined): string {
+  if (!url) return "#";
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "https:" || protocol === "http:" ? url : "#";
+  } catch {
+    return "#";
+  }
 }
 
 function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -540,31 +552,13 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
 type RouteResult = { durationMin: number; distanceKm: number };
 
 // ── Listings panel ────────────────────────────────────────────────────────────
-type ListingRow = {
-  id: string;
-  locality: string;
-  source: "nobroker" | "99acres" | "housing";
-  source_id: string;
-  source_url: string;
-  title: string;
-  price: number;
-  deposit?: number;
-  area_sqft?: number;
-  bhk?: number;
-  property_type?: string;
-  furnishing?: string;
-  lat?: number;
-  lon?: number;
-  address?: string;
-  images?: string[];
-  fetched_at?: string;
-};
+// DB row extends the shared Listing type with an auto-generated pk and timestamp.
+type ListingRow = Listing & { id: string; fetched_at?: string };
 
 type SourceStatus = { source: string; ok: boolean; count: number; error?: string };
 
 const SOURCE_LABELS: Record<string, string> = {
   nobroker: "NoBroker",
-  "99acres": "99acres",
   housing: "Housing.com",
 };
 
@@ -611,10 +605,11 @@ function ListingsPanel({
     setError(null);
     fetch(`/api/listings?locality=${encodeURIComponent(locality)}`)
       .then((r) => r.json())
-      .then((data: { listings: ListingRow[]; cached: boolean; sources: SourceStatus[] }) => {
+      .then((data: { listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] }) => {
         setListings(data.listings ?? []);
         setSources(data.sources ?? []);
-        setFetchedAt(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
+        const ts = data.fetchedAt ?? new Date().toISOString();
+        setFetchedAt(new Date(ts).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
         onListingsLoaded?.(data.listings ?? []);
       })
       .catch(() => setError("Could not reach listing service"))
@@ -654,7 +649,7 @@ function ListingsPanel({
 
       {!enabled && (
         <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>
-          Toggle on to load live rental listings from NoBroker, 99acres &amp; Housing.com
+          Toggle on to load live rental listings from NoBroker &amp; Housing.com
         </p>
       )}
 
@@ -739,8 +734,8 @@ function ListingsPanel({
                   </div>
                   <span style={{
                     fontSize: 10, fontWeight: 600, padding: "2px 6px", borderRadius: 8,
-                    background: l.source === "nobroker" ? "#f0fdf4" : l.source === "99acres" ? "#eff6ff" : "#fdf4ff",
-                    color: l.source === "nobroker" ? "#166534" : l.source === "99acres" ? "#1e40af" : "#7e22ce",
+                    background: l.source === "nobroker" ? "#f0fdf4" : "#fdf4ff",
+                    color: l.source === "nobroker" ? "#166534" : "#7e22ce",
                   }}>
                     {SOURCE_LABELS[l.source] ?? l.source}
                   </span>
@@ -763,7 +758,7 @@ function ListingsPanel({
                   </div>
                 )}
                 <a
-                  href={l.source_url}
+                  href={safeHref(l.source_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{

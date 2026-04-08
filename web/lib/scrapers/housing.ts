@@ -39,8 +39,10 @@ function mapProperty(locality: string, p: any): Listing | null {
   })();
 
   const loc = p.geo ?? p.coordinates ?? p.location ?? {};
-  const lat = loc.lat ?? loc.latitude ? Number(loc.lat ?? loc.latitude) : undefined;
-  const lon = loc.lng ?? loc.longitude ? Number(loc.lng ?? loc.longitude) : undefined;
+  const rawLat = loc.lat ?? loc.latitude;
+  const lat = rawLat != null ? Number(rawLat) : undefined;
+  const rawLon = loc.lng ?? loc.longitude;
+  const lon = rawLon != null ? Number(rawLon) : undefined;
 
   const images: string[] = [];
   const imgArr = p.images ?? p.photos ?? [];
@@ -49,6 +51,10 @@ function mapProperty(locality: string, p: any): Listing | null {
     if (url && url.startsWith("http")) images.push(url);
   });
 
+  const rawDeposit = priceData.security ?? priceData.deposit;
+  const rawArea = p.builtupArea ?? p.carpetArea;
+  const rawType = p.type ?? p.propertyType;
+
   return {
     locality,
     source: "housing",
@@ -56,10 +62,10 @@ function mapProperty(locality: string, p: any): Listing | null {
     source_url: `https://housing.com/in/rent/${id}`,
     title: p.title ?? p.name ?? `${bhk ?? ""}BHK for rent in ${locality}`,
     price,
-    deposit: priceData.security ?? priceData.deposit ? Number(priceData.security ?? priceData.deposit) : undefined,
-    area_sqft: p.builtupArea ?? p.carpetArea ? Number(p.builtupArea ?? p.carpetArea) : undefined,
+    deposit: rawDeposit != null ? Number(rawDeposit) : undefined,
+    area_sqft: rawArea != null ? Number(rawArea) : undefined,
     bhk,
-    property_type: p.type ?? p.propertyType ? String(p.type ?? p.propertyType).toLowerCase() : undefined,
+    property_type: rawType != null ? String(rawType).toLowerCase() : undefined,
     furnishing,
     lat,
     lon,

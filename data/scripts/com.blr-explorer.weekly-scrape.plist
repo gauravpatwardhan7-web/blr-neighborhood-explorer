@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  macOS launchd job — runs the NoBroker scraper every Sunday at 3:00 AM.
+
+  INSTALL (one-time setup):
+    cp data/scripts/com.blr-explorer.weekly-scrape.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.blr-explorer.weekly-scrape.plist
+
+  CHECK STATUS:
+    launchctl list | grep blr-explorer
+
+  RUN MANUALLY NOW:
+    launchctl start com.blr-explorer.weekly-scrape
+
+  UNINSTALL:
+    launchctl unload ~/Library/LaunchAgents/com.blr-explorer.weekly-scrape.plist
+    rm ~/Library/LaunchAgents/com.blr-explorer.weekly-scrape.plist
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.blr-explorer.weekly-scrape</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/gauravpatwardhan/blr-neighborhood-explorer/data/scripts/run_weekly_scrape.sh</string>
+  </array>
+
+  <!-- Every Sunday at 03:00 AM -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Weekday</key>
+    <integer>0</integer>
+    <key>Hour</key>
+    <integer>3</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/gauravpatwardhan/blr-neighborhood-explorer/data/logs/launchd_stdout.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/gauravpatwardhan/blr-neighborhood-explorer/data/logs/launchd_stderr.log</string>
+
+  <!-- Run even if the scheduled time was missed (e.g. laptop was off) -->
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>

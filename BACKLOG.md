@@ -87,6 +87,7 @@
 
 ## 🔧 Technical Debt & Optimization
 
+- [ ] **Live on-demand listing fetch** — When a user clicks a locality and Supabase has no rows for it (or rows are older than N days), call the NoBroker TypeScript scraper (`lib/scrapers/nobroker.ts`) directly from the API route, save results to Supabase, then return them. Shows a loading state (~5-10s first load, instant after). Needs: scraper call wired into `app/api/listings/route.ts`, freshness timestamp check, and a UI loading skeleton. Note: Housing.com requires Playwright so can't run serverless — NoBroker HTML scraper works fine without a browser.
 - [ ] Code cleanup — refactor page.tsx (already has prepared rewrite)
 - [ ] Memoize expensive components
 - [ ] Implement virtual scrolling for locality lists

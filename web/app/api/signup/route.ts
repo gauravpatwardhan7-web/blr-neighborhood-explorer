@@ -1,4 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+
+// Rate limit: 5 sign-up attempts per IP per 10 minutes
+const RL_MAX = 5;
+const RL_WINDOW_MS = 10 * 60_000;
 
 // Setup: create a Supabase project, run this SQL:
 //   create table signups (
@@ -14,6 +19,15 @@ import { NextRequest, NextResponse } from "next/server";
 // because RLS above restricts it to insert-only on this one table.
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`signup:${ip}`, RL_MAX, RL_WINDOW_MS);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
+    );
+  }
+
   const body = await req.json().catch(() => ({}));
   const { email } = body as { email?: string };
 
@@ -41,7 +55,8 @@ export async function POST(req: NextRequest) {
       "Content-Type": "application/json",
       apikey: supabaseKey,
       Authorization: `Bearer ${supabaseKey}`,
-      Prefer: "resolution=merge-duplicates",
+      // ignore-duplicates uses ON CONFLICT DO NOTHING — compatible with INSERT-only RLS policies
+      Prefer: "resolution=ignore-duplicates",
     },
     body: JSON.stringify({ email }),
   });
