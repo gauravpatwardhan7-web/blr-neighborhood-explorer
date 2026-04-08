@@ -1,0 +1,139 @@
+
+Scraping 100 localities
+
+  Wiping listings table … done at 2026-04-08 05:16 UTC
+
+[1/100] Chord Road
+  URL: https://www.nobroker.in/property/rent/bangalore/Chord%20Road?searchParam=W3sibGF0IjogMTIuOTk1LCAibG9uIjogNzcuNTQ2MzU1Niw
+  Found: 42 rents, 38 types, 50 ownerIds
+  → 25 listings
+  Saved 23
+
+[2/100] MG Road
+  URL: https://www.nobroker.in/property/rent/bangalore/MG%20Road?searchParam=W3sibGF0IjogMTIuOTc1MywgImxvbiI6IDc3LjYwNzg2NSwgIn
+  Found: 48 rents, 36 types, 50 ownerIds
+  → 25 listings
+  Saved 25
+
+[3/100] Indiranagar
+  URL: https://www.nobroker.in/property/rent/bangalore/Indiranagar?searchParam=W3sibGF0IjogMTIuOTc4NCwgImxvbiI6IDc3LjY0MTA5OCwg
+  Found: 48 rents, 44 types, 50 ownerIds
+  → 25 listings
+  Saved 24
+
+[4/100] BTM Layout
+  URL: https://www.nobroker.in/property/rent/bangalore/BTM%20Layout?searchParam=W3sibGF0IjogMTIuOTE2NiwgImxvbiI6IDc3LjYxMDM4MjM
+  Found: 50 rents, 46 types, 50 ownerIds
+  → 24 listings
+  Saved 23
+
+[5/100] Vijayanagar
+  URL: https://www.nobroker.in/property/rent/bangalore/Vijayanagar?searchParam=W3sibGF0IjogMTIuOTcxOCwgImxvbiI6IDc3LjUzNTA4MjMs
+  Found: 50 rents, 42 types, 50 ownerIds
+  → 25 listings
+  Saved 25
+
+[6/100] Victoria Layout
+  URL: https://www.nobroker.in/property/rent/bangalore/Victoria%20Layout?searchParam=W3sibGF0IjogMTIuOTY3NywgImxvbiI6IDc3LjYxNz
+  Found: 48 rents, 46 types, 50 ownerIds
+  → 24 listings
+  Saved 23
+
+[7/100] Rajajinagar
+  URL: https://www.nobroker.in/property/rent/bangalore/Rajajinagar?searchParam=W3sibGF0IjogMTIuOTkyMiwgImxvbiI6IDc3LjU1NTc2MTQs
+  Found: 48 rents, 44 types, 50 ownerIds
+  → 22 listings
+  Saved 20
+
+[8/100] Basavanagudi
+  URL: https://www.nobroker.in/property/rent/bangalore/Basavanagudi?searchParam=W3sibGF0IjogMTIuOTQxNiwgImxvbiI6IDc3LjU3NTQxNiw
+  Found: 48 rents, 44 types, 50 ownerIds
+  → 22 listings
+  Saved 22
+
+[9/100] Jayanagar
+  URL: https://www.nobroker.in/property/rent/bangalore/Jayanagar?searchParam=W3sibGF0IjogMTIuOTMwOCwgImxvbiI6IDc3LjU4NDA1MjcsIC
+  Found: 50 rents, 38 types, 50 ownerIds
+  → 24 listings
+  Saved 24
+
+[10/100] Kamakshipalya
+  URL: https://www.nobroker.in/property/rent/bangalore/Kamakshipalya?searchParam=W3sibGF0IjogMTIuOTgyLCAibG9uIjogNzcuNTM4Mjk4LC
+  Found: 48 rents, 48 types, 50 ownerIds
+  → 25 listings
+  Saved 21
+
+[11/100] Kundalahalli
+  URL: https://www.nobroker.in/property/rent/bangalore/Kundalahalli?searchParam=W3sibGF0IjogMTIuOTcxOCwgImxvbiI6IDc3LjcxNTkzMzU
+  Found: 48 rents, 42 types, 50 ownerIds
+  → 25 listings
+  Saved 24
+
+[12/100] Mahalakshmi Layout
+  URL: https://www.nobroker.in/property/rent/bangalore/Mahalakshmi%20Layout?searchParam=W3sibGF0IjogMTMuMDE4LCAibG9uIjogNzcuNTQ
+  Found: 50 rents, 46 types, 50 ownerIds
+  → 25 listings
+  Saved 24
+
+[13/100] Malleshwaram
+  URL: https://www.nobroker.in/property/rent/bangalore/Malleshwaram?searchParam=W3sibGF0IjogMTMuMDAzNSwgImxvbiI6IDc3LjU3MTI1NjI
+  Found: 50 rents, 46 types, 50 ownerIds
+  → 24 listings
+  Saved 23
+
+[14/100] Devarabeesanahalli
+  URL: https://www.nobroker.in/property/rent/bangalore/Devarabeesanahalli?searchParam=W3sibGF0IjogMTIuOTcwNSwgImxvbiI6IDc3LjcwN
+  Found: 50 rents, 46 types, 50 ownerIds
+  → 25 listings
+  Saved 25
+
+[15/100] Koramangala
+  URL: https://www.nobroker.in/property/rent/bangalore/Koramangala?searchParam=W3sibGF0IjogMTIuOTM1MiwgImxvbiI6IDc3LjYyNDc2NDks
+  Found: 50 rents, 42 types, 50 ownerIds
+  → 25 listings
+  Saved 23
+
+[16/100] Domlur
+  URL: https://www.nobroker.in/property/rent/bangalore/Domlur?searchParam=W3sibGF0IjogMTIuOTYyMSwgImxvbiI6IDc3LjYzODY4MDYsICJwb
+  Found: 50 rents, 42 types, 50 ownerIds
+  → 25 listings
+  Saved 23
+
+[17/100] Richmond Town
+  URL: https://www.nobroker.in/property/rent/bangalore/Richmond%20Town?searchParam=W3sibGF0IjogMTIuOTYsICJsb24iOiA3Ny41OTkyOTk4
+  Found: 48 rents, 42 types, 50 ownerIds
+  → 23 listings
+  Saved 23
+
+[18/100] Ulsoor
+  URL: https://www.nobroker.in/property/rent/bangalore/Ulsoor?searchParam=W3sibGF0IjogMTIuOTgzOSwgImxvbiI6IDc3LjYyODIyNDksICJwb
+  Found: 40 rents, 48 types, 50 ownerIds
+  → 24 listings
+  Saved 23
+
+[19/100] JP Nagar
+  URL: https://www.nobroker.in/property/rent/bangalore/JP%20Nagar?searchParam=W3sibGF0IjogMTIuOTA2MywgImxvbiI6IDc3LjU4NTkyMywgI
+  Found: 50 rents, 48 types, 50 ownerIds
+  → 24 listings
+  Saved 24
+
+[20/100] Thubarahalli
+  URL: https://www.nobroker.in/property/rent/bangalore/Thubarahalli?searchParam=W3sibGF0IjogMTIuOTYyNiwgImxvbiI6IDc3LjcyMDA4OTM
+  Found: 50 rents, 42 types, 50 ownerIds
+  → 25 listings
+  Saved 25
+
+[21/100] Puttenahalli
+  URL: https://www.nobroker.in/property/rent/bangalore/Puttenahalli?searchParam=W3sibGF0IjogMTIuODk5LCAibG9uIjogNzcuNTcwODk2OSw
+  Found: 50 rents, 38 types, 50 ownerIds
+  → 25 listings
+  Saved 25
+
+[22/100] Frazer Town
+  URL: https://www.nobroker.in/property/rent/bangalore/Frazer%20Town?searchParam=W3sibGF0IjogMTIuOTgzMywgImxvbiI6IDc3LjYxNjg1Mz
+  Found: 50 rents, 44 types, 50 ownerIds
+  → 23 listings
+  Saved 20
+
+[23/100] Shivajinagar
+  URL: https://www.nobroker.in/property/rent/bangalore/Shivajinagar?searchParam=W3sibGF0IjogMTIuOTg5NCwgImxvbiI6IDc3LjYwMTQ0MjI

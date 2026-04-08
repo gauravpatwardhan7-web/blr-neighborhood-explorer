@@ -1123,6 +1123,8 @@ export default function Home() {
   const [weights,       setWeights]       = useState<Weights>(DEFAULT_WEIGHTS);
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [geoLoading,    setGeoLoading]    = useState(false);
+  const [sidebarWidth,  setSidebarWidth]  = useState(360);
+  const isDragging = useRef(false);
   const [scoreFilter,   setScoreFilter]   = useState<ScoreFilter>("all");
   const [sentimentData, setSentimentData] = useState<Record<string, SentimentEntry>>({});
 
@@ -1546,7 +1548,47 @@ export default function Home() {
         /* ── Desktop layout ── */
         <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif" }}>
           <div ref={mapRef} style={{ flex: 1, overflow: "hidden" }} />
-          <div style={{ width: 360, display: "flex", flexDirection: "column", borderLeft: "1px solid #e5e7eb", background: "#f9fafb" }}>
+
+          {/* Drag handle */}
+          <div
+            style={{
+              width: 5, cursor: "col-resize", flexShrink: 0,
+              background: "transparent", position: "relative", zIndex: 10,
+            }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              isDragging.current = true;
+              document.body.style.cursor = "col-resize";
+              document.body.style.userSelect = "none";
+              const onMove = (ev: MouseEvent) => {
+                if (!isDragging.current) return;
+                const newWidth = window.innerWidth - ev.clientX;
+                setSidebarWidth(Math.min(600, Math.max(280, newWidth)));
+              };
+              const onUp = () => {
+                isDragging.current = false;
+                document.body.style.cursor = "";
+                document.body.style.userSelect = "";
+                window.removeEventListener("mousemove", onMove);
+                window.removeEventListener("mouseup", onUp);
+              };
+              window.addEventListener("mousemove", onMove);
+              window.addEventListener("mouseup", onUp);
+            }}
+          >
+            {/* Visual grip dots */}
+            <div style={{
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "flex", flexDirection: "column", gap: 4,
+            }}>
+              {[0,1,2].map(i => (
+                <div key={i} style={{ width: 3, height: 3, borderRadius: "50%", background: "#d1d5db" }} />
+              ))}
+            </div>
+          </div>
+
+          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: "1px solid #e5e7eb", background: "#f9fafb", flexShrink: 0 }}>
             {/* Header: search + filters */}
             <div style={{ padding: "14px 16px 12px", borderBottom: "1px solid #e5e7eb", flexShrink: 0, background: "white" }}>
               <div style={{ marginBottom: 10 }}>

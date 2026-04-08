@@ -15,7 +15,7 @@ LOGFILE="$LOG_DIR/scrape_$(date +%Y-%m-%d).log"
 
 echo "=== Weekly scrape started $(date) ===" | tee -a "$LOGFILE"
 cd "$REPO_DIR"
-"$VENV" "$SCRIPT" --wipe 2>&1 | tee -a "$LOGFILE"
+PYTHONUNBUFFERED=1 "$VENV" "$SCRIPT" --wipe 2>&1 | tee -a "$LOGFILE"
 echo "=== Done $(date) ===" | tee -a "$LOGFILE"
 
 # Keep only last 8 logs (8 weeks)

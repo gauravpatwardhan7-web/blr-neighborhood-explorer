@@ -125,8 +125,8 @@ blr-neighborhood-explorer/
 │   │   ├── localities_small.geojson    ← copy of data/raw/
 │   │   └── sentiment.json              ← copy of data/raw/
 │   ├── scripts/
-│   │   ├── test-nobroker.mjs     ← smoke test for NoBroker scraper
-│   │   └── test-scrapers.mjs     ← smoke test for both scrapers
+│   │   ├── test-nobroker.mjs     ← smoke test for NoBroker scraper (5 localities)
+│   │   └── test-scrapers.mjs     ← smoke test: NoBroker + Housing.com (3 localities)
 │   ├── .env.local                ← secrets (never committed)
 │   ├── next.config.ts            ← security headers, Next.js config
 │   └── package.json
@@ -218,6 +218,10 @@ page.tsx
 └── Email gate
     └── Shows modal before first use, POSTs to /api/signup
 ```
+
+### Resizable sidebar
+
+The desktop sidebar is draggable. A 5px grab handle sits between the map and sidebar. On `mousedown` it listens to `mousemove` globally and calls `setSidebarWidth(clamp(newWidth, 280, 600))`. Width defaults to 360px and is stored in `useState`.
 
 ### Map colour scale
 
@@ -352,7 +356,8 @@ The service_role key is **never** sent to the browser. It's only used in server-
                           ▼
                     scrape_listings.py --wipe
                           │
-                          ├─ Step 1: DELETE all rows from listings table
+                          ├─ Step 1: DELETE all rows via Supabase REST API
+                          │   (direct HTTP DELETE — Python SDK hangs on bulk deletes)
                           │
                           └─ Step 2: For each locality (100 total):
                                │
@@ -438,7 +443,7 @@ NEXT_PUBLIC_MAPTILER_KEY=xxxx   # MapTiler API key (safe to be public)
 | `web/lib/supabase-server.ts` | Supabase client singleton (service_role) |
 | `web/lib/rate-limit.ts` | In-process sliding window rate limiter |
 | `web/lib/scrapers/nobroker.ts` | NoBroker HTML scraper (TS, not yet wired to API) |
-| `web/lib/scrapers/housing.ts` | Housing.com scraper (broken — site went CSR) |
+| `web/lib/scrapers/housing.ts` | Housing.com scraper (broken — site went fully CSR, no `__NEXT_DATA__`) |
 | `web/lib/scrapers/types.ts` | `Listing` type shared by all scrapers + API |
 | `web/next.config.ts` | Security headers, React compiler |
 | `web/public/localities_scored.geojson` | Static: all locality polygons + scores |
@@ -478,7 +483,11 @@ npm run dev
 
 ### Test rental listings UI (no Supabase needed)
 
-In the browser, pick a locality and manually set the locality to `_test_` in the API call, or click any locality — if Supabase is seeded you'll see results.
+In the app, click any locality and enable the listings toggle. To use deterministic mock data, call:
+```
+GET /api/listings?locality=_test_
+```
+Returns 5 hard-coded mock listings without touching the DB.
 
 ### Seed Supabase with listings (first run)
 
@@ -518,7 +527,7 @@ cp data/raw/sentiment.json web/public/
 
 | Issue | Status |
 |---|---|
-| Housing.com is now CSR (no `__NEXT_DATA__`) | `housing.ts` broken — use Python+Playwright for it instead |
+| Housing.com is now CSR (no `__NEXT_DATA__`) | `housing.ts` broken — use Python+Playwright for it instead. 99acres also dropped (no relevant listings). |
 | NoBroker TS scraper not wired to API route | BACKLOG — live on-demand fetch |
 | Rate limiter is in-process | Resets on every serverless cold start; for multi-server deploys, replace with Redis/Upstash |
 | OSRM is a public demo server | May be slow/unreliable; replace with self-hosted OSRM or Google Routes API for production |
@@ -552,6 +561,7 @@ First visit (email gate)      POST /api/signup → stores email in Supabase
 
 Weekly Sunday 3AM             launchd triggers run_weekly_scrape.sh
                               → Python + Playwright → DELETE all listings
+                                  (via REST API direct HTTP DELETE)
                               → scrape NoBroker for 100 localities
                               → UPSERT into Supabase
 ```

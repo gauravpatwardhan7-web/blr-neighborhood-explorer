@@ -221,11 +221,25 @@ def upsert_listings(listings):
 
 def wipe_listings():
     """Delete ALL rows from the listings table before a fresh scrape."""
+    import requests
     from datetime import datetime, timezone
     print(f"  Wiping listings table … ", end="", flush=True)
-    # Delete all rows by matching a condition that's always true
-    db.table("listings").delete().neq("source_id", "__never__").execute()
-    print(f"done at {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
+    # Use the REST API directly — the Python client can hang on large deletes.
+    # fetched_at >= 2000-01-01 matches every real row (service_role bypasses RLS).
+    res = requests.delete(
+        f"{SUPABASE_URL}/rest/v1/listings",
+        headers={
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {SUPABASE_KEY}",
+            "Prefer": "return=minimal",
+        },
+        params={"fetched_at": "gte.2000-01-01"},
+        timeout=30,
+    )
+    if res.status_code not in (200, 204):
+        print(f"WARNING: wipe returned HTTP {res.status_code}: {res.text[:200]}")
+    else:
+        print(f"done at {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
 
 
 def main():
