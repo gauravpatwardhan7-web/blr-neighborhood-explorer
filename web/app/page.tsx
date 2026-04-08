@@ -220,7 +220,7 @@ function createListingPin(price: number): HTMLDivElement {
 
   const bg = document.createElementNS(ns, "path");
   bg.setAttribute("d", "M14 0C6.27 0 0 6.27 0 14c0 8.84 14 22 14 22S28 22.84 28 14C28 6.27 21.73 0 14 0z");
-  bg.setAttribute("fill", "#f59e0b"); // amber — distinct from blue A/purple B pins
+  bg.setAttribute("fill", "#3b82f6"); // blue house pins
   bg.setAttribute("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.35))");
   svg.appendChild(bg);
 
@@ -595,12 +595,11 @@ function ListingsPanel({
     setFetchedAt(null);
     setBhkFilter(null);
     setMaxPrice(0);
-    onListingsLoaded?.([]);
   }, [locality]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch when enabled
   useEffect(() => {
-    if (!enabled) { onListingsLoaded?.([]); return; }
+    if (!enabled) return;
     setLoading(true);
     setError(null);
     fetch(`/api/listings?locality=${encodeURIComponent(locality)}`)
@@ -610,7 +609,6 @@ function ListingsPanel({
         setSources(data.sources ?? []);
         const ts = data.fetchedAt ?? new Date().toISOString();
         setFetchedAt(new Date(ts).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
-        onListingsLoaded?.(data.listings ?? []);
       })
       .catch(() => setError("Could not reach listing service"))
       .finally(() => setLoading(false));
@@ -621,6 +619,11 @@ function ListingsPanel({
     if (maxPrice > 0 && l.price > maxPrice) return false;
     return true;
   });
+
+  // Sync map markers whenever filters or listings change
+  useEffect(() => {
+    onListingsLoaded?.(enabled ? filtered : []);
+  }, [filtered, enabled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const failedSources = sources.filter((s) => !s.ok);
 
