@@ -1,6 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <!-- Pin background -->
-  <path d="M16 2C10.477 2 6 6.477 6 12c0 7 10 18 10 18S26 19 26 12c0-5.523-4.477-10-10-10z" fill="#22c55e"/>
-  <!-- Inner circle -->
-  <circle cx="16" cy="12" r="4" fill="white"/>
+  <!-- Evening sky background -->
+  <rect width="32" height="32" rx="6" fill="#1e3a5f"/>
+
+  <!-- Left wing -->
+  <rect x="2" y="21" width="7" height="9" fill="#f59e0b"/>
+  <!-- Right wing -->
+  <rect x="23" y="21" width="7" height="9" fill="#f59e0b"/>
+  <!-- Central block -->
+  <rect x="8" y="15" width="16" height="15" fill="#f59e0b"/>
+
+  <!-- Main dome -->
+  <path d="M9 15 Q16 3 23 15Z" fill="#f59e0b"/>
+
+  <!-- Side mini-domes on wings -->
+  <path d="M2 21 Q5.5 15.5 9 21Z" fill="#fbbf24"/>
+  <path d="M23 21 Q26.5 15.5 30 21Z" fill="#fbbf24"/>
+
+  <!-- Flagstaff + flag knob -->
+  <rect x="15.5" y="1" width="1" height="4" fill="#fcd34d"/>
+  <circle cx="16" cy="1.5" r="1" fill="#fcd34d"/>
+
+  <!-- Subtle columns -->
+  <rect x="10" y="20" width="0.8" height="10" fill="#1e3a5f" opacity="0.3"/>
+  <rect x="13" y="20" width="0.8" height="10" fill="#1e3a5f" opacity="0.3"/>
+  <rect x="16" y="20" width="0.8" height="10" fill="#1e3a5f" opacity="0.3"/>
+  <rect x="19" y="20" width="0.8" height="10" fill="#1e3a5f" opacity="0.3"/>
+  <rect x="22" y="20" width="0.8" height="10" fill="#1e3a5f" opacity="0.3"/>
+
+  <!-- Ground line -->
+  <rect x="2" y="29.5" width="28" height="1" fill="#fcd34d"/>
 </svg>
