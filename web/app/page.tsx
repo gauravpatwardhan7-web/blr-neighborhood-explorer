@@ -1647,12 +1647,27 @@ export default function Home() {
                     <span style={{ fontSize: 11, fontWeight: 400, color: "#6b7280" }}>/10</span>
                   </span>
                 )}
-                <svg
-                  width="18" height="18" viewBox="0 0 18 18" fill="none"
-                  style={{ color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0 }}
-                >
-                  <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                {sheetOpen ? (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); dismiss(); }}
+                    style={{
+                      width: 28, height: 28, borderRadius: "50%", border: "none",
+                      background: "#f3f4f6", cursor: "pointer", display: "flex",
+                      alignItems: "center", justifyContent: "center", flexShrink: 0,
+                      fontSize: 16, color: "#6b7280", lineHeight: 1,
+                    }}
+                    aria-label="Close locality panel"
+                  >
+                    ✕
+                  </button>
+                ) : (
+                  <svg
+                    width="18" height="18" viewBox="0 0 18 18" fill="none"
+                    style={{ color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0 }}
+                  >
+                    <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
               </div>
             </div>
 
