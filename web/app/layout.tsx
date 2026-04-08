@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Bengaluru Neighbourhood Explorer",
     description: "Explore and compare Bengaluru neighbourhoods by livability score — air quality, amenities, metro access and more.",
   },
