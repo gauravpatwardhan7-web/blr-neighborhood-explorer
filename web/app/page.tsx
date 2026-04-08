@@ -1662,13 +1662,13 @@ export default function Home() {
             style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5", overflow: "hidden" }}
           />
 
-          {/* Floating search bar — offset accounts for iOS notch/safe-area */}
+          {/* Floating search bar — fixed so it sits above the map regardless of flex layout */}
           <div style={{
-            position: "absolute",
+            position: "fixed",
             top: "calc(16px + env(safe-area-inset-top, 0px))",
             left: 16,
             right: 16,
-            zIndex: 10,
+            zIndex: 20,
           }}>
             <SearchBox
               query={searchQuery}
