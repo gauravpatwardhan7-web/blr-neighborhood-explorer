@@ -350,8 +350,8 @@ function SearchBox({
         style={{
           flexShrink: 0, width: 40, height: 40, borderRadius: 8,
           background: "white",
-          border: compact ? "1.5px solid #e5e7eb" : "1.5px solid rgba(0,0,0,0.15)",
-          boxShadow: compact ? "none" : "0 2px 12px rgba(0,0,0,0.22)",
+          border: compact ? "1.5px solid #64748b" : "1.5px solid rgba(0,0,0,0.22)",
+          boxShadow: compact ? "0 1px 4px rgba(0,0,0,0.14)" : "0 2px 12px rgba(0,0,0,0.22)",
           display: "flex", alignItems: "center", justifyContent: "center",
           cursor: geoLoading ? "default" : "pointer", padding: 0,
         }}
@@ -377,9 +377,9 @@ function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: Sc
               fontWeight: active ? 700 : 500,
               background: active ? opt.activeBg : opt.bg,
               color: active ? (opt.value === "all" ? "white" : opt.color) : opt.color,
-              border: active ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+              border: active ? "1.5px solid transparent" : "1.5px solid #94a3b8",
               cursor: "pointer",
-              boxShadow: active ? "0 1px 4px rgba(0,0,0,0.12)" : "none",
+              boxShadow: active ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
               transition: "all 0.15s",
             }}
           >
@@ -695,10 +695,11 @@ function ListingsPanel({
                 style={{
                   padding: "3px 9px", borderRadius: 12, fontSize: 11,
                   fontWeight: bhkFilter === b ? 700 : 500,
-                  background: bhkFilter === b ? "#111827" : "white",
+                  background: bhkFilter === b ? "#111827" : "#f1f5f9",
                   color: bhkFilter === b ? "white" : "#374151",
-                  border: bhkFilter === b ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+                  border: bhkFilter === b ? "1.5px solid transparent" : "1.5px solid #94a3b8",
                   cursor: "pointer",
+                  boxShadow: bhkFilter === b ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
                 }}
               >
                 {b === null ? "All BHK" : b === 3 ? "3BHK+" : `${b}BHK`}
@@ -708,8 +709,9 @@ function ListingsPanel({
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               style={{
-                padding: "3px 8px", borderRadius: 12, fontSize: 11, border: "1.5px solid #e5e7eb",
-                background: "white", color: "#374151", cursor: "pointer", outline: "none",
+                padding: "3px 8px", borderRadius: 12, fontSize: 11, border: "1.5px solid #94a3b8",
+                background: "#f1f5f9", color: "#374151", cursor: "pointer", outline: "none",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.10)",
               }}
             >
               {MAX_PRICE_OPTIONS.map((o) => (
@@ -874,10 +876,11 @@ function CommutePanel({
             style={{
               padding: "5px 11px", borderRadius: 20, fontSize: 12,
               fontWeight: tab === t ? 700 : 500,
-              background: tab === t ? "#111827" : "white",
+              background: tab === t ? "#111827" : "#f1f5f9",
               color: tab === t ? "white" : "#374151",
-              border: tab === t ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+              border: tab === t ? "1.5px solid transparent" : "1.5px solid #94a3b8",
               cursor: "pointer",
+              boxShadow: tab === t ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
             }}
           >
             {t === "techpark" ? "🏢 Tech Parks" : "🏘️ Neighbourhood"}
@@ -897,11 +900,11 @@ function CommutePanel({
                 style={{
                   padding: "5px 10px", borderRadius: 20, fontSize: 11,
                   fontWeight: active ? 700 : 500,
-                  background: active ? "#4ade80" : "white",
+                  background: active ? "#4ade80" : "#f1f5f9",
                   color: active ? "#065f46" : "#374151",
-                  border: active ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+                  border: active ? "1.5px solid transparent" : "1.5px solid #94a3b8",
                   cursor: "pointer",
-                  boxShadow: active ? "0 1px 4px rgba(0,0,0,0.10)" : "none",
+                  boxShadow: active ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
                 }}
               >
                 {tp.name}
@@ -938,10 +941,11 @@ function CommutePanel({
             style={{
               padding: "5px 14px", borderRadius: 20, fontSize: 12,
               fontWeight: mode === m ? 700 : 500,
-              background: mode === m ? "#111827" : "white",
+              background: mode === m ? "#111827" : "#f1f5f9",
               color: mode === m ? "white" : "#374151",
-              border: mode === m ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+              border: mode === m ? "1.5px solid transparent" : "1.5px solid #94a3b8",
               cursor: "pointer",
+              boxShadow: mode === m ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
             }}
           >
             {m === "drive" ? "🚗 Drive" : "🚶 Walk"}
@@ -1032,7 +1036,7 @@ function LocalityDetail({
         </button>
         <button
           onClick={onCopy}
-          style={{ fontSize: 11, color: copied ? "#059669" : "#374151", background: "white", border: "1.5px solid #9ca3af", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 500 }}
+          style={{ fontSize: 11, color: copied ? "#059669" : "#374151", background: copied ? "#f0fdf4" : "#f1f5f9", border: copied ? "1.5px solid #059669" : "1.5px solid #64748b", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 600, boxShadow: "0 1px 3px rgba(0,0,0,0.10)" }}
         >
           {copied ? "\u2713 Copied!" : "🔗 Copy link"}
         </button>
