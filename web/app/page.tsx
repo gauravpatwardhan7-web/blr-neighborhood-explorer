@@ -191,6 +191,52 @@ function createCommutePin(label: string, color: string): HTMLDivElement {
   return el;
 }
 
+// ── Listing house-pin marker ──────────────────────────────────────────────────
+function createListingPin(price: number): HTMLDivElement {
+  const el = document.createElement("div");
+  el.style.cssText = "display:flex;flex-direction:column;align-items:center;cursor:pointer;";
+
+  const label = price >= 100000
+    ? `₹${(price / 100000).toFixed(1)}L`
+    : `₹${Math.round(price / 1000)}k`;
+
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("width", "28");
+  svg.setAttribute("height", "36");
+  svg.setAttribute("viewBox", "0 0 28 36");
+
+  const bg = document.createElementNS(ns, "path");
+  bg.setAttribute("d", "M14 0C6.27 0 0 6.27 0 14c0 8.84 14 22 14 22S28 22.84 28 14C28 6.27 21.73 0 14 0z");
+  bg.setAttribute("fill", "#f59e0b"); // amber — distinct from blue A/purple B pins
+  bg.setAttribute("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.35))");
+  svg.appendChild(bg);
+
+  // House icon
+  const house = document.createElementNS(ns, "path");
+  house.setAttribute("d", "M14 6L7 12v9h4v-5h6v5h4V12z");
+  house.setAttribute("fill", "white");
+  svg.appendChild(house);
+
+  el.appendChild(svg);
+
+  // Price label below pin
+  const tag = document.createElement("div");
+  tag.style.cssText = [
+    "font-size:9px", "font-weight:800", "color:#111827",
+    "background:white", "border:1px solid #e5e7eb",
+    "padding:1px 4px", "border-radius:4px",
+    "margin-top:1px", "white-space:nowrap",
+    "box-shadow:0 1px 3px rgba(0,0,0,0.15)",
+    "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+    "pointer-events:none",
+  ].join(";");
+  tag.textContent = label;
+  el.appendChild(tag);
+
+  return el;
+}
+
 // ── Shared locate icon ────────────────────────────────────────────────────────
 function LocateIcon({ loading }: { loading: boolean }) {
   if (loading) {
@@ -493,6 +539,268 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
 // ── Commute estimate panel ────────────────────────────────────────────────────
 type RouteResult = { durationMin: number; distanceKm: number };
 
+// ── Listings panel ────────────────────────────────────────────────────────────
+type ListingRow = {
+  id: string;
+  locality: string;
+  source: "nobroker" | "99acres" | "housing";
+  source_id: string;
+  source_url: string;
+  title: string;
+  price: number;
+  deposit?: number;
+  area_sqft?: number;
+  bhk?: number;
+  property_type?: string;
+  furnishing?: string;
+  lat?: number;
+  lon?: number;
+  address?: string;
+  images?: string[];
+  fetched_at?: string;
+};
+
+type SourceStatus = { source: string; ok: boolean; count: number; error?: string };
+
+const SOURCE_LABELS: Record<string, string> = {
+  nobroker: "NoBroker",
+  "99acres": "99acres",
+  housing: "Housing.com",
+};
+
+const MAX_PRICE_OPTIONS = [
+  { label: "Any price", value: 0 },
+  { label: "< ₹20k/mo", value: 20000 },
+  { label: "< ₹30k/mo", value: 30000 },
+  { label: "< ₹50k/mo", value: 50000 },
+];
+
+function ListingsPanel({
+  locality,
+  onListingsLoaded,
+}: {
+  locality: string;
+  onListingsLoaded?: (listings: ListingRow[]) => void;
+}) {
+  const [enabled,    setEnabled]    = useState(false);
+  const [listings,   setListings]   = useState<ListingRow[]>([]);
+  const [sources,    setSources]    = useState<SourceStatus[]>([]);
+  const [loading,    setLoading]    = useState(false);
+  const [error,      setError]      = useState<string | null>(null);
+  const [fetchedAt,  setFetchedAt]  = useState<string | null>(null);
+  const [bhkFilter,  setBhkFilter]  = useState<number | null>(null);
+  const [maxPrice,   setMaxPrice]   = useState(0);
+  const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  // Reset when locality changes
+  useEffect(() => {
+    setEnabled(false);
+    setListings([]);
+    setSources([]);
+    setError(null);
+    setFetchedAt(null);
+    setBhkFilter(null);
+    setMaxPrice(0);
+    onListingsLoaded?.([]);
+  }, [locality]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch when enabled
+  useEffect(() => {
+    if (!enabled) { onListingsLoaded?.([]); return; }
+    setLoading(true);
+    setError(null);
+    fetch(`/api/listings?locality=${encodeURIComponent(locality)}`)
+      .then((r) => r.json())
+      .then((data: { listings: ListingRow[]; cached: boolean; sources: SourceStatus[] }) => {
+        setListings(data.listings ?? []);
+        setSources(data.sources ?? []);
+        setFetchedAt(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
+        onListingsLoaded?.(data.listings ?? []);
+      })
+      .catch(() => setError("Could not reach listing service"))
+      .finally(() => setLoading(false));
+  }, [enabled, locality]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const filtered = listings.filter((l) => {
+    if (bhkFilter !== null && l.bhk !== bhkFilter) return false;
+    if (maxPrice > 0 && l.price > maxPrice) return false;
+    return true;
+  });
+
+  const failedSources = sources.filter((s) => !s.ok);
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>
+          🏠 Rental listings
+        </h3>
+        {/* Toggle */}
+        <button
+          onClick={() => setEnabled((v) => !v)}
+          style={{
+            width: 40, height: 22, borderRadius: 11, border: "none", cursor: "pointer",
+            background: enabled ? "#4ade80" : "#d1d5db",
+            position: "relative", flexShrink: 0, transition: "background 0.2s",
+          }}
+        >
+          <span style={{
+            position: "absolute", top: 3, left: enabled ? 21 : 3,
+            width: 16, height: 16, borderRadius: "50%", background: "white",
+            transition: "left 0.2s", boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+          }} />
+        </button>
+      </div>
+
+      {!enabled && (
+        <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>
+          Toggle on to load live rental listings from NoBroker, 99acres &amp; Housing.com
+        </p>
+      )}
+
+      {enabled && loading && (
+        <div>
+          {[1,2,3].map((i) => (
+            <div key={i} style={{
+              height: 90, borderRadius: 8, background: "linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%)",
+              marginBottom: 8, animation: "shimmer 1.4s infinite",
+            }} />
+          ))}
+          <p style={{ fontSize: 11, color: "#9ca3af", textAlign: "center", marginTop: 4 }}>
+            Fetching from 3 sources…
+          </p>
+        </div>
+      )}
+
+      {enabled && !loading && error && (
+        <div style={{ fontSize: 13, color: "#ef4444", padding: "8px 0" }}>{error}</div>
+      )}
+
+      {enabled && !loading && !error && listings.length > 0 && (
+        <>
+          {/* Failed sources warning */}
+          {failedSources.length > 0 && (
+            <div style={{
+              fontSize: 11, color: "#92400e", background: "#fffbeb",
+              border: "1px solid #fde68a", borderRadius: 6, padding: "5px 8px", marginBottom: 8,
+            }}>
+              ⚠️ {failedSources.map((s) => SOURCE_LABELS[s.source] ?? s.source).join(", ")} didn&apos;t respond
+            </div>
+          )}
+
+          {/* Filters */}
+          <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginBottom: 8 }}>
+            {[null, 1, 2, 3].map((b) => (
+              <button
+                key={b ?? "all"}
+                onClick={() => setBhkFilter(b === bhkFilter ? null : b)}
+                style={{
+                  padding: "3px 9px", borderRadius: 12, fontSize: 11,
+                  fontWeight: bhkFilter === b ? 700 : 500,
+                  background: bhkFilter === b ? "#111827" : "white",
+                  color: bhkFilter === b ? "white" : "#374151",
+                  border: bhkFilter === b ? "1.5px solid transparent" : "1.5px solid #e5e7eb",
+                  cursor: "pointer",
+                }}
+              >
+                {b === null ? "All BHK" : b === 3 ? "3BHK+" : `${b}BHK`}
+              </button>
+            ))}
+            <select
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              style={{
+                padding: "3px 8px", borderRadius: 12, fontSize: 11, border: "1.5px solid #e5e7eb",
+                background: "white", color: "#374151", cursor: "pointer", outline: "none",
+              }}
+            >
+              {MAX_PRICE_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Listing cards */}
+          {filtered.length === 0 ? (
+            <p style={{ fontSize: 13, color: "#9ca3af" }}>No listings match your filters.</p>
+          ) : (
+            filtered.map((l) => (
+              <div
+                key={`${l.source}-${l.source_id}`}
+                ref={(el) => { if (el) cardRefs.current.set(`${l.source}-${l.source_id}`, el); }}
+                style={{
+                  border: "1px solid #e5e7eb", borderRadius: 8, padding: "10px 12px",
+                  marginBottom: 8, background: "white",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>
+                    ₹{l.price.toLocaleString("en-IN")}<span style={{ fontSize: 11, fontWeight: 400, color: "#6b7280" }}>/mo</span>
+                  </div>
+                  <span style={{
+                    fontSize: 10, fontWeight: 600, padding: "2px 6px", borderRadius: 8,
+                    background: l.source === "nobroker" ? "#f0fdf4" : l.source === "99acres" ? "#eff6ff" : "#fdf4ff",
+                    color: l.source === "nobroker" ? "#166534" : l.source === "99acres" ? "#1e40af" : "#7e22ce",
+                  }}>
+                    {SOURCE_LABELS[l.source] ?? l.source}
+                  </span>
+                </div>
+                <div style={{ fontSize: 12, color: "#374151", marginBottom: 6, lineHeight: 1.4 }}>
+                  {[
+                    l.bhk ? `${l.bhk}BHK` : null,
+                    l.area_sqft ? `${l.area_sqft} sqft` : null,
+                    l.furnishing ?? null,
+                  ].filter(Boolean).join(" · ")}
+                </div>
+                {l.deposit && (
+                  <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 4 }}>
+                    Deposit: ₹{l.deposit.toLocaleString("en-IN")}
+                  </div>
+                )}
+                {l.address && (
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {l.address}
+                  </div>
+                )}
+                <a
+                  href={l.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: 11, fontWeight: 600, color: "#3b82f6",
+                    textDecoration: "none", display: "inline-block",
+                  }}
+                >
+                  View listing →
+                </a>
+              </div>
+            ))
+          )}
+
+          {fetchedAt && (
+            <p style={{ fontSize: 10, color: "#9ca3af", marginTop: 4 }}>
+              Last refreshed {fetchedAt} · Cached 24 h
+            </p>
+          )}
+        </>
+      )}
+
+      {enabled && !loading && !error && listings.length === 0 && (
+        <div style={{ fontSize: 13, color: "#9ca3af", padding: "8px 0" }}>
+          No listings found for {locality}. Try a nearby area.
+        </div>
+      )}
+
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -400px 0; }
+          100% { background-position: 400px 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 function CommutePanel({
   originLat,
   originLon,
@@ -701,6 +1009,7 @@ function LocalityDetail({
   originLon,
   localities,
   onDestinationChange,
+  onListingsLoaded,
 }: {
   selected: Locality;
   score: number;
@@ -712,6 +1021,7 @@ function LocalityDetail({
   originLon: number;
   localities: LocalityFull[];
   onDestinationChange?: (dest: { name: string; lat: number; lon: number } | null) => void;
+  onListingsLoaded?: (listings: ListingRow[]) => void;
 }) {
   return (
     <>
@@ -738,6 +1048,8 @@ function LocalityDetail({
       <FactorBars factors={selected.factors} />
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
+      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
+      <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <RawData raw={selected.raw} />
     </>
@@ -804,6 +1116,7 @@ export default function Home() {
   const scoreFilterRef    = useRef<ScoreFilter>("all");
   const isMobileRef       = useRef(false);
   const commuteMarkersRef = useRef<{ origin: maplibregl.Marker | null; dest: maplibregl.Marker | null }>({ origin: null, dest: null });
+  const listingMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const [selected,      setSelected]      = useState<Locality | null>(null);
   const [isMobile,      setIsMobile]      = useState(false);
@@ -849,6 +1162,8 @@ export default function Home() {
     commuteMarkersRef.current.origin?.remove();
     commuteMarkersRef.current.dest?.remove();
     commuteMarkersRef.current = { origin: null, dest: null };
+    listingMarkersRef.current.forEach((m) => m.remove());
+    listingMarkersRef.current = [];
     history.replaceState(null, "", window.location.pathname);
     setSelected(null);
     setSheetExpanded(false);
@@ -936,6 +1251,22 @@ export default function Home() {
       maxZoom: 14,
       duration: 900,
     });
+  }, []);
+
+  const handleListingsLoaded = useCallback((listings: ListingRow[]) => {
+    const map = mapInstanceRef.current;
+    // Clear existing listing markers
+    listingMarkersRef.current.forEach((m) => m.remove());
+    listingMarkersRef.current = [];
+    if (!map) return;
+    for (const l of listings) {
+      if (!l.lat || !l.lon) continue;
+      const el = createListingPin(l.price);
+      const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
+        .setLngLat([l.lon, l.lat])
+        .addTo(map);
+      listingMarkersRef.current.push(marker);
+    }
   }, []);
 
   const handleGateSubmit = useCallback(async (email: string) => {    setGateSubmitting(true);
@@ -1258,6 +1589,7 @@ export default function Home() {
                   originLon={selectedFull?.lon ?? 0}
                   localities={allLocalities}
                   onDestinationChange={handleCommuteDestChange}
+                  onListingsLoaded={handleListingsLoaded}
                 />
               )}
             </div>
@@ -1344,6 +1676,7 @@ export default function Home() {
                     originLon={selectedFull?.lon ?? 0}
                     localities={allLocalities}
                     onDestinationChange={handleCommuteDestChange}
+                    onListingsLoaded={handleListingsLoaded}
                   />
                 </div>
               ) : (
