@@ -1198,7 +1198,7 @@ export default function Home() {
     const bottomPad = isMobileRef.current ? Math.round(window.innerHeight * 0.62) : 0;
     map.flyTo({
       center: [loc.lon, loc.lat],
-      zoom: 13,
+      zoom: 15,
       duration: 1000,
       ...(bottomPad > 0 && { padding: { top: 80, bottom: bottomPad, left: 0, right: 0 } }),
     });
