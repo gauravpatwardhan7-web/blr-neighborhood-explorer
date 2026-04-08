@@ -1115,6 +1115,7 @@ export default function Home() {
   const isMobileRef       = useRef(false);
   const commuteMarkersRef = useRef<{ origin: maplibregl.Marker | null; dest: maplibregl.Marker | null }>({ origin: null, dest: null });
   const listingMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const savedViewRef      = useRef<{ center: [number, number]; zoom: number } | null>(null);
 
   const [selected,      setSelected]      = useState<Locality | null>(null);
   const [isMobile,      setIsMobile]      = useState(false);
@@ -1159,6 +1160,11 @@ export default function Home() {
       map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
       highlightedRef.current = null;
     }
+    // Fly back to pre-selection view
+    if (map && savedViewRef.current) {
+      map.flyTo({ center: savedViewRef.current.center, zoom: savedViewRef.current.zoom, duration: 800 });
+      savedViewRef.current = null;
+    }
     commuteMarkersRef.current.origin?.remove();
     commuteMarkersRef.current.dest?.remove();
     commuteMarkersRef.current = { origin: null, dest: null };
@@ -1172,6 +1178,11 @@ export default function Home() {
   const flyToLocality = useCallback((loc: LocalityFull) => {
     const map = mapInstanceRef.current;
     if (!map) return;
+    // Save current view before zooming in (only once — switching localities keeps original)
+    if (!savedViewRef.current) {
+      const c = map.getCenter();
+      savedViewRef.current = { center: [c.lng, c.lat], zoom: map.getZoom() };
+    }
     if (highlightedRef.current && highlightedRef.current !== loc.name) {
       map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
     }
@@ -1416,6 +1427,10 @@ export default function Home() {
           map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
           highlightedRef.current = null;
           history.replaceState(null, "", window.location.pathname);
+          if (savedViewRef.current) {
+            map.flyTo({ center: savedViewRef.current.center, zoom: savedViewRef.current.zoom, duration: 800 });
+            savedViewRef.current = null;
+          }
           setSelected(null);
           setSheetExpanded(false);
         }
@@ -1489,13 +1504,7 @@ export default function Home() {
         });
         el.addEventListener("click", (e) => {
           e.stopPropagation(); // prevent bubbling to map → avoids wrong polygon highlight
-          if (highlightedRef.current && highlightedRef.current !== name) {
-            map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
-          }
-          highlightedRef.current = name;
-          map.setFeatureState({ source: "localities", id: name }, { hover: true });
-          setSelected({ name, overall_score, factors, raw });
-          setSheetExpanded(true);
+          flyToLocality({ name, overall_score, factors, raw, lat: f.properties.lat, lon: f.properties.lon });
         });
 
         new maplibregl.Marker({ element: el })
