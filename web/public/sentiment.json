@@ -4,10 +4,10 @@
     "compound": -0.015,
     "label": "Neutral",
     "positive": 2,
-    "neutral": 2,
+    "neutral": 3,
     "negative": 4,
-    "total": 59,
-    "summary": "Residents appreciate Koramangala's housing costs and local amenities. The main criticisms are around traffic and commute and overall vibe.",
+    "total": 58,
+    "summary": "Residents appreciate Koramangala's housing costs. The main criticisms are around traffic and commute and overall vibe.",
     "quotes": [
       "These are parks in areas like Koramangala, HSR Layout, JP Nagar, Jayanagar.",
       "I want to get a full preventive health checkup done in the HSR / Koramangala / Bellandur / Sarjapur areas of Bengaluru, but places like Manipal feel too pricey for what I need.",
@@ -21,7 +21,7 @@
     "positive": 0,
     "neutral": 8,
     "negative": 1,
-    "total": 61,
+    "total": 65,
     "summary": "Reddit sentiment on Indiranagar leans negative. The main criticisms concern traffic and commute.",
     "quotes": [
       "How this impacts you today: Intensified Checks: In direct response to this crash, Bengaluru Traffic Police have launched a massive drunk-driving crackdown** across East Bengaluru\u2026"
@@ -34,7 +34,7 @@
     "positive": 5,
     "neutral": 7,
     "negative": 4,
-    "total": 41,
+    "total": 40,
     "summary": "Residents appreciate Bellandur's housing costs. The main criticisms are around public transit and overall vibe.",
     "quotes": [
       "Thankfully I dont travel via this route but I travel to bellandur from Banashankari on 500 series bus and after Silk board its a hellish traffic, I usually i just sleep in the bus\u2026",
@@ -44,12 +44,12 @@
   },
   {
     "name": "Sarjapur",
-    "compound": -0.079,
+    "compound": -0.085,
     "label": "Negative",
     "positive": 4,
-    "neutral": 6,
+    "neutral": 5,
     "negative": 6,
-    "total": 59,
+    "total": 60,
     "summary": "Reddit sentiment on Sarjapur leans negative. The main criticisms concern public transit and overall vibe.",
     "quotes": [
       "Just wait till they start the inevitable metro construction in sarjapur road and watch the chaos unfold.",
@@ -64,7 +64,7 @@
     "positive": 3,
     "neutral": 4,
     "negative": 1,
-    "total": 51,
+    "total": 53,
     "summary": "Reddit discussions about Whitefield are broadly positive. Residents particularly appreciate the public transit.",
     "quotes": [
       "I shifted to a new room in Whitefield on 15th, yesterday I got electric shock from the geyser tap, then I checked and came to know that there is current leak.",
@@ -79,7 +79,7 @@
     "positive": 16,
     "neutral": 4,
     "negative": 1,
-    "total": 55,
+    "total": 56,
     "summary": "Reddit discussions about Malleshwaram are broadly positive. Residents particularly appreciate the overall vibe and housing costs.",
     "quotes": [
       "Best to go around Malleshwaram and eat at multiple joints - Idli at Veena Stores, Shavige bath at Raghvendra stores, Masala Dose and filter coffee at CTR.",
@@ -89,12 +89,12 @@
   },
   {
     "name": "HSR Layout",
-    "compound": 0.065,
-    "label": "Positive",
+    "compound": 0.049,
+    "label": "Neutral",
     "positive": 1,
-    "neutral": 1,
+    "neutral": 2,
     "negative": 1,
-    "total": 52,
+    "total": 51,
     "summary": "Residents appreciate HSR Layout's local amenities. The main criticisms are around overall vibe.",
     "quotes": [
       "These are parks in areas like Koramangala, HSR Layout, JP Nagar, Jayanagar.",
@@ -131,12 +131,12 @@
   },
   {
     "name": "Jayanagar",
-    "compound": -0.025,
-    "label": "Neutral",
+    "compound": -0.073,
+    "label": "Negative",
     "positive": 4,
-    "neutral": 2,
-    "negative": 5,
-    "total": 65,
+    "neutral": 3,
+    "negative": 6,
+    "total": 68,
     "summary": "Residents appreciate Jayanagar's housing costs. The main criticisms are around traffic and commute and local amenities.",
     "quotes": [
       "Why does malleswaram and jayanagar have good civic infra , but the tech bro corridor residential areas are crap, mostly because tech bros dont have time to protest for the same",
@@ -151,7 +151,7 @@
     "positive": 8,
     "neutral": 12,
     "negative": 7,
-    "total": 78,
+    "total": 79,
     "summary": "Reddit sentiment on Hebbal leans negative. The main criticisms concern local amenities.",
     "quotes": [
       "from 2:30-3pm build up gets started and peaks 5-7pm again from 8:30-10pm on Fridays and festive times it will be hectic due to travel buses going to TN ( silboard route) and\u2026",
@@ -166,7 +166,7 @@
     "positive": 3,
     "neutral": 5,
     "negative": 3,
-    "total": 53,
+    "total": 54,
     "summary": "Residents appreciate Electronic City's housing costs. The main criticisms are around local amenities and public transit.",
     "quotes": [
       "As for electronic city, it got a expressway from silk board in 2000s and nice road connectivity just after that, followed by yellow line metro connectivity.",
@@ -176,13 +176,13 @@
   },
   {
     "name": "Marathahalli",
-    "compound": -0.084,
+    "compound": -0.061,
     "label": "Negative",
     "positive": 5,
-    "neutral": 2,
-    "negative": 6,
+    "neutral": 3,
+    "negative": 5,
     "total": 60,
-    "summary": "Residents appreciate Marathahalli's housing costs and public transit. The main criticisms are around overall vibe and local amenities.",
+    "summary": "Residents appreciate Marathahalli's housing costs and public transit. The main criticisms are around overall vibe and traffic and commute.",
     "quotes": [
       "They should just stop private buses from parking near Marathahalli",
       "But sometimes this traffic is so frustrating specially Marathahalli.",
@@ -206,27 +206,27 @@
   },
   {
     "name": "Rajajinagar",
-    "compound": 0.191,
+    "compound": 0.203,
     "label": "Positive",
-    "positive": 5,
+    "positive": 6,
     "neutral": 7,
     "negative": 1,
-    "total": 41,
+    "total": 43,
     "summary": "Reddit discussions about Rajajinagar are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
     "quotes": [
       "Rajajinagar and it's nearby areas have great connectivity to metros.",
       "Rajajinagar in my opinion best area to have a home and leading peaceful life because if you want to roam commercial streets you have malleshwaram , magadi road if you want Malls ..",
-      "I have started noticing lot of ads on Instagram of standalone apartments build on small plots, in areas like Rajajinagar, Malleswaram, Basavanagudi etc..."
+      "rajajinagar, basavanagudi, vv puram on a weekend feel like a different city altogether the kannada movie scene is genuinely doing some wild stuff."
     ]
   },
   {
     "name": "Basavanagudi",
-    "compound": 0.399,
+    "compound": 0.397,
     "label": "Positive",
-    "positive": 16,
+    "positive": 17,
     "neutral": 5,
     "negative": 1,
-    "total": 68,
+    "total": 70,
     "summary": "Reddit discussions about Basavanagudi are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
     "quotes": [
       "The place you walked is Gandhi Bazar - it is definitely a part of Basavanagudi but more of a commercial area, rest of the Basavanagudi is even more beautiful with good green cover\u2026",
@@ -327,7 +327,7 @@
     "positive": 2,
     "neutral": 2,
     "negative": 1,
-    "total": 24,
+    "total": 26,
     "summary": "Residents appreciate Frazer Town's housing costs. The main criticisms are around local amenities.",
     "quotes": [
       "Plus, there's no brokerage fee!So if you're looking for a comfortable room in a spacious 2 BHK flat in Frazer Town, Bangalore, this is the perfect place for you.",
@@ -635,7 +635,7 @@
     "positive": 2,
     "neutral": 3,
     "negative": 1,
-    "total": 19,
+    "total": 20,
     "summary": "Residents appreciate Richmond Town's housing costs. The main criticisms are around traffic and commute.",
     "quotes": [
       "I work at Richmond Town and used to commute from Koramangala 1st block.",
