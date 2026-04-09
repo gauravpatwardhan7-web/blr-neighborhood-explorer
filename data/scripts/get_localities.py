@@ -52,7 +52,8 @@ LOCALITIES = [
     {"name": "Padmanabhanagar",   "lat": 12.9243, "lon": 77.5494},
     {"name": "Old Madras Road",   "lat": 13.0050, "lon": 77.6650},
     {"name": "Doddakannalli",     "lat": 12.9058, "lon": 77.6934},
-    {"name": "Kasavanahalli",      "lat": 12.9043, "lon": 77.7228},
+    {"name": "Kasavanahalli",     "lat": 12.9042, "lon": 77.6765},
+    {"name": "Haralur",           "lat": 12.9173, "lon": 77.6830},
     # --- 15 West Bangalore localities ---
     {"name": "RR Nagar",          "lat": 12.9235, "lon": 77.5149},
     {"name": "Jalahalli",         "lat": 13.0527, "lon": 77.5430},

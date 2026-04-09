@@ -1501,17 +1501,32 @@
   },
   {
     "name": "Kasavanahalli",
-    "lat": 12.9043,
-    "lon": 77.7228,
-    "hospitals": 3,
+    "lat": 12.9042,
+    "lon": 77.6765,
+    "hospitals": 0,
     "pharmacies": 0,
-    "supermarkets": 2,
-    "parks": 10,
-    "schools": 13,
+    "supermarkets": 12,
+    "parks": 0,
+    "schools": 0,
+    "restaurants": 73,
+    "gyms": 7,
+    "atms": 0,
+    "metro_stations": 0,
+    "bus_stops": 0
+  },
+  {
+    "name": "Haralur",
+    "lat": 12.9173,
+    "lon": 77.683,
+    "hospitals": 0,
+    "pharmacies": 0,
+    "supermarkets": 20,
+    "parks": 0,
+    "schools": 18,
     "restaurants": 0,
     "gyms": 0,
     "atms": 0,
     "metro_stations": 0,
-    "bus_stops": 2
+    "bus_stops": 4
   }
 ]
