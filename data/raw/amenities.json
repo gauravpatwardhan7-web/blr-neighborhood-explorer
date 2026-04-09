@@ -675,7 +675,7 @@
     "bus_stops": 38
   },
   {
-    "name": "Kasavanahalli",
+    "name": "Doddakannalli",
     "lat": 12.9058,
     "lon": 77.6934,
     "hospitals": 4,
@@ -1498,5 +1498,20 @@
     "atms": 20,
     "metro_stations": 2,
     "bus_stops": 26
+  },
+  {
+    "name": "Kasavanahalli",
+    "lat": 12.9043,
+    "lon": 77.7228,
+    "hospitals": 3,
+    "pharmacies": 0,
+    "supermarkets": 2,
+    "parks": 10,
+    "schools": 13,
+    "restaurants": 0,
+    "gyms": 0,
+    "atms": 0,
+    "metro_stations": 0,
+    "bus_stops": 2
   }
 ]
