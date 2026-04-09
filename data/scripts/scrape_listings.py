@@ -68,6 +68,7 @@ def nobroker_url(locality):
         "placeName": locality,
     }]).encode()).decode()
     enc = locality.replace(" ", "%20")
+
     return (
         f"https://www.nobroker.in/property/rent/bangalore/{enc}"
         f"?searchParam={param}&radius=2.0&sharedAccomodation=0&city=bangalore&locality={enc}"
@@ -96,28 +97,37 @@ def parse_area(text):
     return float(m.group(1).replace(",", "")) if m else None
 
 
+def _locality_slug(name: str) -> str:
+    return re.sub(r"[^a-z0-9-]", "", name.lower().replace(" ", "-"))
+
+
+def _extract_json_array(html: str, key: str) -> list:
+    """Extract a JSON array value for `key` from HTML using bracket counting."""
+    marker = f'"{key}":[' 
+    start = html.find(marker)
+    if start == -1:
+        return []
+    depth = 0
+    i = start + len(marker) - 1  # points at opening '['
+    limit = min(len(html), start + 600_000)
+    while i < limit:
+        if html[i] == "[":
+            depth += 1
+        elif html[i] == "]":
+            depth -= 1
+            if depth == 0:
+                break
+        i += 1
+    try:
+        return json.loads(html[start + len(marker) - 1 : i + 1])
+    except Exception:
+        return []
+
+
 def scrape_nobroker(page, locality):
     url = nobroker_url(locality)
     print(f"  URL: {url[:120]}")
     listings = []
-    captured = []
-
-    def handle_response(response):
-        try:
-            url_r = response.url
-            if "nobroker.in" in url_r and response.status == 200 and (
-                "property/list" in url_r or "search" in url_r or "propertyList" in url_r
-            ):
-                try:
-                    data = response.json()
-                    if isinstance(data, dict) and data:
-                        captured.append(data)
-                except Exception:
-                    pass
-        except Exception:
-            pass
-
-    page.on("response", handle_response)
 
     try:
         page.goto(url, wait_until="domcontentloaded", timeout=30_000)
@@ -125,80 +135,101 @@ def scrape_nobroker(page, locality):
 
         html = page.content()
 
-        # NoBroker embeds listing data as SSR JSON in the HTML.
-        # Field names discovered by probing: rent, deposit, propertySize,
-        # type (BHK1/BHK2…), furnishingDesc, ownerId, localityTruncated
-        rents     = re.findall(r'"rent"\s*:\s*(\d+)', html)
-        deposits  = re.findall(r'"deposit"\s*:\s*(\d+)', html)
-        sizes     = re.findall(r'"propertySize"\s*:\s*(\d+)', html)
-        types     = re.findall(r'"type"\s*:\s*"(BHK\d+|RK)"', html)
-        furns     = re.findall(r'"furnishingDesc"\s*:\s*"([^"]+)"', html)
-        owner_ids = re.findall(r'"ownerId"\s*:\s*"([^"]+)"', html)
-        lats      = re.findall(r'"latitude"\s*:\s*([\d.]+)', html)
-        lons      = re.findall(r'"longitude"\s*:\s*([\d.]+)', html)
+        # NoBroker embeds listing data as listPageProperties:[...] in the SSR HTML.
+        props = _extract_json_array(html, "listPageProperties")
+        print(f"  Parsed {len(props)} properties from listPageProperties")
 
-        print(f"  Found: {len(rents)} rents, {len(types)} types, {len(owner_ids)} ownerIds")
+        for i, p in enumerate(props[:25]):
+            if not isinstance(p, dict):
+                continue
 
-        for i, rent_str in enumerate(rents[:25]):
-            price = int(rent_str)
+            prop_id = str(p.get("id") or p.get("propertyCode") or p.get("ownerId") or "")
+            if not prop_id:
+                continue
+
+            price = int(p.get("rent") or 0)
             if price < 1000:
                 continue
-            bhk_raw = types[i] if i < len(types) else ""
+
+            bhk_raw = str(p.get("type") or p.get("typeDesc") or "")
             bhk_m = re.search(r"(\d+)", bhk_raw)
             bhk = int(bhk_m.group(1)) if bhk_m else None
-            furn = furns[i].lower() if i < len(furns) else ""
-            oid = owner_ids[i] if i < len(owner_ids) else f"nb-{locality}-{i}"
+
+            furn = str(p.get("furnishing") or p.get("furnishingDesc") or "").lower()
+            furnishing = (
+                "furnished" if "full" in furn
+                else "semi-furnished" if "semi" in furn
+                else "unfurnished" if "unfurnish" in furn or furn == "unfurnished"
+                else None
+            )
+
+            # Build a per-property deep link using detailUrl when available
+            detail_path = str(p.get("detailUrl") or "")
+            if detail_path:
+                source_url = f"https://www.nobroker.in{detail_path}"
+            else:
+                source_url = f"https://www.nobroker.in/flats-for-rent-in-{_locality_slug(locality)}-bangalore/"
+
             listings.append({
                 "locality": locality,
                 "source": "nobroker",
-                "source_id": oid,
-                "source_url": f"https://www.nobroker.in/property/rent/bangalore/{locality.replace(' ', '%20')}",
+                "source_id": prop_id,
+                "source_url": source_url,
                 "title": f"{bhk or '?'}BHK in {locality}",
                 "price": price,
-                "deposit": int(deposits[i]) if i < len(deposits) else None,
-                "area_sqft": float(sizes[i]) if i < len(sizes) else None,
+                "deposit": int(p["deposit"]) if p.get("deposit") else None,
+                "area_sqft": float(p["propertySize"]) if p.get("propertySize") else None,
                 "bhk": bhk,
-                "furnishing": (
-                    "furnished" if "full" in furn
-                    else "semi-furnished" if "semi" in furn
-                    else "unfurnished" if furn
-                    else None
-                ),
-                "lat": float(lats[i]) if i < len(lats) else None,
-                "lon": float(lons[i]) if i < len(lons) else None,
+                "furnishing": furnishing,
+                "lat": float(p["latitude"]) if p.get("latitude") else None,
+                "lon": float(p["longitude"]) if p.get("longitude") else None,
             })
 
-        # Fallback: scrape DOM cards if API interception got nothing
+        # Fallback: old regex path if listPageProperties not found
         if not listings:
-            cards = page.query_selector_all("[data-postid]")
-            print(f"  DOM fallback: {len(cards)} cards")
-            for card in cards[:20]:
-                try:
-                    pid = card.get_attribute("data-postid") or ""
-                    txt = card.inner_text()
-                    price_el = card.query_selector("[class*='price'],[class*='Price']")
-                    price = parse_price(price_el.inner_text()) if price_el else parse_price(txt)
-                    if not price:
-                        continue
-                    listings.append({
-                        "locality": locality,
-                        "source": "nobroker",
-                        "source_id": pid or f"nb-{locality}-{len(listings)}",
-                        "source_url": f"https://www.nobroker.in/property/residential/rent/bangalore/?postId={pid}",
-                        "title": f"{parse_bhk(txt) or '?'}BHK in {locality}",
-                        "price": price,
-                        "area_sqft": parse_area(txt),
-                        "bhk": parse_bhk(txt),
-                    })
-                except Exception:
+            rents     = re.findall(r'"rent"\s*:\s*(\d+)', html)
+            deposits  = re.findall(r'"deposit"\s*:\s*(\d+)', html)
+            sizes     = re.findall(r'"propertySize"\s*:\s*(\d+)', html)
+            types     = re.findall(r'"type"\s*:\s*"(BHK\d+|RK)"', html)
+            furns     = re.findall(r'"furnishingDesc"\s*:\s*"([^"]+)"', html)
+            owner_ids = re.findall(r'"ownerId"\s*:\s*"([^"]+)"', html)
+            lats      = re.findall(r'"latitude"\s*:\s*([\d.]+)', html)
+            lons      = re.findall(r'"longitude"\s*:\s*([\d.]+)', html)
+            slug_fb   = _locality_slug(locality)
+            print(f"  Fallback regex: {len(rents)} rents, {len(owner_ids)} ownerIds")
+            for i, rent_str in enumerate(rents[:25]):
+                price = int(rent_str)
+                if price < 1000:
                     continue
+                bhk_raw = types[i] if i < len(types) else ""
+                bhk_m = re.search(r"(\d+)", bhk_raw)
+                bhk = int(bhk_m.group(1)) if bhk_m else None
+                furn = furns[i].lower() if i < len(furns) else ""
+                oid = owner_ids[i] if i < len(owner_ids) else f"nb-{locality}-{i}"
+                listings.append({
+                    "locality": locality,
+                    "source": "nobroker",
+                    "source_id": oid,
+                    "source_url": f"https://www.nobroker.in/flats-for-rent-in-{slug_fb}-bangalore/",
+                    "title": f"{bhk or '?'}BHK in {locality}",
+                    "price": price,
+                    "deposit": int(deposits[i]) if i < len(deposits) else None,
+                    "area_sqft": float(sizes[i]) if i < len(sizes) else None,
+                    "bhk": bhk,
+                    "furnishing": (
+                        "furnished" if "full" in furn
+                        else "semi-furnished" if "semi" in furn
+                        else "unfurnished" if furn
+                        else None
+                    ),
+                    "lat": float(lats[i]) if i < len(lats) else None,
+                    "lon": float(lons[i]) if i < len(lons) else None,
+                })
 
     except Exception as e:
         print(f"  ERROR: {e}")
-    finally:
-        page.remove_listener("response", handle_response)
 
-    print(f"  → {len(listings)} listings")
+    print(f"  NoBroker → {len(listings)} listings")
     return listings
 
 
