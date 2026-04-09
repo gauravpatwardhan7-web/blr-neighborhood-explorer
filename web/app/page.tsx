@@ -26,7 +26,7 @@ type Locality = {
 type LocalityFull = Locality & { lat: number; lon: number };
 type LocalityFeature = { properties: LocalityFull };
 type Weights = Record<FactorKey, number>;
-type ScoreFilter = "all" | "great" | "good" | "low";
+type ScoreFilter = "all" | "great" | "good" | "low" | null;
 type SentimentEntry = {
   name: string;
   compound: number;
@@ -386,7 +386,7 @@ function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: Sc
         return (
           <button
             key={opt.value}
-            onClick={() => onChange(opt.value)}
+            onClick={() => onChange(active ? null : opt.value)}
             style={{
               padding: "5px 12px", borderRadius: 20, fontSize: 12,
               fontWeight: active ? 700 : 500,
@@ -1341,7 +1341,7 @@ export default function Home() {
         (f === "great" && score >= 7) ||
         (f === "good"  && score >= 4 && score < 7) ||
         (f === "low"   && score < 4);
-      if (visible) {
+      if (f !== null && visible) {
         el.style.display  = "flex";
         el.style.alignItems = "center";
         el.style.opacity  = "0.85";
@@ -1561,10 +1561,11 @@ export default function Home() {
     updateMarkerVisibility();
   }, [weights, updateMarkerVisibility]);
 
-  // Show/hide markers when filter changes
+  // Show/hide markers when filter changes; deactivate heatmap if all localities hidden
   useEffect(() => {
     scoreFilterRef.current = scoreFilter;
     updateMarkerVisibility();
+    if (scoreFilter === null) setHeatmapActive(false);
   }, [scoreFilter, updateMarkerVisibility]);
 
   // Fetch heatmap data whenever dest / mode changes while heatmap is active
