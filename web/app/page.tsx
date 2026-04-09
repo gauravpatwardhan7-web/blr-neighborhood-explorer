@@ -39,6 +39,8 @@ type SentimentEntry = {
   quotes: string[];
 };
 
+type CommuteResult = { name: string; durationMin: number };
+
 // ── Constants ─────────────────────────────────────────────────────────────────
 const DEFAULT_WEIGHTS: Weights = {
   air_quality: 0.15,
@@ -68,6 +70,14 @@ const RAW_LABELS: Partial<Record<keyof Locality["raw"], string>> = {
   aqi:            "AQI (US)",
   temperature_c:  "temperature (°C)",
 };
+
+// Commute heatmap colour scale
+function commuteColor(min: number): string {
+  if (min <= 20) return "#22c55e";
+  if (min <= 35) return "#fde68a";
+  if (min <= 50) return "#fb923c";
+  return "#ef4444";
+}
 
 const SENTIMENT_COLORS = {
   Positive: { bg: "#ecfdf5", text: "#065f46", bar: "#4ade80" },
@@ -806,6 +816,176 @@ function ListingsPanel({
   );
 }
 
+// ── Heatmap Panel ─────────────────────────────────────────────────────────────
+function HeatmapPanel({
+  active,
+  onToggle,
+  dest,
+  onDestChange,
+  mode,
+  onModeChange,
+  loading,
+  commuteData,
+  localities,
+}: {
+  active: boolean;
+  onToggle: (v: boolean) => void;
+  dest: { name: string; lat: number; lon: number } | null;
+  onDestChange: (d: { name: string; lat: number; lon: number } | null) => void;
+  mode: "drive" | "walk";
+  onModeChange: (m: "drive" | "walk") => void;
+  loading: boolean;
+  commuteData: Record<string, number>;
+  localities: LocalityFull[];
+}) {
+  const [tab, setTab] = useState<"techpark" | "locality">("techpark");
+  const sortedLocalities = [...localities].sort((a, b) => a.name.localeCompare(b.name));
+  const hasData = Object.keys(commuteData).length > 0;
+
+  return (
+    <div style={{ marginTop: 4 }}>
+      {/* Toggle header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: active ? 12 : 0 }}>
+        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>
+          Commute Heatmap
+        </h3>
+        <button
+          onClick={() => onToggle(!active)}
+          style={{
+            padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 700,
+            background: active ? "#4ade80" : "#f1f5f9",
+            color: active ? "#065f46" : "#374151",
+            border: active ? "1.5px solid transparent" : "1.5px solid #94a3b8",
+            cursor: "pointer",
+            boxShadow: active ? "0 2px 6px rgba(74,222,128,0.4)" : "0 1px 3px rgba(0,0,0,0.10)",
+          }}
+        >
+          {active ? "On" : "Off"}
+        </button>
+      </div>
+
+      {active && (
+        <>
+          {/* Tab toggle: tech parks vs locality */}
+          <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+            {(["techpark", "locality"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => { setTab(t); onDestChange(null); }}
+                style={{
+                  padding: "5px 11px", borderRadius: 20, fontSize: 12,
+                  fontWeight: tab === t ? 700 : 500,
+                  background: tab === t ? "#111827" : "#f1f5f9",
+                  color: tab === t ? "white" : "#374151",
+                  border: tab === t ? "1.5px solid transparent" : "1.5px solid #94a3b8",
+                  cursor: "pointer",
+                  boxShadow: tab === t ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
+                }}
+              >
+                {t === "techpark" ? "📍 Tech Parks" : "🏘️ Locality"}
+              </button>
+            ))}
+          </div>
+
+          {/* Destination picker */}
+          {tab === "techpark" ? (
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
+              {TECH_PARKS.map((tp) => {
+                const active2 = dest?.name === tp.name;
+                return (
+                  <button
+                    key={tp.name}
+                    onClick={() => onDestChange(active2 ? null : tp)}
+                    style={{
+                      padding: "5px 10px", borderRadius: 20, fontSize: 11,
+                      fontWeight: active2 ? 700 : 500,
+                      background: active2 ? "#818cf8" : "#f1f5f9",
+                      color: active2 ? "white" : "#374151",
+                      border: active2 ? "1.5px solid transparent" : "1.5px solid #94a3b8",
+                      cursor: "pointer",
+                      boxShadow: active2 ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
+                    }}
+                  >
+                    {tp.name}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <select
+              value={dest?.name ?? ""}
+              onChange={(e) => {
+                const loc = sortedLocalities.find((l) => l.name === e.target.value);
+                onDestChange(loc ? { name: loc.name, lat: loc.lat, lon: loc.lon } : null);
+              }}
+              style={{
+                width: "100%", padding: "8px 10px", borderRadius: 8, marginBottom: 10,
+                border: "1.5px solid #e5e7eb", fontSize: 13, color: "#111827",
+                background: "white", outline: "none", cursor: "pointer",
+              }}
+            >
+              <option value="">Select a neighbourhood…</option>
+              {sortedLocalities.map((l) => (
+                <option key={l.name} value={l.name}>{l.name}</option>
+              ))}
+            </select>
+          )}
+
+          {/* Drive / Walk toggle */}
+          <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+            {(["drive", "walk"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => onModeChange(m)}
+                style={{
+                  padding: "5px 14px", borderRadius: 20, fontSize: 12,
+                  fontWeight: mode === m ? 700 : 500,
+                  background: mode === m ? "#111827" : "#f1f5f9",
+                  color: mode === m ? "white" : "#374151",
+                  border: mode === m ? "1.5px solid transparent" : "1.5px solid #94a3b8",
+                  cursor: "pointer",
+                  boxShadow: mode === m ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
+                }}
+              >
+                {m === "drive" ? "🚗 Drive" : "🚶 Walk"}
+              </button>
+            ))}
+          </div>
+
+          {/* Status */}
+          {!dest && (
+            <p style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 8px" }}>
+              Pick a destination above to paint the map by commute time.
+            </p>
+          )}
+          {dest && loading && (
+            <div style={{ fontSize: 13, color: "#6b7280", padding: "8px 0" }}>
+              Calculating commute times…
+            </div>
+          )}
+
+          {/* Legend — shown only once data is available */}
+          {dest && hasData && (
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 4 }}>
+              {[
+                { color: "#22c55e", label: "≤ 20 min" },
+                { color: "#fde68a", label: "20–35 min" },
+                { color: "#fb923c", label: "35–50 min" },
+                { color: "#ef4444", label: "> 50 min" },
+              ].map(({ color, label }) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <div style={{ width: 12, height: 12, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 11, color: "#374151" }}>{label}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 function CommutePanel({
   originLat,
   originLon,
@@ -1118,12 +1298,15 @@ export default function Home() {
   const mapInstanceRef    = useRef<maplibregl.Map | null>(null);
   const highlightedRef    = useRef<string | null>(null);
   const localitiesRef     = useRef<LocalityFull[]>([]);
-  const markersRef        = useRef<{ el: HTMLDivElement; circle: HTMLDivElement; factors: Locality["factors"] }[]>([]);
+  const markersRef        = useRef<{ el: HTMLDivElement; circle: HTMLDivElement; factors: Locality["factors"]; name: string }[]>([]);
   const weightsRef        = useRef<Weights>(DEFAULT_WEIGHTS);
   const scoreFilterRef    = useRef<ScoreFilter>("all");
   const isMobileRef       = useRef(false);
-  const commuteMarkersRef = useRef<{ origin: maplibregl.Marker | null; dest: maplibregl.Marker | null }>({ origin: null, dest: null });
-  const listingMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const commuteMarkersRef  = useRef<{ origin: maplibregl.Marker | null; dest: maplibregl.Marker | null }>({ origin: null, dest: null });
+  const listingMarkersRef  = useRef<maplibregl.Marker[]>([]);
+  const heatmapMarkerRef   = useRef<maplibregl.Marker | null>(null);
+  const heatmapActiveRef   = useRef(false);
+  const commuteDataRef     = useRef<Record<string, number>>({});
   const savedViewRef      = useRef<{ center: [number, number]; zoom: number } | null>(null);
 
   const [selected,      setSelected]      = useState<Locality | null>(null);
@@ -1138,8 +1321,13 @@ export default function Home() {
   const [geoLoading,    setGeoLoading]    = useState(false);
   const [sidebarWidth,  setSidebarWidth]  = useState(360);
   const isDragging = useRef(false);
-  const [scoreFilter,   setScoreFilter]   = useState<ScoreFilter>("all");
-  const [sentimentData, setSentimentData] = useState<Record<string, SentimentEntry>>({});
+  const [scoreFilter,     setScoreFilter]     = useState<ScoreFilter>("all");
+  const [sentimentData,   setSentimentData]   = useState<Record<string, SentimentEntry>>({});
+  const [heatmapActive,   setHeatmapActive]   = useState(false);
+  const [heatmapDest,     setHeatmapDest]     = useState<{ name: string; lat: number; lon: number } | null>(null);
+  const [heatmapMode,     setHeatmapMode]     = useState<"drive" | "walk">("drive");
+  const [commuteData,     setCommuteData]     = useState<Record<string, number>>({});
+  const [heatmapLoading,  setHeatmapLoading]  = useState(false);
 
   const sheetOpen = selected !== null;
 
@@ -1289,6 +1477,40 @@ export default function Home() {
     }
   }, []);
 
+  // ── Commute heatmap ───────────────────────────────────────────────────────
+  const fetchHeatmap = useCallback(async (
+    dest: { name: string; lat: number; lon: number },
+    mode: "drive" | "walk",
+  ) => {
+    const locs = localitiesRef.current;
+    if (!locs.length) return;
+    setHeatmapLoading(true);
+    setCommuteData({});
+    commuteDataRef.current = {};
+    try {
+      const res = await fetch("/api/commute-heatmap", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          destLat: dest.lat,
+          destLon: dest.lon,
+          mode,
+          localities: locs.map((l) => ({ name: l.name, lat: l.lat, lon: l.lon })),
+        }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data: { results: CommuteResult[] } = await res.json();
+      const map: Record<string, number> = {};
+      for (const r of data.results) map[r.name] = r.durationMin;
+      setCommuteData(map);
+      commuteDataRef.current = map;
+    } catch {
+      // silent — heatmap stays in loading state; user can retry
+    } finally {
+      setHeatmapLoading(false);
+    }
+  }, []);
+
   const handleGateSubmit = useCallback(async (email: string) => {    setGateSubmitting(true);
     try {
       if (email) {
@@ -1345,7 +1567,101 @@ export default function Home() {
     updateMarkerVisibility();
   }, [scoreFilter, updateMarkerVisibility]);
 
-  // ── Map initialisation ────────────────────────────────────────────────────
+  // Fetch heatmap data whenever dest / mode changes while heatmap is active
+  useEffect(() => {
+    if (heatmapActive && heatmapDest) {
+      heatmapActiveRef.current = true;
+      fetchHeatmap(heatmapDest, heatmapMode);
+    } else {
+      heatmapActiveRef.current = false;
+      commuteDataRef.current = {};
+      setCommuteData({});
+      setHeatmapLoading(false);
+    }
+  }, [heatmapActive, heatmapDest, heatmapMode, fetchHeatmap]);
+
+  // Re-paint map layers and DOM markers whenever heatmap data updates
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !map.isStyleLoaded()) return;
+
+    const colorExpr = (useHeatmap: boolean) => useHeatmap
+      ? [
+          "case",
+          ["<=", ["number", ["feature-state", "commuteMin"], -1], 0], "#9ca3af",
+          ["<=", ["feature-state", "commuteMin"], 20], "#22c55e",
+          ["<=", ["feature-state", "commuteMin"], 35], "#fde68a",
+          ["<=", ["feature-state", "commuteMin"], 50], "#fb923c",
+          "#ef4444",
+        ]
+      : ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"];
+
+    const hasData = Object.keys(commuteData).length > 0;
+
+    if (heatmapActive && hasData) {
+      // Paint each locality by commute time via feature-state
+      localitiesRef.current.forEach(({ name }) => {
+        const min = commuteData[name] ?? -1;
+        map.setFeatureState({ source: "localities", id: name }, { commuteMin: min });
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      map.setPaintProperty("localities-fill", "fill-color", colorExpr(true) as any);
+      map.setPaintProperty("localities-fill", "fill-opacity", [
+        "case", ["boolean", ["feature-state", "hover"], false], 0.90, 0.65,
+      ]);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      map.setPaintProperty("localities-outline", "line-color", colorExpr(true) as any);
+
+      // Destination marker
+      heatmapMarkerRef.current?.remove();
+      if (heatmapDest) {
+        const el = createCommutePin("🏢", "#8b5cf6");
+        heatmapMarkerRef.current = new maplibregl.Marker({ element: el, anchor: "bottom" })
+          .setLngLat([heatmapDest.lon, heatmapDest.lat])
+          .addTo(map);
+      }
+
+      // DOM circles: show "23m" instead of score
+      markersRef.current.forEach(({ circle, name: mName }) => {
+        const min = commuteData[mName];
+        if (min != null) {
+          circle.style.background = commuteColor(min);
+          circle.textContent = `${min}m`;
+          circle.style.fontSize = "9px";
+        } else {
+          circle.style.background = "#9ca3af";
+          circle.textContent = "–";
+          circle.style.fontSize = "11px";
+        }
+      });
+    } else if (!heatmapActive) {
+      // Restore score-based colouring
+      localitiesRef.current.forEach(({ name }) => {
+        map.removeFeatureState({ source: "localities", id: name }, "commuteMin");
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      map.setPaintProperty("localities-fill", "fill-color", colorExpr(false) as any);
+      map.setPaintProperty("localities-fill", "fill-opacity", [
+        "case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.01,
+      ]);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      map.setPaintProperty("localities-outline", "line-color", colorExpr(false) as any);
+
+      heatmapMarkerRef.current?.remove();
+      heatmapMarkerRef.current = null;
+
+      // DOM circles: restore score display
+      markersRef.current.forEach(({ circle, factors }) => {
+        const score = recomputeScore(factors, weightsRef.current);
+        circle.style.background = scoreColor(score);
+        circle.textContent = String(score);
+        circle.style.fontSize = "11px";
+      });
+      updateMarkerVisibility();
+    }
+  }, [heatmapActive, commuteData, heatmapDest, updateMarkerVisibility]);
+
+
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -1499,7 +1815,7 @@ export default function Home() {
           el.appendChild(label);
         }
 
-        markersRef.current.push({ el, circle, factors });
+        markersRef.current.push({ el, circle, factors, name });
 
         el.addEventListener("mouseenter", () => {
           circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
@@ -1634,6 +1950,18 @@ export default function Home() {
                   <Legend />
                   <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                   <WeightSliders weights={weights} onChange={setWeights} />
+                  <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
+                  <HeatmapPanel
+                    active={heatmapActive}
+                    onToggle={setHeatmapActive}
+                    dest={heatmapDest}
+                    onDestChange={setHeatmapDest}
+                    mode={heatmapMode}
+                    onModeChange={setHeatmapMode}
+                    loading={heatmapLoading}
+                    commuteData={commuteData}
+                    localities={allLocalities}
+                  />
                 </div>
               ) : (
                 <LocalityDetail
@@ -1760,6 +2088,18 @@ export default function Home() {
                   <Legend />
                   <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
                   <WeightSliders weights={weights} onChange={setWeights} />
+                  <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
+                  <HeatmapPanel
+                    active={heatmapActive}
+                    onToggle={setHeatmapActive}
+                    dest={heatmapDest}
+                    onDestChange={setHeatmapDest}
+                    mode={heatmapMode}
+                    onModeChange={setHeatmapMode}
+                    loading={heatmapLoading}
+                    commuteData={commuteData}
+                    localities={allLocalities}
+                  />
                 </>
               )}
             </div>
