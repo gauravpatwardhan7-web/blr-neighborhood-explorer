@@ -1635,8 +1635,8 @@ export default function Home() {
           circle.style.fontSize = "11px";
         }
       });
-    } else if (!heatmapActive) {
-      // Restore score-based colouring
+    } else {
+      // Restore score-based colouring (heatmap off, or active but no data yet)
       localitiesRef.current.forEach(({ name }) => {
         map.removeFeatureState({ source: "localities", id: name }, "commuteMin");
       });
