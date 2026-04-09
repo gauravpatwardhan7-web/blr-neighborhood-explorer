@@ -115,6 +115,192 @@ const TECH_PARKS: { name: string; lat: number; lon: number }[] = [
   { name: "🚉 KR Puram Station",       lat: 12.9959, lon: 77.6942 },
 ];
 
+// ── Bangalore landmark illustrations ─────────────────────────────────────────
+const LANDMARKS: { name: string; lat: number; lon: number; category: "monument" | "park"; svgContent: string }[] = [
+  {
+    name: "Vidhana Soudha",
+    lat: 12.9795, lon: 77.5908,
+    category: "monument",
+    svgContent: `
+      <rect x="2" y="17" width="24" height="8" rx="1" fill="#92400e"/>
+      <rect x="5" y="13" width="18" height="5" rx="1" fill="#b45309"/>
+      <rect x="8" y="9" width="12" height="5" rx="1" fill="#d97706"/>
+      <ellipse cx="14" cy="8" rx="5" ry="3.5" fill="#d97706"/>
+      <ellipse cx="14" cy="6.5" rx="2.5" ry="2" fill="#f59e0b"/>
+      <rect x="13" y="1" width="2" height="5" fill="#78350f"/>
+      <rect x="11.5" y="0.5" width="5" height="1.5" rx="0.5" fill="#991b1b"/>
+      <rect x="4" y="13" width="2" height="4" fill="#78350f"/>
+      <rect x="22" y="13" width="2" height="4" fill="#78350f"/>
+      <rect x="6" y="17" width="2" height="3" fill="#78350f"/>
+      <rect x="10" y="17" width="2" height="3" fill="#78350f"/>
+      <rect x="14" y="17" width="2" height="3" fill="#78350f"/>
+      <rect x="18" y="17" width="2" height="3" fill="#78350f"/>
+      <rect x="22" y="17" width="2" height="3" fill="#78350f"/>
+    `,
+  },
+  {
+    name: "Bangalore Palace",
+    lat: 12.9987, lon: 77.5925,
+    category: "monument",
+    svgContent: `
+      <rect x="2" y="15" width="24" height="10" rx="1" fill="#92400e"/>
+      <rect x="5" y="10" width="6" height="10" fill="#b45309"/>
+      <rect x="17" y="10" width="6" height="10" fill="#b45309"/>
+      <rect x="10" y="12" width="8" height="8" fill="#d97706"/>
+      <polygon points="5,10 8,5 11,10" fill="#78350f"/>
+      <polygon points="17,10 20,5 23,10" fill="#78350f"/>
+      <polygon points="10,12 14,7 18,12" fill="#92400e"/>
+      <rect x="6" y="3" width="4" height="3" rx="1" fill="#a16207"/>
+      <rect x="18" y="3" width="4" height="3" rx="1" fill="#a16207"/>
+      <rect x="12" y="5" width="4" height="3" rx="1" fill="#a16207"/>
+      <rect x="12" y="17" width="4" height="6" fill="#78350f"/>
+      <rect x="7" y="14" width="2" height="3" rx="0.5" fill="#fef3c7"/>
+      <rect x="19" y="14" width="2" height="3" rx="0.5" fill="#fef3c7"/>
+    `,
+  },
+  {
+    name: "Tipu Sultan's Palace",
+    lat: 12.9600, lon: 77.5732,
+    category: "monument",
+    svgContent: `
+      <rect x="2" y="16" width="24" height="9" rx="1" fill="#78350f"/>
+      <path d="M4 16 Q7 10 10 16" fill="#92400e"/>
+      <path d="M9 16 Q12 10 15 16" fill="#92400e"/>
+      <path d="M14 16 Q17 10 20 16" fill="#92400e"/>
+      <path d="M19 16 Q22 10 25 16" fill="#92400e"/>
+      <rect x="6" y="8" width="16" height="3" rx="1" fill="#b45309"/>
+      <rect x="8" y="5" width="12" height="4" rx="1" fill="#d97706"/>
+      <path d="M10 5 Q14 1 18 5" fill="#f59e0b"/>
+      <rect x="5" y="19" width="3" height="5" fill="#78350f"/>
+      <rect x="12" y="19" width="4" height="5" fill="#78350f"/>
+      <rect x="20" y="19" width="3" height="5" fill="#78350f"/>
+      <rect x="11" y="19" width="6" height="6" rx="1" fill="#92400e"/>
+    `,
+  },
+  {
+    name: "HAL Aerospace Museum",
+    lat: 12.9501, lon: 77.6644,
+    category: "monument",
+    svgContent: `
+      <ellipse cx="14" cy="14" rx="12" ry="4" fill="#92400e"/>
+      <path d="M6 14 Q14 6 22 14" fill="#b45309"/>
+      <rect x="12" y="8" width="4" height="12" rx="1" fill="#78350f"/>
+      <path d="M3 13 L6 14 L3 15 Z" fill="#d97706"/>
+      <path d="M25 13 L22 14 L25 15 Z" fill="#d97706"/>
+      <path d="M12 10 L10 6 L14 8 Z" fill="#d97706"/>
+      <circle cx="14" cy="14" r="2.5" fill="#f59e0b"/>
+      <circle cx="14" cy="14" r="1" fill="#fef3c7"/>
+      <rect x="2" y="20" width="24" height="3" rx="1" fill="#374151"/>
+      <line x1="5" y1="20" x2="5" y2="23" stroke="#6b7280" strokeWidth="0.5"/>
+      <line x1="10" y1="20" x2="10" y2="23" stroke="#6b7280" strokeWidth="0.5"/>
+      <line x1="15" y1="20" x2="15" y2="23" stroke="#6b7280" strokeWidth="0.5"/>
+      <line x1="20" y1="20" x2="20" y2="23" stroke="#6b7280" strokeWidth="0.5"/>
+    `,
+  },
+  {
+    name: "ISKCON Temple",
+    lat: 12.9902, lon: 77.5496,
+    category: "monument",
+    svgContent: `
+      <rect x="3" y="18" width="22" height="7" rx="1" fill="#92400e"/>
+      <rect x="7" y="12" width="5" height="10" fill="#b45309"/>
+      <rect x="16" y="12" width="5" height="10" fill="#b45309"/>
+      <path d="M7 12 Q9.5 6 12 12" fill="#d97706"/>
+      <path d="M16 12 Q18.5 6 21 12" fill="#d97706"/>
+      <ellipse cx="9.5" cy="5.5" rx="2.5" ry="3" fill="#d97706"/>
+      <ellipse cx="18.5" cy="5.5" rx="2.5" ry="3" fill="#d97706"/>
+      <rect x="9" y="2" width="1" height="4" fill="#78350f"/>
+      <rect x="18" y="2" width="1" height="4" fill="#78350f"/>
+      <rect x="11" y="14" width="6" height="11" fill="#b45309"/>
+      <path d="M11 14 Q14 9 17 14" fill="#c2410c"/>
+      <ellipse cx="14" cy="8.5" rx="3" ry="3.5" fill="#ea580c"/>
+      <rect x="13.5" y="4.5" width="1" height="4" fill="#78350f"/>
+      <circle cx="9.5" cy="1.5" r="1" fill="#f59e0b"/>
+      <circle cx="18.5" cy="1.5" r="1" fill="#f59e0b"/>
+      <circle cx="14" cy="3.5" r="1.2" fill="#f59e0b"/>
+    `,
+  },
+  {
+    name: "Cubbon Park",
+    lat: 12.9766, lon: 77.5993,
+    category: "park",
+    svgContent: `
+      <ellipse cx="8" cy="13" rx="6" ry="7" fill="#15803d"/>
+      <ellipse cx="8" cy="11" rx="5" ry="5" fill="#16a34a"/>
+      <ellipse cx="8" cy="9" rx="4" ry="4" fill="#22c55e"/>
+      <ellipse cx="18" cy="14" rx="7" ry="6" fill="#15803d"/>
+      <ellipse cx="18" cy="12" rx="6" ry="5" fill="#16a34a"/>
+      <ellipse cx="18" cy="10" rx="5" ry="4" fill="#22c55e"/>
+      <ellipse cx="13" cy="12" rx="5" ry="6" fill="#166534"/>
+      <ellipse cx="13" cy="10" rx="4" ry="5" fill="#16a34a"/>
+      <ellipse cx="13" cy="8" rx="3.5" ry="4" fill="#4ade80"/>
+      <rect x="7" y="19" width="2" height="4" fill="#713f12"/>
+      <rect x="17" y="20" width="2" height="3" fill="#713f12"/>
+      <rect x="12" y="18" width="2" height="5" fill="#713f12"/>
+      <rect x="2" y="22" width="24" height="3" rx="1" fill="#86efac"/>
+    `,
+  },
+  {
+    name: "Lalbagh",
+    lat: 12.9507, lon: 77.5848,
+    category: "park",
+    svgContent: `
+      <rect x="2" y="20" width="24" height="5" rx="1" fill="#86efac"/>
+      <path d="M6 20 Q6 13 10 13 Q10 8 14 8 Q18 8 18 13 Q22 13 22 20 Z" fill="#15803d"/>
+      <path d="M8 20 Q8 14 11 14 Q11 10 14 10 Q17 10 17 14 Q20 14 20 20 Z" fill="#166534"/>
+      <rect x="12" y="8" width="4" height="3" fill="#0369a1"/>
+      <ellipse cx="14" cy="7" rx="3" ry="2.5" fill="#0284c7"/>
+      <ellipse cx="14" cy="6" rx="2.5" ry="2" fill="#38bdf8"/>
+      <ellipse cx="14" cy="5.5" rx="1.5" ry="1.5" fill="#e0f2fe"/>
+      <rect x="13" y="2" width="2" height="3" fill="#374151"/>
+      <ellipse cx="7" cy="17" rx="3" ry="2.5" fill="#22c55e"/>
+      <ellipse cx="21" cy="17" rx="3" ry="2.5" fill="#22c55e"/>
+      <ellipse cx="7" cy="15.5" rx="2.5" ry="2" fill="#4ade80"/>
+      <ellipse cx="21" cy="15.5" rx="2.5" ry="2" fill="#4ade80"/>
+    `,
+  },
+  {
+    name: "Ulsoor Lake",
+    lat: 12.9783, lon: 77.6186,
+    category: "park",
+    svgContent: `
+      <ellipse cx="14" cy="17" rx="11" ry="6" fill="#0ea5e9"/>
+      <ellipse cx="14" cy="16" rx="10" ry="5" fill="#38bdf8"/>
+      <path d="M4 15 Q7 13 10 15 Q13 13 16 15 Q19 13 22 15 Q21 17 14 18 Q7 17 4 15 Z" fill="#7dd3fc"/>
+      <path d="M10 14 L18 14 L16 11 L12 11 Z" fill="#fef3c7"/>
+      <rect x="13" y="9" width="2" height="5" fill="#78350f"/>
+      <path d="M13 9 L10 11 L13 11 Z" fill="#fbbf24"/>
+      <ellipse cx="7" cy="11" rx="3" ry="2.5" fill="#22c55e"/>
+      <ellipse cx="7" cy="10" rx="2.5" ry="2" fill="#4ade80"/>
+      <ellipse cx="21" cy="10" rx="3" ry="2.5" fill="#22c55e"/>
+      <ellipse cx="21" cy="9" rx="2.5" ry="2" fill="#4ade80"/>
+      <rect x="5" y="13" width="2" height="4" fill="#713f12"/>
+      <rect x="19" y="12" width="2" height="4" fill="#713f12"/>
+      <path d="M3 22 Q14 24 25 22" stroke="#0369a1" strokeWidth="1" fill="none"/>
+    `,
+  },
+  {
+    name: "Bannerghatta",
+    lat: 12.8008, lon: 77.5786,
+    category: "park",
+    svgContent: `
+      <ellipse cx="14" cy="17" rx="10" ry="6" fill="#166534"/>
+      <ellipse cx="14" cy="16" rx="8" ry="4" fill="#15803d"/>
+      <path d="M6 14 Q8 9 10 11 Q11 8 14 8 Q17 8 18 11 Q20 9 22 14" fill="#166534"/>
+      <circle cx="9" cy="13" rx="2" r="2" fill="#374151"/>
+      <circle cx="19" cy="12" rx="2" r="2" fill="#374151"/>
+      <path d="M8 10 Q9 7 10 8 Q10 6 11 7" stroke="#374151" strokeWidth="1.2" fill="none"/>
+      <path d="M18 9 Q19 6 20 7 Q20 5 21 6" stroke="#374151" strokeWidth="1.2" fill="none"/>
+      <ellipse cx="14" cy="12" rx="4" ry="3" fill="#4b5563"/>
+      <path d="M11 12 Q12 10 14 10 Q16 10 17 12" fill="#6b7280"/>
+      <circle cx="12" cy="13" r="1" fill="#f9fafb"/>
+      <circle cx="16" cy="13" r="1" fill="#f9fafb"/>
+      <path d="M12 15 Q14 16 16 15" stroke="#f9fafb" strokeWidth="0.8" fill="none"/>
+      <ellipse cx="14" cy="23" rx="9" ry="3" fill="#86efac"/>
+    `,
+  },
+];
+
 // ── Pure helpers ──────────────────────────────────────────────────────────────
 function recomputeScore(factors: Locality["factors"], weights: Weights): number {
   const raw =
@@ -260,6 +446,58 @@ function createListingPin(price: number): HTMLDivElement {
   ].join(";");
   tag.textContent = label;
   el.appendChild(tag);
+
+  return el;
+}
+
+// ── Landmark illustrated marker ───────────────────────────────────────────────
+function createLandmarkMarker({ name, category, svgContent }: {
+  name: string;
+  category: "monument" | "park";
+  svgContent: string;
+}): HTMLDivElement {
+  const borderColor = category === "monument" ? "#f59e0b" : "#16a34a";
+  const bgColor     = category === "monument" ? "#fffbeb" : "#f0fdf4";
+
+  const el = document.createElement("div");
+  el.style.cssText = [
+    "display:flex", "flex-direction:column", "align-items:center",
+    "pointer-events:none", "opacity:0", "transition:opacity 0.4s ease",
+    "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+  ].join(";");
+
+  const badge = document.createElement("div");
+  badge.style.cssText = [
+    "width:44px", "height:44px", "border-radius:50%",
+    `background:${bgColor}`,
+    `border:2.5px solid ${borderColor}`,
+    "box-shadow:0 2px 10px rgba(0,0,0,0.22)",
+    "display:flex", "align-items:center", "justify-content:center",
+    "pointer-events:auto",
+  ].join(";");
+
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 28 28");
+  svg.setAttribute("width", "28");
+  svg.setAttribute("height", "28");
+  svg.innerHTML = svgContent;
+  badge.appendChild(svg);
+  el.appendChild(badge);
+
+  const pill = document.createElement("div");
+  pill.style.cssText = [
+    "margin-top:3px",
+    "background:rgba(255,255,255,0.93)",
+    "padding:2px 7px",
+    "border-radius:6px",
+    "font-size:10px", "font-weight:700", "color:#111827",
+    "white-space:nowrap",
+    "box-shadow:0 1px 4px rgba(0,0,0,0.14)",
+    "pointer-events:none",
+  ].join(";");
+  pill.textContent = name;
+  el.appendChild(pill);
 
   return el;
 }
@@ -1307,6 +1545,7 @@ export default function Home() {
   const heatmapMarkerRef   = useRef<maplibregl.Marker | null>(null);
   const heatmapActiveRef   = useRef(false);
   const commuteDataRef     = useRef<Record<string, number>>({});
+  const landmarkMarkersRef = useRef<HTMLDivElement[]>([]);
   const savedViewRef      = useRef<{ center: [number, number]; zoom: number } | null>(null);
 
   const [selected,      setSelected]      = useState<Locality | null>(null);
@@ -1842,6 +2081,23 @@ export default function Home() {
       setAllLocalities(mapLocalities);
       localitiesRef.current = mapLocalities;
 
+      // ── Landmark illustrated markers ──────────────────────────────────────
+      LANDMARKS.forEach(({ name, lat, lon, category, svgContent }) => {
+        const el = createLandmarkMarker({ name, category, svgContent });
+        landmarkMarkersRef.current.push(el);
+        new maplibregl.Marker({ element: el, anchor: "bottom" })
+          .setLngLat([lon, lat])
+          .addTo(map);
+      });
+
+      const updateLandmarkOpacity = () => {
+        const z = map.getZoom();
+        const opacity = z < 11.5 ? 0 : Math.min(1, (z - 11.5) / 0.5);
+        landmarkMarkersRef.current.forEach((el) => { el.style.opacity = String(opacity); });
+      };
+      map.on("zoom", updateLandmarkOpacity);
+      updateLandmarkOpacity();
+
       // Deep-link: ?locality=NAME
       const paramLocality = new URLSearchParams(window.location.search).get("locality");
       if (paramLocality) {
@@ -1861,6 +2117,7 @@ export default function Home() {
       window.removeEventListener("pageshow", onPageShow);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("orientationchange", onOrient);
+      landmarkMarkersRef.current = [];
       map.remove();
     };
   }, [updateMarkerVisibility]);
