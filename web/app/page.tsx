@@ -73,10 +73,10 @@ const RAW_LABELS: Partial<Record<keyof Locality["raw"], string>> = {
 
 // Commute heatmap colour scale
 function commuteColor(min: number): string {
-  if (min <= 20) return "#22c55e";
+  if (min <= 20) return "#6ee7b7";
   if (min <= 35) return "#fde68a";
-  if (min <= 50) return "#fb923c";
-  return "#ef4444";
+  if (min <= 50) return "#fdba74";
+  return "#fca5a5";
 }
 
 const SENTIMENT_COLORS = {
@@ -968,10 +968,10 @@ function HeatmapPanel({
           {dest && hasData && (
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 4 }}>
               {[
-                { color: "#22c55e", label: "≤ 20 min" },
+                { color: "#6ee7b7", label: "≤ 20 min" },
                 { color: "#fde68a", label: "20–35 min" },
-                { color: "#fb923c", label: "35–50 min" },
-                { color: "#ef4444", label: "> 50 min" },
+                { color: "#fdba74", label: "35–50 min" },
+                { color: "#fca5a5", label: "> 50 min" },
               ].map(({ color, label }) => (
                 <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
                   <div style={{ width: 12, height: 12, borderRadius: "50%", background: color, flexShrink: 0 }} />
@@ -1589,10 +1589,10 @@ export default function Home() {
       ? [
           "case",
           ["<=", ["number", ["feature-state", "commuteMin"], -1], 0], "#9ca3af",
-          ["<=", ["feature-state", "commuteMin"], 20], "#22c55e",
+          ["<=", ["feature-state", "commuteMin"], 20], "#6ee7b7",
           ["<=", ["feature-state", "commuteMin"], 35], "#fde68a",
-          ["<=", ["feature-state", "commuteMin"], 50], "#fb923c",
-          "#ef4444",
+          ["<=", ["feature-state", "commuteMin"], 50], "#fdba74",
+          "#fca5a5",
         ]
       : ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"];
 
