@@ -1473,6 +1473,52 @@ function UserListingsPanel({
   );
 }
 
+// ── Block — a colored, rounded card used to group panel content ───────────────
+const BLOCK_TINTS: Record<string, { bg: string; border: string; accent: string }> = {
+  cream:    { bg: "#fcf6e8", border: "#ebdcae", accent: "#92400e" },
+  sage:     { bg: "#eef4e9", border: "#c7d7b5", accent: "#3f6212" },
+  blush:    { bg: "#fdeee6", border: "#f2cbb4", accent: "#9a3412" },
+  sky:      { bg: "#e8eff7", border: "#bfd1e8", accent: "#1e3a8a" },
+  lilac:    { bg: "#f1ebf7", border: "#d6c4ea", accent: "#6b21a8" },
+  sand:     { bg: "#f5eee0", border: "#dcc9a1", accent: "#78350f" },
+};
+function Block({
+  tint = "cream",
+  label,
+  children,
+  style,
+}: {
+  tint?: keyof typeof BLOCK_TINTS;
+  label?: string;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  const t = BLOCK_TINTS[tint];
+  return (
+    <div style={{
+      background: t.bg,
+      border: `1.5px solid ${t.border}`,
+      borderRadius: 16,
+      padding: "14px 16px",
+      marginBottom: 12,
+      boxShadow: "0 1px 2px rgba(90,70,30,0.05)",
+      ...style,
+    }}>
+      {label && (
+        <div style={{
+          fontSize: 10, fontWeight: 700, color: t.accent,
+          textTransform: "uppercase", letterSpacing: "0.09em",
+          marginBottom: 10,
+          fontFamily: "var(--font-geist-sans)",
+        }}>
+          {label}
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}
+
 // ── Locality detail — shared by desktop sidebar and mobile sheet ──────────────
 function LocalityDetail({
   selected,
@@ -1540,23 +1586,45 @@ function LocalityDetail({
           </button>
         </div>
       </div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>{selected.name}</h2>
-      <div style={{ fontSize: 36, fontWeight: 800, color: scoreColor(score), marginBottom: 16 }}>
-        {score}<span style={{ fontSize: 14, color: "#6b7280" }}>/10</span>
-      </div>
-      {sentimentData[selected.name] && <SentimentCard data={sentimentData[selected.name]} />}
-      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <ReviewsPanel locality={selected.name} />
-      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <FactorBars factors={selected.factors} />
-      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
-      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
-      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
-      <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <RawData raw={selected.raw} />
+      <Block tint="cream" style={{ padding: "18px 20px", marginBottom: 16 }}>
+        <div style={{
+          fontFamily: "var(--font-display)",
+          fontSize: 32, fontWeight: 600, lineHeight: 1.05, color: "#1c1410",
+          letterSpacing: "-0.015em", marginBottom: 6,
+        }}>
+          {selected.name}
+        </div>
+        <div style={{
+          display: "flex", alignItems: "baseline", gap: 10,
+          fontFamily: "var(--font-display)",
+        }}>
+          <span style={{ fontSize: 56, fontWeight: 700, color: scoreColor(score), lineHeight: 1 }}>{score}</span>
+          <span style={{ fontSize: 16, color: "#78350f", fontWeight: 500 }}>/ 10 liveability</span>
+        </div>
+      </Block>
+      {sentimentData[selected.name] && (
+        <Block tint="blush" label="Pulse">
+          <SentimentCard data={sentimentData[selected.name]} />
+        </Block>
+      )}
+      <Block tint="sage" label="Reviews">
+        <ReviewsPanel locality={selected.name} />
+      </Block>
+      <Block tint="sand" label="Factor scores">
+        <FactorBars factors={selected.factors} />
+      </Block>
+      <Block tint="sky" label="Commute">
+        <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
+      </Block>
+      <Block tint="cream" label="Listings">
+        <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
+      </Block>
+      <Block tint="lilac" label="Owner listings">
+        <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
+      </Block>
+      <Block tint="sand" label="Raw data">
+        <RawData raw={selected.raw} />
+      </Block>
     </>
   );
 }
@@ -2022,7 +2090,7 @@ export default function Home() {
 
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: `https://api.maptiler.com/maps/landscape/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
+      style: `https://api.maptiler.com/maps/basic-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
       center: [77.6, 12.97],
       zoom: 11,
       pitch: 45,
@@ -2075,6 +2143,27 @@ export default function Home() {
         factors:       f.properties.factors,
         raw:           f.properties.raw,
       }));
+
+      // 3D buildings — extrude from MapTiler's vector tiles. Warm cream tone.
+      try {
+        const firstSymbolId = map.getStyle().layers?.find((l: { type: string }) => l.type === "symbol")?.id;
+        map.addLayer({
+          id: "3d-buildings",
+          source: "openmaptiles",
+          "source-layer": "building",
+          type: "fill-extrusion",
+          minzoom: 13,
+          paint: {
+            "fill-extrusion-color": [
+              "interpolate", ["linear"], ["get", "render_height"],
+              0, "#efe6d3", 20, "#e6dbc0", 60, "#d9caa5", 120, "#c8b58a",
+            ],
+            "fill-extrusion-height": ["coalesce", ["get", "render_height"], 3],
+            "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0],
+            "fill-extrusion-opacity": 0.88,
+          },
+        }, firstSymbolId);
+      } catch (e) { console.warn("3D buildings unavailable", e); }
 
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
@@ -2302,9 +2391,19 @@ export default function Home() {
             </div>
           </div>
 
-          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: "1px solid #e5e7eb", background: "#f9fafb", flexShrink: 0 }}>
-            {/* Header: search + filters */}
-            <div style={{ padding: "14px 16px 12px", borderBottom: "1px solid #e5e7eb", flexShrink: 0, background: "white" }}>
+          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: "1.5px solid #e9dec2", background: "#faf3e3", flexShrink: 0 }}>
+            {/* Brand + search + filters */}
+            <div style={{ padding: "16px 18px 12px", borderBottom: "1.5px solid #ebdcae", flexShrink: 0, background: "#fdf8ea" }}>
+              <div style={{
+                fontFamily: "var(--font-display)",
+                fontSize: 22, fontWeight: 700, color: "#1c1410", letterSpacing: "-0.02em",
+                marginBottom: 2,
+              }}>
+                blr.
+              </div>
+              <div style={{ fontSize: 11, color: "#8b6f3a", marginBottom: 12, fontWeight: 500 }}>
+                Places to live, in Bengaluru
+              </div>
               <div style={{ marginBottom: 10 }}>
                 <SearchBox
                   query={searchQuery}
@@ -2322,8 +2421,14 @@ export default function Home() {
             <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
               {!selected ? (
                 <div>
-                  <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Bengaluru Neighborhoods</h2>
-                  <p style={{ fontSize: 14, color: "#374151", marginBottom: 16 }}>Click any dot on the map to see details.</p>
+                  <h2 style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 28, fontWeight: 600, marginBottom: 6, color: "#1c1410",
+                    letterSpacing: "-0.02em", lineHeight: 1.1,
+                  }}>
+                    Find your<br/>next postcode.
+                  </h2>
+                  <p style={{ fontSize: 13, color: "#6b533a", marginBottom: 16 }}>Tap any dot on the map to see scores, reviews, and rentals.</p>
                   {favorites.size > 0 && (
                     <div style={{ marginBottom: 16 }}>
                       <p style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>★ Saved</p>
@@ -2419,8 +2524,9 @@ export default function Home() {
           {/* Single bottom sheet — content swaps based on whether a locality is selected */}
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
-            background: "white", borderRadius: "16px 16px 0 0",
-            boxShadow: "0 -2px 12px rgba(0,0,0,0.12)",
+            background: "#faf3e3", borderRadius: "20px 20px 0 0",
+            boxShadow: "0 -2px 14px rgba(90,70,30,0.18)",
+            borderTop: "1.5px solid #ebdcae",
             maxHeight: sheetExpanded ? (sheetOpen ? "60dvh" : "55dvh") : "52px",
             overflow: "hidden",
             transition: "max-height 0.3s ease",
@@ -2434,9 +2540,12 @@ export default function Home() {
               style={{ padding: "12px 20px 8px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
-                <span style={{ fontSize: 14, fontWeight: 700 }}>
-                  {sheetOpen ? selected!.name : "Bengaluru Neighborhoods"}
+                <div style={{ width: 36, height: 4, background: "#c8b58a", borderRadius: 2, flexShrink: 0 }} />
+                <span style={{
+                  fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: "#1c1410",
+                  letterSpacing: "-0.01em",
+                }}>
+                  {sheetOpen ? selected!.name : "blr."}
                 </span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
