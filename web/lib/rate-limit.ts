@@ -39,6 +39,8 @@ export function checkRateLimit(
 }
 
 // Extract the real client IP from the forwarded header set by Vercel / nginx / Cloudflare.
+// Sanitize: only keep valid IPv4/IPv6 characters to prevent key-pollution in the rate-limit store.
 export function getClientIp(req: { headers: { get(name: string): string | null } }): string {
-  return req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const raw = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "";
+  return raw.replace(/[^0-9a-fA-F.:]/g, "").slice(0, 45) || "unknown";
 }
