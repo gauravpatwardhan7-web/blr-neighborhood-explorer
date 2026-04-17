@@ -33,6 +33,31 @@ jobs:
           cp data/raw/localities_scored.geojson web/public/localities_scored.geojson
           cp data/raw/localities_small.geojson   web/public/localities_small.geojson
 
+      - name: Regenerate localities_top50.geojson from fresh scores
+        run: |
+          python3 - <<'EOF'
+          import json
+
+          with open("web/public/localities_scored.geojson") as f:
+              data = json.load(f)
+
+          # Load current top50 to know which names are active
+          with open("web/public/localities_top50.geojson") as f:
+              top50_current = json.load(f)
+          active_names = {feat["properties"]["name"] for feat in top50_current["features"]}
+
+          # Re-extract those same localities with updated scores
+          top50_feats = [f for f in data["features"] if f["properties"]["name"] in active_names]
+          bottom_feats = [f for f in data["features"] if f["properties"]["name"] not in active_names]
+
+          with open("web/public/localities_top50.geojson", "w") as f:
+              json.dump({**data, "features": top50_feats}, f)
+          with open("web/public/localities_bottom52.geojson", "w") as f:
+              json.dump({**data, "features": bottom_feats}, f)
+
+          print(f"top50 refreshed: {len(top50_feats)} localities")
+          EOF
+
       - name: Commit & push if changed
         run: |
           git config user.name  "github-actions[bot]"
@@ -41,6 +66,8 @@ jobs:
                   data/raw/localities_scored.geojson \
                   data/raw/localities_small.geojson \
                   web/public/localities_scored.geojson \
-                  web/public/localities_small.geojson
+                  web/public/localities_small.geojson \
+                  web/public/localities_top50.geojson \
+                  web/public/localities_bottom52.geojson
           git diff --cached --quiet || git commit -m "chore: daily weather + AQI update [skip ci]"
           git push
