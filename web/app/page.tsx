@@ -2125,7 +2125,7 @@ export default function Home() {
 
     map.on("load", async () => {
       const [res, sentRes] = await Promise.all([
-        fetch("/localities_scored.geojson"),
+        fetch("/localities_top50.geojson"),
         fetch("/sentiment.json"),
       ]);
       const data = await res.json();
