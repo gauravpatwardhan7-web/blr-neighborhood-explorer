@@ -41,7 +41,7 @@ type SentimentEntry = {
 
 type CommuteResult = { name: string; durationMin: number };
 type ReviewEntry = { id: number; locality: string; content: string; helpful: number; created_at: string };
-type UserListingEntry = { id: number; locality: string; bhk?: number; price: number; deposit?: number; area_sqft?: number; furnishing?: string; address?: string; contact?: string; created_at: string };
+type UserListingEntry = { id: number; locality: string; bhk?: number; price: number; deposit?: number; area_sqft?: number; furnishing?: string; address?: string; contact?: string; lat?: number; lon?: number; created_at: string };
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const DEFAULT_WEIGHTS: Weights = {
@@ -422,51 +422,6 @@ function Legend() {
           {label}
         </div>
       ))}
-    </div>
-  );
-}
-
-// ── Weight sliders ────────────────────────────────────────────────────────────
-function WeightSliders({ weights, onChange }: { weights: Weights; onChange: (w: Weights) => void }) {
-  return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: "#111827", margin: 0 }}>Personalise weights</h3>
-        <button
-          onClick={() => onChange(DEFAULT_WEIGHTS)}
-          style={{ fontSize: 11, color: "#111827", background: "white", border: "1.5px solid #374151", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 600 }}
-        >
-          Reset
-        </button>
-      </div>
-      {(Object.keys(weights) as FactorKey[]).map((k) => (
-        <div key={k} style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 14, marginBottom: 4, color: "#374151", fontWeight: 500 }}>{SLIDER_LABELS[k]}</div>
-          <input
-            type="range" min={0} max={100} step={5}
-            value={Math.round(weights[k] * 100)}
-            onChange={(e) => {
-              const newVal = Number(e.target.value) / 100;
-              const delta = newVal - weights[k];
-              const others = (Object.keys(weights) as FactorKey[]).filter((key) => key !== k);
-              const othersSum = others.reduce((s, key) => s + weights[key], 0);
-              const next = { ...weights, [k]: newVal };
-              if (othersSum > 0) {
-                others.forEach((key) => {
-                  next[key] = Math.max(0, weights[key] - delta * (weights[key] / othersSum));
-                });
-              } else {
-                others.forEach((key) => { next[key] = Math.max(0, (1 - newVal) / others.length); });
-              }
-              const total = Object.values(next).reduce((a, b) => a + b, 0);
-              if (total > 0) (Object.keys(next) as FactorKey[]).forEach((key) => { next[key] = next[key] / total; });
-              onChange(next);
-            }}
-            style={{ width: "100%", accentColor: "#4ade80" }}
-          />
-        </div>
-      ))}
-      <p style={{ fontSize: 13, color: "#374151", margin: "4px 0 0" }}>Drag to prioritise what matters to you</p>
     </div>
   );
 }
@@ -1299,7 +1254,17 @@ function ReviewsPanel({ locality }: { locality: string }) {
 }
 
 // ── User-submitted rental listings ────────────────────────────────────────────
-function UserListingsPanel({ locality }: { locality: string }) {
+function UserListingsPanel({
+  locality,
+  onRequestPin,
+  pickingPin,
+  onCancelPin,
+}: {
+  locality: string;
+  onRequestPin: () => Promise<{ lat: number; lon: number } | null>;
+  pickingPin: boolean;
+  onCancelPin: () => void;
+}) {
   const [listings,   setListings]   = useState<UserListingEntry[]>([]);
   const [loading,    setLoading]    = useState(false);
   const [showForm,   setShowForm]   = useState(false);
@@ -1311,6 +1276,7 @@ function UserListingsPanel({ locality }: { locality: string }) {
   const [furnishing, setFurnishing] = useState("");
   const [address,    setAddress]    = useState("");
   const [contact,    setContact]    = useState("");
+  const [pin,        setPin]        = useState<{ lat: number; lon: number } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [formError,  setFormError]  = useState<string | null>(null);
 
@@ -1333,6 +1299,7 @@ function UserListingsPanel({ locality }: { locality: string }) {
     if (furnishing) body.furnishing = furnishing;
     if (address.trim()) body.address = address.trim();
     if (contact.trim()) body.contact = contact.trim();
+    if (pin) { body.lat = pin.lat; body.lon = pin.lon; }
     try {
       const res = await fetch("/api/user-listings", {
         method: "POST",
@@ -1341,7 +1308,7 @@ function UserListingsPanel({ locality }: { locality: string }) {
       });
       if (!res.ok) { const d = await res.json(); setFormError(d.error ?? "Failed to submit"); return; }
       setSubmitted(true); setShowForm(false);
-      setPrice(""); setBhk(""); setDeposit(""); setFurnishing(""); setAddress(""); setContact("");
+      setPrice(""); setBhk(""); setDeposit(""); setFurnishing(""); setAddress(""); setContact(""); setPin(null);
     } finally {
       setSubmitting(false);
     }
@@ -1406,9 +1373,45 @@ function UserListingsPanel({ locality }: { locality: string }) {
             <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Address / landmark</label>
             <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="e.g. Near Forum Mall, 2nd Main" maxLength={200} style={inputStyle} />
           </div>
-          <div style={{ marginBottom: 10 }}>
+          <div style={{ marginBottom: 8 }}>
             <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>WhatsApp / phone</label>
             <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="e.g. 9876543210" maxLength={100} style={inputStyle} />
+          </div>
+          <div style={{ marginBottom: 10 }}>
+            <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Exact location (optional)</label>
+            {pin ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontSize: 11, color: "#059669", fontWeight: 600 }}>
+                  📍 Pinned · {pin.lat.toFixed(4)}, {pin.lon.toFixed(4)}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPin(null)}
+                  style={{ fontSize: 11, color: "#6b7280", background: "white", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}
+                >
+                  Clear
+                </button>
+              </div>
+            ) : pickingPin ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontSize: 11, color: "#d97706", fontWeight: 600 }}>Click anywhere on the map…</span>
+                <button
+                  type="button"
+                  onClick={onCancelPin}
+                  style={{ fontSize: 11, color: "#6b7280", background: "white", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={async () => { const p = await onRequestPin(); if (p) setPin(p); }}
+                style={{ fontSize: 11, fontWeight: 600, color: "#374151", background: "#f1f5f9", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "4px 10px", cursor: "pointer" }}
+              >
+                📍 Pin on map
+              </button>
+            )}
           </div>
           {formError && <p style={{ fontSize: 11, color: "#ef4444", margin: "0 0 8px" }}>{formError}</p>}
           <div style={{ display: "flex", gap: 6 }}>
@@ -1485,6 +1488,9 @@ function LocalityDetail({
   onListingsLoaded,
   isFavorite,
   onToggleFavorite,
+  onRequestPin,
+  pickingPin,
+  onCancelPin,
 }: {
   selected: Locality;
   score: number;
@@ -1499,6 +1505,9 @@ function LocalityDetail({
   onListingsLoaded?: (listings: ListingRow[]) => void;
   isFavorite: boolean;
   onToggleFavorite: () => void;
+  onRequestPin: () => Promise<{ lat: number; lon: number } | null>;
+  pickingPin: boolean;
+  onCancelPin: () => void;
 }) {
   return (
     <>
@@ -1545,7 +1554,7 @@ function LocalityDetail({
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
-      <UserListingsPanel locality={selected.name} />
+      <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
       <div style={{ margin: "16px 0 12px", borderTop: "1px solid #e5e7eb" }} />
       <RawData raw={selected.raw} />
     </>
@@ -1625,7 +1634,7 @@ export default function Home() {
   const [showGate,      setShowGate]      = useState(false);
   const [gateSubmitting,setGateSubmitting]= useState(false);
   const [copied,        setCopied]        = useState(false);
-  const [weights,       setWeights]       = useState<Weights>(DEFAULT_WEIGHTS);
+  const weights = DEFAULT_WEIGHTS;
   const [sheetExpanded, setSheetExpanded] = useState(false);
   const [geoLoading,    setGeoLoading]    = useState(false);
   const [sidebarWidth,  setSidebarWidth]  = useState(360);
@@ -1638,6 +1647,25 @@ export default function Home() {
   const [commuteData,     setCommuteData]     = useState<Record<string, number>>({});
   const [heatmapLoading,  setHeatmapLoading]  = useState(false);
   const [favorites,       setFavorites]       = useState<Set<string>>(new Set());
+  const [pickingPin,      setPickingPin]      = useState(false);
+  const pickingPinRef = useRef(false);
+  const pickResolveRef = useRef<((pos: { lat: number; lon: number } | null) => void) | null>(null);
+
+  useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
+
+  const requestPin = useCallback((): Promise<{ lat: number; lon: number } | null> => {
+    return new Promise((resolve) => {
+      pickResolveRef.current?.(null);
+      pickResolveRef.current = resolve;
+      setPickingPin(true);
+    });
+  }, []);
+
+  const cancelPin = useCallback(() => {
+    pickResolveRef.current?.(null);
+    pickResolveRef.current = null;
+    setPickingPin(false);
+  }, []);
 
   const sheetOpen = selected !== null;
 
@@ -1994,7 +2022,7 @@ export default function Home() {
 
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
+      style: `https://api.maptiler.com/maps/landscape/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
       center: [77.6, 12.97],
       zoom: 11,
       pitch: 45,
@@ -2072,8 +2100,15 @@ export default function Home() {
         },
       });
 
-      // Click on empty map space → dismiss any active selection
-      map.on("click", () => {
+      // Click on empty map space → dismiss any active selection (or capture pin location in pick mode)
+      map.on("click", (e) => {
+        if (pickingPinRef.current) {
+          const { lat, lng } = e.lngLat;
+          pickResolveRef.current?.({ lat, lon: lng });
+          pickResolveRef.current = null;
+          setPickingPin(false);
+          return;
+        }
         if (highlightedRef.current) {
           map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
           highlightedRef.current = null;
@@ -2206,11 +2241,27 @@ export default function Home() {
   return (
     <>
       {showGate && <EmailGate onSubmit={handleGateSubmit} submitting={gateSubmitting} />}
+      {pickingPin && (
+        <div style={{
+          position: "fixed", top: 12, left: "50%", transform: "translateX(-50%)", zIndex: 1000,
+          background: "#111827", color: "white", padding: "8px 14px", borderRadius: 999,
+          fontSize: 13, fontWeight: 600, boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          display: "flex", alignItems: "center", gap: 10,
+        }}>
+          <span>📍 Click on the map to pin your listing</span>
+          <button
+            onClick={cancelPin}
+            style={{ fontSize: 11, color: "white", background: "transparent", border: "1.5px solid white", borderRadius: 999, padding: "2px 10px", cursor: "pointer", fontWeight: 600 }}
+          >
+            Cancel
+          </button>
+        </div>
+      )}
 
       {!isMobile ? (
         /* ── Desktop layout ── */
         <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif" }}>
-          <div ref={mapRef} style={{ flex: 1, overflow: "hidden" }} />
+          <div ref={mapRef} style={{ flex: 1, overflow: "hidden", cursor: pickingPin ? "crosshair" : undefined }} />
 
           {/* Drag handle */}
           <div
@@ -2303,8 +2354,6 @@ export default function Home() {
                   )}
                   <Legend />
                   <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
-                  <WeightSliders weights={weights} onChange={setWeights} />
-                  <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
                   <HeatmapPanel
                     active={heatmapActive}
                     onToggle={setHeatmapActive}
@@ -2332,6 +2381,9 @@ export default function Home() {
                   onListingsLoaded={handleListingsLoaded}
                   isFavorite={favorites.has(selected!.name)}
                   onToggleFavorite={() => toggleFavorite(selected!.name)}
+                  onRequestPin={requestPin}
+                  pickingPin={pickingPin}
+                  onCancelPin={cancelPin}
                 />
               )}
             </div>
@@ -2343,7 +2395,7 @@ export default function Home() {
           {/* Map fixed to full viewport — never clipped by overflow:hidden (iOS WebGL fix) */}
           <div
             ref={mapRef}
-            style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5", overflow: "hidden" }}
+            style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5", overflow: "hidden", cursor: pickingPin ? "crosshair" : undefined }}
           />
 
           {/* Floating search bar — fixed so it sits above the map regardless of flex layout */}
@@ -2436,6 +2488,9 @@ export default function Home() {
                     onListingsLoaded={handleListingsLoaded}
                     isFavorite={favorites.has(selected!.name)}
                     onToggleFavorite={() => toggleFavorite(selected!.name)}
+                  onRequestPin={requestPin}
+                  pickingPin={pickingPin}
+                  onCancelPin={cancelPin}
                   />
                 </div>
               ) : (
@@ -2444,8 +2499,6 @@ export default function Home() {
                   <FilterChips value={scoreFilter} onChange={setScoreFilter} />
                   <div style={{ margin: "12px 0 10px", borderTop: "1px solid #e5e7eb" }} />
                   <Legend />
-                  <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
-                  <WeightSliders weights={weights} onChange={setWeights} />
                   <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
                   <HeatmapPanel
                     active={heatmapActive}

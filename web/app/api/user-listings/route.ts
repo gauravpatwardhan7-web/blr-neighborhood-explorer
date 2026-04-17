@@ -13,6 +13,8 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 //     furnishing text check (furnishing in ('furnished','semi-furnished','unfurnished')),
 //     address text check (char_length(address) <= 200),
 //     contact text check (char_length(contact) <= 100),
+//     lat double precision check (lat between 12.7 and 13.2),
+//     lon double precision check (lon between 77.4 and 77.9),
 //     created_at timestamptz default now()
 //   );
 //   alter table user_listings enable row level security;
@@ -22,6 +24,8 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const MAX_LOCALITY_LEN = 80;
 const VALID_FURNISHING = new Set(["furnished", "semi-furnished", "unfurnished"]);
+const BLR_LAT_MIN = 12.7, BLR_LAT_MAX = 13.2;
+const BLR_LON_MIN = 77.4, BLR_LON_MAX = 77.9;
 const RL_READ_MAX = 60;
 const RL_WRITE_MAX = 2;
 const RL_WINDOW_MS = 60_000;
@@ -51,7 +55,7 @@ export async function GET(req: NextRequest) {
   const db = getSupabaseServer();
   const { data, error } = await db
     .from("user_listings")
-    .select("id, locality, bhk, price, deposit, area_sqft, furnishing, address, contact, created_at")
+    .select("id, locality, bhk, price, deposit, area_sqft, furnishing, address, contact, lat, lon, created_at")
     .eq("locality", locality)
     .order("created_at", { ascending: false })
     .limit(30);
@@ -75,9 +79,10 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => ({}));
-  const { locality, bhk, price, deposit, area_sqft, furnishing, address, contact } = body as {
+  const { locality, bhk, price, deposit, area_sqft, furnishing, address, contact, lat, lon } = body as {
     locality?: unknown; bhk?: unknown; price?: unknown; deposit?: unknown;
     area_sqft?: unknown; furnishing?: unknown; address?: unknown; contact?: unknown;
+    lat?: unknown; lon?: unknown;
   };
 
   if (
@@ -105,6 +110,15 @@ export async function POST(req: NextRequest) {
   if (contact !== undefined && contact !== null &&
     (typeof contact !== "string" || contact.length > 100))
     return NextResponse.json({ error: "Invalid contact" }, { status: 400 });
+  const hasLat = lat !== undefined && lat !== null;
+  const hasLon = lon !== undefined && lon !== null;
+  if (hasLat !== hasLon) return NextResponse.json({ error: "lat/lon must be provided together" }, { status: 400 });
+  if (hasLat && (
+    typeof lat !== "number" || typeof lon !== "number" ||
+    !Number.isFinite(lat) || !Number.isFinite(lon) ||
+    lat < BLR_LAT_MIN || lat > BLR_LAT_MAX ||
+    lon < BLR_LON_MIN || lon > BLR_LON_MAX
+  )) return NextResponse.json({ error: "Pin must be within Bengaluru" }, { status: 400 });
 
   if (!process.env.SUPABASE_URL || !(process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     return NextResponse.json({ ok: true });
@@ -120,6 +134,8 @@ export async function POST(req: NextRequest) {
     furnishing: (furnishing as string | undefined) ?? null,
     address: address ? (address as string).trim().slice(0, 200) : null,
     contact: contact ? (contact as string).trim().slice(0, 100) : null,
+    lat: hasLat ? (lat as number) : null,
+    lon: hasLon ? (lon as number) : null,
   });
 
   if (error) {
