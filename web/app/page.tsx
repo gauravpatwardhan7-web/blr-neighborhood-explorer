@@ -44,6 +44,13 @@ type ReviewEntry = { id: number; locality: string; content: string; helpful: num
 type UserListingEntry = { id: number; locality: string; bhk?: number; price: number; deposit?: number; area_sqft?: number; furnishing?: string; address?: string; contact?: string; lat?: number; lon?: number; created_at: string };
 
 // ── Constants ─────────────────────────────────────────────────────────────────
+const LANDMARK_AREAS = [
+  "Koramangala", "Indiranagar", "Whitefield", "Malleshwaram",
+  "MG Road", "Jayanagar", "JP Nagar", "HSR Layout",
+  "Bellandur", "Sarjapur", "Electronic City", "Hebbal",
+  "Marathahalli", "Rajajinagar", "Basavanagudi",
+];
+
 const DEFAULT_WEIGHTS: Weights = {
   air_quality: 0.15,
   amenities: 0.45,
@@ -1684,7 +1691,6 @@ export default function Home() {
   const mapInstanceRef    = useRef<maplibregl.Map | null>(null);
   const highlightedRef    = useRef<string | null>(null);
   const localitiesRef     = useRef<LocalityFull[]>([]);
-  const markersRef        = useRef<{ el: HTMLDivElement; circle: HTMLDivElement; factors: Locality["factors"]; name: string }[]>([]);
   const weightsRef        = useRef<Weights>(DEFAULT_WEIGHTS);
   const scoreFilterRef    = useRef<ScoreFilter>("all");
   const isMobileRef       = useRef(false);
@@ -1739,28 +1745,23 @@ export default function Home() {
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const updateMarkerVisibility = useCallback(() => {
-    markersRef.current.forEach(({ el, factors }) => {
-      const score = recomputeScore(factors, weightsRef.current);
-      const f = scoreFilterRef.current;
-      const visible =
-        f === null || f === "all" ||
-        (f === "great" && score >= 7) ||
-        (f === "good"  && score >= 4 && score < 7) ||
-        (f === "low"   && score < 4);
-      if (visible) {
-        el.style.display  = "flex";
-        el.style.alignItems = "center";
-        el.style.opacity  = "0.85";
-      } else {
-        el.style.display  = "none";
-      }
-    });
+    const map = mapInstanceRef.current;
+    if (!map || !map.isStyleLoaded()) return;
+    const f = scoreFilterRef.current;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let filter: any = null;
+    if (f === "great") filter = [">=", ["get", "overall_score"], 7];
+    else if (f === "good") filter = ["all", [">=", ["get", "overall_score"], 4], ["<", ["get", "overall_score"], 7]];
+    else if (f === "low") filter = ["<", ["get", "overall_score"], 4];
+    for (const layer of ["localities-fill", "localities-outline", "locality-labels"]) {
+      if (map.getLayer(layer)) map.setFilter(layer, filter);
+    }
   }, []);
 
   const dismiss = useCallback(() => {
     const map = mapInstanceRef.current;
     if (map && highlightedRef.current) {
-      map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
+      map.setFeatureState({ source: "localities", id: highlightedRef.current }, { selected: false, hover: false });
       highlightedRef.current = null;
     }
     // Fly back to pre-selection view
@@ -1787,10 +1788,10 @@ export default function Home() {
       savedViewRef.current = { center: [c.lng, c.lat], zoom: map.getZoom() };
     }
     if (highlightedRef.current && highlightedRef.current !== loc.name) {
-      map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
+      map.setFeatureState({ source: "localities", id: highlightedRef.current }, { selected: false });
     }
     highlightedRef.current = loc.name;
-    map.setFeatureState({ source: "localities", id: loc.name }, { hover: true });
+    map.setFeatureState({ source: "localities", id: loc.name }, { selected: true });
 
     // On mobile the bottom sheet expands to ~60dvh — shift the centre point up
     // so the selected locality is visible in the portion above the sheet.
@@ -1972,14 +1973,9 @@ export default function Home() {
     }
   }, [selected]);
 
-  // Re-colour markers when weights change
+  // Keep weightsRef in sync; reapply filter when weights change
   useEffect(() => {
     weightsRef.current = weights;
-    markersRef.current.forEach(({ circle, factors }) => {
-      const score = recomputeScore(factors, weights);
-      circle.style.background = scoreColor(score);
-      circle.textContent = String(score);
-    });
     updateMarkerVisibility();
   }, [weights, updateMarkerVisibility]);
 
@@ -2044,19 +2040,6 @@ export default function Home() {
           .addTo(map);
       }
 
-      // DOM circles: show "23m" instead of score
-      markersRef.current.forEach(({ circle, name: mName }) => {
-        const min = commuteData[mName];
-        if (min != null) {
-          circle.style.background = commuteColor(min);
-          circle.textContent = `${min}m`;
-          circle.style.fontSize = "9px";
-        } else {
-          circle.style.background = "#9ca3af";
-          circle.textContent = "–";
-          circle.style.fontSize = "11px";
-        }
-      });
     } else {
       // Restore score-based colouring (heatmap off, or active but no data yet)
       localitiesRef.current.forEach(({ name }) => {
@@ -2065,21 +2048,16 @@ export default function Home() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       map.setPaintProperty("localities-fill", "fill-color", colorExpr(false) as any);
       map.setPaintProperty("localities-fill", "fill-opacity", [
-        "case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.01,
+        "case",
+        ["boolean", ["feature-state", "selected"], false], 0.55,
+        ["boolean", ["feature-state", "hover"], false], 0.45,
+        0.28,
       ]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       map.setPaintProperty("localities-outline", "line-color", colorExpr(false) as any);
 
       heatmapMarkerRef.current?.remove();
       heatmapMarkerRef.current = null;
-
-      // DOM circles: restore score display
-      markersRef.current.forEach(({ circle, factors }) => {
-        const score = recomputeScore(factors, weightsRef.current);
-        circle.style.background = scoreColor(score);
-        circle.textContent = String(score);
-        circle.style.fontSize = "11px";
-      });
       updateMarkerVisibility();
     }
   }, [heatmapActive, commuteData, heatmapDest, updateMarkerVisibility]);
@@ -2167,29 +2145,97 @@ export default function Home() {
 
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
-      // Fill: tiny non-zero opacity so queryRenderedFeatures registers clicks on polygons
+      // Fill: always visible, color by score. Brighter on hover/selected.
       map.addLayer({
         id: "localities-fill",
         type: "fill",
         source: "localities",
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.01],
+          "fill-opacity": [
+            "case",
+            ["boolean", ["feature-state", "selected"], false], 0.55,
+            ["boolean", ["feature-state", "hover"], false], 0.45,
+            0.28,
+          ],
         },
       });
 
-      // Outline: visible only on hover/click
+      // Outline: always visible and subtle; thicker on hover/selected.
       map.addLayer({
         id: "localities-outline",
         type: "line",
         source: "localities",
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
-          "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
+          "line-color": ["step", ["get", "overall_score"], "#b91c1c", 4, "#b45309", 7, "#15803d"],
+          "line-width": [
+            "case",
+            ["boolean", ["feature-state", "selected"], false], 3,
+            ["boolean", ["feature-state", "hover"], false], 2.2,
+            0.9,
+          ],
+          "line-opacity": 0.7,
         },
       });
 
-      // Click on empty map space → dismiss any active selection (or capture pin location in pick mode)
+      // Labels — name on every locality at mid zoom, score added at high zoom
+      map.addLayer({
+        id: "locality-labels",
+        type: "symbol",
+        source: "localities",
+        minzoom: 10,
+        layout: {
+          "text-field": ["step", ["zoom"],
+            ["get", "name"],
+            13, ["format", ["get", "name"], { "font-scale": 1.0 }, "\n", {}, ["to-string", ["get", "overall_score"]], { "font-scale": 0.85 }],
+          ],
+          "text-font": ["Noto Sans Bold"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 10, 9, 13, 12, 15, 13],
+          "text-anchor": "center",
+          "text-justify": "center",
+          "text-allow-overlap": false,
+          "text-max-width": 8,
+        },
+        paint: {
+          "text-color": "#1c1410",
+          "text-halo-color": "rgba(250,243,227,0.95)",
+          "text-halo-width": 2,
+        },
+      });
+
+      // Polygon click → select locality (works on mobile tap too)
+      map.on("click", "localities-fill", (e) => {
+        if (pickingPinRef.current) return;
+        const feature = e.features?.[0];
+        if (!feature) return;
+        const p = feature.properties as { name: string; overall_score: number; lat: number; lon: number; factors: Locality["factors"]; raw: Locality["raw"] };
+        const loc = localitiesRef.current.find((l) => l.name === p.name);
+        if (loc) flyToLocality(loc);
+      });
+
+      // Hover highlight (desktop only — no-op on touch since no mousemove)
+      let hoverPolygonId: string | null = null;
+      map.on("mousemove", "localities-fill", (e) => {
+        const id = (e.features?.[0]?.properties as { name?: string } | undefined)?.name ?? null;
+        if (id === hoverPolygonId) return;
+        if (hoverPolygonId && hoverPolygonId !== highlightedRef.current) {
+          map.setFeatureState({ source: "localities", id: hoverPolygonId }, { hover: false });
+        }
+        hoverPolygonId = id;
+        if (id && id !== highlightedRef.current) {
+          map.setFeatureState({ source: "localities", id }, { hover: true });
+        }
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", "localities-fill", () => {
+        if (hoverPolygonId && hoverPolygonId !== highlightedRef.current) {
+          map.setFeatureState({ source: "localities", id: hoverPolygonId }, { hover: false });
+        }
+        hoverPolygonId = null;
+        map.getCanvas().style.cursor = "";
+      });
+
+      // Click on empty map space → dismiss (but not if clicking a locality polygon)
       map.on("click", (e) => {
         if (pickingPinRef.current) {
           const { lat, lng } = e.lngLat;
@@ -2198,8 +2244,10 @@ export default function Home() {
           setPickingPin(false);
           return;
         }
+        const hit = map.queryRenderedFeatures(e.point, { layers: ["localities-fill"] });
+        if (hit.length > 0) return; // handled by layer click handler
         if (highlightedRef.current) {
-          map.setFeatureState({ source: "localities", id: highlightedRef.current }, { hover: false });
+          map.setFeatureState({ source: "localities", id: highlightedRef.current }, { selected: false, hover: false });
           highlightedRef.current = null;
           history.replaceState(null, "", window.location.pathname);
           if (savedViewRef.current) {
@@ -2209,82 +2257,6 @@ export default function Home() {
           setSelected(null);
           setSheetExpanded(false);
         }
-      });
-
-      // Bubble markers
-      // LANDMARK_AREAS get a pill-shaped marker: score circle + name label below.
-      // Rendered as DOM, so always visible above the WebGL canvas.
-      const LANDMARK_AREAS = new Set([
-        "Koramangala", "Indiranagar", "Whitefield", "Malleshwaram",
-        "MG Road", "Jayanagar", "JP Nagar", "HSR Layout",
-        "Bellandur", "Sarjapur", "Electronic City", "Hebbal",
-        "Marathahalli", "Rajajinagar", "Basavanagudi",
-      ]);
-
-      (data.features as LocalityFeature[]).forEach((f) => {
-        const { name, overall_score, factors, raw } = f.properties;
-        const isLandmark = LANDMARK_AREAS.has(name);
-
-        const el = document.createElement("div");
-        el.style.cssText = [
-          "display:none", "flex-direction:column",
-          "align-items:center", "cursor:pointer",
-          "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-          "gap:2px",
-        ].join(";");
-
-        // Score circle
-        const circle = document.createElement("div");
-        circle.style.cssText = [
-          "width:34px", "height:34px", "border-radius:50%",
-          `background:${scoreColor(recomputeScore(factors, weightsRef.current))}`,
-          "border:2.5px solid white",
-          "display:flex", "align-items:center", "justify-content:center",
-          "font-weight:800", "font-size:11px", "color:white",
-          "box-shadow:0 2px 8px rgba(0,0,0,0.25)",
-          "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-          "flex-shrink:0",
-        ].join(";");
-        circle.textContent = String(recomputeScore(factors, weightsRef.current));
-        el.appendChild(circle);
-
-        // Name label — only for landmark areas
-        if (isLandmark) {
-          const label = document.createElement("div");
-          label.style.cssText = [
-            "font-size:10px", "font-weight:700",
-            "color:#111827", "white-space:nowrap",
-            "background:rgba(255,255,255,0.92)",
-            "padding:1px 5px", "border-radius:4px",
-            "line-height:1.4",
-            "box-shadow:0 1px 3px rgba(0,0,0,0.15)",
-            "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-            "pointer-events:none",
-          ].join(";");
-          label.textContent = name;
-          el.appendChild(label);
-        }
-
-        markersRef.current.push({ el, circle, factors, name });
-
-        el.addEventListener("mouseenter", () => {
-          circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
-          circle.style.boxShadow  = "0 4px 16px rgba(0,0,0,0.32)";
-          el.style.zIndex         = "999";
-        });
-        el.addEventListener("mouseleave", () => {
-          circle.style.border    = "2.5px solid white";
-          circle.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
-          el.style.zIndex        = "";
-        });
-        el.addEventListener("click", (e) => {
-          e.stopPropagation(); // prevent bubbling to map → avoids wrong polygon highlight
-          flyToLocality({ name, overall_score, factors, raw, lat: f.properties.lat, lon: f.properties.lon });
-        });
-
-        new maplibregl.Marker({ element: el })
-          .setLngLat([f.properties.lon, f.properties.lat])
-          .addTo(map);
       });
 
       updateMarkerVisibility();
