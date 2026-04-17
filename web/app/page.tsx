@@ -1613,8 +1613,8 @@ function LocalityDetail({
       <Block tint="sand" label="Factor scores">
         <FactorBars factors={selected.factors} />
       </Block>
-      <Block tint="sky" label="Commute">
-        <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
+      <Block tint="sand" label="Raw data">
+        <RawData raw={selected.raw} />
       </Block>
       <Block tint="cream" label="Listings">
         <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
@@ -1622,8 +1622,8 @@ function LocalityDetail({
       <Block tint="lilac" label="Owner listings">
         <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
       </Block>
-      <Block tint="sand" label="Raw data">
-        <RawData raw={selected.raw} />
+      <Block tint="sky" label="Commute">
+        <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
       </Block>
     </>
   );
