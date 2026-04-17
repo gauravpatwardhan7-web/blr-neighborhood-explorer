@@ -2049,9 +2049,9 @@ export default function Home() {
       map.setPaintProperty("localities-fill", "fill-color", colorExpr(false) as any);
       map.setPaintProperty("localities-fill", "fill-opacity", [
         "case",
-        ["boolean", ["feature-state", "selected"], false], 0.55,
-        ["boolean", ["feature-state", "hover"], false], 0.45,
-        0.28,
+        ["boolean", ["feature-state", "selected"], false], 0.22,
+        ["boolean", ["feature-state", "hover"], false], 0.12,
+        0.04,
       ]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       map.setPaintProperty("localities-outline", "line-color", colorExpr(false) as any);
@@ -2068,7 +2068,7 @@ export default function Home() {
 
     const map = new maplibregl.Map({
       container: mapRef.current,
-      style: `https://api.maptiler.com/maps/basic-v2/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
+      style: `https://api.maptiler.com/maps/streets-v2-light/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`,
       center: [77.6, 12.97],
       zoom: 11,
       pitch: 45,
@@ -2145,40 +2145,46 @@ export default function Home() {
 
       map.addSource("localities", { type: "geojson", data, promoteId: "name" });
 
-      // Fill: always visible, color by score. Brighter on hover/selected.
+      // Fill: nearly invisible at rest — comes alive on hover/select.
+      // Outlines + labels are the primary visual indicators.
       map.addLayer({
         id: "localities-fill",
         type: "fill",
         source: "localities",
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
+          "fill-color": ["step", ["get", "overall_score"], "#ef4444", 4, "#f59e0b", 7, "#22c55e"],
           "fill-opacity": [
             "case",
-            ["boolean", ["feature-state", "selected"], false], 0.55,
-            ["boolean", ["feature-state", "hover"], false], 0.45,
-            0.28,
+            ["boolean", ["feature-state", "selected"], false], 0.22,
+            ["boolean", ["feature-state", "hover"], false], 0.12,
+            0.04,
           ],
         },
       });
 
-      // Outline: always visible and subtle; thicker on hover/selected.
+      // Outline: score-colored, always visible. The main visual indicator.
       map.addLayer({
         id: "localities-outline",
         type: "line",
         source: "localities",
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#b91c1c", 4, "#b45309", 7, "#15803d"],
+          "line-color": ["step", ["get", "overall_score"], "#dc2626", 4, "#d97706", 7, "#16a34a"],
           "line-width": [
             "case",
-            ["boolean", ["feature-state", "selected"], false], 3,
-            ["boolean", ["feature-state", "hover"], false], 2.2,
-            0.9,
+            ["boolean", ["feature-state", "selected"], false], 2.5,
+            ["boolean", ["feature-state", "hover"], false], 2,
+            1.2,
           ],
-          "line-opacity": 0.7,
+          "line-opacity": [
+            "case",
+            ["boolean", ["feature-state", "selected"], false], 1,
+            ["boolean", ["feature-state", "hover"], false], 0.9,
+            0.6,
+          ],
         },
       });
 
-      // Labels — name on every locality at mid zoom, score added at high zoom
+      // Labels — name at mid zoom, name + score badge at high zoom
       map.addLayer({
         id: "locality-labels",
         type: "symbol",
@@ -2187,10 +2193,14 @@ export default function Home() {
         layout: {
           "text-field": ["step", ["zoom"],
             ["get", "name"],
-            13, ["format", ["get", "name"], { "font-scale": 1.0 }, "\n", {}, ["to-string", ["get", "overall_score"]], { "font-scale": 0.85 }],
+            13, ["format",
+              ["get", "name"], { "font-scale": 1.0 },
+              "  ", {},
+              ["concat", ["to-string", ["get", "overall_score"]], "/10"], { "font-scale": 0.8 },
+            ],
           ],
           "text-font": ["Noto Sans Bold"],
-          "text-size": ["interpolate", ["linear"], ["zoom"], 10, 9, 13, 12, 15, 13],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 10, 10, 13, 12, 15, 14],
           "text-anchor": "center",
           "text-justify": "center",
           "text-allow-overlap": false,
