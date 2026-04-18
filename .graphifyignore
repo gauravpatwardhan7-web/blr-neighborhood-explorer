@@ -1,0 +1,28 @@
+# Graphify ignore file — files to skip during graph building
+# (Speeds up graph building, reduces noise in semantic analysis)
+
+# Build artifacts
+node_modules/
+.next/
+__pycache__/
+*.pyc
+dist/
+build/
+
+# Data files (too large, already documented)
+*.geojson
+*.json
+
+# Dependencies
+.venv/
+venv/
+
+# Logs & cache
+logs/
+*.log
+.DS_Store
+
+# Git & CI
+.git/
+.github/
+.gitignore
