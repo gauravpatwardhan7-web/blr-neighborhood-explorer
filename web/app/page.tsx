@@ -221,7 +221,7 @@ function createCommutePin(label: string, color: string): HTMLDivElement {
 }
 
 // ── Listing house-pin marker ──────────────────────────────────────────────────
-function createListingPin(price: number): HTMLDivElement {
+function createListingPin(price: number, isOwner = false): HTMLDivElement {
   const el = document.createElement("div");
   el.style.cssText = "display:flex;flex-direction:column;align-items:center;cursor:pointer;";
 
@@ -237,7 +237,7 @@ function createListingPin(price: number): HTMLDivElement {
 
   const bg = document.createElementNS(ns, "path");
   bg.setAttribute("d", "M14 0C6.27 0 0 6.27 0 14c0 8.84 14 22 14 22S28 22.84 28 14C28 6.27 21.73 0 14 0z");
-  bg.setAttribute("fill", "#3b82f6"); // blue house pins
+  bg.setAttribute("fill", isOwner ? "#f97316" : "#3b82f6"); // orange for owner, blue for scraped
   bg.setAttribute("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.35))");
   svg.appendChild(bg);
 
@@ -569,12 +569,28 @@ function ListingsPanel({
     if (!enabled) return;
     setLoading(true);
     setError(null);
-    fetch(`/api/listings?locality=${encodeURIComponent(locality)}`)
-      .then((r) => r.json())
-      .then((data: { listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] }) => {
-        setListings(data.listings ?? []);
-        setSources(data.sources ?? []);
-        const ts = data.fetchedAt ?? new Date().toISOString();
+    Promise.all([
+      fetch(`/api/listings?locality=${encodeURIComponent(locality)}`).then((r) => r.json()),
+      fetch(`/api/user-listings?locality=${encodeURIComponent(locality)}`).then((r) => r.json()),
+    ])
+      .then(([listData, userListData]: [{ listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] }, { listings: UserListingEntry[] }]) => {
+        const scraped = (listData.listings ?? []);
+        const owner = (userListData.listings ?? []).map((l) => ({
+          source: "owner" as const,
+          source_id: String(l.id),
+          source_url: "",
+          price: l.price,
+          bhk: l.bhk,
+          area_sqft: l.area_sqft,
+          furnishing: l.furnishing,
+          address: l.address,
+          lat: l.lat,
+          lon: l.lon,
+          isOwner: true,
+        })) as any[];
+        setListings([...scraped, ...owner]);
+        setSources(listData.sources ?? []);
+        const ts = listData.fetchedAt ?? new Date().toISOString();
         setFetchedAt(new Date(ts).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
       })
       .catch(() => setError("Could not reach listing service"))
@@ -1871,7 +1887,7 @@ export default function Home() {
     });
   }, []);
 
-  const handleListingsLoaded = useCallback((listings: ListingRow[]) => {
+  const handleListingsLoaded = useCallback((listings: (ListingRow & { isOwner?: boolean })[]) => {
     const map = mapInstanceRef.current;
     // Clear existing listing markers
     listingMarkersRef.current.forEach((m) => m.remove());
@@ -1879,7 +1895,7 @@ export default function Home() {
     if (!map) return;
     for (const l of listings) {
       if (!l.lat || !l.lon) continue;
-      const el = createListingPin(l.price);
+      const el = createListingPin(l.price, l.isOwner ?? false);
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
         .setLngLat([l.lon, l.lat])
         .addTo(map);
