@@ -1618,9 +1618,10 @@ function LocalityDetail({
       <Block tint="cream" label="Listings">
         <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
       </Block>
-      <Block tint="lilac" label="Owner listings">
+      {/* OWNER LISTINGS FEATURE DISABLED: Temporarily hidden pending UX redesign. Component preserved at line ~1256. */}
+      {/* <Block tint="lilac" label="Owner listings">
         <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
-      </Block>
+      </Block> */}
       <Block tint="sky" label="Commute">
         <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
       </Block>
