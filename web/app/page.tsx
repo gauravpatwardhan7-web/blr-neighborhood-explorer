@@ -429,24 +429,19 @@ function Legend() {
 // ── Factor bars ───────────────────────────────────────────────────────────────
 function FactorBars({ factors }: { factors: Locality["factors"] }) {
   return (
-    <>
-      <h3 style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-        Factor scores
-      </h3>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
-        {Object.entries(factors).map(([k, v]) => (
-          <div key={k}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 3 }}>
-              <span style={{ color: "#374151", textTransform: "capitalize" }}>{SLIDER_LABELS[k as FactorKey] ?? k.replace(/_/g, " ")}</span>
-              <span style={{ fontWeight: 700, color: "#111827" }}>{v}/10</span>
-            </div>
-            <div style={{ height: 5, background: "#e5e7eb", borderRadius: 3 }}>
-              <div style={{ height: 5, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3 }} />
-            </div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 16px" }}>
+      {Object.entries(factors).map(([k, v]) => (
+        <div key={k}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 6, fontWeight: 500 }}>
+            <span style={{ color: "#4b5563" }}>{SLIDER_LABELS[k as FactorKey] ?? k.replace(/_/g, " ")}</span>
+            <span style={{ fontWeight: 700, color: scoreColor(v), fontSize: 13 }}>{v}/10</span>
           </div>
-        ))}
-      </div>
-    </>
+          <div style={{ height: 6, background: "#f0f1f3", borderRadius: 3 }}>
+            <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3, transition: "width 0.3s ease" }} />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -462,10 +457,10 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
         {open ? "▲ Hide raw data" : "▼ Show raw data"}
       </button>
       {open && (
-        <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 16px" }}>
+        <div style={{ marginTop: 10, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
           {Object.entries(raw).map(([k, v]) => (
-            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 13, padding: "4px 0", borderBottom: "1px solid #f3f4f6" }}>
-              <span style={{ color: "#374151", textTransform: "capitalize" }}>{RAW_LABELS[k as keyof Locality["raw"]] ?? k.replace(/_/g, " ")}</span>
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "6px 0", borderBottom: "1px solid #f3f4f6" }}>
+              <span style={{ color: "#4b5563", textTransform: "capitalize", fontWeight: 500 }}>{RAW_LABELS[k as keyof Locality["raw"]] ?? k.replace(/_/g, " ")}</span>
               <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
             </div>
           ))}
@@ -1475,12 +1470,12 @@ function UserListingsPanel({
 
 // ── Block — a colored, rounded card used to group panel content ───────────────
 const BLOCK_TINTS: Record<string, { bg: string; border: string; accent: string }> = {
-  cream:    { bg: "#fcf6e8", border: "#ebdcae", accent: "#92400e" },
-  sage:     { bg: "#eef4e9", border: "#c7d7b5", accent: "#3f6212" },
-  blush:    { bg: "#fdeee6", border: "#f2cbb4", accent: "#9a3412" },
-  sky:      { bg: "#e8eff7", border: "#bfd1e8", accent: "#1e3a8a" },
-  lilac:    { bg: "#f1ebf7", border: "#d6c4ea", accent: "#6b21a8" },
-  sand:     { bg: "#f5eee0", border: "#dcc9a1", accent: "#78350f" },
+  cream:    { bg: "#ffffff", border: "#e5e7eb", accent: "#6366f1" },
+  sage:     { bg: "#ffffff", border: "#e5e7eb", accent: "#10b981" },
+  blush:    { bg: "#ffffff", border: "#e5e7eb", accent: "#f43f5e" },
+  sky:      { bg: "#ffffff", border: "#e5e7eb", accent: "#0ea5e9" },
+  lilac:    { bg: "#ffffff", border: "#e5e7eb", accent: "#8b5cf6" },
+  sand:     { bg: "#ffffff", border: "#e5e7eb", accent: "#f59e0b" },
 };
 function Block({
   tint = "cream",
@@ -2391,9 +2386,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: "1.5px solid #e9dec2", background: "#faf3e3", flexShrink: 0 }}>
+          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: "1.5px solid #e5e7eb", background: "#ffffff", flexShrink: 0 }}>
             {/* Brand + search + filters */}
-            <div style={{ padding: "16px 18px 12px", borderBottom: "1.5px solid #ebdcae", flexShrink: 0, background: "#fdf8ea" }}>
+            <div style={{ padding: "16px 18px 12px", borderBottom: "1.5px solid #f3f4f6", flexShrink: 0, background: "#ffffff" }}>
               <div style={{
                 fontFamily: "var(--font-display)",
                 fontSize: 22, fontWeight: 700, color: "#1c1410", letterSpacing: "-0.02em",
@@ -2524,9 +2519,9 @@ export default function Home() {
           {/* Single bottom sheet — content swaps based on whether a locality is selected */}
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
-            background: "#faf3e3", borderRadius: "20px 20px 0 0",
-            boxShadow: "0 -2px 14px rgba(90,70,30,0.18)",
-            borderTop: "1.5px solid #ebdcae",
+            background: "#ffffff", borderRadius: "20px 20px 0 0",
+            boxShadow: "0 -2px 14px rgba(0,0,0,0.10)",
+            borderTop: "1.5px solid #e5e7eb",
             maxHeight: sheetExpanded ? (sheetOpen ? "60dvh" : "55dvh") : "52px",
             overflow: "hidden",
             transition: "max-height 0.3s ease",
@@ -2540,7 +2535,7 @@ export default function Home() {
               style={{ padding: "12px 20px 8px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 36, height: 4, background: "#c8b58a", borderRadius: 2, flexShrink: 0 }} />
+                <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
                 <span style={{
                   fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: "#1c1410",
                   letterSpacing: "-0.01em",
