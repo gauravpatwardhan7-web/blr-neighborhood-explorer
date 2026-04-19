@@ -569,26 +569,14 @@ function ListingsPanel({
     if (!enabled) return;
     setLoading(true);
     setError(null);
-    Promise.all([
-      fetch(`/api/listings?locality=${encodeURIComponent(locality)}`).then((r) => r.json()),
-      fetch(`/api/user-listings?locality=${encodeURIComponent(locality)}`).then((r) => r.json()),
-    ])
-      .then(([listData, userListData]: [{ listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] }, { listings: UserListingEntry[] }]) => {
+    // FEATURE DISABLED: Owner listings temporarily disabled pending UX review
+    // To re-enable, uncomment the second fetch and owner listings merge below
+    fetch(`/api/listings?locality=${encodeURIComponent(locality)}`)
+      .then((r) => r.json())
+      .then((listData: { listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] }) => {
         const scraped = (listData.listings ?? []);
-        const owner = (userListData.listings ?? []).map((l) => ({
-          source: "owner" as const,
-          source_id: String(l.id),
-          source_url: "",
-          price: l.price,
-          bhk: l.bhk,
-          area_sqft: l.area_sqft,
-          furnishing: l.furnishing,
-          address: l.address,
-          lat: l.lat,
-          lon: l.lon,
-          isOwner: true,
-        })) as any[];
-        setListings([...scraped, ...owner]);
+        // const owner = (userListData.listings ?? []).map((l) => ({...})); // DISABLED
+        setListings(scraped); // Only showing scraped listings for now
         setSources(listData.sources ?? []);
         const ts = listData.fetchedAt ?? new Date().toISOString();
         setFetchedAt(new Date(ts).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
