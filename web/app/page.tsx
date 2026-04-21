@@ -51,11 +51,13 @@ const DEFAULT_WEIGHTS: Weights = {
   restaurants: 0.18,
 };
 
-// Raw composite range from the scoring pipeline — used to normalise recomputeScore
-// to the same 1.0–9.5 scale as the stored overall_score values.
-const SCORE_RAW_MIN = 1.3;
-const SCORE_RAW_MAX = 7.4;
-const SCORE_NORM_MIN = 1.0;
+// Raw composite range from the scoring pipeline — used to normalise recomputeScore.
+// Recalibrated after zeroing air_quality weight (amenities/metro/restaurants only).
+// Actual data range: 0.076 (Dommasandra) – 8.031 (Chord Road).
+// NORM floor raised to 3.5 so outer suburbs aren't brutally penalised.
+const SCORE_RAW_MIN = 0.076;
+const SCORE_RAW_MAX = 8.031;
+const SCORE_NORM_MIN = 3.5;
 const SCORE_NORM_MAX = 9.5;
 
 const SLIDER_LABELS: Record<FactorKey, string> = {
