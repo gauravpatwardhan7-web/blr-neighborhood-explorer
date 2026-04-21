@@ -40,7 +40,7 @@ from playwright.sync_api import sync_playwright
 db = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Load locality list with centroids from GeoJSON
-geojson_path = Path(__file__).parent.parent / "raw" / "localities_scored.geojson"
+geojson_path = Path(__file__).parent.parent.parent / "raw" / "localities_scored.geojson"
 with open(geojson_path) as f:
     features = json.load(f)["features"]
 
