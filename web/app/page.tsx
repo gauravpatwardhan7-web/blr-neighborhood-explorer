@@ -392,11 +392,11 @@ function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: Sc
             style={{
               padding: "5px 14px", borderRadius: 20, fontSize: 12,
               fontWeight: active ? 700 : 500,
-              background: active ? opt.activeBg : "rgba(255,255,255,0.05)",
-              color: active ? (opt.value === "all" ? "#0f172a" : opt.color) : DS.textSub,
+              background: active ? opt.activeBg : "#ffffff",
+              color: active ? (opt.value === "all" ? "#ffffff" : opt.color) : DS.textSub,
               border: active ? "1.5px solid transparent" : `1.5px solid ${DS.border}`,
               cursor: "pointer",
-              boxShadow: active ? `0 2px 10px ${opt.activeBg}50` : "none",
+              boxShadow: active ? `0 2px 10px ${opt.activeBg}50` : "0 1px 4px rgba(0,0,0,0.12)",
               transition: "all 0.15s",
             }}
           >
