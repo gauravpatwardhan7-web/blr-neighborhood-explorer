@@ -220,49 +220,31 @@ function createCommutePin(label: string, color: string): HTMLDivElement {
   return el;
 }
 
-// ── Listing house-pin marker ──────────────────────────────────────────────────
-function createListingPin(price: number, isOwner = false): HTMLDivElement {
+// ── Listing pill marker (flat label, no drop-pin) ────────────────────────────
+function createListingPin(price: number, bhk?: number | null, isOwner = false): HTMLDivElement {
   const el = document.createElement("div");
-  el.style.cssText = "display:flex;flex-direction:column;align-items:center;cursor:pointer;";
+  el.style.cssText = "cursor:pointer;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.22));";
 
-  const label = price >= 100000
-    ? `₹${(price / 100000).toFixed(1)}L`
-    : `₹${Math.round(price / 1000)}k`;
+  const priceStr = price >= 100000
+    ? `${(price / 100000).toFixed(1)}L`
+    : `${Math.round(price / 1000)}K`;
+  const text = bhk ? `${bhk}BHK · ${priceStr}` : `₹${priceStr}`;
 
-  const ns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(ns, "svg");
-  svg.setAttribute("width", "28");
-  svg.setAttribute("height", "36");
-  svg.setAttribute("viewBox", "0 0 28 36");
-
-  const bg = document.createElementNS(ns, "path");
-  bg.setAttribute("d", "M14 0C6.27 0 0 6.27 0 14c0 8.84 14 22 14 22S28 22.84 28 14C28 6.27 21.73 0 14 0z");
-  bg.setAttribute("fill", isOwner ? "#f97316" : "#3b82f6"); // orange for owner, blue for scraped
-  bg.setAttribute("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.35))");
-  svg.appendChild(bg);
-
-  // House icon
-  const house = document.createElementNS(ns, "path");
-  house.setAttribute("d", "M14 6L7 12v9h4v-5h6v5h4V12z");
-  house.setAttribute("fill", "white");
-  svg.appendChild(house);
-
-  el.appendChild(svg);
-
-  // Price label below pin
-  const tag = document.createElement("div");
-  tag.style.cssText = [
-    "font-size:9px", "font-weight:800", "color:#111827",
-    "background:white", "border:1px solid #e5e7eb",
-    "padding:1px 4px", "border-radius:4px",
-    "margin-top:1px", "white-space:nowrap",
-    "box-shadow:0 1px 3px rgba(0,0,0,0.15)",
+  const pill = document.createElement("div");
+  pill.style.cssText = [
+    `background:${isOwner ? "#c4622d" : "#1d4ed8"}`,
+    "color:white",
+    "font-size:11px",
+    "font-weight:700",
+    "padding:4px 9px",
+    "border-radius:6px",
+    "white-space:nowrap",
     "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-    "pointer-events:none",
+    "letter-spacing:0.01em",
+    "border:1.5px solid rgba(255,255,255,0.25)",
   ].join(";");
-  tag.textContent = label;
-  el.appendChild(tag);
-
+  pill.textContent = text;
+  el.appendChild(pill);
   return el;
 }
 
@@ -1288,11 +1270,10 @@ function UserListingsPanel({
   const [loading,    setLoading]    = useState(false);
   const [showForm,   setShowForm]   = useState(false);
   const [submitted,  setSubmitted]  = useState(false);
-  // form state
   const [price,      setPrice]      = useState("");
-  const [bhk,        setBhk]        = useState("");
+  const [bhk,        setBhk]        = useState<number | null>(null);
   const [deposit,    setDeposit]    = useState("");
-  const [furnishing, setFurnishing] = useState("");
+  const [furnishing, setFurnishing] = useState<string>("");
   const [address,    setAddress]    = useState("");
   const [contact,    setContact]    = useState("");
   const [pin,        setPin]        = useState<{ lat: number; lon: number } | null>(null);
@@ -1308,16 +1289,22 @@ function UserListingsPanel({
       .finally(() => setLoading(false));
   }, [locality]);
 
+  const resetForm = () => {
+    setPrice(""); setBhk(null); setDeposit(""); setFurnishing("");
+    setAddress(""); setContact(""); setPin(null); setFormError(null);
+  };
+
   const handleSubmit = async () => {
     const priceNum = parseInt(price, 10);
     if (!price || isNaN(priceNum) || priceNum < 1000) { setFormError("Enter a valid monthly rent (min ₹1,000)"); return; }
+    if (!contact.trim()) { setFormError("WhatsApp / phone is required so seekers can reach you"); return; }
     setSubmitting(true); setFormError(null);
     const body: Record<string, unknown> = { locality, price: priceNum };
-    if (bhk) body.bhk = parseInt(bhk, 10);
+    if (bhk) body.bhk = bhk;
     if (deposit) body.deposit = parseInt(deposit, 10);
     if (furnishing) body.furnishing = furnishing;
     if (address.trim()) body.address = address.trim();
-    if (contact.trim()) body.contact = contact.trim();
+    body.contact = contact.trim();
     if (pin) { body.lat = pin.lat; body.lon = pin.lon; }
     try {
       const res = await fetch("/api/user-listings", {
@@ -1326,163 +1313,188 @@ function UserListingsPanel({
         body: JSON.stringify(body),
       });
       if (!res.ok) { const d = await res.json(); setFormError(d.error ?? "Failed to submit"); return; }
-      setSubmitted(true); setShowForm(false);
-      setPrice(""); setBhk(""); setDeposit(""); setFurnishing(""); setAddress(""); setContact(""); setPin(null);
+      setSubmitted(true); setShowForm(false); resetForm();
     } finally {
       setSubmitting(false);
     }
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "6px 8px", borderRadius: 6,
-    border: "1.5px solid #e5e7eb", fontSize: 12,
-    boxSizing: "border-box", outline: "none", fontFamily: "inherit",
+  const inp: React.CSSProperties = {
+    width: "100%", padding: "8px 10px", borderRadius: 8,
+    border: `1.5px solid ${DS.border}`, fontSize: 13, background: "#ffffff",
+    boxSizing: "border-box", outline: "none", fontFamily: "inherit", color: DS.text,
   };
 
-  const allListings = submitted
-    ? [{ id: -1, locality, price: parseInt(price || "0", 10), created_at: new Date().toISOString() } as UserListingEntry, ...listings]
-    : listings;
+  const BhkBtn = ({ n }: { n: number }) => (
+    <button type="button" onClick={() => setBhk(bhk === n ? null : n)} style={{
+      padding: "6px 14px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer",
+      background: bhk === n ? DS.accent : "#ffffff",
+      color: bhk === n ? "#ffffff" : DS.textSub,
+      border: bhk === n ? `1.5px solid ${DS.accent}` : `1.5px solid ${DS.border}`,
+    }}>{n}</button>
+  );
+
+  const FurnBtn = ({ val, label }: { val: string; label: string }) => (
+    <button type="button" onClick={() => setFurnishing(furnishing === val ? "" : val)} style={{
+      padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
+      background: furnishing === val ? DS.accent : "#ffffff",
+      color: furnishing === val ? "#ffffff" : DS.textSub,
+      border: furnishing === val ? `1.5px solid ${DS.accent}` : `1.5px solid ${DS.border}`,
+    }}>{label}</button>
+  );
+
+  const priceK = (p: number) => p >= 100000 ? `${(p / 100000).toFixed(1)}L` : `${Math.round(p / 1000)}K`;
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <h3 style={{ fontSize: 13, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>
-          Owner Listings
-        </h3>
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <span style={{ fontSize: 12, color: DS.textMut }}>Direct from owners — no broker fee</span>
         {!showForm && !submitted && (
-          <button
-            onClick={() => setShowForm(true)}
-            style={{ fontSize: 11, fontWeight: 600, color: "#374151", background: "#f1f5f9", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "3px 9px", cursor: "pointer" }}
-          >
-            + List yours
+          <button onClick={() => setShowForm(true)} style={{
+            fontSize: 12, fontWeight: 700, color: "#ffffff",
+            background: DS.accent, border: "none", borderRadius: 8,
+            padding: "6px 12px", cursor: "pointer",
+          }}>
+            + List my flat
           </button>
         )}
       </div>
 
-      {showForm && (
-        <div style={{ border: "1.5px solid #e5e7eb", borderRadius: 8, padding: "12px", marginBottom: 10 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#374151", margin: "0 0 10px" }}>List your rental</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
-            <div>
-              <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Monthly rent ₹ *</label>
-              <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="e.g. 25000" style={inputStyle} />
-            </div>
-            <div>
-              <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>BHK</label>
-              <select value={bhk} onChange={(e) => setBhk(e.target.value)} style={{ ...inputStyle, background: "white", cursor: "pointer" }}>
-                <option value="">—</option>
-                {[1,2,3,4].map((n) => <option key={n} value={n}>{n} BHK</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Deposit ₹</label>
-              <input type="number" value={deposit} onChange={(e) => setDeposit(e.target.value)} placeholder="e.g. 75000" style={inputStyle} />
-            </div>
-            <div>
-              <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Furnishing</label>
-              <select value={furnishing} onChange={(e) => setFurnishing(e.target.value)} style={{ ...inputStyle, background: "white", cursor: "pointer" }}>
-                <option value="">—</option>
-                <option value="furnished">Furnished</option>
-                <option value="semi-furnished">Semi-furnished</option>
-                <option value="unfurnished">Unfurnished</option>
-              </select>
-            </div>
-          </div>
-          <div style={{ marginBottom: 8 }}>
-            <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Address / landmark</label>
-            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="e.g. Near Forum Mall, 2nd Main" maxLength={200} style={inputStyle} />
-          </div>
-          <div style={{ marginBottom: 8 }}>
-            <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>WhatsApp / phone</label>
-            <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="e.g. 9876543210" maxLength={100} style={inputStyle} />
-          </div>
-          <div style={{ marginBottom: 10 }}>
-            <label style={{ fontSize: 11, color: "#6b7280", display: "block", marginBottom: 3 }}>Exact location (optional)</label>
-            {pin ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ fontSize: 11, color: "#059669", fontWeight: 600 }}>
-                  📍 Pinned · {pin.lat.toFixed(4)}, {pin.lon.toFixed(4)}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setPin(null)}
-                  style={{ fontSize: 11, color: "#6b7280", background: "white", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}
-                >
-                  Clear
-                </button>
-              </div>
-            ) : pickingPin ? (
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ fontSize: 11, color: "#d97706", fontWeight: 600 }}>Click anywhere on the map…</span>
-                <button
-                  type="button"
-                  onClick={onCancelPin}
-                  style={{ fontSize: 11, color: "#6b7280", background: "white", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}
-                >
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={async () => { const p = await onRequestPin(); if (p) setPin(p); }}
-                style={{ fontSize: 11, fontWeight: 600, color: "#374151", background: "#f1f5f9", border: "1.5px solid #94a3b8", borderRadius: 6, padding: "4px 10px", cursor: "pointer" }}
-              >
-                📍 Pin on map
-              </button>
-            )}
-          </div>
-          {formError && <p style={{ fontSize: 11, color: "#ef4444", margin: "0 0 8px" }}>{formError}</p>}
-          <div style={{ display: "flex", gap: 6 }}>
-            <button onClick={handleSubmit} disabled={submitting}
-              style={{ flex: 1, padding: "7px 0", borderRadius: 6, fontSize: 12, fontWeight: 700, background: "#111827", color: "white", border: "none", cursor: "pointer", opacity: submitting ? 0.7 : 1 }}>
-              {submitting ? "Submitting…" : "Submit"}
-            </button>
-            <button onClick={() => { setShowForm(false); setFormError(null); }}
-              style={{ padding: "7px 14px", borderRadius: 6, fontSize: 12, fontWeight: 600, background: "white", color: "#374151", border: "1.5px solid #94a3b8", cursor: "pointer" }}>
-              Cancel
-            </button>
-          </div>
-          <p style={{ fontSize: 10, color: "#9ca3af", margin: "8px 0 0" }}>
-            Your contact info will be visible to other users.
-          </p>
+      {/* Success banner */}
+      {submitted && (
+        <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 10, padding: "10px 14px", marginBottom: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 13, color: "#16a34a", fontWeight: 600 }}>✓ Listing live! Seekers can now contact you.</span>
+          <button onClick={() => setSubmitted(false)} style={{ fontSize: 11, color: DS.textMut, background: "none", border: "none", cursor: "pointer" }}>×</button>
         </div>
       )}
 
-      {submitted && (
-        <p style={{ fontSize: 12, color: "#059669", margin: "0 0 10px" }}>✓ Listing submitted!</p>
+      {/* Form */}
+      {showForm && (
+        <div style={{ background: "#faf9f7", border: `1.5px solid ${DS.border}`, borderRadius: 12, padding: "16px", marginBottom: 14 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: DS.text, marginBottom: 14 }}>List your flat in {locality}</div>
+
+          {/* BHK */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Bedrooms (BHK)</label>
+            <div style={{ display: "flex", gap: 6 }}>
+              {[1,2,3,4].map((n) => <BhkBtn key={n} n={n} />)}
+            </div>
+          </div>
+
+          {/* Rent + Deposit */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Monthly Rent ₹ *</label>
+              <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="e.g. 25000" style={inp} />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Deposit ₹</label>
+              <input type="number" value={deposit} onChange={(e) => setDeposit(e.target.value)} placeholder="e.g. 75000" style={inp} />
+            </div>
+          </div>
+
+          {/* Furnishing */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Furnishing</label>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              <FurnBtn val="furnished" label="Furnished" />
+              <FurnBtn val="semi-furnished" label="Semi" />
+              <FurnBtn val="unfurnished" label="Unfurnished" />
+            </div>
+          </div>
+
+          {/* Address */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Landmark / Address</label>
+            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="e.g. Near Forum Mall, 2nd Main" maxLength={200} style={inp} />
+          </div>
+
+          {/* Contact */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>WhatsApp / Phone *</label>
+            <input type="text" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="e.g. 9876543210" maxLength={15} style={inp} />
+          </div>
+
+          {/* Pin on map */}
+          <div style={{ marginBottom: 14 }}>
+            <label style={{ fontSize: 11, fontWeight: 600, color: DS.textSub, display: "block", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.06em" }}>Exact Location</label>
+            {pin ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 12, color: "#16a34a", fontWeight: 600 }}>📍 Pinned ({pin.lat.toFixed(4)}, {pin.lon.toFixed(4)})</span>
+                <button type="button" onClick={() => setPin(null)} style={{ fontSize: 11, color: DS.textMut, background: "white", border: `1px solid ${DS.border}`, borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}>Clear</button>
+              </div>
+            ) : pickingPin ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 12, color: DS.accent, fontWeight: 600 }}>Tap anywhere on the map…</span>
+                <button type="button" onClick={onCancelPin} style={{ fontSize: 11, color: DS.textMut, background: "white", border: `1px solid ${DS.border}`, borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}>Cancel</button>
+              </div>
+            ) : (
+              <button type="button" onClick={async () => { const p = await onRequestPin(); if (p) setPin(p); }}
+                style={{ fontSize: 12, fontWeight: 600, color: DS.accent, background: "#fef7f4", border: `1.5px solid ${DS.accent}`, borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}>
+                📍 Drop pin on map
+              </button>
+            )}
+          </div>
+
+          {formError && <p style={{ fontSize: 12, color: "#dc2626", margin: "0 0 10px" }}>{formError}</p>}
+
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={handleSubmit} disabled={submitting} style={{
+              flex: 1, padding: "10px 0", borderRadius: 8, fontSize: 13, fontWeight: 700,
+              background: DS.accent, color: "white", border: "none", cursor: "pointer",
+              opacity: submitting ? 0.7 : 1,
+            }}>
+              {submitting ? "Submitting…" : "List flat"}
+            </button>
+            <button onClick={() => { setShowForm(false); resetForm(); }} style={{
+              padding: "10px 16px", borderRadius: 8, fontSize: 13, fontWeight: 600,
+              background: "white", color: DS.textSub, border: `1.5px solid ${DS.border}`, cursor: "pointer",
+            }}>
+              Cancel
+            </button>
+          </div>
+          <p style={{ fontSize: 11, color: DS.textMut, margin: "8px 0 0" }}>Your number will be shown to interested seekers.</p>
+        </div>
       )}
 
+      {/* Listings */}
       {loading ? (
-        <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>Loading…</p>
-      ) : allListings.length === 0 ? (
-        <p style={{ fontSize: 12, color: "#9ca3af", margin: 0 }}>No owner listings yet.</p>
+        <p style={{ fontSize: 13, color: DS.textMut }}>Loading…</p>
+      ) : listings.length === 0 && !submitted ? (
+        <div style={{ textAlign: "center", padding: "16px 0" }}>
+          <p style={{ fontSize: 13, color: DS.textMut, margin: "0 0 6px" }}>No owner listings yet in {locality}.</p>
+          {!showForm && <p style={{ fontSize: 12, color: DS.textMut }}>Be the first — list your flat above.</p>}
+        </div>
       ) : (
-        allListings.map((l) => (
-          <div key={l.id} style={{ border: "1px solid #e5e7eb", borderRadius: 8, padding: "10px 12px", marginBottom: 8, background: "white" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>
-                ₹{l.price.toLocaleString("en-IN")}<span style={{ fontSize: 11, fontWeight: 400, color: "#6b7280" }}>/mo</span>
+        listings.map((l) => (
+          <div key={l.id} style={{ border: `1px solid ${DS.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8, background: "#ffffff" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+              <div>
+                <span style={{ fontSize: 17, fontWeight: 800, color: DS.text }}>₹{priceK(l.price)}</span>
+                <span style={{ fontSize: 12, color: DS.textMut }}>/mo</span>
+                {l.bhk && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 600, color: DS.textSub }}>{l.bhk}BHK</span>}
               </div>
-              <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 6px", borderRadius: 8, background: "#fdf4ff", color: "#7e22ce" }}>Owner</span>
+              <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 20, background: "#fef7f4", color: DS.accent, border: `1px solid rgba(196,98,45,0.2)` }}>Owner</span>
             </div>
-            <div style={{ fontSize: 12, color: "#374151", marginBottom: 4 }}>
-              {[l.bhk ? `${l.bhk}BHK` : null, l.area_sqft ? `${l.area_sqft} sqft` : null, l.furnishing ?? null].filter(Boolean).join(" · ")}
+            <div style={{ fontSize: 12, color: DS.textSub, marginBottom: l.deposit || l.address ? 4 : 0 }}>
+              {[l.furnishing, l.area_sqft ? `${l.area_sqft} sqft` : null].filter(Boolean).join(" · ")}
             </div>
-            {l.deposit && <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 4 }}>Deposit: ₹{l.deposit.toLocaleString("en-IN")}</div>}
-            {l.address && <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{l.address}</div>}
+            {l.deposit && <div style={{ fontSize: 11, color: DS.textMut, marginBottom: 2 }}>Deposit ₹{priceK(l.deposit)}</div>}
+            {l.address && <div style={{ fontSize: 11, color: DS.textMut, marginBottom: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📍 {l.address}</div>}
             {l.contact && (
-              <div style={{ fontSize: 11, fontWeight: 600, color: DS.accent }}>
+              <div>
                 {/^\d{10,12}$/.test(l.contact.replace(/\D/g, "")) ? (
                   <a
                     href={`https://wa.me/${l.contact.replace(/\D/g, "").length === 10 ? `91${l.contact.replace(/\D/g, "")}` : l.contact.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: DS.accent, textDecoration: "none" }}
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 13, fontWeight: 700, color: "#16a34a", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}
                   >
-                    WhatsApp owner →
+                    💬 WhatsApp owner
                   </a>
-                ) : <span>{l.contact}</span>}
+                ) : (
+                  <span style={{ fontSize: 12, color: DS.textSub }}>{l.contact}</span>
+                )}
               </div>
             )}
           </div>
@@ -1652,10 +1664,9 @@ function LocalityDetail({
       <Block tint="cream" label="Listings">
         <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
       </Block>
-      {/* OWNER LISTINGS FEATURE DISABLED: Temporarily hidden pending UX redesign. Component preserved at line ~1256. */}
-      {/* <Block tint="lilac" label="Owner listings">
+      <Block tint="lilac" label="Owner listings">
         <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
-      </Block> */}
+      </Block>
       <Block tint="sky" label="Commute">
         <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
       </Block>
@@ -1919,7 +1930,7 @@ export default function Home() {
     if (!map) return;
     for (const l of listings) {
       if (!l.lat || !l.lon) continue;
-      const el = createListingPin(l.price, l.isOwner ?? false);
+      const el = createListingPin(l.price, (l as ListingRow & { isOwner?: boolean; bhk?: number | null }).bhk ?? null, l.isOwner ?? false);
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
         .setLngLat([l.lon, l.lat])
         .addTo(map);
