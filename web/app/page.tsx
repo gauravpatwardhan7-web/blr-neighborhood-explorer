@@ -1869,6 +1869,8 @@ export default function Home() {
   // ── Pin cursor: floating pin indicator that follows mouse/touch in pick mode ─
   useEffect(() => {
     if (!pickingPin) { setPinCursor(null); return; }
+    // Seed to center of viewport so pin is visible immediately on entry
+    setPinCursor({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
     const onMouseMove = (e: MouseEvent) => setPinCursor({ x: e.clientX, y: e.clientY });
     const onTouchMove = (e: TouchEvent) => {
       const t = e.touches[0];
@@ -2546,7 +2548,6 @@ export default function Home() {
             transform: "translate(-50%, -100%)",
             pointerEvents: "none",
             zIndex: 99,
-            transition: "left 0.04s linear, top 0.04s linear",
           }}
         >
           {/* Pin SVG — terracotta drop pin */}
