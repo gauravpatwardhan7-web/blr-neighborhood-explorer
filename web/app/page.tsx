@@ -418,7 +418,7 @@ function Legend() {
         { color: "#f87171", label: "Score 1–4",  tag: "Low"   },
       ].map(({ color, label, tag }) => (
         <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-          <span style={{ width: 10, height: 10, borderRadius: "50%", background: color, display: "inline-block", flexShrink: 0, boxShadow: `0 0 8px ${color}80` }} />
+          <span style={{ width: 10, height: 10, borderRadius: "50%", background: color, display: "inline-block", flexShrink: 0 }} />
           <span style={{ color: DS.textSub }}>{label}</span>
           <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, color, background: `${color}18`, padding: "1px 8px", borderRadius: 10 }}>{tag}</span>
         </div>
@@ -438,7 +438,7 @@ function FactorBars({ factors }: { factors: Locality["factors"] }) {
             <span style={{ fontWeight: 700, color: scoreColor(v), fontSize: 13 }}>{v}/10</span>
           </div>
           <div style={{ height: 6, background: "rgba(255,255,255,0.07)", borderRadius: 3 }}>
-            <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3, transition: "width 0.3s ease", boxShadow: `0 0 8px ${scoreColor(v)}60` }} />
+            <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3, transition: "width 0.3s ease" }} />
           </div>
         </div>
       ))}
@@ -475,11 +475,11 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
 function SentimentCard({ data }: { data: SentimentEntry }) {
   const c = SENTIMENT_COLORS[data.label];
   const pct = Math.round(((data.compound + 1) / 2) * 100);
-  // Remap sentiment colors for dark bg
+  // Sentiment colours — muted, non-neon
   const DARK_SENTIMENT: Record<string, { bg: string; text: string; bar: string; card: string }> = {
-    Positive: { bg: "rgba(52,211,153,0.15)", text: "#34d399", bar: "#34d399", card: "rgba(52,211,153,0.07)" },
-    Neutral:  { bg: "rgba(148,163,184,0.15)", text: "#94a3b8", bar: "#94a3b8", card: "rgba(148,163,184,0.07)" },
-    Negative: { bg: "rgba(251,113,133,0.15)", text: "#fb7185", bar: "#fb7185", card: "rgba(251,113,133,0.07)" },
+    Positive: { bg: "rgba(134,239,172,0.10)", text: "#86efac", bar: "#86efac", card: "rgba(255,255,255,0.03)" },
+    Neutral:  { bg: "rgba(163,163,163,0.10)", text: "#a3a3a3", bar: "#a3a3a3", card: "rgba(255,255,255,0.03)" },
+    Negative: { bg: "rgba(252,165,165,0.10)", text: "#fca5a5", bar: "#fca5a5", card: "rgba(255,255,255,0.03)" },
   };
   const dc = DARK_SENTIMENT[data.label];
   return (
@@ -758,7 +758,7 @@ function ListingsPanel({
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    fontSize: 11, fontWeight: 600, color: "#3b82f6",
+                    fontSize: 11, fontWeight: 600, color: DS.accentLt,
                     textDecoration: "none", display: "inline-block",
                   }}
                 >
@@ -1472,13 +1472,13 @@ function UserListingsPanel({
             {l.deposit && <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 4 }}>Deposit: ₹{l.deposit.toLocaleString("en-IN")}</div>}
             {l.address && <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{l.address}</div>}
             {l.contact && (
-              <div style={{ fontSize: 11, fontWeight: 600, color: "#3b82f6" }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: DS.accent }}>
                 {/^\d{10,12}$/.test(l.contact.replace(/\D/g, "")) ? (
                   <a
                     href={`https://wa.me/${l.contact.replace(/\D/g, "").length === 10 ? `91${l.contact.replace(/\D/g, "")}` : l.contact.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: "#3b82f6", textDecoration: "none" }}
+                    style={{ color: DS.accent, textDecoration: "none" }}
                   >
                     WhatsApp owner →
                   </a>
@@ -1495,24 +1495,24 @@ function UserListingsPanel({
 // ── Block — a colored, rounded card used to group panel content ───────────────
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const DS = {
-  bg:       "#0f172a",   // sidebar background
-  card:     "#1e293b",   // card background
-  border:   "rgba(148,163,184,0.12)",
-  borderMd: "rgba(148,163,184,0.20)",
-  text:     "#f1f5f9",   // primary text
-  textSub:  "#94a3b8",   // secondary text
-  textMut:  "#64748b",   // muted text
-  accent:   "#7c3aed",   // electric violet
-  accentLt: "#a78bfa",   // light violet
+  bg:       "#111111",   // warm near-black
+  card:     "#1c1c1c",   // card surface
+  border:   "rgba(255,255,255,0.07)",
+  borderMd: "rgba(255,255,255,0.12)",
+  text:     "#f5f5f5",   // warm white
+  textSub:  "#a3a3a3",   // neutral gray
+  textMut:  "#6b6b6b",   // muted gray
+  accent:   "#ea580c",   // deep orange — the one exciting colour
+  accentLt: "#fb923c",   // lighter orange
 };
 
 const BLOCK_TINTS: Record<string, { bg: string; border: string; accent: string }> = {
-  cream:    { bg: DS.card, border: DS.border, accent: DS.accentLt },
-  sage:     { bg: DS.card, border: DS.border, accent: "#34d399" },
-  blush:    { bg: DS.card, border: DS.border, accent: "#fb7185" },
-  sky:      { bg: DS.card, border: DS.border, accent: "#38bdf8" },
-  lilac:    { bg: DS.card, border: DS.border, accent: "#c084fc" },
-  sand:     { bg: DS.card, border: DS.border, accent: "#fbbf24" },
+  cream:    { bg: DS.card, border: DS.border, accent: DS.accent },
+  sage:     { bg: DS.card, border: DS.border, accent: DS.accent },
+  blush:    { bg: DS.card, border: DS.border, accent: DS.accent },
+  sky:      { bg: DS.card, border: DS.border, accent: DS.accent },
+  lilac:    { bg: DS.card, border: DS.border, accent: DS.accent },
+  sand:     { bg: DS.card, border: DS.border, accent: DS.accent },
 };
 function Block({
   tint = "cream",
@@ -1619,7 +1619,7 @@ function LocalityDetail({
           </button>
         </div>
       </div>
-      <Block tint="cream" style={{ padding: "18px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}>
+      <Block tint="cream" style={{ padding: "18px 20px", marginBottom: 16 }}>
         <div style={{
           fontFamily: "var(--font-display)",
           fontSize: 28, fontWeight: 700, lineHeight: 1.05, color: DS.text,
@@ -1628,10 +1628,10 @@ function LocalityDetail({
           {selected.name}
         </div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 10, fontFamily: "var(--font-display)" }}>
-          <span style={{ fontSize: 64, fontWeight: 800, color: scoreColor(score), lineHeight: 1, textShadow: `0 0 32px ${scoreColor(score)}50` }}>{score}</span>
+          <span style={{ fontSize: 64, fontWeight: 800, color: scoreColor(score), lineHeight: 1 }}>{score}</span>
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <span style={{ fontSize: 14, color: DS.textMut, fontWeight: 500 }}>/ 10</span>
-            <span style={{ fontSize: 11, color: DS.accentLt, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>Liveability</span>
+            <span style={{ fontSize: 11, color: DS.textMut, fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em" }}>Liveability</span>
           </div>
         </div>
       </Block>
@@ -2488,7 +2488,7 @@ export default function Home() {
                                 {i + 1}
                               </span>
                               <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: DS.text, textAlign: "left" }}>{loc.name}</span>
-                              <span style={{ fontSize: 18, fontWeight: 800, color: scoreColor(s), textShadow: `0 0 10px ${scoreColor(s)}60` }}>{s}</span>
+                              <span style={{ fontSize: 18, fontWeight: 800, color: scoreColor(s) }}>{s}</span>
                             </button>
                           );
                         })}
