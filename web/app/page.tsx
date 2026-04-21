@@ -57,7 +57,7 @@ const DEFAULT_WEIGHTS: Weights = {
 // NORM floor raised to 3.5 so outer suburbs aren't brutally penalised.
 const SCORE_RAW_MIN = 0.076;
 const SCORE_RAW_MAX = 8.031;
-const SCORE_NORM_MIN = 3.5;
+const SCORE_NORM_MIN = 2.5;
 const SCORE_NORM_MAX = 9.5;
 
 const SLIDER_LABELS: Record<FactorKey, string> = {
