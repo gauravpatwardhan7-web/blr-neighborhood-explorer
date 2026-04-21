@@ -82,9 +82,9 @@ function commuteColor(min: number): string {
 }
 
 const SENTIMENT_COLORS = {
-  Positive: { bg: "#ecfdf5", text: "#065f46", bar: "#4ade80" },
-  Neutral:  { bg: "#f3f4f6", text: "#374151", bar: "#9ca3af" },
-  Negative: { bg: "#fef2f2", text: "#7f1d1d", bar: "#f87171" },
+  Positive: { bg: "#f0fdf4", text: "#16a34a", bar: "#16a34a" },
+  Neutral:  { bg: "#f5f5f4", text: "#78716c", bar: "#a8a29e" },
+  Negative: { bg: "#fef2f2", text: "#dc2626", bar: "#dc2626" },
 } as const;
 
 const FILTER_OPTIONS: {
@@ -94,10 +94,10 @@ const FILTER_OPTIONS: {
   bg: string;
   activeBg: string;
 }[] = [
-  { value: "all",   label: "All",   color: "#111827", bg: "white",   activeBg: "#111827" },
-  { value: "great", label: "Great", color: "#065f46", bg: "#ecfdf5", activeBg: "#4ade80" },
-  { value: "good",  label: "Good",  color: "#78350f", bg: "#fffbeb", activeBg: "#fbbf24" },
-  { value: "low",   label: "Low",   color: "#7f1d1d", bg: "#fef2f2", activeBg: "#f87171" },
+  { value: "all",   label: "All",   color: "#1c1917", bg: "white",   activeBg: "#1c1917" },
+  { value: "great", label: "Great", color: "#14532d", bg: "#f0fdf4", activeBg: "#16a34a" },
+  { value: "good",  label: "Good",  color: "#78350f", bg: "#fffbeb", activeBg: "#d97706" },
+  { value: "low",   label: "Low",   color: "#7f1d1d", bg: "#fef2f2", activeBg: "#dc2626" },
 ];
 
 // ── Tech park destinations ───────────────────────────────────────────────────
@@ -132,9 +132,9 @@ function recomputeScore(factors: Locality["factors"], weights: Weights): number 
 }
 
 function scoreColor(score: number): string {
-  if (score >= 7) return "#4ade80";
-  if (score >= 4) return "#fbbf24";
-  return "#f87171";
+  if (score >= 7) return "#16a34a";
+  if (score >= 4) return "#d97706";
+  return "#dc2626";
 }
 
 // Allow only http/https URLs in anchor hrefs — rejects javascript: and other schemes.
@@ -413,9 +413,9 @@ function Legend() {
   return (
     <div style={{ fontSize: 13, color: DS.textSub }}>
       {[
-        { color: "#4ade80", label: "Score 7–10", tag: "Great" },
-        { color: "#fbbf24", label: "Score 4–7",  tag: "Good"  },
-        { color: "#f87171", label: "Score 1–4",  tag: "Low"   },
+        { color: "#16a34a", label: "Score 7–10", tag: "Great" },
+        { color: "#d97706", label: "Score 4–7",  tag: "Good"  },
+        { color: "#dc2626", label: "Score 1–4",  tag: "Low"   },
       ].map(({ color, label, tag }) => (
         <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
           <span style={{ width: 10, height: 10, borderRadius: "50%", background: color, display: "inline-block", flexShrink: 0 }} />
@@ -437,7 +437,7 @@ function FactorBars({ factors }: { factors: Locality["factors"] }) {
             <span style={{ color: DS.textSub }}>{SLIDER_LABELS[k as FactorKey] ?? k.replace(/_/g, " ")}</span>
             <span style={{ fontWeight: 700, color: scoreColor(v), fontSize: 13 }}>{v}/10</span>
           </div>
-          <div style={{ height: 6, background: "rgba(255,255,255,0.07)", borderRadius: 3 }}>
+          <div style={{ height: 6, background: "rgba(0,0,0,0.07)", borderRadius: 3 }}>
             <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3, transition: "width 0.3s ease" }} />
           </div>
         </div>
@@ -475,13 +475,13 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
 function SentimentCard({ data }: { data: SentimentEntry }) {
   const c = SENTIMENT_COLORS[data.label];
   const pct = Math.round(((data.compound + 1) / 2) * 100);
-  // Sentiment colours — muted, non-neon
-  const DARK_SENTIMENT: Record<string, { bg: string; text: string; bar: string; card: string }> = {
-    Positive: { bg: "rgba(134,239,172,0.10)", text: "#86efac", bar: "#86efac", card: "rgba(255,255,255,0.03)" },
-    Neutral:  { bg: "rgba(163,163,163,0.10)", text: "#a3a3a3", bar: "#a3a3a3", card: "rgba(255,255,255,0.03)" },
-    Negative: { bg: "rgba(252,165,165,0.10)", text: "#fca5a5", bar: "#fca5a5", card: "rgba(255,255,255,0.03)" },
+  // Sentiment colours — warm light-mode palette
+  const LIGHT_SENTIMENT: Record<string, { bg: string; text: string; bar: string; card: string }> = {
+    Positive: { bg: "rgba(22,163,74,0.08)",   text: "#16a34a", bar: "#16a34a", card: "rgba(0,0,0,0.02)" },
+    Neutral:  { bg: "rgba(120,113,108,0.08)",  text: "#78716c", bar: "#a8a29e", card: "rgba(0,0,0,0.02)" },
+    Negative: { bg: "rgba(220,38,38,0.08)",    text: "#dc2626", bar: "#dc2626", card: "rgba(0,0,0,0.02)" },
   };
-  const dc = DARK_SENTIMENT[data.label];
+  const dc = LIGHT_SENTIMENT[data.label];
   return (
     <div>
       {/* Header row */}
@@ -492,14 +492,14 @@ function SentimentCard({ data }: { data: SentimentEntry }) {
         </span>
       </div>
       {/* Sentiment bar */}
-      <div style={{ height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, marginBottom: 12 }}>
+      <div style={{ height: 4, background: "rgba(0,0,0,0.07)", borderRadius: 2, marginBottom: 12 }}>
         <div style={{ height: 4, width: `${pct}%`, background: dc.bar, borderRadius: 2, transition: "width 0.4s" }} />
       </div>
       {/* Vote counts */}
       <div style={{ display: "flex", gap: 12, fontSize: 12, color: DS.textMut, marginBottom: 14 }}>
-        <span style={{ color: "#34d399" }}>👍 {data.positive}</span>
-        <span>😐 {data.neutral}</span>
-        <span style={{ color: "#fb7185" }}>👎 {data.negative}</span>
+        <span style={{ color: "#16a34a" }}>👍 {data.positive}</span>
+        <span style={{ color: "#78716c" }}>😐 {data.neutral}</span>
+        <span style={{ color: "#dc2626" }}>👎 {data.negative}</span>
       </div>
       {/* Summary */}
       {data.summary && (
@@ -1495,24 +1495,24 @@ function UserListingsPanel({
 // ── Block — a colored, rounded card used to group panel content ───────────────
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const DS = {
-  bg:       "#111111",   // warm near-black
-  card:     "#1c1c1c",   // card surface
-  border:   "rgba(255,255,255,0.07)",
-  borderMd: "rgba(255,255,255,0.12)",
-  text:     "#f5f5f5",   // warm white
-  textSub:  "#a3a3a3",   // neutral gray
-  textMut:  "#6b6b6b",   // muted gray
-  accent:   "#ea580c",   // deep orange — the one exciting colour
-  accentLt: "#fb923c",   // lighter orange
+  bg:       "#faf9f7",   // warm off-white
+  card:     "#ffffff",   // pure white card surface
+  border:   "#e8e0d8",   // warm gray border
+  borderMd: "#d4c9be",   // medium warm border
+  text:     "#1c1917",   // near-black
+  textSub:  "#78716c",   // stone-500
+  textMut:  "#a8a29e",   // stone-400
+  accent:   "#c4622d",   // terracotta
+  accentLt: "#e07a4a",   // lighter terracotta
 };
 
 const BLOCK_TINTS: Record<string, { bg: string; border: string; accent: string }> = {
-  cream:    { bg: DS.card, border: DS.border, accent: DS.accent },
-  sage:     { bg: DS.card, border: DS.border, accent: DS.accent },
-  blush:    { bg: DS.card, border: DS.border, accent: DS.accent },
-  sky:      { bg: DS.card, border: DS.border, accent: DS.accent },
-  lilac:    { bg: DS.card, border: DS.border, accent: DS.accent },
-  sand:     { bg: DS.card, border: DS.border, accent: DS.accent },
+  cream:    { bg: "#ffffff", border: "#e8e0d8", accent: "#c4622d" },
+  sage:     { bg: "#f5faf5", border: "#d1e8d0", accent: "#16a34a" },
+  blush:    { bg: "#fdf6f3", border: "#f0ddd5", accent: "#c4622d" },
+  sky:      { bg: "#f3f8fd", border: "#cce0f5", accent: "#2563eb" },
+  lilac:    { bg: "#f8f5fd", border: "#ddd0f5", accent: "#7c3aed" },
+  sand:     { bg: "#faf7f2", border: "#e8dfd0", accent: "#92400e" },
 };
 function Block({
   tint = "cream",
@@ -1533,7 +1533,7 @@ function Block({
       borderRadius: 16,
       padding: "14px 16px",
       marginBottom: 12,
-      boxShadow: "0 4px 16px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.02)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.03)",
       ...style,
     }}>
       {label && (
@@ -1594,7 +1594,7 @@ function LocalityDetail({
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
         <button
           onClick={onDismiss}
-          style={{ fontSize: 13, color: DS.textSub, background: "rgba(255,255,255,0.06)", border: `1px solid ${DS.border}`, borderRadius: 8, padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}
+          style={{ fontSize: 13, color: DS.textSub, background: "#f5f0eb", border: `1px solid ${DS.border}`, borderRadius: 8, padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}
         >
           ← Back
         </button>
@@ -1604,16 +1604,16 @@ function LocalityDetail({
             title={isFavorite ? "Remove from saved" : "Save neighbourhood"}
             style={{
               fontSize: 16, padding: "3px 9px", borderRadius: 8, cursor: "pointer", fontWeight: 600,
-              background: isFavorite ? "rgba(251,191,36,0.15)" : "rgba(255,255,255,0.06)",
-              color: isFavorite ? "#fbbf24" : DS.textMut,
-              border: isFavorite ? "1px solid rgba(251,191,36,0.35)" : `1px solid ${DS.border}`,
+              background: isFavorite ? "#fffbeb" : "#f5f0eb",
+              color: isFavorite ? "#d97706" : DS.textMut,
+              border: isFavorite ? "1px solid #fde68a" : `1px solid ${DS.border}`,
             }}
           >
             {isFavorite ? "★" : "☆"}
           </button>
           <button
             onClick={onCopy}
-            style={{ fontSize: 11, color: copied ? "#34d399" : DS.textSub, background: copied ? "rgba(52,211,153,0.1)" : "rgba(255,255,255,0.06)", border: copied ? "1px solid rgba(52,211,153,0.3)" : `1px solid ${DS.border}`, borderRadius: 8, padding: "3px 9px", cursor: "pointer", fontWeight: 600 }}
+            style={{ fontSize: 11, color: copied ? "#16a34a" : DS.textSub, background: copied ? "#f0fdf4" : "#f5f0eb", border: copied ? "1px solid #bbf7d0" : `1px solid ${DS.border}`, borderRadius: 8, padding: "3px 9px", cursor: "pointer", fontWeight: 600 }}
           >
             {copied ? "✓ Copied!" : "🔗 Copy link"}
           </button>
@@ -1826,14 +1826,15 @@ export default function Home() {
     highlightedRef.current = loc.name;
     map.setFeatureState({ source: "localities", id: loc.name }, { hover: true });
 
-    // On mobile the bottom sheet expands to ~60dvh — shift the centre point up
-    // so the selected locality is visible in the portion above the sheet.
-    const bottomPad = isMobileRef.current ? Math.round(window.innerHeight * 0.62) : 0;
+    // On mobile the bottom sheet expands to ~72dvh — shift centre up so locality is
+    // visible above the sheet. On desktop the right panel is 400px — shift centre left.
+    const bottomPad = isMobileRef.current ? Math.round(window.innerHeight * 0.72) : 0;
+    const rightPad  = isMobileRef.current ? 0 : 420;
     map.flyTo({
       center: [loc.lon, loc.lat],
       zoom: 15,
       duration: 1000,
-      ...(bottomPad > 0 && { padding: { top: 80, bottom: bottomPad, left: 0, right: 0 } }),
+      padding: { top: 80, bottom: bottomPad, left: 0, right: rightPad },
     });
 
     setSelected(loc);
@@ -2051,7 +2052,7 @@ export default function Home() {
           ["<=", ["feature-state", "commuteMin"], 50], "#fdba74",
           "#fca5a5",
         ]
-      : ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"];
+      : ["step", ["get", "overall_score"], "#dc2626", 4, "#d97706", 7, "#16a34a"];
 
     const hasData = Object.keys(commuteData).length > 0;
 
@@ -2207,7 +2208,7 @@ export default function Home() {
         type: "fill",
         source: "localities",
         paint: {
-          "fill-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
+          "fill-color": ["step", ["get", "overall_score"], "#dc2626", 4, "#d97706", 7, "#16a34a"],
           "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.01],
         },
       });
@@ -2218,7 +2219,7 @@ export default function Home() {
         type: "line",
         source: "localities",
         paint: {
-          "line-color": ["step", ["get", "overall_score"], "#f87171", 4, "#fbbf24", 7, "#4ade80"],
+          "line-color": ["step", ["get", "overall_score"], "#dc2626", 4, "#d97706", 7, "#16a34a"],
           "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
         },
       });
@@ -2360,186 +2361,174 @@ export default function Home() {
   const currentScore = selected ? recomputeScore(selected.factors, weights) : null;
   const selectedFull = selected ? allLocalities.find((l) => l.name === selected.name) ?? null : null;
 
+  // ── Shared rankings list (reused in desktop card + mobile sheet) ────────────
+  const RankingsList = () => (
+    <>
+      <p style={{ fontSize: 10, fontWeight: 700, color: DS.accent, textTransform: "uppercase", letterSpacing: "0.12em", margin: "0 0 10px", display: "flex", alignItems: "center", gap: 6 }}>
+        <span style={{ width: 3, height: 10, borderRadius: 2, background: DS.accent, display: "inline-block" }} />
+        Top Neighbourhoods
+      </p>
+      {[...allLocalities]
+        .sort((a, b) => recomputeScore(b.factors, weights) - recomputeScore(a.factors, weights))
+        .slice(0, 5)
+        .map((loc, i) => {
+          const s = recomputeScore(loc.factors, weights);
+          return (
+            <button key={loc.name} onClick={() => flyToLocality(loc)} style={{
+              display: "flex", alignItems: "center", gap: 10, width: "100%",
+              background: i === 0 ? "#fef7f4" : "transparent",
+              border: i === 0 ? "1px solid rgba(196,98,45,0.2)" : "1px solid transparent",
+              borderRadius: 10, padding: "8px 10px", marginBottom: 4, cursor: "pointer",
+            }}>
+              <span style={{ fontSize: 13, fontWeight: 800, color: i === 0 ? DS.accent : DS.textMut, width: 18, textAlign: "center", flexShrink: 0 }}>{i + 1}</span>
+              <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: DS.text, textAlign: "left" }}>{loc.name}</span>
+              <span style={{ fontSize: 16, fontWeight: 800, color: scoreColor(s) }}>{s}</span>
+            </button>
+          );
+        })}
+    </>
+  );
+
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>
       {showGate && <EmailGate onSubmit={handleGateSubmit} submitting={gateSubmitting} />}
+
+      {/* Pin-picking banner */}
       {pickingPin && (
         <div style={{
-          position: "fixed", top: 12, left: "50%", transform: "translateX(-50%)", zIndex: 1000,
-          background: "#111827", color: "white", padding: "8px 14px", borderRadius: 999,
-          fontSize: 13, fontWeight: 600, boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          position: "fixed", top: 12, left: "50%", transform: "translateX(-50%)", zIndex: 100,
+          background: "#1c1917", color: "white", padding: "8px 16px", borderRadius: 999,
+          fontSize: 13, fontWeight: 600, boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
           display: "flex", alignItems: "center", gap: 10,
         }}>
           <span>📍 Click on the map to pin your listing</span>
-          <button
-            onClick={cancelPin}
-            style={{ fontSize: 11, color: "white", background: "transparent", border: "1.5px solid white", borderRadius: 999, padding: "2px 10px", cursor: "pointer", fontWeight: 600 }}
-          >
+          <button onClick={cancelPin} style={{ fontSize: 11, color: "white", background: "transparent", border: "1.5px solid rgba(255,255,255,0.5)", borderRadius: 999, padding: "2px 10px", cursor: "pointer", fontWeight: 600 }}>
             Cancel
           </button>
         </div>
       )}
 
-      {!isMobile ? (
-        /* ── Desktop layout ── */
-        <div style={{ display: "flex", height: "100vh", fontFamily: "sans-serif" }}>
-          <div ref={mapRef} style={{ flex: 1, overflow: "hidden", cursor: pickingPin ? "crosshair" : undefined }} />
+      {/* ── Map-first layout — unified for desktop + mobile ── */}
+      <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif" }}>
 
-          {/* Drag handle */}
-          <div
-            style={{
-              width: 5, cursor: "col-resize", flexShrink: 0,
-              background: "transparent", position: "relative", zIndex: 10,
-            }}
-            onMouseDown={(e) => {
-              e.preventDefault();
-              isDragging.current = true;
-              document.body.style.cursor = "col-resize";
-              document.body.style.userSelect = "none";
-              const onMove = (ev: MouseEvent) => {
-                if (!isDragging.current) return;
-                const newWidth = window.innerWidth - ev.clientX;
-                setSidebarWidth(Math.min(600, Math.max(280, newWidth)));
-              };
-              const onUp = () => {
-                isDragging.current = false;
-                document.body.style.cursor = "";
-                document.body.style.userSelect = "";
-                window.removeEventListener("mousemove", onMove);
-                window.removeEventListener("mouseup", onUp);
-              };
-              window.addEventListener("mousemove", onMove);
-              window.addEventListener("mouseup", onUp);
-            }}
-          >
-            {/* Visual grip dots */}
-            <div style={{
-              position: "absolute", top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              display: "flex", flexDirection: "column", gap: 4,
-            }}>
-              {[0,1,2].map(i => (
-                <div key={i} style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(148,163,184,0.3)" }} />
-              ))}
-            </div>
+        {/* Map: always fills the entire screen */}
+        <div
+          ref={mapRef}
+          style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5", overflow: "hidden", cursor: pickingPin ? "crosshair" : undefined }}
+        />
+
+        {/* ── Top floating bar: brand pill + search ── */}
+        <div style={{
+          position: "fixed",
+          top: "calc(16px + env(safe-area-inset-top, 0px))",
+          left: 16,
+          right: isMobile ? 16 : `calc(16px + ${selected ? "420px" : "0px"})`,
+          zIndex: 30,
+          display: "flex", alignItems: "center", gap: 10,
+          transition: "right 0.3s cubic-bezier(0.4,0,0.2,1)",
+        }}>
+          {/* Brand pill */}
+          <div style={{
+            fontFamily: "var(--font-display)",
+            fontSize: 20, fontWeight: 900, letterSpacing: "-0.04em",
+            color: DS.text,
+            background: "#ffffff",
+            border: `1px solid ${DS.border}`,
+            borderRadius: 12,
+            padding: "9px 14px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            flexShrink: 0, lineHeight: 1,
+          }}>
+            blr<span style={{ color: DS.accent }}>.</span>
           </div>
+          {/* Search */}
+          <div style={{ flex: 1, maxWidth: 480 }}>
+            <SearchBox
+              query={searchQuery}
+              onChange={setSearchQuery}
+              results={searchResults}
+              onSelect={flyToLocality}
+              onLocate={locateUser}
+              geoLoading={geoLoading}
+            />
+          </div>
+        </div>
 
-          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: `1px solid ${DS.border}`, background: DS.bg, flexShrink: 0 }}>
-            {/* Brand + search + filters */}
-            <div style={{ padding: "16px 18px 12px", borderBottom: `1px solid ${DS.border}`, flexShrink: 0, background: DS.bg }}>
-              <div style={{
-                fontFamily: "var(--font-display)",
-                fontSize: 26, fontWeight: 800, color: DS.text, letterSpacing: "-0.03em",
-                marginBottom: 2,
-              }}>
-                blr.
-              </div>
-              <div style={{ fontSize: 11, color: DS.accent, marginBottom: 12, fontWeight: 600, letterSpacing: "0.04em" }}>
-                Places to live, in Bengaluru
-              </div>
-              <div style={{ marginBottom: 10 }}>
-                <SearchBox
-                  query={searchQuery}
-                  onChange={setSearchQuery}
-                  results={searchResults}
-                  onSelect={flyToLocality}
-                  onLocate={locateUser}
-                  geoLoading={geoLoading}
-                  compact
-                />
-              </div>
-              <FilterChips value={scoreFilter} onChange={setScoreFilter} />
-            </div>
-            {/* Scrollable body */}
-            <div style={{ flex: 1, padding: 20, overflowY: "auto", background: DS.bg }}>
-              {!selected ? (
-                <div>
-                  <h2 style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: 30, fontWeight: 800, marginBottom: 4, color: DS.text,
-                    letterSpacing: "-0.03em", lineHeight: 1.1,
-                  }}>
-                    Find your<br/>next neighbourhood.
-                  </h2>
-                  <p style={{ fontSize: 13, color: DS.textMut, marginBottom: 20, lineHeight: 1.5 }}>Tap any dot on the map to see scores, reviews &amp; rentals.</p>
+        {/* Filter chips — below top bar */}
+        <div style={{
+          position: "fixed",
+          top: "calc(74px + env(safe-area-inset-top, 0px))",
+          left: 16,
+          right: isMobile ? 16 : `calc(16px + ${selected ? "420px" : "0px"})`,
+          zIndex: 30,
+          display: "flex", gap: 6, flexWrap: "wrap",
+          transition: "right 0.3s cubic-bezier(0.4,0,0.2,1)",
+        }}>
+          <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+        </div>
 
-                  {/* Rankings leaderboard */}
-                  {allLocalities.length > 0 && (
-                    <div style={{ marginBottom: 20 }}>
-                      <p style={{ fontSize: 10, fontWeight: 700, color: DS.accent, textTransform: "uppercase", letterSpacing: "0.12em", margin: "0 0 12px", display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ width: 3, height: 12, borderRadius: 2, background: DS.accent, display: "inline-block" }} />
-                        Top Neighbourhoods
-                      </p>
-                      {[...allLocalities]
-                        .sort((a, b) => recomputeScore(b.factors, weights) - recomputeScore(a.factors, weights))
-                        .slice(0, 5)
-                        .map((loc, i) => {
-                          const s = recomputeScore(loc.factors, weights);
-                          return (
-                            <button key={loc.name} onClick={() => flyToLocality(loc)} style={{
-                              display: "flex", alignItems: "center", gap: 12, width: "100%",
-                              background: i === 0 ? "rgba(124,58,237,0.08)" : "rgba(255,255,255,0.03)",
-                              border: i === 0 ? `1px solid rgba(124,58,237,0.25)` : `1px solid ${DS.border}`,
-                              borderRadius: 12, padding: "10px 14px", marginBottom: 6,
-                              cursor: "pointer", transition: "background 0.15s",
-                            }}>
-                              <span style={{ fontSize: 16, fontWeight: 800, color: i === 0 ? DS.accentLt : DS.textMut, width: 22, textAlign: "center", flexShrink: 0 }}>
-                                {i + 1}
-                              </span>
-                              <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: DS.text, textAlign: "left" }}>{loc.name}</span>
-                              <span style={{ fontSize: 18, fontWeight: 800, color: scoreColor(s) }}>{s}</span>
-                            </button>
-                          );
-                        })}
-                    </div>
-                  )}
-
-                  {/* Saved */}
-                  {favorites.size > 0 && (
-                    <div style={{ marginBottom: 16 }}>
-                      <p style={{ fontSize: 10, fontWeight: 700, color: DS.textMut, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 8px" }}>★ Saved</p>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                        {[...favorites].map((name) => {
-                          const loc = allLocalities.find((l) => l.name === name);
-                          if (!loc) return null;
-                          return (
-                            <button
-                              key={name}
-                              onClick={() => flyToLocality(loc)}
-                              style={{
-                                padding: "4px 10px", borderRadius: 16, fontSize: 12, fontWeight: 600,
-                                background: "rgba(251,191,36,0.1)", color: "#fbbf24",
-                                border: "1px solid rgba(251,191,36,0.25)",
-                                cursor: "pointer", display: "flex", alignItems: "center", gap: 5,
-                              }}
-                            >
-                              {name}
-                              <span style={{ fontSize: 11, color: scoreColor(recomputeScore(loc.factors, weights)) }}>
-                                {recomputeScore(loc.factors, weights)}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      <div style={{ margin: "14px 0 12px", borderTop: `1px solid ${DS.border}` }} />
-                    </div>
-                  )}
-                  <Legend />
-                  <div style={{ margin: "20px 0", borderTop: `1px solid ${DS.border}` }} />
-                  <HeatmapPanel
-                    active={heatmapActive}
-                    onToggle={setHeatmapActive}
-                    dest={heatmapDest}
-                    onDestChange={setHeatmapDest}
-                    mode={heatmapMode}
-                    onModeChange={setHeatmapMode}
-                    loading={heatmapLoading}
-                    commuteData={commuteData}
-                    localities={allLocalities}
-                  />
+        {/* ── Desktop: floating rankings + legend card — bottom left ── */}
+        {!isMobile && !selected && allLocalities.length > 0 && (
+          <div style={{
+            position: "fixed", bottom: 32, left: 24, zIndex: 20,
+            width: 280, maxHeight: "calc(100dvh - 120px)", overflowY: "auto",
+            background: "#ffffff",
+            borderRadius: 18,
+            boxShadow: "0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06)",
+            border: `1px solid ${DS.border}`,
+            padding: "14px 16px",
+          }}>
+            <RankingsList />
+            {favorites.size > 0 && (
+              <>
+                <div style={{ margin: "12px 0 10px", borderTop: `1px solid ${DS.border}` }} />
+                <p style={{ fontSize: 10, fontWeight: 700, color: DS.textMut, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 8px" }}>★ Saved</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                  {[...favorites].map((name) => {
+                    const loc = allLocalities.find((l) => l.name === name);
+                    if (!loc) return null;
+                    return (
+                      <button key={name} onClick={() => flyToLocality(loc)} style={{ padding: "4px 10px", borderRadius: 16, fontSize: 12, fontWeight: 600, background: "#fffbeb", color: "#d97706", border: "1px solid #fde68a", cursor: "pointer", display: "flex", alignItems: "center", gap: 5 }}>
+                        {name}
+                        <span style={{ fontSize: 11, color: scoreColor(recomputeScore(loc.factors, weights)) }}>{recomputeScore(loc.factors, weights)}</span>
+                      </button>
+                    );
+                  })}
                 </div>
-              ) : (
+              </>
+            )}
+            <div style={{ margin: "12px 0 10px", borderTop: `1px solid ${DS.border}` }} />
+            <Legend />
+            <div style={{ margin: "12px 0 10px", borderTop: `1px solid ${DS.border}` }} />
+            <HeatmapPanel
+              active={heatmapActive}
+              onToggle={setHeatmapActive}
+              dest={heatmapDest}
+              onDestChange={setHeatmapDest}
+              mode={heatmapMode}
+              onModeChange={setHeatmapMode}
+              loading={heatmapLoading}
+              commuteData={commuteData}
+              localities={allLocalities}
+            />
+          </div>
+        )}
+
+        {/* ── Desktop: right-side detail panel ── */}
+        {!isMobile && (
+          <div style={{
+            position: "fixed", top: 0, right: 0, bottom: 0,
+            width: selected ? 420 : 0,
+            background: DS.bg,
+            borderLeft: selected ? `1px solid ${DS.border}` : "none",
+            overflowX: "hidden",
+            transition: "width 0.3s cubic-bezier(0.4,0,0.2,1)",
+            zIndex: 20,
+            display: "flex", flexDirection: "column",
+          }}>
+            {selected && (
+              <div style={{ flex: 1, overflowY: "auto", padding: "88px 20px 40px", minWidth: 420 }}>
                 <LocalityDetail
                   selected={selected}
                   score={currentScore!}
@@ -2558,57 +2547,32 @@ export default function Home() {
                   pickingPin={pickingPin}
                   onCancelPin={cancelPin}
                 />
-              )}
-            </div>
+              </div>
+            )}
           </div>
-        </div>
-      ) : (
-        /* ── Mobile layout: full-screen map + single bottom sheet ── */
-        <div style={{ position: "relative", height: "100dvh", fontFamily: "sans-serif" }}>
-          {/* Map fixed to full viewport — never clipped by overflow:hidden (iOS WebGL fix) */}
-          <div
-            ref={mapRef}
-            style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5", overflow: "hidden", cursor: pickingPin ? "crosshair" : undefined }}
-          />
+        )}
 
-          {/* Floating search bar — fixed so it sits above the map regardless of flex layout */}
-          <div style={{
-            position: "fixed",
-            top: "calc(16px + env(safe-area-inset-top, 0px))",
-            left: 16,
-            right: 16,
-            zIndex: 20,
-          }}>
-            <SearchBox
-              query={searchQuery}
-              onChange={setSearchQuery}
-              results={searchResults}
-              onSelect={flyToLocality}
-              onLocate={locateUser}
-              geoLoading={geoLoading}
-            />
-          </div>
-
-          {/* Single bottom sheet — content swaps based on whether a locality is selected */}
+        {/* ── Mobile: bottom sheet ── */}
+        {isMobile && (
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
-            background: DS.bg, borderRadius: "22px 22px 0 0",
-            boxShadow: "0 -4px 32px rgba(0,0,0,0.5)",
+            background: DS.bg,
+            borderRadius: "22px 22px 0 0",
+            boxShadow: "0 -4px 32px rgba(0,0,0,0.12)",
             borderTop: `1px solid ${DS.border}`,
-            maxHeight: sheetExpanded ? (sheetOpen ? "60dvh" : "55dvh") : "58px",
+            maxHeight: sheetExpanded ? (sheetOpen ? "74dvh" : "52dvh") : "58px",
             overflow: "hidden",
             transition: "max-height 0.32s cubic-bezier(0.4,0,0.2,1)",
             color: DS.text,
-            zIndex: 10,
+            zIndex: 20,
             paddingBottom: "env(safe-area-inset-bottom, 0px)",
           }}>
-            {/* Drag handle + title — always visible, tap to toggle */}
+            {/* Handle + title row — tap to toggle */}
             <div
               onClick={() => setSheetExpanded((v) => !v)}
               style={{ padding: "10px 20px 8px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
             >
-              {/* Handle pill */}
-              <div style={{ width: 40, height: 4, background: "rgba(148,163,184,0.25)", borderRadius: 2, flexShrink: 0 }} />
+              <div style={{ width: 40, height: 4, background: DS.borderMd, borderRadius: 2, flexShrink: 0 }} />
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
                 <span style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, color: DS.text, letterSpacing: "-0.01em" }}>
                   {sheetOpen ? selected!.name : "blr."}
@@ -2623,19 +2587,13 @@ export default function Home() {
                   {sheetOpen ? (
                     <button
                       onClick={(e) => { e.stopPropagation(); dismiss(); }}
-                      style={{
-                        width: 28, height: 28, borderRadius: "50%", border: `1px solid ${DS.border}`,
-                        background: "rgba(255,255,255,0.08)", cursor: "pointer", display: "flex",
-                        alignItems: "center", justifyContent: "center", flexShrink: 0,
-                        fontSize: 14, color: DS.textMut, lineHeight: 1,
-                      }}
+                      style={{ width: 28, height: 28, borderRadius: "50%", border: `1px solid ${DS.border}`, background: "#f5f0eb", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 14, color: DS.textSub, lineHeight: 1 }}
                       aria-label="Close locality panel"
                     >
                       ✕
                     </button>
                   ) : (
-                    <svg
-                      width="18" height="18" viewBox="0 0 18 18" fill="none"
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                       style={{ color: DS.textMut, transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0 }}
                     >
                       <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -2646,7 +2604,7 @@ export default function Home() {
             </div>
 
             {/* Sheet body */}
-            <div style={{ padding: "4px 20px 32px", overflowY: "auto", maxHeight: `calc(${sheetOpen ? "60" : "55"}dvh - 58px)` }}>
+            <div style={{ padding: "4px 20px 32px", overflowY: "auto", maxHeight: `calc(${sheetOpen ? "74" : "52"}dvh - 58px)` }}>
               {sheetOpen ? (
                 <div onClick={(e) => e.stopPropagation()}>
                   <LocalityDetail
@@ -2663,15 +2621,19 @@ export default function Home() {
                     onListingsLoaded={handleListingsLoaded}
                     isFavorite={favorites.has(selected!.name)}
                     onToggleFavorite={() => toggleFavorite(selected!.name)}
-                  onRequestPin={requestPin}
-                  pickingPin={pickingPin}
-                  onCancelPin={cancelPin}
+                    onRequestPin={requestPin}
+                    pickingPin={pickingPin}
+                    onCancelPin={cancelPin}
                   />
                 </div>
               ) : (
                 <>
-                  <p style={{ fontSize: 13, color: DS.textMut, marginBottom: 12 }}>Tap any circle on the map.</p>
-                  <FilterChips value={scoreFilter} onChange={setScoreFilter} />
+                  <p style={{ fontSize: 13, color: DS.textMut, marginBottom: 14 }}>Tap any circle on the map.</p>
+                  {allLocalities.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                      <RankingsList />
+                    </div>
+                  )}
                   <div style={{ margin: "12px 0 10px", borderTop: `1px solid ${DS.border}` }} />
                   <Legend />
                   <div style={{ margin: "14px 0", borderTop: `1px solid ${DS.border}` }} />
@@ -2690,8 +2652,10 @@ export default function Home() {
               )}
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+      </div>
     </>
   );
+
 }
