@@ -45,10 +45,10 @@ type UserListingEntry = { id: number; locality: string; bhk?: number; price: num
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const DEFAULT_WEIGHTS: Weights = {
-  air_quality: 0.15,
-  amenities: 0.45,
-  metro_access: 0.25,
-  restaurants: 0.15,
+  air_quality: 0,
+  amenities: 0.53,
+  metro_access: 0.29,
+  restaurants: 0.18,
 };
 
 // Raw composite range from the scoring pipeline — used to normalise recomputeScore
@@ -529,6 +529,7 @@ type SourceStatus = { source: string; ok: boolean; count: number; error?: string
 const SOURCE_LABELS: Record<string, string> = {
   nobroker: "NoBroker",
   housing: "Housing.com",
+  owner: "Owner",
 };
 
 const MAX_PRICE_OPTIONS = [
@@ -566,19 +567,41 @@ function ListingsPanel({
     setMaxPrice(0);
   }, [locality]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch when enabled
+  // Fetch when enabled — scraped + owner listings merged
   useEffect(() => {
     if (!enabled) return;
     setLoading(true);
     setError(null);
-    // FEATURE DISABLED: Owner listings temporarily disabled pending UX review
-    // To re-enable, uncomment the second fetch and owner listings merge below
-    fetch(`/api/listings?locality=${encodeURIComponent(locality)}`)
-      .then((r) => r.json())
-      .then((listData: { listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] }) => {
-        const scraped = (listData.listings ?? []);
-        // const owner = (userListData.listings ?? []).map((l) => ({...})); // DISABLED
-        setListings(scraped); // Only showing scraped listings for now
+    Promise.all([
+      fetch(`/api/listings?locality=${encodeURIComponent(locality)}`).then((r) => r.json()),
+      fetch(`/api/user-listings?locality=${encodeURIComponent(locality)}`).then((r) => r.json()).catch(() => ({ listings: [] })),
+    ])
+      .then(([listData, userListData]: [
+        { listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] },
+        { listings: Array<{ id: string; bhk?: number | null; price: number; area_sqft?: number | null; furnishing?: string | null; deposit?: number | null; contact?: string; locality: string }> }
+      ]) => {
+        const scraped: ListingRow[] = (listData.listings ?? []);
+        const ownerRows: ListingRow[] = (userListData.listings ?? []).map((l) => ({
+          id: l.id,
+          source: "owner" as const,
+          source_id: l.id,
+          locality: l.locality,
+          price: l.price,
+          bhk: l.bhk ?? null,
+          area_sqft: l.area_sqft ?? null,
+          furnishing: l.furnishing ?? null,
+          deposit: l.deposit ?? null,
+          url: null,
+          source_url: undefined,
+          title: null,
+          description: null,
+          lat: null,
+          lon: null,
+          fetched_at: undefined,
+          contact: l.contact,
+          isOwner: true,
+        } as unknown as ListingRow & { isOwner: boolean; contact?: string }));
+        setListings([...ownerRows, ...scraped]);
         setSources(listData.sources ?? []);
         const ts = listData.fetchedAt ?? new Date().toISOString();
         setFetchedAt(new Date(ts).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
@@ -697,13 +720,30 @@ function ListingsPanel({
           {filtered.length === 0 ? (
             <p style={{ fontSize: 13, color: "#9ca3af" }}>No listings match your filters.</p>
           ) : (
-            filtered.map((l) => (
+            filtered.map((l, idx) => {
+              const isOwner = (l as ListingRow & { isOwner?: boolean }).isOwner;
+              const prevIsOwner = idx > 0 ? (filtered[idx - 1] as ListingRow & { isOwner?: boolean }).isOwner : undefined;
+              const showOwnerHeader = isOwner && idx === 0;
+              const showScrapedHeader = !isOwner && (idx === 0 || prevIsOwner);
+              return (
+              <div key={`${l.source}-${l.source_id}`}>
+              {showOwnerHeader && (
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#c4622d", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6 }}>
+                  Direct from owners
+                </div>
+              )}
+              {showScrapedHeader && (
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6, marginTop: showOwnerHeader ? 0 : idx > 0 ? 12 : 0 }}>
+                  From listing sites
+                </div>
+              )}
               <div
-                key={`${l.source}-${l.source_id}`}
                 ref={(el) => { if (el) cardRefs.current.set(`${l.source}-${l.source_id}`, el); }}
                 style={{
-                  border: "1px solid #e5e7eb", borderRadius: 8, padding: "10px 12px",
-                  marginBottom: 8, background: "white",
+                  border: isOwner ? "1.5px solid #f5c9b5" : "1px solid #e5e7eb",
+                  borderRadius: 8, padding: "10px 12px",
+                  marginBottom: 8,
+                  background: isOwner ? "#fffaf8" : "white",
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
@@ -711,11 +751,14 @@ function ListingsPanel({
                     ₹{l.price.toLocaleString("en-IN")}<span style={{ fontSize: 11, fontWeight: 400, color: "#6b7280" }}>/mo</span>
                   </div>
                   <span style={{
-                    fontSize: 10, fontWeight: 600, padding: "2px 6px", borderRadius: 8,
-                    background: l.source === "nobroker" ? "#f0fdf4" : "#fdf4ff",
-                    color: l.source === "nobroker" ? "#166534" : "#7e22ce",
+                    fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 8,
+                    background: (l as ListingRow & { isOwner?: boolean }).isOwner ? "#fff1ec"
+                      : l.source === "nobroker" ? "#f0fdf4" : "#fdf4ff",
+                    color: (l as ListingRow & { isOwner?: boolean }).isOwner ? "#c4622d"
+                      : l.source === "nobroker" ? "#166534" : "#7e22ce",
+                    border: (l as ListingRow & { isOwner?: boolean }).isOwner ? "1px solid #f5c9b5" : "none",
                   }}>
-                    {SOURCE_LABELS[l.source] ?? l.source}
+                    {(l as ListingRow & { isOwner?: boolean }).isOwner ? "👤 Owner · No broker" : (SOURCE_LABELS[l.source] ?? l.source)}
                   </span>
                 </div>
                 <div style={{ fontSize: 12, color: "#374151", marginBottom: 6, lineHeight: 1.4 }}>
@@ -735,19 +778,35 @@ function ListingsPanel({
                     {l.address}
                   </div>
                 )}
-                <a
-                  href={safeHref(l.source_url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontSize: 11, fontWeight: 600, color: DS.accentLt,
-                    textDecoration: "none", display: "inline-block",
-                  }}
-                >
-                  View listing →
-                </a>
+                {(l as ListingRow & { isOwner?: boolean; contact?: string }).isOwner ? (
+                  (l as ListingRow & { contact?: string }).contact ? (
+                    <a
+                      href={`https://wa.me/${((l as ListingRow & { contact?: string }).contact ?? "").replace(/\D/g, "")}?text=${encodeURIComponent("Hi, I saw your listing on BLR Neighborhood Explorer. Is it still available?")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: 11, fontWeight: 600, color: "#16a34a", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}
+                    >
+                      💬 WhatsApp owner
+                    </a>
+                  ) : (
+                    <span style={{ fontSize: 11, color: "#9ca3af" }}>Contact not provided</span>
+                  )
+                ) : (
+                  <a
+                    href={safeHref(l.source_url)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontSize: 11, fontWeight: 600, color: DS.accentLt,
+                      textDecoration: "none", display: "inline-block",
+                    }}
+                  >
+                    View listing →
+                  </a>
+                )}
               </div>
-            ))
+              </div>
+            );})
           )}
 
           {fetchedAt && (
@@ -1765,6 +1824,7 @@ export default function Home() {
   const pickResolveRef = useRef<((pos: { lat: number; lon: number } | null) => void) | null>(null);
   const mobileHandleRef = useRef<HTMLDivElement>(null);
   const sheetExpandedRef = useRef(false);
+  const [pinCursor, setPinCursor] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
   useEffect(() => { sheetExpandedRef.current = sheetExpanded; }, [sheetExpanded]);
@@ -1805,6 +1865,22 @@ export default function Home() {
       handle.removeEventListener("touchend",   onEnd);
     };
   }, [isMobile]); // re-attach if screen size crosses breakpoint
+
+  // ── Pin cursor: floating pin indicator that follows mouse/touch in pick mode ─
+  useEffect(() => {
+    if (!pickingPin) { setPinCursor(null); return; }
+    const onMouseMove = (e: MouseEvent) => setPinCursor({ x: e.clientX, y: e.clientY });
+    const onTouchMove = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) setPinCursor({ x: t.clientX, y: t.clientY });
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [pickingPin]);
 
   const requestPin = useCallback((): Promise<{ lat: number; lon: number } | null> => {
     return new Promise((resolve) => {
@@ -2457,6 +2533,27 @@ export default function Home() {
           <button onClick={cancelPin} style={{ fontSize: 11, color: "white", background: "transparent", border: "1.5px solid rgba(255,255,255,0.5)", borderRadius: 999, padding: "2px 10px", cursor: "pointer", fontWeight: 600 }}>
             Cancel
           </button>
+        </div>
+      )}
+
+      {/* Floating pin cursor — follows mouse/touch when in pick mode */}
+      {pickingPin && pinCursor && (
+        <div
+          style={{
+            position: "fixed",
+            left: pinCursor.x,
+            top: pinCursor.y,
+            transform: "translate(-50%, -100%)",
+            pointerEvents: "none",
+            zIndex: 99,
+            transition: "left 0.04s linear, top 0.04s linear",
+          }}
+        >
+          {/* Pin SVG — terracotta drop pin */}
+          <svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22s14-12.667 14-22C28 6.268 21.732 0 14 0z" fill="#c4622d"/>
+            <circle cx="14" cy="14" r="5" fill="white"/>
+          </svg>
         </div>
       )}
 
