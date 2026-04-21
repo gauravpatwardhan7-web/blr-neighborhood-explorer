@@ -580,7 +580,7 @@ function ListingsPanel({
     ])
       .then(([listData, userListData]: [
         { listings: ListingRow[]; cached: boolean; fetchedAt: string | null; sources: SourceStatus[] },
-        { listings: Array<{ id: string; bhk?: number | null; price: number; area_sqft?: number | null; furnishing?: string | null; deposit?: number | null; contact?: string; locality: string }> }
+        { listings: Array<{ id: string; bhk?: number | null; price: number; area_sqft?: number | null; furnishing?: string | null; deposit?: number | null; contact?: string; locality: string; lat?: number | null; lon?: number | null }> }
       ]) => {
         const scraped: ListingRow[] = (listData.listings ?? []);
         const ownerRows: ListingRow[] = (userListData.listings ?? []).map((l) => ({
@@ -597,8 +597,8 @@ function ListingsPanel({
           source_url: undefined,
           title: null,
           description: null,
-          lat: null,
-          lon: null,
+          lat: l.lat ?? null,
+          lon: l.lon ?? null,
           fetched_at: undefined,
           contact: l.contact,
           isOwner: true,
@@ -1321,11 +1321,15 @@ function UserListingsPanel({
   onRequestPin,
   pickingPin,
   onCancelPin,
+  onPinMovedRegister,
+  onFormDone,
 }: {
   locality: string;
   onRequestPin: () => Promise<{ lat: number; lon: number } | null>;
   pickingPin: boolean;
   onCancelPin: () => void;
+  onPinMovedRegister: (cb: ((pos: { lat: number; lon: number }) => void) | null) => void;
+  onFormDone: () => void;
 }) {
   const [listings,   setListings]   = useState<UserListingEntry[]>([]);
   const [loading,    setLoading]    = useState(false);
@@ -1353,6 +1357,8 @@ function UserListingsPanel({
   const resetForm = () => {
     setPrice(""); setBhk(null); setDeposit(""); setFurnishing("");
     setAddress(""); setContact(""); setPin(null); setFormError(null);
+    onPinMovedRegister(null); // unregister drag callback
+    onFormDone();             // remove marker from map
   };
 
   const handleSubmit = async () => {
@@ -1491,7 +1497,7 @@ function UserListingsPanel({
                 <button type="button" onClick={onCancelPin} style={{ fontSize: 11, color: DS.textMut, background: "white", border: `1px solid ${DS.border}`, borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}>Cancel</button>
               </div>
             ) : (
-              <button type="button" onClick={async () => { const p = await onRequestPin(); if (p) setPin(p); }}
+              <button type="button" onClick={async () => { const p = await onRequestPin(); if (p) { setPin(p); onPinMovedRegister((pos) => setPin(pos)); } }}
                 style={{ fontSize: 12, fontWeight: 600, color: DS.accent, background: "#fef7f4", border: `1.5px solid ${DS.accent}`, borderRadius: 8, padding: "6px 12px", cursor: "pointer" }}>
                 📍 Drop pin on map
               </button>
@@ -1644,6 +1650,8 @@ function LocalityDetail({
   onRequestPin,
   pickingPin,
   onCancelPin,
+  onPinMovedRegister,
+  onFormDone,
 }: {
   selected: Locality;
   score: number;
@@ -1661,6 +1669,8 @@ function LocalityDetail({
   onRequestPin: () => Promise<{ lat: number; lon: number } | null>;
   pickingPin: boolean;
   onCancelPin: () => void;
+  onPinMovedRegister: (cb: ((pos: { lat: number; lon: number }) => void) | null) => void;
+  onFormDone: () => void;
 }) {
   return (
     <>
@@ -1726,7 +1736,7 @@ function LocalityDetail({
         <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
       </Block>
       <Block tint="lilac" label="Owner listings">
-        <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} />
+        <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} onPinMovedRegister={onPinMovedRegister} onFormDone={onFormDone} />
       </Block>
       <Block tint="sky" label="Commute">
         <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
@@ -1827,6 +1837,8 @@ export default function Home() {
   const mobileHandleRef = useRef<HTMLDivElement>(null);
   const sheetExpandedRef = useRef(false);
   const [pinCursor, setPinCursor] = useState<{ x: number; y: number } | null>(null);
+  const droppedPinMarkerRef = useRef<maplibregl.Marker | null>(null);
+  const onPinMovedRef = useRef<((pos: { lat: number; lon: number }) => void) | null>(null);
 
   useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
   useEffect(() => { sheetExpandedRef.current = sheetExpanded; }, [sheetExpanded]);
@@ -1900,6 +1912,16 @@ export default function Home() {
     setPickingPin(false);
   }, []);
 
+  const clearDroppedPin = useCallback(() => {
+    droppedPinMarkerRef.current?.remove();
+    droppedPinMarkerRef.current = null;
+    onPinMovedRef.current = null;
+  }, []);
+
+  const registerPinMovedCb = useCallback((cb: ((pos: { lat: number; lon: number }) => void) | null) => {
+    onPinMovedRef.current = cb;
+  }, []);
+
   const sheetOpen = selected !== null;
 
   // ── Helpers ───────────────────────────────────────────────────────────────
@@ -1938,6 +1960,9 @@ export default function Home() {
     commuteMarkersRef.current = { origin: null, dest: null };
     listingMarkersRef.current.forEach((m) => m.remove());
     listingMarkersRef.current = [];
+    droppedPinMarkerRef.current?.remove();
+    droppedPinMarkerRef.current = null;
+    onPinMovedRef.current = null;
     history.replaceState(null, "", window.location.pathname);
     setSelected(null);
     setSheetExpanded(false);
@@ -2359,6 +2384,27 @@ export default function Home() {
       map.on("click", (e) => {
         if (pickingPinRef.current) {
           const { lat, lng } = e.lngLat;
+
+          // Remove any existing dropped-pin marker
+          droppedPinMarkerRef.current?.remove();
+
+          // Build a draggable terracotta pin marker
+          const el = document.createElement("div");
+          el.innerHTML = `<svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:grab;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3))"><path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22s14-12.667 14-22C28 6.268 21.732 0 14 0z" fill="#c4622d"/><circle cx="14" cy="14" r="5" fill="white"/></svg>`;
+          el.style.cssText = "width:28px;height:36px;cursor:grab;";
+
+          const marker = new maplibregl.Marker({ element: el, draggable: true, anchor: "bottom" })
+            .setLngLat([lng, lat])
+            .addTo(map);
+
+          marker.on("dragend", () => {
+            const pos = marker.getLngLat();
+            onPinMovedRef.current?.({ lat: pos.lat, lon: pos.lng });
+          });
+
+          droppedPinMarkerRef.current = marker;
+
+          // Resolve the promise so the panel gets the initial coords
           pickResolveRef.current?.({ lat, lon: lng });
           pickResolveRef.current = null;
           setPickingPin(false);
@@ -2697,6 +2743,8 @@ export default function Home() {
                   onRequestPin={requestPin}
                   pickingPin={pickingPin}
                   onCancelPin={cancelPin}
+                  onPinMovedRegister={registerPinMovedCb}
+                  onFormDone={clearDroppedPin}
                 />
               </div>
             )}
@@ -2776,6 +2824,8 @@ export default function Home() {
                     onRequestPin={requestPin}
                     pickingPin={pickingPin}
                     onCancelPin={cancelPin}
+                    onPinMovedRegister={registerPinMovedCb}
+                    onFormDone={clearDroppedPin}
                   />
                 </div>
               ) : (
