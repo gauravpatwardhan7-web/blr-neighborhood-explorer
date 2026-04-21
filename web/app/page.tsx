@@ -390,13 +390,13 @@ function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: Sc
             key={opt.value}
             onClick={() => onChange(active ? null : opt.value)}
             style={{
-              padding: "5px 12px", borderRadius: 20, fontSize: 12,
+              padding: "5px 14px", borderRadius: 20, fontSize: 12,
               fontWeight: active ? 700 : 500,
-              background: active ? opt.activeBg : opt.bg,
-              color: active ? (opt.value === "all" ? "white" : opt.color) : opt.color,
-              border: active ? "1.5px solid transparent" : "1.5px solid #94a3b8",
+              background: active ? opt.activeBg : "rgba(255,255,255,0.05)",
+              color: active ? (opt.value === "all" ? "#0f172a" : opt.color) : DS.textSub,
+              border: active ? "1.5px solid transparent" : `1.5px solid ${DS.border}`,
               cursor: "pointer",
-              boxShadow: active ? "0 2px 6px rgba(0,0,0,0.18)" : "0 1px 3px rgba(0,0,0,0.10)",
+              boxShadow: active ? `0 2px 10px ${opt.activeBg}50` : "none",
               transition: "all 0.15s",
             }}
           >
@@ -411,15 +411,16 @@ function FilterChips({ value, onChange }: { value: ScoreFilter; onChange: (v: Sc
 // ── Legend ────────────────────────────────────────────────────────────────────
 function Legend() {
   return (
-    <div style={{ fontSize: 14, color: "#374151" }}>
+    <div style={{ fontSize: 13, color: DS.textSub }}>
       {[
-        { color: "#4ade80", label: "Score 7–10 (Great)" },
-        { color: "#fbbf24", label: "Score 4–7 (Good)"  },
-        { color: "#f87171", label: "Score 1–4 (Low)"   },
-      ].map(({ color, label }) => (
-        <div key={label} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: color, display: "inline-block", flexShrink: 0 }} />
-          {label}
+        { color: "#4ade80", label: "Score 7–10", tag: "Great" },
+        { color: "#fbbf24", label: "Score 4–7",  tag: "Good"  },
+        { color: "#f87171", label: "Score 1–4",  tag: "Low"   },
+      ].map(({ color, label, tag }) => (
+        <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+          <span style={{ width: 10, height: 10, borderRadius: "50%", background: color, display: "inline-block", flexShrink: 0, boxShadow: `0 0 8px ${color}80` }} />
+          <span style={{ color: DS.textSub }}>{label}</span>
+          <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 700, color, background: `${color}18`, padding: "1px 8px", borderRadius: 10 }}>{tag}</span>
         </div>
       ))}
     </div>
@@ -433,11 +434,11 @@ function FactorBars({ factors }: { factors: Locality["factors"] }) {
       {Object.entries(factors).map(([k, v]) => (
         <div key={k}>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 6, fontWeight: 500 }}>
-            <span style={{ color: "#4b5563" }}>{SLIDER_LABELS[k as FactorKey] ?? k.replace(/_/g, " ")}</span>
+            <span style={{ color: DS.textSub }}>{SLIDER_LABELS[k as FactorKey] ?? k.replace(/_/g, " ")}</span>
             <span style={{ fontWeight: 700, color: scoreColor(v), fontSize: 13 }}>{v}/10</span>
           </div>
-          <div style={{ height: 6, background: "#f0f1f3", borderRadius: 3 }}>
-            <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3, transition: "width 0.3s ease" }} />
+          <div style={{ height: 6, background: "rgba(255,255,255,0.07)", borderRadius: 3 }}>
+            <div style={{ height: 6, width: `${v * 10}%`, background: scoreColor(v), borderRadius: 3, transition: "width 0.3s ease", boxShadow: `0 0 8px ${scoreColor(v)}60` }} />
           </div>
         </div>
       ))}
@@ -452,16 +453,16 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
     <div style={{ marginTop: 12 }}>
       <button
         onClick={() => setOpen((v) => !v)}
-        style={{ fontSize: 12, color: "#6b7280", background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 500 }}
+        style={{ fontSize: 12, color: DS.accentLt, background: "none", border: "none", padding: 0, cursor: "pointer", fontWeight: 600 }}
       >
         {open ? "▲ Hide raw data" : "▼ Show raw data"}
       </button>
       {open && (
         <div style={{ marginTop: 10, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 16px" }}>
           {Object.entries(raw).map(([k, v]) => (
-            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "6px 0", borderBottom: "1px solid #f3f4f6" }}>
-              <span style={{ color: "#4b5563", textTransform: "capitalize", fontWeight: 500 }}>{RAW_LABELS[k as keyof Locality["raw"]] ?? k.replace(/_/g, " ")}</span>
-              <span style={{ fontWeight: 600, color: "#111827" }}>{v ?? "—"}</span>
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "6px 0", borderBottom: `1px solid ${DS.border}` }}>
+              <span style={{ color: DS.textMut, textTransform: "capitalize", fontWeight: 500 }}>{RAW_LABELS[k as keyof Locality["raw"]] ?? k.replace(/_/g, " ")}</span>
+              <span style={{ fontWeight: 600, color: DS.text }}>{v ?? "—"}</span>
             </div>
           ))}
         </div>
@@ -474,41 +475,60 @@ function RawData({ raw }: { raw: Locality["raw"] }) {
 function SentimentCard({ data }: { data: SentimentEntry }) {
   const c = SENTIMENT_COLORS[data.label];
   const pct = Math.round(((data.compound + 1) / 2) * 100);
+  // Remap sentiment colors for dark bg
+  const DARK_SENTIMENT: Record<string, { bg: string; text: string; bar: string; card: string }> = {
+    Positive: { bg: "rgba(52,211,153,0.15)", text: "#34d399", bar: "#34d399", card: "rgba(52,211,153,0.07)" },
+    Neutral:  { bg: "rgba(148,163,184,0.15)", text: "#94a3b8", bar: "#94a3b8", card: "rgba(148,163,184,0.07)" },
+    Negative: { bg: "rgba(251,113,133,0.15)", text: "#fb7185", bar: "#fb7185", card: "rgba(251,113,133,0.07)" },
+  };
+  const dc = DARK_SENTIMENT[data.label];
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: "#111827", margin: 0 }}>Reddit sentiment</h3>
-        <span style={{ fontSize: 12, fontWeight: 700, padding: "3px 9px", borderRadius: 12, background: c.bg, color: c.text }}>
-          {data.label}
+    <div>
+      {/* Header row */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <span style={{ fontSize: 12, color: DS.textSub, fontWeight: 500 }}>from {data.total} posts</span>
+        <span style={{ fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20, background: dc.bg, color: dc.text, letterSpacing: "0.04em" }}>
+          {data.label.toUpperCase()}
         </span>
       </div>
-      <div style={{ height: 6, background: "#e5e7eb", borderRadius: 3, marginBottom: 8 }}>
-        <div style={{ height: 6, width: `${pct}%`, background: c.bar, borderRadius: 3, transition: "width 0.4s" }} />
+      {/* Sentiment bar */}
+      <div style={{ height: 4, background: "rgba(255,255,255,0.07)", borderRadius: 2, marginBottom: 12 }}>
+        <div style={{ height: 4, width: `${pct}%`, background: dc.bar, borderRadius: 2, transition: "width 0.4s" }} />
       </div>
-      <div style={{ display: "flex", gap: 10, fontSize: 13, color: "#6b7280", marginBottom: 10 }}>
-        <span>👍 {data.positive}</span>
+      {/* Vote counts */}
+      <div style={{ display: "flex", gap: 12, fontSize: 12, color: DS.textMut, marginBottom: 14 }}>
+        <span style={{ color: "#34d399" }}>👍 {data.positive}</span>
         <span>😐 {data.neutral}</span>
-        <span>👎 {data.negative}</span>
-        <span style={{ marginLeft: "auto" }}>from {data.total} posts</span>
+        <span style={{ color: "#fb7185" }}>👎 {data.negative}</span>
       </div>
+      {/* Summary */}
       {data.summary && (
-        <p style={{ margin: "8px 0 0", fontSize: 13, color: "#374151", lineHeight: 1.6 }}>{data.summary}</p>
+        <p style={{ margin: "0 0 14px", fontSize: 13, color: DS.textSub, lineHeight: 1.65, fontStyle: "italic" }}>{data.summary}</p>
       )}
+      {/* Pull quotes */}
       {data.quotes && data.quotes.length > 0 && (
-        <div style={{ marginTop: 12 }}>
-          <p style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>
+        <div>
+          <p style={{ fontSize: 10, fontWeight: 700, color: DS.textMut, textTransform: "uppercase", letterSpacing: "0.10em", margin: "0 0 10px" }}>
             What Redditors say
           </p>
-          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-            {data.quotes.map((q, i) => (
-              <li key={i} style={{
-                borderLeft: `3px solid ${c.bar}`, paddingLeft: 10, marginBottom: 8,
-                fontSize: 12, color: "#4b5563", fontStyle: "italic", lineHeight: 1.55,
+          {data.quotes.map((q, i) => (
+            <div key={i} style={{
+              background: dc.card,
+              border: `1px solid ${dc.bg}`,
+              borderLeft: `3px solid ${dc.bar}`,
+              borderRadius: "0 10px 10px 0",
+              padding: "10px 12px",
+              marginBottom: 8,
+            }}>
+              <p style={{
+                margin: 0, fontSize: 13, color: DS.text,
+                fontStyle: "italic", lineHeight: 1.6,
+                fontFamily: "var(--font-display)",
               }}>
                 &ldquo;{q}&rdquo;
-              </li>
-            ))}
-          </ul>
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -1473,13 +1493,26 @@ function UserListingsPanel({
 }
 
 // ── Block — a colored, rounded card used to group panel content ───────────────
+// ── Design tokens ─────────────────────────────────────────────────────────────
+const DS = {
+  bg:       "#0f172a",   // sidebar background
+  card:     "#1e293b",   // card background
+  border:   "rgba(148,163,184,0.12)",
+  borderMd: "rgba(148,163,184,0.20)",
+  text:     "#f1f5f9",   // primary text
+  textSub:  "#94a3b8",   // secondary text
+  textMut:  "#64748b",   // muted text
+  accent:   "#7c3aed",   // electric violet
+  accentLt: "#a78bfa",   // light violet
+};
+
 const BLOCK_TINTS: Record<string, { bg: string; border: string; accent: string }> = {
-  cream:    { bg: "#ffffff", border: "#e5e7eb", accent: "#6366f1" },
-  sage:     { bg: "#ffffff", border: "#e5e7eb", accent: "#10b981" },
-  blush:    { bg: "#ffffff", border: "#e5e7eb", accent: "#f43f5e" },
-  sky:      { bg: "#ffffff", border: "#e5e7eb", accent: "#0ea5e9" },
-  lilac:    { bg: "#ffffff", border: "#e5e7eb", accent: "#8b5cf6" },
-  sand:     { bg: "#ffffff", border: "#e5e7eb", accent: "#f59e0b" },
+  cream:    { bg: DS.card, border: DS.border, accent: DS.accentLt },
+  sage:     { bg: DS.card, border: DS.border, accent: "#34d399" },
+  blush:    { bg: DS.card, border: DS.border, accent: "#fb7185" },
+  sky:      { bg: DS.card, border: DS.border, accent: "#38bdf8" },
+  lilac:    { bg: DS.card, border: DS.border, accent: "#c084fc" },
+  sand:     { bg: DS.card, border: DS.border, accent: "#fbbf24" },
 };
 function Block({
   tint = "cream",
@@ -1496,20 +1529,22 @@ function Block({
   return (
     <div style={{
       background: t.bg,
-      border: `1.5px solid ${t.border}`,
+      border: `1px solid ${t.border}`,
       borderRadius: 16,
       padding: "14px 16px",
       marginBottom: 12,
-      boxShadow: "0 1px 2px rgba(90,70,30,0.05)",
+      boxShadow: "0 4px 16px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.02)",
       ...style,
     }}>
       {label && (
         <div style={{
           fontSize: 10, fontWeight: 700, color: t.accent,
-          textTransform: "uppercase", letterSpacing: "0.09em",
-          marginBottom: 10,
+          textTransform: "uppercase", letterSpacing: "0.12em",
+          marginBottom: 12,
           fontFamily: "var(--font-geist-sans)",
+          display: "flex", alignItems: "center", gap: 6,
         }}>
+          <span style={{ width: 3, height: 12, borderRadius: 2, background: t.accent, display: "inline-block", flexShrink: 0 }} />
           {label}
         </div>
       )}
@@ -1559,7 +1594,7 @@ function LocalityDetail({
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
         <button
           onClick={onDismiss}
-          style={{ fontSize: 13, color: "#111827", background: "white", border: "1.5px solid #374151", borderRadius: 7, padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}
+          style={{ fontSize: 13, color: DS.textSub, background: "rgba(255,255,255,0.06)", border: `1px solid ${DS.border}`, borderRadius: 8, padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}
         >
           ← Back
         </button>
@@ -1568,37 +1603,36 @@ function LocalityDetail({
             onClick={onToggleFavorite}
             title={isFavorite ? "Remove from saved" : "Save neighbourhood"}
             style={{
-              fontSize: 16, padding: "3px 9px", borderRadius: 6, cursor: "pointer", fontWeight: 600,
-              background: isFavorite ? "#fffbeb" : "#f1f5f9",
-              color: isFavorite ? "#d97706" : "#374151",
-              border: isFavorite ? "1.5px solid #fbbf24" : "1.5px solid #94a3b8",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.10)",
+              fontSize: 16, padding: "3px 9px", borderRadius: 8, cursor: "pointer", fontWeight: 600,
+              background: isFavorite ? "rgba(251,191,36,0.15)" : "rgba(255,255,255,0.06)",
+              color: isFavorite ? "#fbbf24" : DS.textMut,
+              border: isFavorite ? "1px solid rgba(251,191,36,0.35)" : `1px solid ${DS.border}`,
             }}
           >
             {isFavorite ? "★" : "☆"}
           </button>
           <button
             onClick={onCopy}
-            style={{ fontSize: 11, color: copied ? "#059669" : "#374151", background: copied ? "#f0fdf4" : "#f1f5f9", border: copied ? "1.5px solid #059669" : "1.5px solid #64748b", borderRadius: 6, padding: "3px 9px", cursor: "pointer", fontWeight: 600, boxShadow: "0 1px 3px rgba(0,0,0,0.10)" }}
+            style={{ fontSize: 11, color: copied ? "#34d399" : DS.textSub, background: copied ? "rgba(52,211,153,0.1)" : "rgba(255,255,255,0.06)", border: copied ? "1px solid rgba(52,211,153,0.3)" : `1px solid ${DS.border}`, borderRadius: 8, padding: "3px 9px", cursor: "pointer", fontWeight: 600 }}
           >
-            {copied ? "\u2713 Copied!" : "🔗 Copy link"}
+            {copied ? "✓ Copied!" : "🔗 Copy link"}
           </button>
         </div>
       </div>
-      <Block tint="cream" style={{ padding: "18px 20px", marginBottom: 16 }}>
+      <Block tint="cream" style={{ padding: "18px 20px", marginBottom: 16, background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}>
         <div style={{
           fontFamily: "var(--font-display)",
-          fontSize: 32, fontWeight: 600, lineHeight: 1.05, color: "#1c1410",
-          letterSpacing: "-0.015em", marginBottom: 6,
+          fontSize: 28, fontWeight: 700, lineHeight: 1.05, color: DS.text,
+          letterSpacing: "-0.02em", marginBottom: 10,
         }}>
           {selected.name}
         </div>
-        <div style={{
-          display: "flex", alignItems: "baseline", gap: 10,
-          fontFamily: "var(--font-display)",
-        }}>
-          <span style={{ fontSize: 56, fontWeight: 700, color: scoreColor(score), lineHeight: 1 }}>{score}</span>
-          <span style={{ fontSize: 16, color: "#78350f", fontWeight: 500 }}>/ 10 liveability</span>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 10, fontFamily: "var(--font-display)" }}>
+          <span style={{ fontSize: 64, fontWeight: 800, color: scoreColor(score), lineHeight: 1, textShadow: `0 0 32px ${scoreColor(score)}50` }}>{score}</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <span style={{ fontSize: 14, color: DS.textMut, fontWeight: 500 }}>/ 10</span>
+            <span style={{ fontSize: 11, color: DS.accentLt, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>Liveability</span>
+          </div>
         </div>
       </Block>
       {sentimentData[selected.name] && (
@@ -2386,22 +2420,22 @@ export default function Home() {
               display: "flex", flexDirection: "column", gap: 4,
             }}>
               {[0,1,2].map(i => (
-                <div key={i} style={{ width: 3, height: 3, borderRadius: "50%", background: "#d1d5db" }} />
+                <div key={i} style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(148,163,184,0.3)" }} />
               ))}
             </div>
           </div>
 
-          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: "1.5px solid #e5e7eb", background: "#ffffff", flexShrink: 0 }}>
+          <div style={{ width: sidebarWidth, display: "flex", flexDirection: "column", borderLeft: `1px solid ${DS.border}`, background: DS.bg, flexShrink: 0 }}>
             {/* Brand + search + filters */}
-            <div style={{ padding: "16px 18px 12px", borderBottom: "1.5px solid #f3f4f6", flexShrink: 0, background: "#ffffff" }}>
+            <div style={{ padding: "16px 18px 12px", borderBottom: `1px solid ${DS.border}`, flexShrink: 0, background: DS.bg }}>
               <div style={{
                 fontFamily: "var(--font-display)",
-                fontSize: 22, fontWeight: 700, color: "#1c1410", letterSpacing: "-0.02em",
+                fontSize: 26, fontWeight: 800, color: DS.text, letterSpacing: "-0.03em",
                 marginBottom: 2,
               }}>
                 blr.
               </div>
-              <div style={{ fontSize: 11, color: "#8b6f3a", marginBottom: 12, fontWeight: 500 }}>
+              <div style={{ fontSize: 11, color: DS.accent, marginBottom: 12, fontWeight: 600, letterSpacing: "0.04em" }}>
                 Places to live, in Bengaluru
               </div>
               <div style={{ marginBottom: 10 }}>
@@ -2418,20 +2452,53 @@ export default function Home() {
               <FilterChips value={scoreFilter} onChange={setScoreFilter} />
             </div>
             {/* Scrollable body */}
-            <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
+            <div style={{ flex: 1, padding: 20, overflowY: "auto", background: DS.bg }}>
               {!selected ? (
                 <div>
                   <h2 style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: 28, fontWeight: 600, marginBottom: 6, color: "#1c1410",
-                    letterSpacing: "-0.02em", lineHeight: 1.1,
+                    fontSize: 30, fontWeight: 800, marginBottom: 4, color: DS.text,
+                    letterSpacing: "-0.03em", lineHeight: 1.1,
                   }}>
-                    Find your<br/>next postcode.
+                    Find your<br/>next neighbourhood.
                   </h2>
-                  <p style={{ fontSize: 13, color: "#6b533a", marginBottom: 16 }}>Tap any dot on the map to see scores, reviews, and rentals.</p>
+                  <p style={{ fontSize: 13, color: DS.textMut, marginBottom: 20, lineHeight: 1.5 }}>Tap any dot on the map to see scores, reviews &amp; rentals.</p>
+
+                  {/* Rankings leaderboard */}
+                  {allLocalities.length > 0 && (
+                    <div style={{ marginBottom: 20 }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, color: DS.accent, textTransform: "uppercase", letterSpacing: "0.12em", margin: "0 0 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ width: 3, height: 12, borderRadius: 2, background: DS.accent, display: "inline-block" }} />
+                        Top Neighbourhoods
+                      </p>
+                      {[...allLocalities]
+                        .sort((a, b) => recomputeScore(b.factors, weights) - recomputeScore(a.factors, weights))
+                        .slice(0, 5)
+                        .map((loc, i) => {
+                          const s = recomputeScore(loc.factors, weights);
+                          return (
+                            <button key={loc.name} onClick={() => flyToLocality(loc)} style={{
+                              display: "flex", alignItems: "center", gap: 12, width: "100%",
+                              background: i === 0 ? "rgba(124,58,237,0.08)" : "rgba(255,255,255,0.03)",
+                              border: i === 0 ? `1px solid rgba(124,58,237,0.25)` : `1px solid ${DS.border}`,
+                              borderRadius: 12, padding: "10px 14px", marginBottom: 6,
+                              cursor: "pointer", transition: "background 0.15s",
+                            }}>
+                              <span style={{ fontSize: 16, fontWeight: 800, color: i === 0 ? DS.accentLt : DS.textMut, width: 22, textAlign: "center", flexShrink: 0 }}>
+                                {i + 1}
+                              </span>
+                              <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: DS.text, textAlign: "left" }}>{loc.name}</span>
+                              <span style={{ fontSize: 18, fontWeight: 800, color: scoreColor(s), textShadow: `0 0 10px ${scoreColor(s)}60` }}>{s}</span>
+                            </button>
+                          );
+                        })}
+                    </div>
+                  )}
+
+                  {/* Saved */}
                   {favorites.size > 0 && (
                     <div style={{ marginBottom: 16 }}>
-                      <p style={{ fontSize: 11, fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em", margin: "0 0 8px" }}>★ Saved</p>
+                      <p style={{ fontSize: 10, fontWeight: 700, color: DS.textMut, textTransform: "uppercase", letterSpacing: "0.1em", margin: "0 0 8px" }}>★ Saved</p>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                         {[...favorites].map((name) => {
                           const loc = allLocalities.find((l) => l.name === name);
@@ -2442,7 +2509,8 @@ export default function Home() {
                               onClick={() => flyToLocality(loc)}
                               style={{
                                 padding: "4px 10px", borderRadius: 16, fontSize: 12, fontWeight: 600,
-                                background: "#fffbeb", color: "#92400e", border: "1.5px solid #fbbf24",
+                                background: "rgba(251,191,36,0.1)", color: "#fbbf24",
+                                border: "1px solid rgba(251,191,36,0.25)",
                                 cursor: "pointer", display: "flex", alignItems: "center", gap: 5,
                               }}
                             >
@@ -2454,11 +2522,11 @@ export default function Home() {
                           );
                         })}
                       </div>
-                      <div style={{ margin: "14px 0 12px", borderTop: "1px solid #e5e7eb" }} />
+                      <div style={{ margin: "14px 0 12px", borderTop: `1px solid ${DS.border}` }} />
                     </div>
                   )}
                   <Legend />
-                  <div style={{ margin: "20px 0", borderTop: "1px solid #e5e7eb" }} />
+                  <div style={{ margin: "20px 0", borderTop: `1px solid ${DS.border}` }} />
                   <HeatmapPanel
                     active={heatmapActive}
                     onToggle={setHeatmapActive}
@@ -2524,63 +2592,61 @@ export default function Home() {
           {/* Single bottom sheet — content swaps based on whether a locality is selected */}
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
-            background: "#ffffff", borderRadius: "20px 20px 0 0",
-            boxShadow: "0 -2px 14px rgba(0,0,0,0.10)",
-            borderTop: "1.5px solid #e5e7eb",
-            maxHeight: sheetExpanded ? (sheetOpen ? "60dvh" : "55dvh") : "52px",
+            background: DS.bg, borderRadius: "22px 22px 0 0",
+            boxShadow: "0 -4px 32px rgba(0,0,0,0.5)",
+            borderTop: `1px solid ${DS.border}`,
+            maxHeight: sheetExpanded ? (sheetOpen ? "60dvh" : "55dvh") : "58px",
             overflow: "hidden",
-            transition: "max-height 0.3s ease",
-            color: "#111827",
+            transition: "max-height 0.32s cubic-bezier(0.4,0,0.2,1)",
+            color: DS.text,
             zIndex: 10,
             paddingBottom: "env(safe-area-inset-bottom, 0px)",
           }}>
             {/* Drag handle + title — always visible, tap to toggle */}
             <div
               onClick={() => setSheetExpanded((v) => !v)}
-              style={{ padding: "12px 20px 8px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between" }}
+              style={{ padding: "10px 20px 8px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 36, height: 4, background: "#d1d5db", borderRadius: 2, flexShrink: 0 }} />
-                <span style={{
-                  fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: "#1c1410",
-                  letterSpacing: "-0.01em",
-                }}>
+              {/* Handle pill */}
+              <div style={{ width: 40, height: 4, background: "rgba(148,163,184,0.25)", borderRadius: 2, flexShrink: 0 }} />
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 700, color: DS.text, letterSpacing: "-0.01em" }}>
                   {sheetOpen ? selected!.name : "blr."}
                 </span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {sheetOpen && currentScore !== null && (
-                  <span style={{ fontSize: 16, fontWeight: 800, color: scoreColor(currentScore) }}>
-                    {currentScore}
-                    <span style={{ fontSize: 11, fontWeight: 400, color: "#6b7280" }}>/10</span>
-                  </span>
-                )}
-                {sheetOpen ? (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); dismiss(); }}
-                    style={{
-                      width: 28, height: 28, borderRadius: "50%", border: "none",
-                      background: "#f3f4f6", cursor: "pointer", display: "flex",
-                      alignItems: "center", justifyContent: "center", flexShrink: 0,
-                      fontSize: 16, color: "#6b7280", lineHeight: 1,
-                    }}
-                    aria-label="Close locality panel"
-                  >
-                    ✕
-                  </button>
-                ) : (
-                  <svg
-                    width="18" height="18" viewBox="0 0 18 18" fill="none"
-                    style={{ color: "#6b7280", transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0 }}
-                  >
-                    <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  {sheetOpen && currentScore !== null && (
+                    <span style={{ fontSize: 18, fontWeight: 800, color: scoreColor(currentScore) }}>
+                      {currentScore}
+                      <span style={{ fontSize: 11, fontWeight: 400, color: DS.textMut }}>/10</span>
+                    </span>
+                  )}
+                  {sheetOpen ? (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); dismiss(); }}
+                      style={{
+                        width: 28, height: 28, borderRadius: "50%", border: `1px solid ${DS.border}`,
+                        background: "rgba(255,255,255,0.08)", cursor: "pointer", display: "flex",
+                        alignItems: "center", justifyContent: "center", flexShrink: 0,
+                        fontSize: 14, color: DS.textMut, lineHeight: 1,
+                      }}
+                      aria-label="Close locality panel"
+                    >
+                      ✕
+                    </button>
+                  ) : (
+                    <svg
+                      width="18" height="18" viewBox="0 0 18 18" fill="none"
+                      style={{ color: DS.textMut, transform: sheetExpanded ? "rotate(180deg)" : "none", transition: "transform 0.25s", flexShrink: 0 }}
+                    >
+                      <path d="M4.5 11.5L9 6.5L13.5 11.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Sheet body */}
-            <div style={{ padding: "4px 20px 32px", overflowY: "auto", maxHeight: `calc(${sheetOpen ? "60" : "55"}dvh - 52px)` }}>
+            <div style={{ padding: "4px 20px 32px", overflowY: "auto", maxHeight: `calc(${sheetOpen ? "60" : "55"}dvh - 58px)` }}>
               {sheetOpen ? (
                 <div onClick={(e) => e.stopPropagation()}>
                   <LocalityDetail
@@ -2604,11 +2670,11 @@ export default function Home() {
                 </div>
               ) : (
                 <>
-                  <p style={{ fontSize: 13, color: "#374151", marginBottom: 12 }}>Tap any circle on the map.</p>
+                  <p style={{ fontSize: 13, color: DS.textMut, marginBottom: 12 }}>Tap any circle on the map.</p>
                   <FilterChips value={scoreFilter} onChange={setScoreFilter} />
-                  <div style={{ margin: "12px 0 10px", borderTop: "1px solid #e5e7eb" }} />
+                  <div style={{ margin: "12px 0 10px", borderTop: `1px solid ${DS.border}` }} />
                   <Legend />
-                  <div style={{ margin: "14px 0", borderTop: "1px solid #e5e7eb" }} />
+                  <div style={{ margin: "14px 0", borderTop: `1px solid ${DS.border}` }} />
                   <HeatmapPanel
                     active={heatmapActive}
                     onToggle={setHeatmapActive}
