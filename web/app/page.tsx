@@ -1763,8 +1763,48 @@ export default function Home() {
   const [pickingPin,      setPickingPin]      = useState(false);
   const pickingPinRef = useRef(false);
   const pickResolveRef = useRef<((pos: { lat: number; lon: number } | null) => void) | null>(null);
+  const mobileHandleRef = useRef<HTMLDivElement>(null);
+  const sheetExpandedRef = useRef(false);
 
   useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
+  useEffect(() => { sheetExpandedRef.current = sheetExpanded; }, [sheetExpanded]);
+
+  // ── Mobile swipe-to-collapse gesture on the sheet handle ─────────────────
+  // Uses a non-passive touchmove listener so we can call preventDefault()
+  // and block the browser's pull-to-refresh when the user swipes down.
+  useEffect(() => {
+    const handle = mobileHandleRef.current;
+    if (!handle) return;
+    let startY = 0;
+    let dragging = false;
+
+    const onStart = (e: TouchEvent) => {
+      startY = e.touches[0].clientY;
+      dragging = true;
+    };
+    const onMove = (e: TouchEvent) => {
+      if (!dragging) return;
+      const dy = e.touches[0].clientY - startY;
+      // Swipe down on an expanded sheet — stop pull-to-refresh
+      if (dy > 5 && sheetExpandedRef.current) e.preventDefault();
+    };
+    const onEnd = (e: TouchEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (dy > 52)       setSheetExpanded(false); // swipe down → collapse
+      else if (dy < -52) setSheetExpanded(true);  // swipe up  → expand
+    };
+
+    handle.addEventListener("touchstart", onStart, { passive: true });
+    handle.addEventListener("touchmove",  onMove,  { passive: false }); // must be non-passive
+    handle.addEventListener("touchend",   onEnd,   { passive: true });
+    return () => {
+      handle.removeEventListener("touchstart", onStart);
+      handle.removeEventListener("touchmove",  onMove);
+      handle.removeEventListener("touchend",   onEnd);
+    };
+  }, [isMobile]); // re-attach if screen size crosses breakpoint
 
   const requestPin = useCallback((): Promise<{ lat: number; lon: number } | null> => {
     return new Promise((resolve) => {
@@ -2578,10 +2618,11 @@ export default function Home() {
             zIndex: 20,
             paddingBottom: "env(safe-area-inset-bottom, 0px)",
           }}>
-            {/* Handle + title row — tap to toggle */}
+            {/* Handle + title row — tap to toggle, swipe to collapse/expand */}
             <div
+              ref={mobileHandleRef}
               onClick={() => setSheetExpanded((v) => !v)}
-              style={{ padding: "10px 20px 8px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
+              style={{ padding: "10px 20px 8px", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, touchAction: "none", userSelect: "none" }}
             >
               <div style={{ width: 40, height: 4, background: DS.borderMd, borderRadius: 2, flexShrink: 0 }} />
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
