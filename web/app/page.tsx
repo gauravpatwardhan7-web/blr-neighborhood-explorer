@@ -2365,7 +2365,7 @@ export default function Home() {
         source: "localities",
         paint: {
           "fill-color": ["step", ["get", "overall_score"], "#dc2626", 4, "#d97706", 7, "#16a34a"],
-          "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.01],
+          "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.06, 0.01],
         },
       });
 
@@ -2376,7 +2376,8 @@ export default function Home() {
         source: "localities",
         paint: {
           "line-color": ["step", ["get", "overall_score"], "#dc2626", 4, "#d97706", 7, "#16a34a"],
-          "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2.5, 0],
+          "line-width": ["case", ["boolean", ["feature-state", "hover"], false], 2, 0],
+          "line-opacity": ["case", ["boolean", ["feature-state", "hover"], false], 0.7, 0],
         },
       });
 
