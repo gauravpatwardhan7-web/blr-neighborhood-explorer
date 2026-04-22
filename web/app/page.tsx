@@ -1333,8 +1333,6 @@ function UserListingsPanel({
   onFormDone: () => void;
   onListingCreated?: (listing: { price: number; bhk?: number | null; lat: number; lon: number }) => void;
 }) {
-  const [listings,   setListings]   = useState<UserListingEntry[]>([]);
-  const [loading,    setLoading]    = useState(false);
   const [showForm,   setShowForm]   = useState(false);
   const [submitted,  setSubmitted]  = useState(false);
   const [price,      setPrice]      = useState("");
@@ -1346,15 +1344,6 @@ function UserListingsPanel({
   const [pin,        setPin]        = useState<{ lat: number; lon: number } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [formError,  setFormError]  = useState<string | null>(null);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`/api/user-listings?locality=${encodeURIComponent(locality)}`)
-      .then((r) => r.json())
-      .then((d: { listings: UserListingEntry[] }) => setListings(d.listings ?? []))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [locality]);
 
   const resetForm = () => {
     setPrice(""); setBhk(null); setDeposit(""); setFurnishing("");
@@ -1530,48 +1519,6 @@ function UserListingsPanel({
         </div>
       )}
 
-      {/* Listings */}
-      {loading ? (
-        <p style={{ fontSize: 13, color: DS.textMut }}>Loading…</p>
-      ) : listings.length === 0 && !submitted ? (
-        <div style={{ textAlign: "center", padding: "16px 0" }}>
-          <p style={{ fontSize: 13, color: DS.textMut, margin: "0 0 6px" }}>No owner listings yet in {locality}.</p>
-          {!showForm && <p style={{ fontSize: 12, color: DS.textMut }}>Be the first — list your flat above.</p>}
-        </div>
-      ) : (
-        listings.map((l) => (
-          <div key={l.id} style={{ border: `1px solid ${DS.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8, background: "#ffffff" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
-              <div>
-                <span style={{ fontSize: 17, fontWeight: 800, color: DS.text }}>₹{priceK(l.price)}</span>
-                <span style={{ fontSize: 12, color: DS.textMut }}>/mo</span>
-                {l.bhk && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 600, color: DS.textSub }}>{l.bhk}BHK</span>}
-              </div>
-              <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 20, background: "#fef7f4", color: DS.accent, border: `1px solid rgba(196,98,45,0.2)` }}>Owner</span>
-            </div>
-            <div style={{ fontSize: 12, color: DS.textSub, marginBottom: l.deposit || l.address ? 4 : 0 }}>
-              {[l.furnishing, l.area_sqft ? `${l.area_sqft} sqft` : null].filter(Boolean).join(" · ")}
-            </div>
-            {l.deposit && <div style={{ fontSize: 11, color: DS.textMut, marginBottom: 2 }}>Deposit ₹{priceK(l.deposit)}</div>}
-            {l.address && <div style={{ fontSize: 11, color: DS.textMut, marginBottom: 6, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>📍 {l.address}</div>}
-            {l.contact && (
-              <div>
-                {/^\d{10,12}$/.test(l.contact.replace(/\D/g, "")) ? (
-                  <a
-                    href={`https://wa.me/${l.contact.replace(/\D/g, "").length === 10 ? `91${l.contact.replace(/\D/g, "")}` : l.contact.replace(/\D/g, "")}`}
-                    target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 13, fontWeight: 700, color: "#16a34a", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}
-                  >
-                    💬 WhatsApp owner
-                  </a>
-                ) : (
-                  <span style={{ fontSize: 12, color: DS.textSub }}>{l.contact}</span>
-                )}
-              </div>
-            )}
-          </div>
-        ))
-      )}
     </div>
   );
 }
@@ -1846,6 +1793,7 @@ export default function Home() {
   const [pinCursor, setPinCursor] = useState<{ x: number; y: number } | null>(null);
   const droppedPinMarkerRef = useRef<maplibregl.Marker | null>(null);
   const onPinMovedRef = useRef<((pos: { lat: number; lon: number }) => void) | null>(null);
+  const ownerMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
   useEffect(() => { sheetExpandedRef.current = sheetExpanded; }, [sheetExpanded]);
@@ -2076,18 +2024,36 @@ export default function Home() {
 
   const handleListingsLoaded = useCallback((listings: (ListingRow & { isOwner?: boolean })[]) => {
     const map = mapInstanceRef.current;
-    // Clear existing listing markers
     listingMarkersRef.current.forEach((m) => m.remove());
     listingMarkersRef.current = [];
     if (!map) return;
     for (const l of listings) {
-      if (!l.lat || !l.lon) continue;
-      const el = createListingPin(l.price, (l as ListingRow & { isOwner?: boolean; bhk?: number | null }).bhk ?? null, l.isOwner ?? false);
+      if (!l.lat || !l.lon || l.isOwner) continue; // owner pins handled by ownerMarkersRef
+      const el = createListingPin(l.price, (l as ListingRow & { bhk?: number | null }).bhk ?? null, false);
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
         .setLngLat([l.lon, l.lat])
         .addTo(map);
       listingMarkersRef.current.push(marker);
     }
+  }, []);
+
+  const refreshOwnerMarkers = useCallback(async (localityName: string) => {
+    const map = mapInstanceRef.current;
+    ownerMarkersRef.current.forEach((m) => m.remove());
+    ownerMarkersRef.current = [];
+    if (!map || !localityName) return;
+    try {
+      const res = await fetch(`/api/user-listings?locality=${encodeURIComponent(localityName)}`);
+      const d: { listings: Array<{ price: number; bhk?: number | null; lat?: number | null; lon?: number | null }> } = await res.json();
+      for (const l of d.listings ?? []) {
+        if (!l.lat || !l.lon) continue;
+        const el = createListingPin(l.price, l.bhk ?? null, true);
+        const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
+          .setLngLat([l.lon, l.lat])
+          .addTo(map);
+        ownerMarkersRef.current.push(marker);
+      }
+    } catch {}
   }, []);
 
   const handleOwnerListingCreated = useCallback((listing: { price: number; bhk?: number | null; lat: number; lon: number }) => {
@@ -2097,7 +2063,7 @@ export default function Home() {
     const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
       .setLngLat([listing.lon, listing.lat])
       .addTo(map);
-    listingMarkersRef.current.push(marker);
+    ownerMarkersRef.current.push(marker);
   }, []);
 
   // ── Commute heatmap ───────────────────────────────────────────────────────
@@ -2210,6 +2176,16 @@ export default function Home() {
       setHeatmapLoading(false);
     }
   }, [heatmapActive, heatmapDest, heatmapMode, fetchHeatmap]);
+
+  // Fetch and display owner listing pins whenever the selected locality changes
+  useEffect(() => {
+    if (!selected) {
+      ownerMarkersRef.current.forEach((m) => m.remove());
+      ownerMarkersRef.current = [];
+      return;
+    }
+    refreshOwnerMarkers(selected.name);
+  }, [selected, refreshOwnerMarkers]);
 
   // Re-paint map layers and DOM markers whenever heatmap data updates
   useEffect(() => {
