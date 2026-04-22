@@ -1793,7 +1793,6 @@ export default function Home() {
   const [pinCursor, setPinCursor] = useState<{ x: number; y: number } | null>(null);
   const droppedPinMarkerRef = useRef<maplibregl.Marker | null>(null);
   const onPinMovedRef = useRef<((pos: { lat: number; lon: number }) => void) | null>(null);
-  const ownerMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
   useEffect(() => { sheetExpandedRef.current = sheetExpanded; }, [sheetExpanded]);
@@ -2028,32 +2027,14 @@ export default function Home() {
     listingMarkersRef.current = [];
     if (!map) return;
     for (const l of listings) {
-      if (!l.lat || !l.lon || l.isOwner) continue; // owner pins handled by ownerMarkersRef
-      const el = createListingPin(l.price, (l as ListingRow & { bhk?: number | null }).bhk ?? null, false);
+      if (!l.lat || !l.lon) continue;
+      const isOwner = (l as ListingRow & { isOwner?: boolean }).isOwner ?? false;
+      const el = createListingPin(l.price, (l as ListingRow & { bhk?: number | null }).bhk ?? null, isOwner);
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
         .setLngLat([l.lon, l.lat])
         .addTo(map);
       listingMarkersRef.current.push(marker);
     }
-  }, []);
-
-  const refreshOwnerMarkers = useCallback(async (localityName: string) => {
-    const map = mapInstanceRef.current;
-    ownerMarkersRef.current.forEach((m) => m.remove());
-    ownerMarkersRef.current = [];
-    if (!map || !localityName) return;
-    try {
-      const res = await fetch(`/api/user-listings?locality=${encodeURIComponent(localityName)}`);
-      const d: { listings: Array<{ price: number; bhk?: number | null; lat?: number | null; lon?: number | null }> } = await res.json();
-      for (const l of d.listings ?? []) {
-        if (!l.lat || !l.lon) continue;
-        const el = createListingPin(l.price, l.bhk ?? null, true);
-        const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-          .setLngLat([l.lon, l.lat])
-          .addTo(map);
-        ownerMarkersRef.current.push(marker);
-      }
-    } catch {}
   }, []);
 
   const handleOwnerListingCreated = useCallback((listing: { price: number; bhk?: number | null; lat: number; lon: number }) => {
@@ -2063,7 +2044,7 @@ export default function Home() {
     const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
       .setLngLat([listing.lon, listing.lat])
       .addTo(map);
-    ownerMarkersRef.current.push(marker);
+    listingMarkersRef.current.push(marker);
   }, []);
 
   // ── Commute heatmap ───────────────────────────────────────────────────────
@@ -2176,16 +2157,6 @@ export default function Home() {
       setHeatmapLoading(false);
     }
   }, [heatmapActive, heatmapDest, heatmapMode, fetchHeatmap]);
-
-  // Fetch and display owner listing pins whenever the selected locality changes
-  useEffect(() => {
-    if (!selected) {
-      ownerMarkersRef.current.forEach((m) => m.remove());
-      ownerMarkersRef.current = [];
-      return;
-    }
-    refreshOwnerMarkers(selected.name);
-  }, [selected, refreshOwnerMarkers]);
 
   // Re-paint map layers and DOM markers whenever heatmap data updates
   useEffect(() => {
