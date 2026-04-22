@@ -2425,22 +2425,21 @@ export default function Home() {
         circle.textContent = String(recomputeScore(factors, weightsRef.current));
         el.appendChild(circle);
 
-        // Name label — only for landmark areas
-        if (isLandmark) {
-          const label = document.createElement("div");
-          label.style.cssText = [
-            "font-size:10px", "font-weight:700",
-            "color:#111827", "white-space:nowrap",
-            "background:rgba(255,255,255,0.92)",
-            "padding:1px 5px", "border-radius:4px",
-            "line-height:1.4",
-            "box-shadow:0 1px 3px rgba(0,0,0,0.15)",
-            "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-            "pointer-events:none",
-          ].join(";");
-          label.textContent = name;
-          el.appendChild(label);
-        }
+        // Name label — always shown for landmark areas; tooltip on hover for the rest
+        const label = document.createElement("div");
+        label.style.cssText = [
+          "font-size:10px", "font-weight:700",
+          "color:#111827", "white-space:nowrap",
+          "background:rgba(255,255,255,0.95)",
+          "padding:2px 6px", "border-radius:5px",
+          "line-height:1.4",
+          "box-shadow:0 1px 4px rgba(0,0,0,0.18)",
+          "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+          "pointer-events:none",
+          isLandmark ? "" : "display:none", // hidden until hover for non-landmarks
+        ].join(";");
+        label.textContent = name;
+        el.appendChild(label);
 
         markersRef.current.push({ el, circle, factors, name });
 
@@ -2448,9 +2447,11 @@ export default function Home() {
           circle.style.border     = "2.5px solid rgba(0,0,0,0.35)";
           circle.style.boxShadow  = "0 4px 16px rgba(0,0,0,0.32)";
           el.style.zIndex         = "999";
+          if (!isLandmark) label.style.display = "block";
         });
         el.addEventListener("mouseleave", () => {
           circle.style.border    = "2.5px solid white";
+          if (!isLandmark) label.style.display = "none";
           circle.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
           el.style.zIndex        = "";
         });
