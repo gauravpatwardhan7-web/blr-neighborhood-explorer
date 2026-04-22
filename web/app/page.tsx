@@ -1323,6 +1323,7 @@ function UserListingsPanel({
   onCancelPin,
   onPinMovedRegister,
   onFormDone,
+  onListingCreated,
 }: {
   locality: string;
   onRequestPin: () => Promise<{ lat: number; lon: number } | null>;
@@ -1330,6 +1331,7 @@ function UserListingsPanel({
   onCancelPin: () => void;
   onPinMovedRegister: (cb: ((pos: { lat: number; lon: number }) => void) | null) => void;
   onFormDone: () => void;
+  onListingCreated?: (listing: { price: number; bhk?: number | null; lat: number; lon: number }) => void;
 }) {
   const [listings,   setListings]   = useState<UserListingEntry[]>([]);
   const [loading,    setLoading]    = useState(false);
@@ -1380,6 +1382,9 @@ function UserListingsPanel({
         body: JSON.stringify(body),
       });
       if (!res.ok) { const d = await res.json(); setFormError(d.error ?? "Failed to submit"); return; }
+      if (pin && onListingCreated) {
+        onListingCreated({ price: priceNum, bhk: bhk ?? null, lat: pin.lat, lon: pin.lon });
+      }
       setSubmitted(true); setShowForm(false); resetForm();
     } finally {
       setSubmitting(false);
@@ -1652,6 +1657,7 @@ function LocalityDetail({
   onCancelPin,
   onPinMovedRegister,
   onFormDone,
+  onListingCreated,
 }: {
   selected: Locality;
   score: number;
@@ -1671,6 +1677,7 @@ function LocalityDetail({
   onCancelPin: () => void;
   onPinMovedRegister: (cb: ((pos: { lat: number; lon: number }) => void) | null) => void;
   onFormDone: () => void;
+  onListingCreated?: (listing: { price: number; bhk?: number | null; lat: number; lon: number }) => void;
 }) {
   return (
     <>
@@ -1736,7 +1743,7 @@ function LocalityDetail({
         <ListingsPanel locality={selected.name} onListingsLoaded={onListingsLoaded} />
       </Block>
       <Block tint="lilac" label="Owner listings">
-        <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} onPinMovedRegister={onPinMovedRegister} onFormDone={onFormDone} />
+        <UserListingsPanel locality={selected.name} onRequestPin={onRequestPin} pickingPin={pickingPin} onCancelPin={onCancelPin} onPinMovedRegister={onPinMovedRegister} onFormDone={onFormDone} onListingCreated={onListingCreated} />
       </Block>
       <Block tint="sky" label="Commute">
         <CommutePanel originLat={originLat} originLon={originLon} localities={localities} onDestinationChange={onDestinationChange} />
@@ -2081,6 +2088,16 @@ export default function Home() {
         .addTo(map);
       listingMarkersRef.current.push(marker);
     }
+  }, []);
+
+  const handleOwnerListingCreated = useCallback((listing: { price: number; bhk?: number | null; lat: number; lon: number }) => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    const el = createListingPin(listing.price, listing.bhk ?? null, true);
+    const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
+      .setLngLat([listing.lon, listing.lat])
+      .addTo(map);
+    listingMarkersRef.current.push(marker);
   }, []);
 
   // ── Commute heatmap ───────────────────────────────────────────────────────
@@ -2746,6 +2763,7 @@ export default function Home() {
                   onCancelPin={cancelPin}
                   onPinMovedRegister={registerPinMovedCb}
                   onFormDone={clearDroppedPin}
+                  onListingCreated={handleOwnerListingCreated}
                 />
               </div>
             )}
@@ -2760,7 +2778,7 @@ export default function Home() {
             borderRadius: "22px 22px 0 0",
             boxShadow: "0 -4px 32px rgba(0,0,0,0.12)",
             borderTop: `1px solid ${DS.border}`,
-            maxHeight: sheetExpanded ? (sheetOpen ? "74dvh" : "52dvh") : "58px",
+            maxHeight: pickingPin ? "0px" : (sheetExpanded ? (sheetOpen ? "74dvh" : "52dvh") : "58px"),
             overflow: "hidden",
             transition: "max-height 0.32s cubic-bezier(0.4,0,0.2,1)",
             color: DS.text,
@@ -2827,6 +2845,7 @@ export default function Home() {
                     onCancelPin={cancelPin}
                     onPinMovedRegister={registerPinMovedCb}
                     onFormDone={clearDroppedPin}
+                    onListingCreated={handleOwnerListingCreated}
                   />
                 </div>
               ) : (
