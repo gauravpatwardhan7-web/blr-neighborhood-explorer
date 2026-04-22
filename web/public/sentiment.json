@@ -6,7 +6,7 @@
     "positive": 2,
     "neutral": 2,
     "negative": 5,
-    "total": 55,
+    "total": 54,
     "summary": "Residents appreciate Koramangala's housing costs. The main criticisms are around traffic and commute and overall vibe.",
     "quotes": [
       "These are parks in areas like Koramangala, HSR Layout, JP Nagar, Jayanagar.",
@@ -16,12 +16,12 @@
   },
   {
     "name": "Indiranagar",
-    "compound": -0.043,
-    "label": "Neutral",
+    "compound": -0.055,
+    "label": "Negative",
     "positive": 0,
-    "neutral": 8,
+    "neutral": 6,
     "negative": 1,
-    "total": 66,
+    "total": 65,
     "summary": "Reddit sentiment on Indiranagar leans negative. The main criticisms concern traffic and commute.",
     "quotes": [
       "How this impacts you today: Intensified Checks: In direct response to this crash, Bengaluru Traffic Police have launched a massive drunk-driving crackdown** across East Bengaluru\u2026"
@@ -59,12 +59,12 @@
   },
   {
     "name": "Whitefield",
-    "compound": 0.062,
+    "compound": 0.055,
     "label": "Positive",
     "positive": 3,
-    "neutral": 4,
+    "neutral": 5,
     "negative": 1,
-    "total": 56,
+    "total": 54,
     "summary": "Reddit discussions about Whitefield are broadly positive. Residents particularly appreciate the public transit and housing costs.",
     "quotes": [
       "I shifted to a new room in Whitefield on 15th, yesterday I got electric shock from the geyser tap, then I checked and came to know that there is current leak.",
@@ -74,12 +74,12 @@
   },
   {
     "name": "Malleshwaram",
-    "compound": 0.378,
+    "compound": 0.361,
     "label": "Positive",
     "positive": 16,
-    "neutral": 4,
+    "neutral": 5,
     "negative": 1,
-    "total": 55,
+    "total": 57,
     "summary": "Reddit discussions about Malleshwaram are broadly positive. Residents particularly appreciate the overall vibe and housing costs.",
     "quotes": [
       "Best to go around Malleshwaram and eat at multiple joints - Idli at Veena Stores, Shavige bath at Raghvendra stores, Masala Dose and filter coffee at CTR.",
@@ -108,7 +108,7 @@
     "positive": 1,
     "neutral": 2,
     "negative": 1,
-    "total": 38,
+    "total": 37,
     "summary": "Reddit sentiment on BTM Layout leans negative. The main criticisms concern local amenities.",
     "quotes": [
       "Saw this garbage on main road near btm layout lying on main road i m NR Bangaluru it was smelling like shit whats your thoughts on this !"
@@ -121,7 +121,7 @@
     "positive": 9,
     "neutral": 0,
     "negative": 0,
-    "total": 54,
+    "total": 51,
     "summary": "Reddit discussions about JP Nagar are broadly positive. Residents particularly appreciate the overall vibe and public transit.",
     "quotes": [
       "I live in Bangalore and after so much hunting found a very nice flat in a 10 floor apartment building in an extremely peaceful neighborhood (near JP nagar if anyone wants to know).",
@@ -131,13 +131,13 @@
   },
   {
     "name": "Jayanagar",
-    "compound": -0.006,
+    "compound": -0.049,
     "label": "Neutral",
     "positive": 3,
-    "neutral": 3,
-    "negative": 4,
+    "neutral": 2,
+    "negative": 5,
     "total": 66,
-    "summary": "Residents appreciate Jayanagar's housing costs. The main criticisms are around traffic and commute.",
+    "summary": "Residents appreciate Jayanagar's housing costs. The main criticisms are around traffic and commute and local amenities.",
     "quotes": [
       "I got a call today from Holiday Me Resorts Jayanagar saying through a lucky draw I've won vouchers and silver, apparently because I bought a new bike and visit their office to\u2026",
       "Also I couldn't find any photos of their office and the address is a little arbitrary...\"Level 2, Plot 23, 8th Main Road, Jayanagar 3rd Block, Bengaluru, India, 560011\" I mean, no\u2026",
@@ -151,7 +151,7 @@
     "positive": 8,
     "neutral": 11,
     "negative": 7,
-    "total": 76,
+    "total": 74,
     "summary": "Reddit sentiment on Hebbal leans negative. The main criticisms concern local amenities.",
     "quotes": [
       "from 2:30-3pm build up gets started and peaks 5-7pm again from 8:30-10pm on Fridays and festive times it will be hectic due to travel buses going to TN ( silboard route) and\u2026",
@@ -161,12 +161,12 @@
   },
   {
     "name": "Electronic City",
-    "compound": -0.086,
+    "compound": -0.099,
     "label": "Negative",
     "positive": 2,
-    "neutral": 4,
+    "neutral": 3,
     "negative": 2,
-    "total": 52,
+    "total": 50,
     "summary": "Residents appreciate Electronic City's housing costs. The main criticisms are around overall vibe and local amenities.",
     "quotes": [
       "Heck, I even tried to offer erickshaw rides in electronic city for Rs 10, but few auto goons actually abused my driver, discouraging me from coninuing the service.",
@@ -176,12 +176,12 @@
   },
   {
     "name": "Marathahalli",
-    "compound": -0.107,
+    "compound": -0.12,
     "label": "Negative",
     "positive": 4,
-    "neutral": 3,
+    "neutral": 2,
     "negative": 5,
-    "total": 56,
+    "total": 54,
     "summary": "Residents appreciate Marathahalli's housing costs. The main criticisms are around overall vibe and traffic and commute.",
     "quotes": [
       "They should just stop private buses from parking near Marathahalli",
@@ -196,7 +196,7 @@
     "positive": 6,
     "neutral": 2,
     "negative": 5,
-    "total": 58,
+    "total": 57,
     "summary": "Reddit discussions about Banashankari are broadly positive. Residents particularly appreciate the public transit and traffic and commute.",
     "quotes": [
       "Though Jayanagar and Banashankari have developed over time, they still have the old Bengaluru vibe which the eastern Bengaluru totally misses.",
@@ -226,7 +226,7 @@
     "positive": 13,
     "neutral": 4,
     "negative": 1,
-    "total": 72,
+    "total": 71,
     "summary": "Residents appreciate Basavanagudi's overall vibe and local amenities. The main criticisms are around public transit.",
     "quotes": [
       "But overall it was a great experience, the experience is skewed highly towards Jayanagar and Basavanagudi, while I appreciated the wide roads of JP Nagar, footphaths and street\u2026",
@@ -242,7 +242,7 @@
     "neutral": 12,
     "negative": 13,
     "total": 70,
-    "summary": "Residents appreciate KR Puram's local amenities. The main criticisms are around overall vibe and public transit.",
+    "summary": "Reddit sentiment on KR Puram leans negative. The main criticisms concern overall vibe and public transit.",
     "quotes": [
       "Behind the chaos of that KR Puram stretch \u2014 the metro construction, the buses, the zero oxygen \u2014 there are still these moments that remind you why this city gets under your skin.",
       "I was also stuck in the middle of KR Puram traffic with no tools on me.",
@@ -282,7 +282,7 @@
     "positive": 3,
     "neutral": 5,
     "negative": 2,
-    "total": 44,
+    "total": 45,
     "summary": "Residents appreciate Domlur's overall vibe. The main criticisms are around traffic and commute and housing costs.",
     "quotes": [
       "Was on my usual run this morning on old airport road and was running towards marathahalli from domlur side (but on the opposite side for safety) when I heard a loud bang from\u2026",
@@ -342,7 +342,7 @@
     "positive": 5,
     "neutral": 4,
     "negative": 0,
-    "total": 34,
+    "total": 33,
     "summary": "Reddit discussions about Ulsoor are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
     "quotes": [
       "St John\u2019s Road if you don\u2019t want any of the above but a nice quiet neighbourhood that is also in close proximity to malls, MG Road and of course, Ulsoor Lake.",
@@ -367,13 +367,13 @@
   },
   {
     "name": "Hennur",
-    "compound": -0.065,
+    "compound": -0.074,
     "label": "Negative",
     "positive": 4,
     "neutral": 2,
-    "negative": 6,
-    "total": 36,
-    "summary": "Residents appreciate Hennur's overall vibe and housing costs. The main criticisms are around traffic and commute and public transit.",
+    "negative": 7,
+    "total": 37,
+    "summary": "Residents appreciate Hennur's housing costs and overall vibe. The main criticisms are around traffic and commute and public transit.",
     "quotes": [
       "Hennur Road itself is struggling to keep up with the traffic plying on that road.",
       "(I live in Hennur, and during the recent floods they had to bring in boats, firetrucks and JCB to get rid of water and last year a building collapsed which caused a construction\u2026",
@@ -400,7 +400,7 @@
     "positive": 5,
     "neutral": 5,
     "negative": 2,
-    "total": 57,
+    "total": 58,
     "summary": "Reddit discussions about Bannerghatta Road are broadly positive. Residents particularly appreciate the overall vibe and public transit.",
     "quotes": [
       "I assume they will put fresh tar on the whole Bannerghatta road stretch before metro opening",
@@ -415,7 +415,7 @@
     "positive": 1,
     "neutral": 4,
     "negative": 3,
-    "total": 32,
+    "total": 33,
     "summary": "Reddit sentiment on Vijayanagar leans negative. The main criticisms concern housing costs.",
     "quotes": [
       "Apparently there is some sort of posters war between ruling MLA and opposition MLA in vijayanagar and Govindarajanagar constituencies.",
@@ -430,7 +430,7 @@
     "positive": 11,
     "neutral": 6,
     "negative": 0,
-    "total": 75,
+    "total": 73,
     "summary": "Reddit discussions about MG Road are broadly positive. Residents particularly appreciate the overall vibe and local amenities.",
     "quotes": [
       "I loved going to Cubbon park and Lalbagh, MG road was good too but a bit too crowded for me, the temples, the shopping streets and even the malls were gorgeous.",
@@ -445,7 +445,7 @@
     "positive": 9,
     "neutral": 10,
     "negative": 4,
-    "total": 75,
+    "total": 76,
     "summary": "Reddit discussions about HAL are broadly positive. Residents particularly appreciate the overall vibe and housing costs.",
     "quotes": [
       "I've only had experience with MH police (esp fuckers in Pune), and they don't cut challans really, they ask for a big amount and then beat around the bush untill you bribe them\u2026",
@@ -489,7 +489,7 @@
     "positive": 3,
     "neutral": 7,
     "negative": 3,
-    "total": 35,
+    "total": 34,
     "summary": "Residents appreciate Hoodi's housing costs and public transit. The main criticisms are around traffic and commute and overall vibe.",
     "quotes": [
       "This road is permanently closed and makes problem to several people who commute to Hoodi area from Sadaramangala, bellathur Areas ..",
@@ -519,7 +519,7 @@
     "positive": 1,
     "neutral": 1,
     "negative": 2,
-    "total": 17,
+    "total": 18,
     "summary": "Reddit sentiment on Nagavara leans negative. The main criticisms concern overall vibe and traffic and commute.",
     "quotes": [
       "It has been happening across Nagavara/Hennur/Horamavu PGs and apartment blocks.",
@@ -592,7 +592,7 @@
     "positive": 1,
     "neutral": 4,
     "negative": 5,
-    "total": 43,
+    "total": 42,
     "summary": "Residents appreciate Peenya's overall vibe. The main criticisms are around traffic and commute and public transit.",
     "quotes": [
       "Conclusion: Invest Smart, Stay Safe The Peenya demolition order is a harsh reminder of the importance of legal due diligence when purchasing property.",
@@ -754,7 +754,7 @@
     "positive": 2,
     "neutral": 4,
     "negative": 1,
-    "total": 33,
+    "total": 35,
     "summary": "Residents appreciate Nagarbhavi's public transit. The main criticisms are around local amenities.",
     "quotes": [
       "Please have a look \u2014 if anyone around Nagarbhavi or nearby areas happens to spot her, please reach out urgently.",
@@ -809,17 +809,17 @@
   },
   {
     "name": "Begur",
-    "compound": 0.261,
+    "compound": 0.161,
     "label": "Positive",
-    "positive": 7,
+    "positive": 6,
     "neutral": 1,
-    "negative": 3,
-    "total": 44,
-    "summary": "Reddit discussions about Begur are broadly positive. Residents particularly appreciate the traffic and commute and housing costs.",
+    "negative": 4,
+    "total": 45,
+    "summary": "Reddit discussions about Begur are broadly positive. Residents particularly appreciate the housing costs and public transit.",
     "quotes": [
-      "I live in Begur and I take 343 for daily commute and have surprisingly never seen KA57F3208 or the conductor of this description haha!",
       "I just moved into a beautiful house in Begur (office in HSR \ud83e\udd37\ud83c\udffb\u200d\u2642\ufe0f) with nice people and I really just wanted to chill at home and just talk, maybe a couple drinks, eat food\u2026",
-      "Video credits: friendsofbmtc New route - MF21BB connects important hotspots such as Begur and Yelenahalli with Bannerghatta road, JP Nagar, Kanakapura road and Banashankari."
+      "Video credits: friendsofbmtc New route - MF21BB connects important hotspots such as Begur and Yelenahalli with Bannerghatta road, JP Nagar, Kanakapura road and Banashankari.",
+      "A flat from a renowned builder in the outskirts of Bangalore (Jakkur/Begur and the likes), to be precise (in the 45-65 lakhs range)."
     ]
   },
   {
@@ -1009,7 +1009,7 @@
     "positive": 0,
     "neutral": 1,
     "negative": 0,
-    "total": 12,
+    "total": 13,
     "summary": "Reddit has mixed views on Akshayanagar, with no single theme dominating the conversation.",
     "quotes": []
   },
@@ -1180,7 +1180,7 @@
     "positive": 2,
     "neutral": 0,
     "negative": 1,
-    "total": 14,
+    "total": 15,
     "summary": "Residents appreciate Chandra Layout's housing costs. The main criticisms are around public transit.",
     "quotes": [
       "Since you live in Chandra Layout, the salarpuria sattva divinity is a good one and I heard from someone that a 2bhk there will set you back by 50k a month.",
