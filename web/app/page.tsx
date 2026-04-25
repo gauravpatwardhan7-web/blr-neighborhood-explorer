@@ -2220,7 +2220,7 @@ export default function Home() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       map.setPaintProperty("localities-fill", "fill-color", colorExpr(false) as any);
       map.setPaintProperty("localities-fill", "fill-opacity", [
-        "case", ["boolean", ["feature-state", "hover"], false], 0.22, 0.01,
+        "case", ["boolean", ["feature-state", "hover"], false], 0.06, 0.01,
       ]);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       map.setPaintProperty("localities-outline", "line-color", colorExpr(false) as any);
