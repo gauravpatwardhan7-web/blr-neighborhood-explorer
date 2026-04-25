@@ -1748,6 +1748,90 @@ function EmailGate({ onSubmit, submitting }: { onSubmit: (email: string) => void
   );
 }
 
+// ── Flag modal (top-level to avoid remount-on-rerender bug) ───────────────────
+function FlagModal({
+  contentType, reason, error, submitting, submitted,
+  onContentType, onReason, onClose, onSubmit,
+}: {
+  contentType: "neighborhood" | "tip" | "listing";
+  reason: string;
+  error: string | null;
+  submitting: boolean;
+  submitted: boolean;
+  onContentType: (v: "neighborhood" | "tip" | "listing") => void;
+  onReason: (v: string) => void;
+  onClose: () => void;
+  onSubmit: () => void;
+}) {
+  return (
+    <div
+      onClick={() => !submitting && !submitted && onClose()}
+      style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 60, padding: "16px" }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{ background: "white", borderRadius: "16px 16px 0 0", padding: "24px", width: "100%", maxWidth: 480, boxShadow: "0 -4px 20px rgba(0,0,0,0.15)" }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1c1917", margin: 0 }}>Report Issue</h2>
+          {!submitted && (
+            <button
+              onClick={onClose}
+              style={{ width: 28, height: 28, borderRadius: "50%", border: `1px solid ${DS.border}`, background: "#f5f0eb", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: DS.textSub, lineHeight: 1 }}
+            >✕</button>
+          )}
+        </div>
+
+        {submitted ? (
+          <div style={{ textAlign: "center", padding: "20px 0" }}>
+            <p style={{ fontSize: 16, fontWeight: 600, color: "#16a34a", margin: "0 0 8px" }}>✓ Thanks for the report!</p>
+            <p style={{ fontSize: 13, color: DS.textMut, margin: 0 }}>We'll review it soon.</p>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 700, color: DS.textSub, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+                What's wrong?
+              </label>
+              <select
+                value={contentType}
+                onChange={(e) => onContentType(e.target.value as "neighborhood" | "tip" | "listing")}
+                style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: `1.5px solid ${DS.border}`, fontSize: 14, fontFamily: "inherit", color: "#111827", background: "white", cursor: "pointer" }}
+              >
+                <option value="neighborhood">Neighborhood data</option>
+                <option value="tip">Community tip</option>
+                <option value="listing">Rental listing</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 700, color: DS.textSub, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+                Details ({reason.length}/500)
+              </label>
+              <textarea
+                value={reason}
+                onChange={(e) => { if (e.target.value.length <= 500) onReason(e.target.value); }}
+                placeholder="What's inaccurate or misleading?"
+                style={{ width: "100%", padding: "9px 12px", borderRadius: 8, border: `1.5px solid ${DS.border}`, fontSize: 14, fontFamily: "inherit", color: "#111827", resize: "none", minHeight: 100, boxSizing: "border-box" }}
+              />
+            </div>
+
+            {error && <p style={{ fontSize: 12, color: "#dc2626", margin: 0 }}>⚠ {error}</p>}
+
+            <button
+              onClick={onSubmit}
+              disabled={submitting}
+              style={{ width: "100%", padding: "10px", borderRadius: 8, border: "none", background: submitting ? "#d1d5db" : "#111827", color: "white", fontSize: 14, fontWeight: 600, cursor: submitting ? "not-allowed" : "pointer" }}
+            >
+              {submitting ? "Submitting..." : "Submit Report"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function Home() {
   const mapRef            = useRef<HTMLDivElement>(null);
@@ -2559,143 +2643,6 @@ export default function Home() {
     }
   };
 
-  const FlagModal = () => (
-    <div
-      onClick={() => !flagSubmitting && !flagSubmitted && setShowFlagModal(false)}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.4)",
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "center",
-        zIndex: 60,
-        padding: "16px",
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          background: "white",
-          borderRadius: "16px 16px 0 0",
-          padding: "24px",
-          width: "100%",
-          maxWidth: 480,
-          boxShadow: "0 -4px 20px rgba(0,0,0,0.15)",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1c1917", margin: 0 }}>Report Issue</h2>
-          {!flagSubmitted && (
-            <button
-              onClick={() => setShowFlagModal(false)}
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                border: `1px solid ${DS.border}`,
-                background: "#f5f0eb",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 14,
-                color: DS.textSub,
-                lineHeight: 1,
-              }}
-            >
-              ✕
-            </button>
-          )}
-        </div>
-
-        {flagSubmitted ? (
-          <div style={{ textAlign: "center", padding: "20px 0" }}>
-            <p style={{ fontSize: 16, fontWeight: 600, color: "#16a34a", margin: "0 0 8px" }}>✓ Thanks for the report!</p>
-            <p style={{ fontSize: 13, color: DS.textMut, margin: 0 }}>We'll review it soon.</p>
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: DS.textSub, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
-                What's wrong?
-              </label>
-              <select
-                value={flagContentType}
-                onChange={(e) => setFlagContentType(e.target.value as any)}
-                style={{
-                  width: "100%",
-                  padding: "9px 12px",
-                  borderRadius: 8,
-                  border: `1.5px solid ${DS.border}`,
-                  fontSize: 14,
-                  fontFamily: "inherit",
-                  color: "#111827",
-                  background: "white",
-                  cursor: "pointer",
-                }}
-              >
-                <option value="neighborhood">Neighborhood data</option>
-                <option value="tip">Community tip</option>
-                <option value="listing">Rental listing</option>
-              </select>
-            </div>
-
-            <div>
-              <label style={{ fontSize: 12, fontWeight: 700, color: DS.textSub, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
-                Details ({flagReason.length}/500)
-              </label>
-              <textarea
-                value={flagReason}
-                onChange={(e) => {
-                  if (e.target.value.length <= 500) {
-                    setFlagReason(e.target.value);
-                    setFlagError(null);
-                  }
-                }}
-                placeholder="What's inaccurate or misleading?"
-                style={{
-                  width: "100%",
-                  padding: "9px 12px",
-                  borderRadius: 8,
-                  border: `1.5px solid ${DS.border}`,
-                  fontSize: 14,
-                  fontFamily: "inherit",
-                  color: "#111827",
-                  resize: "none",
-                  minHeight: 100,
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-
-            {flagError && (
-              <p style={{ fontSize: 12, color: "#dc2626", margin: 0 }}>⚠ {flagError}</p>
-            )}
-
-            <button
-              onClick={handleFlagSubmit}
-              disabled={flagSubmitting}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: 8,
-                border: "none",
-                background: flagSubmitting ? "#d1d5db" : "#111827",
-                color: "white",
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: flagSubmitting ? "not-allowed" : "pointer",
-                transition: "background 0.2s",
-              }}
-            >
-              {flagSubmitting ? "Submitting..." : "Submit Report"}
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
 
   // ── Shared rankings list (reused in desktop card + mobile sheet) ────────────
   const RankingsList = () => (
@@ -2728,7 +2675,19 @@ export default function Home() {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>
-      {showFlagModal && <FlagModal />}
+      {showFlagModal && (
+        <FlagModal
+          contentType={flagContentType}
+          reason={flagReason}
+          error={flagError}
+          submitting={flagSubmitting}
+          submitted={flagSubmitted}
+          onContentType={setFlagContentType}
+          onReason={(v) => { setFlagReason(v); setFlagError(null); }}
+          onClose={() => setShowFlagModal(false)}
+          onSubmit={handleFlagSubmit}
+        />
+      )}
       {showGate && <EmailGate onSubmit={handleGateSubmit} submitting={gateSubmitting} />}
 
       {/* Pin-picking banner */}
