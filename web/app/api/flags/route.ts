@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseServer } from "@/lib/supabase-server";
+
+export const runtime = "nodejs";
 
 const RL_MAX = 5;
-const RL_WINDOW_MS = 3600000; // 1 hour
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const RL_WINDOW_MS = 3_600_000; // 1 hour
 
 type ContentType = "neighborhood" | "tip" | "listing";
 
@@ -56,7 +54,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { error } = await supabase.from("flags").insert({
+    const { error } = await getSupabaseServer().from("flags").insert({
       content_type: contentType as ContentType,
       locality: locality.trim(),
       content_id: contentId || null,
