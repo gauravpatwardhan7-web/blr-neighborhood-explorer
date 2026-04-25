@@ -104,11 +104,11 @@ const FILTER_OPTIONS: {
 
 // ── Tech park destinations ───────────────────────────────────────────────────
 const TECH_PARKS: { name: string; lat: number; lon: number }[] = [
-  { name: "Electronic City",           lat: 12.8399, lon: 77.6770 },
-  { name: "ITPL / Whitefield",         lat: 12.9698, lon: 77.7499 },
-  { name: "Manyata Tech Park",         lat: 13.0475, lon: 77.6220 },
+  { name: "Electronic City",           lat: 12.8407, lon: 77.6764 },
+  { name: "ITPL / Whitefield",         lat: 12.9847, lon: 77.7349 },
+  { name: "Manyata Tech Park",         lat: 13.0455, lon: 77.6064 },
   { name: "Bagmane Tech Park",         lat: 12.9784, lon: 77.6408 },
-  { name: "Embassy Tech Village",      lat: 12.9020, lon: 77.7010 },
+  { name: "Embassy Tech Village",      lat: 12.9304, lon: 77.6910 },
   { name: "RMZ Ecospace",              lat: 12.9406, lon: 77.6969 },
   { name: "Global Village Tech Park",  lat: 12.9113, lon: 77.5081 },
   { name: "Prestige Tech Park",        lat: 12.9350, lon: 77.6860 },
