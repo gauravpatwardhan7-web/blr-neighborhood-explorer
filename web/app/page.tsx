@@ -1794,6 +1794,13 @@ export default function Home() {
   const droppedPinMarkerRef = useRef<maplibregl.Marker | null>(null);
   const onPinMovedRef = useRef<((pos: { lat: number; lon: number }) => void) | null>(null);
 
+  const [showFlagModal, setShowFlagModal]     = useState(false);
+  const [flagContentType, setFlagContentType] = useState<"neighborhood" | "tip" | "listing">("neighborhood");
+  const [flagReason, setFlagReason]           = useState("");
+  const [flagSubmitting, setFlagSubmitting]   = useState(false);
+  const [flagError, setFlagError]             = useState<string | null>(null);
+  const [flagSubmitted, setFlagSubmitted]     = useState(false);
+
   useEffect(() => { pickingPinRef.current = pickingPin; }, [pickingPin]);
   useEffect(() => { sheetExpandedRef.current = sheetExpanded; }, [sheetExpanded]);
 
@@ -2504,6 +2511,192 @@ export default function Home() {
   const currentScore = selected ? recomputeScore(selected.factors, weights) : null;
   const selectedFull = selected ? allLocalities.find((l) => l.name === selected.name) ?? null : null;
 
+  // ── Flag modal form ────────────────────────────────────────────────────────
+  const handleFlagSubmit = async () => {
+    setFlagError(null);
+    if (flagReason.trim().length < 10) {
+      setFlagError("Please provide at least 10 characters.");
+      return;
+    }
+    if (flagReason.trim().length > 500) {
+      setFlagError("Please keep it under 500 characters.");
+      return;
+    }
+    if (!selected) {
+      setFlagError("Please select a neighborhood first.");
+      return;
+    }
+
+    setFlagSubmitting(true);
+    try {
+      const res = await fetch("/api/flags", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contentType: flagContentType,
+          locality: selected.name,
+          reason: flagReason.trim(),
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setFlagError(data.error || "Failed to submit report.");
+        return;
+      }
+
+      setFlagSubmitted(true);
+      setTimeout(() => {
+        setShowFlagModal(false);
+        setFlagReason("");
+        setFlagSubmitted(false);
+        setFlagContentType("neighborhood");
+      }, 1500);
+    } catch {
+      setFlagError("Network error. Please try again.");
+    } finally {
+      setFlagSubmitting(false);
+    }
+  };
+
+  const FlagModal = () => (
+    <div
+      onClick={() => !flagSubmitting && !flagSubmitted && setShowFlagModal(false)}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.4)",
+        display: "flex",
+        alignItems: "flex-end",
+        justifyContent: "center",
+        zIndex: 60,
+        padding: "16px",
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: "white",
+          borderRadius: "16px 16px 0 0",
+          padding: "24px",
+          width: "100%",
+          maxWidth: 480,
+          boxShadow: "0 -4px 20px rgba(0,0,0,0.15)",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1c1917", margin: 0 }}>Report Issue</h2>
+          {!flagSubmitted && (
+            <button
+              onClick={() => setShowFlagModal(false)}
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                border: `1px solid ${DS.border}`,
+                background: "#f5f0eb",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 14,
+                color: DS.textSub,
+                lineHeight: 1,
+              }}
+            >
+              ✕
+            </button>
+          )}
+        </div>
+
+        {flagSubmitted ? (
+          <div style={{ textAlign: "center", padding: "20px 0" }}>
+            <p style={{ fontSize: 16, fontWeight: 600, color: "#16a34a", margin: "0 0 8px" }}>✓ Thanks for the report!</p>
+            <p style={{ fontSize: 13, color: DS.textMut, margin: 0 }}>We'll review it soon.</p>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 700, color: DS.textSub, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+                What's wrong?
+              </label>
+              <select
+                value={flagContentType}
+                onChange={(e) => setFlagContentType(e.target.value as any)}
+                style={{
+                  width: "100%",
+                  padding: "9px 12px",
+                  borderRadius: 8,
+                  border: `1.5px solid ${DS.border}`,
+                  fontSize: 14,
+                  fontFamily: "inherit",
+                  color: "#111827",
+                  background: "white",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="neighborhood">Neighborhood data</option>
+                <option value="tip">Community tip</option>
+                <option value="listing">Rental listing</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 700, color: DS.textSub, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+                Details ({flagReason.length}/500)
+              </label>
+              <textarea
+                value={flagReason}
+                onChange={(e) => {
+                  if (e.target.value.length <= 500) {
+                    setFlagReason(e.target.value);
+                    setFlagError(null);
+                  }
+                }}
+                placeholder="What's inaccurate or misleading?"
+                style={{
+                  width: "100%",
+                  padding: "9px 12px",
+                  borderRadius: 8,
+                  border: `1.5px solid ${DS.border}`,
+                  fontSize: 14,
+                  fontFamily: "inherit",
+                  color: "#111827",
+                  resize: "none",
+                  minHeight: 100,
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
+            {flagError && (
+              <p style={{ fontSize: 12, color: "#dc2626", margin: 0 }}>⚠ {flagError}</p>
+            )}
+
+            <button
+              onClick={handleFlagSubmit}
+              disabled={flagSubmitting}
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: 8,
+                border: "none",
+                background: flagSubmitting ? "#d1d5db" : "#111827",
+                color: "white",
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: flagSubmitting ? "not-allowed" : "pointer",
+                transition: "background 0.2s",
+              }}
+            >
+              {flagSubmitting ? "Submitting..." : "Submit Report"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   // ── Shared rankings list (reused in desktop card + mobile sheet) ────────────
   const RankingsList = () => (
     <>
@@ -2535,6 +2728,7 @@ export default function Home() {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>
+      {showFlagModal && <FlagModal />}
       {showGate && <EmailGate onSubmit={handleGateSubmit} submitting={gateSubmitting} />}
 
       {/* Pin-picking banner */}
@@ -2580,6 +2774,43 @@ export default function Home() {
           ref={mapRef}
           style={{ position: "fixed", inset: 0, zIndex: 0, background: "#e8e0d5", overflow: "hidden", cursor: pickingPin ? "crosshair" : undefined }}
         />
+
+        {/* FAB: Report Issue button */}
+        <button
+          onClick={() => setShowFlagModal(true)}
+          style={{
+            position: "fixed",
+            bottom: "calc(24px + env(safe-area-inset-bottom, 0px))",
+            right: "calc(24px + env(safe-area-inset-right, 0px))",
+            zIndex: 25,
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            border: "none",
+            background: "#c4622d",
+            color: "white",
+            fontSize: 20,
+            fontWeight: 600,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 4px 12px rgba(196, 98, 45, 0.4)",
+            transition: "transform 0.2s, box-shadow 0.2s",
+            WebkitTapHighlightColor: "transparent",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.1)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 16px rgba(196, 98, 45, 0.5)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
+            (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 12px rgba(196, 98, 45, 0.4)";
+          }}
+          title="Report issue"
+        >
+          🚩
+        </button>
 
         {/* ── Top floating bar: brand pill + search ── */}
         <div style={{
