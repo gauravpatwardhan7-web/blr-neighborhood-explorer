@@ -1723,7 +1723,7 @@ function EmailGate({ onSubmit, submitting }: { onSubmit: (email: string) => void
           style={{
             width: "100%", padding: "11px 14px", borderRadius: 8,
             border: "1.5px solid #e5e7eb", fontSize: 14, outline: "none",
-            marginBottom: 12, boxSizing: "border-box",
+            marginBottom: 12, boxSizing: "border-box", color: "#111827",
           }}
         />
         <button
