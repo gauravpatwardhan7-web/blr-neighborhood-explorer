@@ -107,16 +107,16 @@ const TECH_PARKS: { name: string; lat: number; lon: number }[] = [
   { name: "Electronic City",           lat: 12.8407, lon: 77.6764 },
   { name: "ITPL / Whitefield",         lat: 12.9847, lon: 77.7349 },
   { name: "Manyata Tech Park",         lat: 13.0455, lon: 77.6064 },
-  { name: "Bagmane Tech Park",         lat: 12.9784, lon: 77.6408 },
+  { name: "Bagmane Tech Park",         lat: 12.9786, lon: 77.6611 },
   { name: "Embassy Tech Village",      lat: 12.9304, lon: 77.6910 },
-  { name: "RMZ Ecospace",              lat: 12.9406, lon: 77.6969 },
-  { name: "Global Village Tech Park",  lat: 12.9113, lon: 77.5081 },
-  { name: "Prestige Tech Park",        lat: 12.9350, lon: 77.6860 },
+  { name: "RMZ Ecospace",              lat: 12.9269, lon: 77.6794 },
+  { name: "Global Village Tech Park",  lat: 12.9204, lon: 77.5043 },
+  { name: "Prestige Tech Park",        lat: 12.9420, lon: 77.6905 },
   // ── Transit hubs ──
   { name: "✈️ KIA Airport",            lat: 13.1979, lon: 77.7063 },
   { name: "🚉 KSR City Station",       lat: 12.9774, lon: 77.5713 },
   { name: "🚉 Yeshwanthpur Station",   lat: 13.0219, lon: 77.5512 },
-  { name: "🚉 KR Puram Station",       lat: 12.9959, lon: 77.6942 },
+  { name: "🚉 KR Puram Station",       lat: 13.0006, lon: 77.6942 },
 ];
 
 // ── Pure helpers ──────────────────────────────────────────────────────────────
