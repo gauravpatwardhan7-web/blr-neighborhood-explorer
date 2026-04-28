@@ -1483,7 +1483,7 @@ function UserListingsPanel({
             {pin ? (
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 12, color: "#16a34a", fontWeight: 600 }}>📍 Pinned ({pin.lat.toFixed(4)}, {pin.lon.toFixed(4)})</span>
-                <button type="button" onClick={() => setPin(null)} style={{ fontSize: 11, color: DS.textMut, background: "white", border: `1px solid ${DS.border}`, borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}>Clear</button>
+                <button type="button" onClick={() => { setPin(null); onPinMovedRegister(null); onFormDone(); }} style={{ fontSize: 11, color: DS.textMut, background: "white", border: `1px solid ${DS.border}`, borderRadius: 6, padding: "2px 8px", cursor: "pointer" }}>Clear</button>
               </div>
             ) : pickingPin ? (
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -1922,6 +1922,10 @@ export default function Home() {
     pickResolveRef.current?.(null);
     pickResolveRef.current = null;
     setPickingPin(false);
+    // Also remove any already-dropped marker if user cancels from the banner
+    droppedPinMarkerRef.current?.remove();
+    droppedPinMarkerRef.current = null;
+    onPinMovedRef.current = null;
   }, []);
 
   const clearDroppedPin = useCallback(() => {
@@ -1972,9 +1976,13 @@ export default function Home() {
     commuteMarkersRef.current = { origin: null, dest: null };
     listingMarkersRef.current.forEach((m) => m.remove());
     listingMarkersRef.current = [];
+    // Clear any in-progress owner listing pin
     droppedPinMarkerRef.current?.remove();
     droppedPinMarkerRef.current = null;
     onPinMovedRef.current = null;
+    pickResolveRef.current?.(null);
+    pickResolveRef.current = null;
+    setPickingPin(false);
     history.replaceState(null, "", window.location.pathname);
     setSelected(null);
     setSheetExpanded(false);
